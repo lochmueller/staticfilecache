@@ -24,9 +24,11 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteRule .* - [E=SFC_HOST:%1]
 
    # Get scheme/protocol
-   RewriteCond %{SERVER_PORT} ^443$
+   RewriteCond %{SERVER_PORT} ^443$ [OR]
+   RewriteCond %{HTTP:X-Forwarded-Proto} https
    RewriteRule .* - [E=SFC_PROTOCOL:https]
    RewriteCond %{SERVER_PORT} !^443$
+   RewriteCond %{HTTP:X-Forwarded-Proto} !https
    RewriteRule .* - [E=SFC_PROTOCOL:http]
 
    # Set gzip extension into an environment variable if the visitors browser can handle gzipped content.
