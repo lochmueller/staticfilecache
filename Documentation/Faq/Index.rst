@@ -18,14 +18,14 @@ Check if a file exists (-f) for this request uri
 
 .. code-block:: bash
 
-   RewriteCond %{DOCUMENT_ROOT}/typo3temp/tx_ncstaticfilecache/%{HTTP_HOST}/%{REQUEST_URI}index.html -f
+   RewriteCond %{DOCUMENT_ROOT}/typo3temp/tx_staticfilecache/%{HTTP_HOST}/%{REQUEST_URI}index.html -f
 
 
 If so, rewrite all uri's that meet these conditions to the static file. This is the last rule ( [L] )
 
 .. code-block:: bash
 
-   RewriteRule .* typo3temp/tx_ncstaticfilecache/%{HTTP_HOST}/%{REQUEST_URI} [L]
+   RewriteRule .* typo3temp/tx_staticfilecache/%{HTTP_HOST}/%{REQUEST_URI} [L]
 
 If none of the conditions are met, mod_rewrite will fall through to the next ruleset.
 

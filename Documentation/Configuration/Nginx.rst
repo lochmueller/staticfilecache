@@ -7,7 +7,7 @@ This configuration example adds a named location_ called @sfc which replaces the
 The @sfc location_ includes all checks necessary to decide whether the current request can be handled with
 a static file or needs to be directed to TYPO3.
 If all checks pass, the try_files_ directive is used to find the files in
-typo3temp/tx_ncstaticfilecache/ and if unavailable, redirect to index.php.
+typo3temp/tx_staticfilecache/ and if unavailable, redirect to index.php.
 
 In your nginx configuration you need to replace your '/' location, which probably looks like the following:
 
@@ -63,12 +63,12 @@ By the following configuration:
        }
 
        charset utf8;
-       try_files /typo3temp/tx_ncstaticfilecache/${scheme}/${host}${uri}/index.html
-             /typo3temp/tx_ncstaticfilecache/${scheme}/${host}${uri}
+       try_files /typo3temp/tx_staticfilecache/${scheme}/${host}${uri}/index.html
+             /typo3temp/tx_staticfilecache/${scheme}/${host}${uri}
              =405;
    }
 
-   location /typo3temp/tx_ncstaticfilecache {
+   location /typo3temp/tx_staticfilecache {
        deny all;
    }
 

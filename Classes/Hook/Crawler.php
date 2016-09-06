@@ -31,7 +31,7 @@ class Crawler
      */
     public function clearStaticFile(array $parameters, TypoScriptFrontendController $pObj)
     {
-        if (ExtensionManagementUtility::isLoaded('crawler') && $pObj->applicationData['tx_crawler']['running'] && in_array('tx_ncstaticfilecache_clearstaticfile',
+        if (ExtensionManagementUtility::isLoaded('crawler') && $pObj->applicationData['tx_crawler']['running'] && in_array('tx_staticfilecache_clearstaticfile',
                 $pObj->applicationData['tx_crawler']['parameters']['procInstructions'])
         ) {
             $pageId = $GLOBALS['TSFE']->id;

@@ -9,7 +9,7 @@
 		<languageKey index="default" type="array">
 			<label index="module.title">Static File Cache</label>
 			<label index="staticfilecache.field">Cache page as static file</label>
-			<label index="moduleFunction.tx_ncstaticfilecache_infomodule">Static file cache</label>
+			<label index="moduleFunction.tx_staticfilecache_infomodule">Static file cache</label>
 			<label index="staticfilecache_task_removeExpiredPages.name">Remove expired pages</label>
 			<label index="staticfilecache_task_removeExpiredPages.description">All expired pages will be removed from the cache.</label>
 		</languageKey>

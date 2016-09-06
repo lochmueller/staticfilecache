@@ -9,7 +9,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 // Register with "crawler" extension:
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['crawler']['procInstructions']['tx_ncstaticfilecache_clearstaticfile'] = 'clear static cache file';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['crawler']['procInstructions']['tx_staticfilecache_clearstaticfile'] = 'clear static cache file';
 
 // Hook to process clearing static cached files if "crawler" extension is active:
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache'][$_EXTKEY] = \SFC\Staticfilecache\Hook\Crawler::class . '->clearStaticFile';

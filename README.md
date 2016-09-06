@@ -1,2 +1,4 @@
-# staticfilecache
+# EXT:staticfilecache
 Static File Cache for TYPO3
+
+

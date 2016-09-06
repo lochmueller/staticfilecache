@@ -16,7 +16,7 @@ Note that you will have to fill in your own values for the php executable and th
 
 Nuskool
 
-A backend user by the name of '_cli_ncstaticfilecache' needs to exist. Create this user before scheduling the task.
+A backend user by the name of '_cli_staticfilecache' needs to exist. Create this user before scheduling the task.
 
 .. code-block:: bash
 

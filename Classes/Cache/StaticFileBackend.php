@@ -29,7 +29,7 @@ class StaticFileBackend extends AbstractBackend
      *
      * @var string
      */
-    protected $cacheDirectory = 'typo3temp/tx_ncstaticfilecache/';
+    protected $cacheDirectory = 'typo3temp/tx_staticfilecache/';
 
     /**
      * Saves data in the cache.

@@ -27,7 +27,7 @@ This allows you to format the time according to your own locale. Please see the 
 
 Recreate URI by typoLink to have a valid cached file name.
 
-*TS: tx_ncstaticfilecache.disableCache*
+*TS: tx_staticfilecache.disableCache*
 
 By setting this to a true value, the current page and page branch will not be cached statically.
 

@@ -30,7 +30,7 @@ class PageCacheable extends AbstractRule
      */
     public function checkRule($frontendController, $uri, &$explanation, &$skipProcessing)
     {
-        if (!$frontendController->page['tx_ncstaticfilecache_cache']) {
+        if (!$frontendController->page['tx_staticfilecache_cache']) {
             $explanation[__CLASS__] = 'static cache disabled on page';
         }
     }
