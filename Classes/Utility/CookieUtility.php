@@ -4,7 +4,7 @@
  * Handle cookie related stuff
  */
 
-namespace SFC\NcStaticfilecache\Utility;
+namespace SFC\Staticfilecache\Utility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -17,7 +17,7 @@ class CookieUtility
     /**
      * The name of the cookie
      */
-    const FE_COOKIE_NAME = 'nc_staticfilecache';
+    const FE_COOKIE_NAME = 'staticfilecache';
 
     /**
      * Set the Cookie

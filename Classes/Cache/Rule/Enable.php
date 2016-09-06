@@ -2,13 +2,13 @@
 /**
  * Enable
  *
- * @package SFC\NcStaticfilecache\Cache\Rule
+ * @package SFC\Staticfilecache\Cache\Rule
  * @author  Tim Lochmüller
  */
 
-namespace SFC\NcStaticfilecache\Cache\Rule;
+namespace SFC\Staticfilecache\Cache\Rule;
 
-use SFC\NcStaticfilecache\Configuration;
+use SFC\Staticfilecache\Configuration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 

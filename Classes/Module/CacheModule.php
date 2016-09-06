@@ -2,13 +2,13 @@
 /**
  * Static file cache info module
  *
- * @package SFC\NcStaticfilecache\Module
+ * @package SFC\Staticfilecache\Module
  * @author  Tim Lochmüller
  */
 
-namespace SFC\NcStaticfilecache\Module;
+namespace SFC\Staticfilecache\Module;
 
-use SFC\NcStaticfilecache\Utility\CacheUtility;
+use SFC\Staticfilecache\Utility\CacheUtility;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Tree\View\BrowseTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -111,7 +111,7 @@ class CacheModule extends AbstractFunctionModule
 
         /** @var StandaloneView $renderer */
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
-        $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:nc_staticfilecache/Resources/Private/Templates/Module.html'));
+        $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:staticfilecache/Resources/Private/Templates/Module.html'));
         $renderer->assignMultiple([
             'requestUri' => GeneralUtility::getIndpEnv('REQUEST_URI'),
             'rows' => $rows,

@@ -10,7 +10,7 @@ In order to solve the problem, the following should be added to .htaccess file o
    RewriteCond %{HTTP:X-TYPO3-mnogosearch} ^$
 
 
-If you find any other problems, please report them over at forge: http://forge.typo3.org/projects/extension-nc_staticfilecache/issues
+If you find any other problems, please report them over at forge: http://forge.typo3.org/projects/extension-staticfilecache/issues
 
 Please take some time and make a proper report stating at least:
 

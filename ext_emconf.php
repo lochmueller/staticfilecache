@@ -1,7 +1,7 @@
 <?php
 
 /***************************************************************
- * Extension Manager/Repository config file for ext "nc_staticfilecache".
+ * Extension Manager/Repository config file for ext "staticfilecache".
  *
  * Auto generated 25-03-2014 07:22
  *
@@ -18,9 +18,9 @@ $EM_CONF[$_EXTKEY] = [
     'state' => 'stable',
     'modify_tables' => 'pages',
     'clearcacheonload' => true,
-    'author' => 'Static File Cache team',
-    'author_email' => 'extensions@netcreators.com',
-    'author_company' => 'Netcreators',
+    'author' => 'Static File Cache Team',
+    'author_email' => 'tim@fruit-lab.de',
+    'author_company' => 'Static File Cache Team',
     'constraints' => [
         'depends' => [
             'typo3' => '6.2.0-7.99.99',
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = [
     ],
     'autoload' => [
         'psr-4' => [
-            'SFC\\NcStaticfilecache\\' => 'Classes'
+            'SFC\\Staticfilecache\\' => 'Classes'
         ],
     ],
 ];

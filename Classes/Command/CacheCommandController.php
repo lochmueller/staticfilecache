@@ -2,13 +2,13 @@
 /**
  * Cache commands
  *
- * @package SFC\NcStaticfilecache\Command
+ * @package SFC\Staticfilecache\Command
  * @author  Tim Lochmüller
  */
 
-namespace SFC\NcStaticfilecache\Command;
+namespace SFC\Staticfilecache\Command;
 
-use SFC\NcStaticfilecache\Utility\CacheUtility;
+use SFC\Staticfilecache\Utility\CacheUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**

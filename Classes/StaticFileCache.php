@@ -2,14 +2,14 @@
 /**
  * Static File Cache
  *
- * @package SFC\NcStaticfilecache
+ * @package SFC\Staticfilecache
  * @author  Tim Lochmüller
  */
 
-namespace SFC\NcStaticfilecache;
+namespace SFC\Staticfilecache;
 
-use SFC\NcStaticfilecache\Cache\UriFrontend;
-use SFC\NcStaticfilecache\Utility\CacheUtility;
+use SFC\Staticfilecache\Cache\UriFrontend;
+use SFC\Staticfilecache\Utility\CacheUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;

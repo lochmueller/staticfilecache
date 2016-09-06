@@ -6,7 +6,7 @@ Static File Cache: Speed up TYPO3 CMS FE
       |today|
 
 :Classification:
-      nc_staticfilecache
+      staticfilecache
 
 :Keywords:
       forEditors, forAdmins, forBeginners, forIntermediates

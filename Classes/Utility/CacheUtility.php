@@ -2,11 +2,11 @@
 /**
  * Cache Utility
  *
- * @package SFC\NcStaticfilecache\Module
+ * @package SFC\Staticfilecache\Module
  * @author  Tim Lochmüller
  */
 
-namespace SFC\NcStaticfilecache\Utility;
+namespace SFC\Staticfilecache\Utility;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;

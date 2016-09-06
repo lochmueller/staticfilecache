@@ -4,9 +4,9 @@
  * Logoff process
  */
 
-namespace SFC\NcStaticfilecache\Hook;
+namespace SFC\Staticfilecache\Hook;
 
-use SFC\NcStaticfilecache\Utility\CookieUtility;
+use SFC\Staticfilecache\Utility\CookieUtility;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 
 /**

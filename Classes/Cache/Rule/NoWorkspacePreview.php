@@ -2,11 +2,11 @@
 /**
  * No workspace preview
  *
- * @package SFC\NcStaticfilecache\Cache\Rule
+ * @package SFC\Staticfilecache\Cache\Rule
  * @author  Tim Lochmüller
  */
 
-namespace SFC\NcStaticfilecache\Cache\Rule;
+namespace SFC\Staticfilecache\Cache\Rule;
 
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 

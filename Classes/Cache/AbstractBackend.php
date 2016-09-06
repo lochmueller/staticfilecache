@@ -2,13 +2,13 @@
 /**
  * General Cache functions for Static File Cache
  *
- * @package SFC\NcStaticfilecache\Cache
+ * @package SFC\Staticfilecache\Cache
  * @author  Tim Lochmüller
  */
 
-namespace SFC\NcStaticfilecache\Cache;
+namespace SFC\Staticfilecache\Cache;
 
-use SFC\NcStaticfilecache\Configuration;
+use SFC\Staticfilecache\Configuration;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

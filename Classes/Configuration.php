@@ -2,11 +2,11 @@
 /**
  * Handle extension and TS configuration
  *
- * @package SFC\NcStaticfilecache
+ * @package SFC\Staticfilecache
  * @author  Tim Lochmüller
  */
 
-namespace SFC\NcStaticfilecache;
+namespace SFC\Staticfilecache;
 
 use TYPO3\CMS\Core\SingletonInterface;
 
@@ -30,8 +30,8 @@ class Configuration implements SingletonInterface
      */
     public function __construct()
     {
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['nc_staticfilecache'])) {
-            $extensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['nc_staticfilecache']);
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache'])) {
+            $extensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']);
             if (is_array($extensionConfig)) {
                 $this->configuration = array_merge($this->configuration, $extensionConfig);
             }

@@ -50,7 +50,7 @@ By the following configuration:
        }
 
        # We can't serve static files for logged-in BE/FE users
-       if ($cookie_nc_staticfilecache = 'fe_typo_user_logged_in') {
+       if ($cookie_staticfilecache = 'fe_typo_user_logged_in') {
            return 405;
        }
        if ($cookie_be_typo_user != '') {

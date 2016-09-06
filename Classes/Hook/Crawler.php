@@ -2,13 +2,13 @@
 /**
  * Crawler hook
  *
- * @package SFC\NcStaticfilecache\Hook
+ * @package SFC\Staticfilecache\Hook
  * @author  Tim Lochmüller
  */
 
-namespace SFC\NcStaticfilecache\Hook;
+namespace SFC\Staticfilecache\Hook;
 
-use SFC\NcStaticfilecache\Utility\CacheUtility;
+use SFC\Staticfilecache\Utility\CacheUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -37,9 +37,9 @@ class Crawler
             $pageId = $GLOBALS['TSFE']->id;
             if (is_numeric($pageId)) {
                 CacheUtility::clearByPageId($pageId);
-                $pObj->applicationData['tx_crawler']['log'][] = 'EXT:nc_staticfilecache cleared static file';
+                $pObj->applicationData['tx_crawler']['log'][] = 'EXT:staticfilecache cleared static file';
             } else {
-                $pObj->applicationData['tx_crawler']['log'][] = 'EXT:nc_staticfilecache skipped';
+                $pObj->applicationData['tx_crawler']['log'][] = 'EXT:staticfilecache skipped';
             }
         }
     }

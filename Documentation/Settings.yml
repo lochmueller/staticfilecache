@@ -11,7 +11,7 @@ conf.py:
   highlight_language: php
   latex_documents:
   - - Index
-    - nc_staticfilecache.tex
+    - staticfilecache.tex
     - 'Static File cache'
     - Static File Cache Team
     - manual

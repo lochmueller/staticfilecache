@@ -87,7 +87,7 @@ ChangeLog
 - Move ClearCachePostProc.php to separate class
 - Move HeaderNoCache to separate class
 - Move the decision if the page is cachable to a rule based system (first two rules)
-- Fix documentation against http://docs.typo3.org/typo3cms/extensions/nc_staticfilecache/3.2.0/warnings.txt
+- Fix documentation against http://docs.typo3.org/typo3cms/extensions/staticfilecache/3.2.0/warnings.txt
 - Move the WorkspacePreview Rule to a separate class
 - Speed up the flushByTag function of the StaticFileBackend
 - Remove the overhead of the debugger. Code checks should be done via e.g. xDebug and not with inline code rubbish
@@ -220,7 +220,7 @@ ChangeLog
 
 2014-03-07  Klaus Bitto  <klaus@netcreators.nl>
 
-- Integrated TYPO3 6 compatibility adjustments for TER release as v2.4.0. (Selective merge from https://svn.typo3.org/TYPO3v4/Extensions/nc_staticfilecache/trunk/.)
+- Integrated TYPO3 6 compatibility adjustments for TER release as v2.4.0. (Selective merge from https://svn.typo3.org/TYPO3v4/Extensions/staticfilecache/trunk/.)
 
 2010-10-13  Oliver Hader  <oliver@typo3.org>
 

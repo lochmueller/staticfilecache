@@ -9,7 +9,7 @@ Here you can decide what to do when clearing the frontend cache. By default all 
 
 *Send cache control header*
 
-If your apache has mod_expires loaded, you can use it to make nc_staticfilecache send Cache-Control headers together with the statically served files. This is accomplished by writing a .htaccess file for every statically cached file.
+If your apache has mod_expires loaded, you can use it to make staticfilecache send Cache-Control headers together with the statically served files. This is accomplished by writing a .htaccess file for every statically cached file.
 
 *Enable static file compression*
 

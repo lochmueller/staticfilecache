@@ -46,7 +46,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    # NO frontend user is logged in. Logged in frontend users may see different
    # information than anonymous users. But the anonymous version is cached. So
    # don't show the anonymous version to logged in frontend users.
-   RewriteCond %{HTTP_COOKIE} !nc_staticfilecache [NC]
+   RewriteCond %{HTTP_COOKIE} !staticfilecache [NC]
 
    # Uncomment the following line if you use MnoGoSearch
    #RewriteCond %{HTTP:X-TYPO3-mnogosearch} ^$

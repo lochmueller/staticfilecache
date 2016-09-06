@@ -2,13 +2,13 @@
 /**
  * Log no cache
  *
- * @package SFC\NcStaticfilecache\Hook
+ * @package SFC\Staticfilecache\Hook
  * @author  Tim Lochmüller
  */
 
-namespace SFC\NcStaticfilecache\Hook;
+namespace SFC\Staticfilecache\Hook;
 
-use SFC\NcStaticfilecache\StaticFileCache;
+use SFC\Staticfilecache\StaticFileCache;
 
 /**
  * Log no cache

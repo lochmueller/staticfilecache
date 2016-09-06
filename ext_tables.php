@@ -11,7 +11,7 @@ if (!defined('TYPO3_MODE')) {
 $tmp = [
     'tx_ncstaticfilecache_cache' => [
         'exclude' => 0,
-        'label' => 'LLL:EXT:nc_staticfilecache/Resources/Private/Language/locallang.xml:nc_staticfilecache.field',
+        'label' => 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xml:staticfilecache.field',
         'config' => [
             'type' => 'check',
             'default' => '1',
@@ -25,6 +25,6 @@ $tmp = [
 if (TYPO3_MODE == 'BE') {
     // Add Web>Info module:
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction('web_info',
-        \SFC\NcStaticfilecache\Module\CacheModule::class, null,
-        'LLL:EXT:nc_staticfilecache/Resources/Private/Language/locallang.xml:module.title');
+        \SFC\Staticfilecache\Module\CacheModule::class, null,
+        'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xml:module.title');
 }

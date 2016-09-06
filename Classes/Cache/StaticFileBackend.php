@@ -2,11 +2,11 @@
 /**
  * Cache backend for static file cache
  *
- * @package SFC\NcStaticfilecache\Cache
+ * @package SFC\Staticfilecache\Cache
  * @author  Tim Lochmüller
  */
 
-namespace SFC\NcStaticfilecache\Cache;
+namespace SFC\Staticfilecache\Cache;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -95,7 +95,7 @@ class StaticFileBackend extends AbstractBackend
 
             /** @var StandaloneView $renderer */
             $renderer = GeneralUtility::makeInstance(StandaloneView::class);
-            $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:nc_staticfilecache/Resources/Private/Templates/Htaccess.html'));
+            $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:staticfilecache/Resources/Private/Templates/Htaccess.html'));
             $renderer->assignMultiple([
                 'mode' => $accessTimeout ? 'A' : 'M',
                 'lifetime' => $lifetime,

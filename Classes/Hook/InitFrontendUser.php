@@ -2,13 +2,13 @@
 /**
  * Init frontend user
  *
- * @package SFC\NcStaticfilecache\Hook
+ * @package SFC\Staticfilecache\Hook
  * @author  Tim Lochmüller
  */
 
-namespace SFC\NcStaticfilecache\Hook;
+namespace SFC\Staticfilecache\Hook;
 
-use SFC\NcStaticfilecache\Utility\CookieUtility;
+use SFC\Staticfilecache\Utility\CookieUtility;
 
 /**
  * Init frontend user

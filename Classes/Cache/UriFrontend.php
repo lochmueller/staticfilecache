@@ -2,11 +2,11 @@
 /**
  * Cache frontend for static file cache
  *
- * @package SFC\NcStaticfilecache\Cache
+ * @package SFC\Staticfilecache\Cache
  * @author  Tim Lochmüller
  */
 
-namespace SFC\NcStaticfilecache\Cache;
+namespace SFC\Staticfilecache\Cache;
 
 use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\StringFrontend;
