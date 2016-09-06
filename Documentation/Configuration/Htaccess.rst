@@ -19,6 +19,10 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteCond %{REQUEST_URI} ^/?$
    RewriteRule .* - [E=SFC_URI:/]
 
+   # Cleanup HOST
+   RewriteCond %{HTTP_HOST} ([:]+).*$
+   RewriteRule .* - [E=SFC_HOST:%1]
+
    # Get scheme/protocol
    RewriteCond %{SERVER_PORT} ^443$
    RewriteRule .* - [E=SFC_PROTOCOL:https]
@@ -32,7 +36,7 @@ This is the base .htaccess configuration. Please take a look for the default var
 
    # Check if the requested file exists in the cache, otherwise default to index.html that
    # set in an environment variable that is used later on
-   RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{HTTP_HOST}%{ENV:SFC_URI} !-f
+   RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI} !-f
    RewriteRule .* - [E=SFC_FILE:/index.html]
 
    ### Begin: Static File Cache (main) ####
@@ -41,7 +45,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteCond %{QUERY_STRING} ^$
 
    # It only makes sense to do the other checks if a static file actually exists.
-   RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{HTTP_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_GZIP} -f
+   RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_GZIP} -f
 
    # NO frontend user is logged in. Logged in frontend users may see different
    # information than anonymous users. But the anonymous version is cached. So
@@ -60,7 +64,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteCond %{HTTP_COOKIE} !be_typo_user [NC]
 
    # Rewrite the request to the static file.
-   RewriteRule .* typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{HTTP_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_GZIP} [L]
+   RewriteRule .* typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_GZIP} [L]
 
    # Do not allow direct call the cache entries
    RewriteCond %{ENV:SFC_URI} ^/typo3temp/tx_staticfilecache/.*
