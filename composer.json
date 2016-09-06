@@ -1,0 +1,63 @@
+{
+  "name": "lochmueller/staticfilecache",
+  "version": "3.6.0",
+  "type": "typo3-cms-extension",
+  "description": "Transparent static file cache solution using mod_rewrite and mod_expires. Increase response times for static pages by a factor of 230!!",
+  "autoload": {
+    "psr-4": {
+      "SFC\\Staticfilecache\\": "Classes"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "SFC\\Staticfilecache\\Tests\\": "Tests"
+    }
+  },
+  "keywords": [
+    "TYPO3 CMS",
+    "Static file cache",
+    "Speed",
+    "Magic"
+  ],
+  "authors": [
+    {
+      "name": "Tim Lochmüller",
+      "email": "tim@fruit-lab.de",
+      "role": "Developer",
+      "homepage": "https://github.com/lochmueller"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.0",
+    "typo3/cms-core": "~6.2.0||~7.6.0||<8.99.99||dev-master"
+  },
+  "replace": {
+    "staticfilecache": "self.version",
+    "typo3-ter/staticfilecache": "self.version"
+  },
+  "homepage": "https://github.com/lochmueller/staticfilecache",
+  "license": "GPL-2.0+",
+  "support": {
+    "issues": "https://github.com/lochmueller/staticfilecache/issues"
+  },
+  "require-dev": {
+    "namelesscoder/typo3-repository-client": "1.2.0",
+    "phpunit/phpunit": "~4.8.0",
+    "squizlabs/php_codesniffer": "^2.6",
+    "phpmd/phpmd": "^2.4",
+    "scrutinizer/ocular": "^1.3.0"
+  },
+  "config": {
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin"
+  },
+  "extra": {
+    "typo3/cms": {
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": ".Build/Web",
+      "Package": {
+        "partOfMinimalUsableSystem": true
+      }
+    }
+  }
+}

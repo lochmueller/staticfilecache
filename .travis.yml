@@ -1,0 +1,75 @@
+language: php
+
+php:
+- 5.5
+- 5.6
+- 7
+
+env:
+- TYPO3_VERSION=^6.2.0 COVERAGE=0
+- TYPO3_VERSION=^7.6.0 COVERAGE=0
+matrix:
+  fast_finish: true
+  exclude:
+    - php: 7
+      env: TYPO3_VERSION=^6.2.0 COVERAGE=0
+    - php: 7
+      env: TYPO3_VERSION=^7.6.0 COVERAGE=0
+  include:
+    - php: 7
+      env: TYPO3_VERSION=^7.6.0 COVERAGE=1
+    - php: 7
+      env: TYPO3_VERSION=^8.2.0 COVERAGE=0
+    - php: 7
+      env: TYPO3_VERSION=dev-master COVERAGE=0
+  allow_failures:
+    - env: TYPO3_VERSION=dev-master COVERAGE=0
+
+sudo: false
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_install:
+- |
+  if [[ "$COVERAGE" == "0" ]]; then
+    phpenv config-rm xdebug.ini
+  fi;
+- composer self-update
+- composer --version
+
+before_script:
+- composer require typo3/cms=$TYPO3_VERSION
+- export TYPO3_PATH_WEB="$PWD/.Build/Web"
+
+script:
+- |
+  echo; echo "Running unit tests";
+  if [[ "$COVERAGE" == "1" ]]; then
+    .Build/bin/phpunit -c Tests/UnitTests.xml --coverage-clover=.Build/unittest-coverage.clover
+  else
+    .Build/bin/phpunit -c Tests/UnitTests.xml
+  fi;
+- |
+  echo; echo "Executing PHP mess detector"; .Build/bin/phpmd Classes/ text cleancode,codesize,controversial,design,naming || true
+- |
+  echo; echo "Executing PHP code sniffer"; .Build/bin/phpcs --runtime-set ignore_warnings_on_exit true --standard=PSR2 Classes/
+
+after_script:
+- |
+  if [ -n "$TRAVIS_TAG" ] && [ -n "$TYPO3_ORG_USERNAME" ] && [ -n "$TYPO3_ORG_PASSWORD" ]; then
+    echo -e "Preparing upload of release ${TRAVIS_TAG} to TER\n"
+    curl -sSL https://raw.githubusercontent.com/alrra/travis-after-all/1.4.4/lib/travis-after-all.js | node
+    if [ $? -eq 0 ]; then
+      # Cleanup before we upload
+      git reset --hard HEAD && git clean -fx
+      TAG_MESSAGE=`git tag -n10 -l $TRAVIS_TAG | sed 's/^[0-9.]*[ ]*//g'`
+      echo "Uploading release ${TRAVIS_TAG} to TER"
+      .Build/bin/upload . "$TYPO3_ORG_USERNAME" "$TYPO3_ORG_PASSWORD" "$TAG_MESSAGE"
+    fi;
+  fi;
+- |
+  if [[ "$COVERAGE" == "1" ]]; then
+    echo; echo "Uploading code coverage results";
+    .Build/bin/ocular code-coverage:upload --format=php-clover .Build/unittest-coverage.clover
+  fi
