@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>mod labels</description>
+		<type>module</type>
+		<csh_table></csh_table>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="module.title">Static File Cache</label>
+			<label index="nc_staticfilecache.field">Cache page as static file</label>
+			<label index="moduleFunction.tx_ncstaticfilecache_infomodule">Static file cache</label>
+			<label index="nc_staticfilecache_task_removeExpiredPages.name">Remove expired pages</label>
+			<label index="nc_staticfilecache_task_removeExpiredPages.description">All expired pages will be removed from the cache.</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="module.title">Statischer Datei Cache</label>
+			<label index="nc_staticfilecache.field">Speichere Seitencache als statische Datei</label>
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="module.title">Statische html cache</label>
+			<label index="nc_staticfilecache.field">Pagina opslaan als statische html</label>
+		</languageKey>
+	</data>
+</T3locallang>

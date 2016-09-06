@@ -1,0 +1,23 @@
+# cat=basic; type=boolean; label=Clear cache for all domains in tree: When the TYPO3 tree hosts more than one domain, each domain has it's own cache branch. When clearing the cache, only the cache for the domain you are logged on to will be cleared. If you would like the cache for all domains to be cleared when clearing the frontend cache, then check this box.
+clearCacheForAllDomains = 1
+
+# cat=basic; type=boolean; label=Send Cache-Control header: If your Apache installation has 'mod_expires' loaded, you can use it to send Cache-Control headers. For each statically cached page a .htaccess file will be created with a mod_expires rule. This rule will make Apache send a cache header when delivering the cached page to the visitor.
+sendCacheControlHeader = 1
+
+# cat=basic; type=boolean; label=Send Cache-Control header redirect after cache timeout: Add a mod_rewrite statement to the generated htaccess files, that redirect the user to the index.php, if the Cache is invalid.
+sendCacheControlHeaderRedirectAfterCacheTimeout = 0
+
+# cat=basic; type=boolean; label=Enable static file compression: When checked, a gzipped version of the static file is written to the cache directory as well as a plain version (used for fallback, not all browsers and proxies support gzip). This will speed up file transfer time. Apache can also compress files using mod_deflate, but does so on each request. Enabling this option makes sure it is done only once. Take care to also choose the proper .htaccess configuration when enabling this option.
+enableStaticFileCompression = 1
+
+# cat=basic; type=boolean; label=Show generation timestamp signature: This appends a comment at the end of the static html file. This can be useful for debugging purposes (look at the source and see if the comment is present).
+showGenerationSignature = 0
+
+# cat=basic; type=string; label=Generated File Types:A comma separated list with generated file types of your website. This list will be created without sub folder.
+fileTypes = xml,rss
+
+# cat=basic; type=string; label=Timestamp format:The date format, formatted according to your locale.
+strftime = %d-%m-%y %H:%M
+
+# cat=basic; type=boolean; label=Recreate URI to create cache files: Recreate URI by typoLink to have a valid cached file name.
+recreateURI = 0

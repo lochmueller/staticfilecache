@@ -1,0 +1,21 @@
+<f:if condition="{sendCacheControlHeader}">
+<IfModule mod_expires.c>
+	ExpiresActive on
+	ExpiresByType text/html {mode}{lifetime}
+</IfModule>
+</f:if>
+<f:if condition="{sendCacheControlHeaderRedirectAfterCacheTimeout}">
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+
+	<f:comment>
+		Explicitly prevent direct access here. This is needed because the .htaccess
+		access check in the root dir is overwritten by the RewriteRules defined here.
+	</f:comment>
+	RewriteCond %{ENV:REDIRECT_STATUS} ^$
+	RewriteRule .* - [F,L]
+
+	RewriteCond %<![CDATA[{TIME}]]> ><f:format.date format="YmdHis">@{expires}</f:format.date>
+	RewriteRule ^.*$ /index.php
+</IfModule>
+</f:if>
