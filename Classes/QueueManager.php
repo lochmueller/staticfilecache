@@ -53,9 +53,8 @@ class QueueManager implements SingletonInterface
             return;
         }
 
-        $client = $this->getCallableClient();
-
         foreach ($runEntries as $runEntry) {
+            $client = $this->getCallableClient(parse_url($runEntry['cache_url'], PHP_URL_HOST));
             $response = $client->get($runEntry['cache_url']);
             $statusCode = $response->getStatusCode();
             $data = [
@@ -103,12 +102,15 @@ class QueueManager implements SingletonInterface
      *
      * @return Client
      */
-    protected function getCallableClient()
+    protected function getCallableClient($domain)
     {
         $jar = GeneralUtility::makeInstance(CookieJar::class);
         $cookie = GeneralUtility::makeInstance(SetCookie::class);
         $cookie->setName('staticfilecache');
         $cookie->setValue('1');
+        $cookie->setPath('/');
+        $cookie->setExpires(time() + 30);
+        $cookie->setDomain($domain);
         $jar->setCookie($cookie);
         $options = [
             'cookies' => $jar,
