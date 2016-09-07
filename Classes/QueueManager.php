@@ -57,10 +57,16 @@ class QueueManager implements SingletonInterface
 
         foreach ($runEntries as $runEntry) {
             $response = $client->get($runEntry['cache_url']);
+            $statusCode = $response->getStatusCode();
             $data = [
                 'call_date'   => time(),
-                'call_result' => $response->getStatusCode(),
+                'call_result' => $statusCode,
             ];
+
+            if ($statusCode !== 200) {
+                // Call the flush, if the page is not accessable
+                $this->cache->flushByTag('sfc_pageId_' . $runEntry['page_uid']);
+            }
             $dbConnection->exec_UPDATEquery(self::QUEUE_TABLE, 'uid=' . $runEntry['uid'], $data);
         }
     }
@@ -75,6 +81,7 @@ class QueueManager implements SingletonInterface
         $urls = array_keys($this->cache->getByTag('sfc_pageId_' . $pageUid));
         $fields = [
             'cache_url',
+            'page_uid',
             'invalid_date',
             'call_result'
         ];
@@ -82,6 +89,7 @@ class QueueManager implements SingletonInterface
         foreach ($urls as $url) {
             $rows[] = [
                 $url,
+                $pageUid,
                 time(),
                 ''
             ];

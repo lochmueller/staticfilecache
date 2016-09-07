@@ -11,6 +11,7 @@ CREATE TABLE pages (
 CREATE TABLE tx_staticfilecache_queue (
 	uid int(11) NOT NULL auto_increment,
 	cache_url tinytext NOT NULL,
+	page_uid int(11) DEFAULT '0' NOT NULL,
 	invalid_date int(11) DEFAULT '0' NOT NULL,
 	call_date int(11) DEFAULT '0' NOT NULL,
 	call_result tinytext NOT NULL,
