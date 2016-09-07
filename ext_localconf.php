@@ -23,6 +23,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['log
 // register command controller
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \SFC\Staticfilecache\Command\CacheCommandController::class;
 
+// for boost mode
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['staticfilecache'] = \SFC\Staticfilecache\Hook\BoostCatcher::class . '->clearCachePostProc';
+
 $ruleClasses = [
     \SFC\Staticfilecache\Cache\Rule\StaticCacheable::class,
     \SFC\Staticfilecache\Cache\Rule\ValidUri::class,
@@ -42,18 +45,11 @@ foreach ($ruleClasses as $class) {
     $signalSlotDispatcher->connect(\SFC\Staticfilecache\StaticFileCache::class, 'cacheRule', $class, 'check');
 }
 
-$configuration = new \SFC\Staticfilecache\Configuration();
-
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache'] = [
     'frontend' => \SFC\Staticfilecache\Cache\UriFrontend::class,
     'backend'  => \SFC\Staticfilecache\Cache\StaticFileBackend::class,
-];
-
-if ((bool)$configuration->get('boostMode')) {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['staticfilecache'] = \SFC\Staticfilecache\Hook\BoostCatcher::class . '->clearCachePostProc';
-} else {
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache']['groups'] = [
+    'groups'   => [
         'pages',
         'all'
-    ];
-}
+    ]
+];

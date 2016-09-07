@@ -33,10 +33,10 @@ class StaticFileBackend extends AbstractBackend
     /**
      * Saves data in the cache.
      *
-     * @param string $entryIdentifier An identifier for this specific cache entry
-     * @param string $data The data to be stored
-     * @param array $tags Tags to associate with this cache entry. If the backend does not support tags, this option can be ignored.
-     * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
+     * @param string  $entryIdentifier An identifier for this specific cache entry
+     * @param string  $data            The data to be stored
+     * @param array   $tags            Tags to associate with this cache entry. If the backend does not support tags, this option can be ignored.
+     * @param integer $lifetime        Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      *
      * @return void
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
@@ -96,10 +96,10 @@ class StaticFileBackend extends AbstractBackend
             $renderer = GeneralUtility::makeInstance(StandaloneView::class);
             $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:staticfilecache/Resources/Private/Templates/Htaccess.html'));
             $renderer->assignMultiple([
-                'mode' => $accessTimeout ? 'A' : 'M',
-                'lifetime' => $lifetime,
-                'expires' => time() + $lifetime,
-                'sendCacheControlHeader' => (bool)$this->configuration->get('sendCacheControlHeader'),
+                'mode'                                            => $accessTimeout ? 'A' : 'M',
+                'lifetime'                                        => $lifetime,
+                'expires'                                         => time() + $lifetime,
+                'sendCacheControlHeader'                          => (bool)$this->configuration->get('sendCacheControlHeader'),
                 'sendCacheControlHeaderRedirectAfterCacheTimeout' => (bool)$this->configuration->get('sendCacheControlHeaderRedirectAfterCacheTimeout'),
             ]);
 
@@ -201,6 +201,11 @@ class StaticFileBackend extends AbstractBackend
      */
     public function flush()
     {
+        if ((boolean)$this->configuration->get('boostMode')) {
+            // do not flush in boost mode (!!!!)
+            return;
+        }
+
         if ((boolean)$this->configuration->get('clearCacheForAllDomains') === false) {
             $this->flushByTag('sfc_domain_' . str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
             return;

@@ -24,9 +24,12 @@ class BoostCatcher
      */
     public function clearCachePostProc($params, $object)
     {
-        if (isset($params['uid_page'])) {
-            $this->getQueueManager()
-                ->clearCacheForPage($params['uid_page']);
+        $configuration = new \SFC\Staticfilecache\Configuration();
+        if ((bool)$configuration->get('boostMode')) {
+            if (isset($params['uid_page'])) {
+                $this->getQueueManager()
+                    ->clearCacheForPage($params['uid_page']);
+            }
         }
     }
 
