@@ -31,7 +31,7 @@ class CacheUtility
         /** @var CacheManager $cacheManager */
         $objectManager = new ObjectManager();
         $cacheManager = $objectManager->get(CacheManager::class);
-        return $cacheManager->getCache('static_file_cache');
+        return $cacheManager->getCache('staticfilecache');
     }
 
     /**

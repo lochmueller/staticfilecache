@@ -21,3 +21,6 @@ strftime = %d-%m-%y %H:%M
 
 # cat=basic; type=boolean; label=Recreate URI to create cache files: Recreate URI by typoLink to have a valid cached file name.
 recreateURI = 0
+
+# cat=basic; type=boolean; label=Boost mode: This mode do not delete the cache files, if editor change the cache or delete it. The URLs are added to a queue and there is a scheduler task that call the URLs to rebuild the cache. As result: The regular FE users always get a fast static file cache.
+boostMode = 0

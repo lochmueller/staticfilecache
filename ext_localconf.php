@@ -42,12 +42,18 @@ foreach ($ruleClasses as $class) {
     $signalSlotDispatcher->connect(\SFC\Staticfilecache\StaticFileCache::class, 'cacheRule', $class, 'check');
 }
 
+$configuration = new \SFC\Staticfilecache\Configuration();
+
+
 // new Cache for Static file caches
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['static_file_cache'] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache'] = [
     'frontend' => \SFC\Staticfilecache\Cache\UriFrontend::class,
-    'backend' => \SFC\Staticfilecache\Cache\StaticFileBackend::class,
-    'groups' => [
+    'backend'  => \SFC\Staticfilecache\Cache\StaticFileBackend::class,
+];
+
+if (false === (bool)$configuration->get('boostMode')) {
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache']['groups'] = [
         'pages',
         'all'
-    ],
-];
+    ];
+}
