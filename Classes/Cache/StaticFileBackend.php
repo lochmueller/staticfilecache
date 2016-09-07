@@ -118,8 +118,10 @@ class StaticFileBackend extends AbstractBackend
     {
         // @todo check urldecode here, if the filesystem is not a UTF-8 filesystem
         $urlParts = parse_url($entryIdentifier);
-        $cacheFilename = GeneralUtility::getFileAbsFileName($this->cacheDirectory . $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim($urlParts['path'],
-                '/'));
+        $cacheFilename = GeneralUtility::getFileAbsFileName($this->cacheDirectory . $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim(
+            $urlParts['path'],
+            '/'
+        ));
         $fileExtension = PathUtility::pathinfo(basename($cacheFilename), PATHINFO_EXTENSION);
         if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
             $cacheFilename = rtrim($cacheFilename, '/') . '/index.html';

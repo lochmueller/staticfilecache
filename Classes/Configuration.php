@@ -36,8 +36,10 @@ class Configuration implements SingletonInterface
             }
         }
         if (isset($GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.']) && is_array($GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.'])) {
-            $this->configuration = array_merge($this->configuration,
-                $GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.']);
+            $this->configuration = array_merge(
+                $this->configuration,
+                $GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.']
+            );
         }
     }
 

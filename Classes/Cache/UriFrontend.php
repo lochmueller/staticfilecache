@@ -50,8 +50,10 @@ class UriFrontend extends StringFrontend
     public function set($entryIdentifier, $string, array $tags = [], $lifetime = null)
     {
         if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-            throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.',
-                1233057566);
+            throw new \InvalidArgumentException(
+                '"' . $entryIdentifier . '" is not a valid cache entry identifier.',
+                1233057566
+            );
         }
         foreach ($tags as $tag) {
             if (!$this->isValidTag($tag)) {

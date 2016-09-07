@@ -99,7 +99,6 @@ class StaticFileCache implements SingletonInterface
         $explanation = $ruleArguments['explanation'];
 
         if (!$ruleArguments['skipProcessing']) {
-
             // Don't continue if there is already an existing valid cache entry and we've got an invalid now.
             // Prevents overriding if a logged in user is checking the page in a second call
             // see https://forge.typo3.org/issues/67526
@@ -115,7 +114,6 @@ class StaticFileCache implements SingletonInterface
             // This is supposed to have "&& !$pObj->beUserLogin" in there as well
             // This fsck's up the ctrl-shift-reload hack, so I pulled it out.
             if (sizeof($explanation) === 0) {
-
                 // If page has a endtime before the current timeOutTime, use it instead:
                 if ($pObj->page['endtime'] > 0 && $pObj->page['endtime'] < $timeOutTime) {
                     $timeOutTime = $pObj->page['endtime'];
@@ -125,10 +123,14 @@ class StaticFileCache implements SingletonInterface
 
                 $content = $pObj->content;
                 if ($this->configuration->get('showGenerationSignature')) {
-                    $content .= "\n<!-- cached statically on: " . strftime($this->configuration->get('strftime'),
-                            $GLOBALS['EXEC_TIME']) . ' -->';
-                    $content .= "\n<!-- expires on: " . strftime($this->configuration->get('strftime'),
-                            $timeOutTime) . ' -->';
+                    $content .= "\n<!-- cached statically on: " . strftime(
+                        $this->configuration->get('strftime'),
+                        $GLOBALS['EXEC_TIME']
+                    ) . ' -->';
+                    $content .= "\n<!-- expires on: " . strftime(
+                        $this->configuration->get('strftime'),
+                        $timeOutTime
+                    ) . ' -->';
                 }
 
                 // Signal: Process content before writing to static cached file
@@ -138,8 +140,11 @@ class StaticFileCache implements SingletonInterface
                     'content' => $content,
                     'timeOutSeconds' => $timeOutSeconds,
                 ];
-                $processContentArguments = $this->signalDispatcher->dispatch(__CLASS__, 'processContent',
-                    $processContentArguments);
+                $processContentArguments = $this->signalDispatcher->dispatch(
+                    __CLASS__,
+                    'processContent',
+                    $processContentArguments
+                );
                 $content = $processContentArguments['content'];
                 $timeOutSeconds = $processContentArguments['timeOutSeconds'];
                 $uri = $processContentArguments['uri'];

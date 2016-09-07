@@ -88,8 +88,11 @@ class CacheModule extends AbstractFunctionModule
                 foreach ($cacheEntries as $identifier => $info) {
                     $cell = [
                         'uid' => $row['row']['uid'],
-                        'title' => $isFirst ? $row['HTML'] . BackendUtility::getRecordTitle('pages', $row['row'],
-                                true) : $row['HTML_depthData'],
+                        'title' => $isFirst ? $row['HTML'] . BackendUtility::getRecordTitle(
+                            'pages',
+                            $row['row'],
+                            true
+                        ) : $row['HTML_depthData'],
                         'identifier' => $identifier,
                         'info' => $info,
                         'depthData' => $row['depthData'],
@@ -148,8 +151,11 @@ class CacheModule extends AbstractFunctionModule
     protected function processExpandCollapseLinks($content)
     {
         if (strpos($content, 'PM=') !== false && $this->pageId > 0) {
-            $content = preg_replace('/(href=")([^"]+PM=[^"#]+)(#[^"]+)?(")/',
-                '${1}${2}&id=' . $this->pageId . '${3}${4}', $content);
+            $content = preg_replace(
+                '/(href=")([^"]+PM=[^"#]+)(#[^"]+)?(")/',
+                '${1}${2}&id=' . $this->pageId . '${3}${4}',
+                $content
+            );
         }
 
         if (GeneralUtility::compat_version('7.0')) {
