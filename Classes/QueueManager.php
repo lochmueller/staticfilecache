@@ -7,6 +7,9 @@
 
 namespace SFC\Staticfilecache;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\SetCookie;
 use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Utility\CacheUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
@@ -42,7 +45,23 @@ class QueueManager implements SingletonInterface
      */
     public function run()
     {
-        // @todo run throw queue
+        $dbConnection = $this->getDatabaseConnection();
+        $runEntries = $dbConnection->exec_SELECTgetRows('*', self::QUEUE_TABLE, 'call_date=0');
+
+        if (empty($runEntries)) {
+            return;
+        }
+
+        $client = $this->getCallableClient();
+
+        foreach ($runEntries as $runEntry) {
+            $response = $client->get($runEntry['cache_url']);
+            $data = [
+                'call_date'   => time(),
+                'call_result' => $response->getStatusCode(),
+            ];
+            $dbConnection->exec_UPDATEquery(self::QUEUE_TABLE, 'uid=' . $runEntry['uid'], $data);
+        }
     }
 
     /**
@@ -68,6 +87,27 @@ class QueueManager implements SingletonInterface
         }
         $this->getDatabaseConnection()
             ->exec_INSERTmultipleRows(self::QUEUE_TABLE, $fields, $rows);
+    }
+
+    /**
+     * Get a cllable client
+     *
+     * @return Client
+     */
+    protected function getCallableClient()
+    {
+        $jar = new CookieJar();
+        $cookie = new SetCookie();
+        $cookie->setName('staticfilecache');
+        $cookie->setValue('1');
+        $jar->setCookie($cookie);
+        $options = [
+            'cookies' => $jar,
+            'headers' => [
+                'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:47.0) Gecko/20100101 Firefox/47.0'
+            ]
+        ];
+        return new Client($options);
     }
 
     /**

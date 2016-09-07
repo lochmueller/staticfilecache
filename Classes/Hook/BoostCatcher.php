@@ -7,6 +7,7 @@
 
 namespace SFC\Staticfilecache\Hook;
 
+use SFC\Staticfilecache\Configuration;
 use SFC\Staticfilecache\QueueManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -24,7 +25,7 @@ class BoostCatcher
      */
     public function clearCachePostProc($params, $object)
     {
-        $configuration = new \SFC\Staticfilecache\Configuration();
+        $configuration = new Configuration();
         if ((bool)$configuration->get('boostMode')) {
             if (isset($params['uid_page'])) {
                 $this->getQueueManager()

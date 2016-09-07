@@ -29,7 +29,8 @@
   ],
   "require": {
     "php": ">=5.6.0",
-    "typo3/cms-core": "~6.2.0||~7.6.0||<8.99.99||dev-master"
+    "typo3/cms-core": "~6.2.0||~7.6.0||<8.99.99||dev-master",
+    "guzzlehttp/guzzle": "~6.2.1"
   },
   "replace": {
     "staticfilecache": "self.version",

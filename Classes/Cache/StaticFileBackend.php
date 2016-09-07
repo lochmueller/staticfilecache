@@ -64,6 +64,17 @@ class StaticFileBackend extends AbstractBackend
             GeneralUtility::mkdir_deep($cacheDir);
         }
 
+        $checkFiles = [
+            $fileName,
+            $fileName . '.gz',
+            PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess'
+        ];
+        foreach ($checkFiles as $checkFile) {
+            if (is_file($checkFile)) {
+                unlink($checkFile);
+            }
+        }
+
         // normal
         GeneralUtility::writeFile($fileName, $data);
 
