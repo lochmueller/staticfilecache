@@ -44,14 +44,14 @@ foreach ($ruleClasses as $class) {
 
 $configuration = new \SFC\Staticfilecache\Configuration();
 
-
-// new Cache for Static file caches
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache'] = [
     'frontend' => \SFC\Staticfilecache\Cache\UriFrontend::class,
     'backend'  => \SFC\Staticfilecache\Cache\StaticFileBackend::class,
 ];
 
-if (false === (bool)$configuration->get('boostMode')) {
+if ((bool)$configuration->get('boostMode')) {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['staticfilecache'] = \SFC\Staticfilecache\Hook\BoostCatcher::class . '->clearCachePostProc';
+} else {
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache']['groups'] = [
         'pages',
         'all'

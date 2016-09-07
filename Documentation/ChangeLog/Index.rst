@@ -1,7 +1,7 @@
 ChangeLog
 ---------
 
-For newer log entries, take a look at:
+For newer log entries (since august 2016) take a look at:
 https://github.com/lochmueller/staticfilecache/commits/master
 
 2015-12-28 Tim Lochmüller <tim@fruit-lab.de>
