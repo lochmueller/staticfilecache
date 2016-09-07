@@ -25,7 +25,7 @@ class BoostCatcher
      */
     public function clearCachePostProc($params, $object)
     {
-        $configuration = new Configuration();
+        $configuration = GeneralUtility::makeInstance(Configuration::class);
         if ((bool)$configuration->get('boostMode')) {
             if (isset($params['uid_page'])) {
                 $this->getQueueManager()

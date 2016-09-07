@@ -14,6 +14,7 @@ use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Utility\CacheUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Queue manager
@@ -96,8 +97,8 @@ class QueueManager implements SingletonInterface
      */
     protected function getCallableClient()
     {
-        $jar = new CookieJar();
-        $cookie = new SetCookie();
+        $jar = GeneralUtility::makeInstance(CookieJar::class);
+        $cookie = GeneralUtility::makeInstance(SetCookie::class);
         $cookie->setName('staticfilecache');
         $cookie->setValue('1');
         $jar->setCookie($cookie);
@@ -107,7 +108,7 @@ class QueueManager implements SingletonInterface
                 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:47.0) Gecko/20100101 Firefox/47.0'
             ]
         ];
-        return new Client($options);
+        return GeneralUtility::makeInstance(Client::class, $options);
     }
 
     /**
