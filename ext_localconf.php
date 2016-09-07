@@ -13,8 +13,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoC
 // Log a cache miss if no_cache is true
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][$_EXTKEY] = \SFC\Staticfilecache\Hook\LogNoCache::class . '->log';
 
-// Create cache
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageInCache'][$_EXTKEY] = \SFC\Staticfilecache\StaticFileCache::class;
+// Create cache (Note: "cache" has to be in lower case)
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'][$_EXTKEY] = \SFC\Staticfilecache\StaticFileCache::class;
 
 // Set cookie when User logs in
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'][$_EXTKEY] = \SFC\Staticfilecache\Hook\InitFrontendUser::class . '->setFeUserCookie';
