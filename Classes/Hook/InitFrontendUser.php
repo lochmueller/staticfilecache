@@ -2,7 +2,6 @@
 /**
  * Init frontend user
  *
- * @package SFC\Staticfilecache\Hook
  * @author  Tim Lochmüller
  */
 

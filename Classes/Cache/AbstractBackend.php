@@ -2,7 +2,6 @@
 /**
  * General Cache functions for Static File Cache
  *
- * @package SFC\Staticfilecache\Cache
  * @author  Tim Lochmüller
  */
 

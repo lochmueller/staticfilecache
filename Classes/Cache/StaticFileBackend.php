@@ -2,7 +2,6 @@
 /**
  * Cache backend for static file cache
  *
- * @package SFC\Staticfilecache\Cache
  * @author  Tim Lochmüller
  */
 

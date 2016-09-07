@@ -2,7 +2,6 @@
 /**
  * Static file cache info module
  *
- * @package SFC\Staticfilecache\Module
  * @author  Tim Lochmüller
  */
 

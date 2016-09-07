@@ -2,7 +2,6 @@
 /**
  * Abstract Rule
  *
- * @package SFC\Staticfilecache\Cache\Rule
  * @author  Tim Lochmüller
  */
 

@@ -413,5 +413,5 @@ https://github.com/lochmueller/staticfilecache/commits/master
 2008-02-22  Michiel Roos  <michiel@netcreators.com>
 
 - Added Changelog ;-)
-- Removed version_compare() from insertPageIncache()
+- Removed version_compare() from insertPageInCache()
 - Rename modfunc1 to infomodule

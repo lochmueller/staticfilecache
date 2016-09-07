@@ -2,7 +2,6 @@
 /**
  * Crawler hook
  *
- * @package SFC\Staticfilecache\Hook
  * @author  Tim Lochmüller
  */
 

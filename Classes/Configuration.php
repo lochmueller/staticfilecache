@@ -2,7 +2,6 @@
 /**
  * Handle extension and TS configuration
  *
- * @package SFC\Staticfilecache
  * @author  Tim Lochmüller
  */
 

@@ -2,7 +2,6 @@
 /**
  * Check if the current page is static cachable in TSFE context
  *
- * @package SFC\Staticfilecache\Cache\Rule
  * @author  Tim Lochmüller
  */
 
@@ -25,8 +24,6 @@ class StaticCacheable extends AbstractRule
      * @param string $uri
      * @param array $explanation
      * @param bool $skipProcessing
-     *
-     * @return array
      */
     public function checkRule($frontendController, $uri, &$explanation, &$skipProcessing)
     {

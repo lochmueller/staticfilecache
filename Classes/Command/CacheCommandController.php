@@ -2,7 +2,6 @@
 /**
  * Cache commands
  *
- * @package SFC\Staticfilecache\Command
  * @author  Tim Lochmüller
  */
 

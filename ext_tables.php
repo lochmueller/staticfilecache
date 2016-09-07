@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Extension backend registration
- */
-
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }

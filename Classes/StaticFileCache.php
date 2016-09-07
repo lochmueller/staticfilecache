@@ -2,7 +2,6 @@
 /**
  * Static File Cache
  *
- * @package SFC\Staticfilecache
  * @author  Tim Lochmüller
  */
 
@@ -76,7 +75,7 @@ class StaticFileCache implements SingletonInterface
      *
      * @return    void
      */
-    public function insertPageIncache(TypoScriptFrontendController &$pObj, &$timeOutTime)
+    public function insertPageInCache(TypoScriptFrontendController &$pObj, &$timeOutTime)
     {
         $isStaticCached = false;
         $uri = $this->getUri();
