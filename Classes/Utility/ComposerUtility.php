@@ -18,7 +18,7 @@ class ComposerUtility
     /**
      * Check if composer is installed
      */
-    static public function check()
+    public static function check()
     {
         if (class_exists(\GuzzleHttp\Client::class)) {
             return;
@@ -26,5 +26,4 @@ class ComposerUtility
         $path = GeneralUtility::getFileAbsFileName('EXT:staticfilecache/Resources/Private/Contrib/vendor/autoload.php');
         GeneralUtility::requireFile($path);
     }
-
 }
