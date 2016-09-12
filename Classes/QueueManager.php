@@ -12,9 +12,11 @@ use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Utility\CacheUtility;
+use SFC\Staticfilecache\Utility\ComposerUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Queue manager
@@ -38,7 +40,6 @@ class QueueManager implements SingletonInterface
     public function __construct()
     {
         $this->cache = CacheUtility::getCache();
-        ;
     }
 
     /**
@@ -104,6 +105,7 @@ class QueueManager implements SingletonInterface
      */
     protected function getCallableClient($domain)
     {
+        ComposerUtility::check();
         $jar = GeneralUtility::makeInstance(CookieJar::class);
         $cookie = GeneralUtility::makeInstance(SetCookie::class);
         $cookie->setName('staticfilecache');
