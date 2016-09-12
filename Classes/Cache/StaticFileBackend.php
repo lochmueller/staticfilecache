@@ -64,16 +64,7 @@ class StaticFileBackend extends AbstractBackend
             GeneralUtility::mkdir_deep($cacheDir);
         }
 
-        $checkFiles = [
-            $fileName,
-            $fileName . '.gz',
-            PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess'
-        ];
-        foreach ($checkFiles as $checkFile) {
-            if (is_file($checkFile)) {
-                unlink($checkFile);
-            }
-        }
+        $this->removeStaticFiles($entryIdentifier);
 
         // normal
         GeneralUtility::writeFile($fileName, $data);
@@ -129,10 +120,8 @@ class StaticFileBackend extends AbstractBackend
     {
         // @todo check urldecode here, if the filesystem is not a UTF-8 filesystem
         $urlParts = parse_url($entryIdentifier);
-        $cacheFilename = GeneralUtility::getFileAbsFileName($this->cacheDirectory . $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim(
-            $urlParts['path'],
-            '/'
-        ));
+        $cacheFilename = GeneralUtility::getFileAbsFileName($this->cacheDirectory . $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim($urlParts['path'],
+                '/'));
         $fileExtension = PathUtility::pathinfo(basename($cacheFilename), PATHINFO_EXTENSION);
         if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
             $cacheFilename = rtrim($cacheFilename, '/') . '/index.html';
