@@ -7,8 +7,10 @@
 
 namespace SFC\Staticfilecache\Cache;
 
+use SFC\Staticfilecache\QueueManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -118,7 +120,6 @@ class StaticFileBackend extends AbstractBackend
      */
     protected function getCacheFilename($entryIdentifier)
     {
-        // @todo check urldecode here, if the filesystem is not a UTF-8 filesystem
         $urlParts = parse_url($entryIdentifier);
         $cacheFilename = GeneralUtility::getFileAbsFileName($this->cacheDirectory . $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim($urlParts['path'],
                 '/'));
@@ -170,8 +171,87 @@ class StaticFileBackend extends AbstractBackend
         if (!$this->has($entryIdentifier)) {
             return false;
         }
+
+        if ((boolean)$this->configuration->get('boostMode')) {
+            $this->getQueue()
+                ->addIdentifier($entryIdentifier);
+            return true;
+        }
+
         $this->removeStaticFiles($entryIdentifier);
         return parent::remove($entryIdentifier);
+    }
+
+    /**
+     * Removes all cache entries of this cache.
+     *
+     * @return void
+     */
+    public function flush()
+    {
+        if ((boolean)$this->configuration->get('clearCacheForAllDomains') === false) {
+            $this->flushByTag('sfc_domain_' . str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
+            return;
+        }
+
+        if ((boolean)$this->configuration->get('boostMode')) {
+            $identifiers = $this->getDatabaseConnection()
+                ->exec_SELECTgetRows('identifier', 'cf_staticfilecache', '1=1');
+            $queue = $this->getQueue();
+            foreach ($identifiers as $item) {
+                $queue->addIdentifier($item['identifier']);
+            }
+            return;
+        }
+
+        $absoluteCacheDir = GeneralUtility::getFileAbsFileName($this->cacheDirectory);
+        if (is_dir($absoluteCacheDir)) {
+            $tempAbsoluteCacheDir = rtrim($absoluteCacheDir, '/') . '_' . GeneralUtility::milliseconds() . '/';
+            rename($absoluteCacheDir, $tempAbsoluteCacheDir);
+        }
+        parent::flush();
+        if (isset($tempAbsoluteCacheDir)) {
+            GeneralUtility::rmdir($tempAbsoluteCacheDir, true);
+        }
+    }
+
+    /**
+     * Removes all cache entries of this cache which are tagged by the specified tag.
+     *
+     * @param string $tag The tag the entries must have
+     *
+     * @return void
+     */
+    public function flushByTag($tag)
+    {
+        $identifiers = $this->findIdentifiersByTag($tag);
+
+        if ((boolean)$this->configuration->get('boostMode')) {
+            $queue = $this->getQueue();
+            foreach ($identifiers as $identifier) {
+                $queue->addIdentifier($identifier);
+            }
+            return;
+        }
+        foreach ($identifiers as $identifier) {
+            $this->removeStaticFiles($identifier);
+        }
+        parent::flushByTag($tag);
+    }
+
+    /**
+     * Does garbage collection
+     *
+     * @return void
+     */
+    public function collectGarbage()
+    {
+        $cacheEntryIdentifiers = $this->getDatabaseConnection()
+            ->exec_SELECTgetRows('DISTINCT identifier', $this->cacheTable, $this->expiredStatement);
+        parent::collectGarbage();
+        foreach ($cacheEntryIdentifiers as $row) {
+            $this->removeStaticFiles($row['identifier']);
+        }
     }
 
     /**
@@ -195,60 +275,12 @@ class StaticFileBackend extends AbstractBackend
     }
 
     /**
-     * Removes all cache entries of this cache.
+     * Get queue manager
      *
-     * @return void
+     * @return QueueManager
      */
-    public function flush()
+    protected function getQueue()
     {
-        if ((boolean)$this->configuration->get('boostMode')) {
-            // do not flush in boost mode (!!!!)
-            return;
-        }
-
-        if ((boolean)$this->configuration->get('clearCacheForAllDomains') === false) {
-            $this->flushByTag('sfc_domain_' . str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
-            return;
-        }
-        $absoluteCacheDir = GeneralUtility::getFileAbsFileName($this->cacheDirectory);
-        if (is_dir($absoluteCacheDir)) {
-            $tempAbsoluteCacheDir = rtrim($absoluteCacheDir, '/') . '_' . GeneralUtility::milliseconds() . '/';
-            rename($absoluteCacheDir, $tempAbsoluteCacheDir);
-        }
-        parent::flush();
-        if (isset($tempAbsoluteCacheDir)) {
-            GeneralUtility::rmdir($tempAbsoluteCacheDir, true);
-        }
-    }
-
-    /**
-     * Does garbage collection
-     *
-     * @return void
-     */
-    public function collectGarbage()
-    {
-        $cacheEntryIdentifiers = $this->getDatabaseConnection()
-            ->exec_SELECTgetRows('DISTINCT identifier', $this->cacheTable, $this->expiredStatement);
-        parent::collectGarbage();
-        foreach ($cacheEntryIdentifiers as $row) {
-            $this->removeStaticFiles($row['identifier']);
-        }
-    }
-
-    /**
-     * Removes all cache entries of this cache which are tagged by the specified tag.
-     *
-     * @param string $tag The tag the entries must have
-     *
-     * @return void
-     */
-    public function flushByTag($tag)
-    {
-        $identifiers = $this->findIdentifiersByTag($tag);
-        foreach ($identifiers as $identifier) {
-            $this->removeStaticFiles($identifier);
-        }
-        parent::flushByTag($tag);
+        return GeneralUtility::makeInstance(QueueManager::class);
     }
 }

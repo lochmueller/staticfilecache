@@ -72,6 +72,14 @@ class QueueManager implements SingletonInterface
     }
 
     /**
+     * @param string $identifier
+     */
+    public function addIdentifier($identifier)
+    {
+
+    }
+
+    /**
      * Add the given page information to the cache
      *
      * @param int $pageUid
