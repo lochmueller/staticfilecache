@@ -7,6 +7,7 @@
 
 namespace SFC\Staticfilecache\Utility;
 
+use GuzzleHttp\Client;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -20,7 +21,7 @@ class ComposerUtility
      */
     public static function check()
     {
-        if (class_exists(\GuzzleHttp\Client::class)) {
+        if (class_exists(Client::class)) {
             return;
         }
         $path = GeneralUtility::getFileAbsFileName('EXT:staticfilecache/Resources/Private/Contrib/vendor/autoload.php');

@@ -23,14 +23,17 @@ class Crawler
     /**
      * (Hook-function called from TypoScriptFrontend, see ext_localconf.php for configuration)
      *
-     * @param array $parameters Parameters delivered by TypoScriptFrontend
-     * @param TypoScriptFrontendController $pObj The calling parent object (TypoScriptFrontend)
+     * @param array                        $parameters Parameters delivered by TypoScriptFrontend
+     * @param TypoScriptFrontendController $pObj       The calling parent object (TypoScriptFrontend)
      *
      * @returnvoid
      */
     public function clearStaticFile(array $parameters, TypoScriptFrontendController $pObj)
     {
-        if (ExtensionManagementUtility::isLoaded('crawler') && $pObj->applicationData['tx_crawler']['running'] && in_array(
+        if (!ExtensionManagementUtility::isLoaded('crawler')) {
+            return;
+        }
+        if ($pObj->applicationData['tx_crawler']['running'] && in_array(
             'tx_staticfilecache_clearstaticfile',
             $pObj->applicationData['tx_crawler']['parameters']['procInstructions']
         )

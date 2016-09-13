@@ -37,7 +37,7 @@ class AbstractBackend extends Typo3DatabaseBackend
      * Constructs this backend
      *
      * @param string $context FLOW3's application context
-     * @param array $options Configuration options - depends on the actual backend
+     * @param array  $options Configuration options - depends on the actual backend
      */
     public function __construct($context, array $options = [])
     {
@@ -52,7 +52,10 @@ class AbstractBackend extends Typo3DatabaseBackend
      */
     protected function getCompressionLevel()
     {
-        $level = isset($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] : self::DEFAULT_COMPRESSION_LEVEL;
+        $level = self::DEFAULT_COMPRESSION_LEVEL;
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {
+            $level = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'];
+        }
         if (!MathUtility::isIntegerInRange($level, 1, 9)) {
             $level = self::DEFAULT_COMPRESSION_LEVEL;
         }

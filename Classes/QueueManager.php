@@ -10,13 +10,11 @@ namespace SFC\Staticfilecache;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
-use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Utility\CacheUtility;
 use SFC\Staticfilecache\Utility\ComposerUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Queue manager
@@ -81,6 +79,8 @@ class QueueManager implements SingletonInterface
 
     /**
      * Get a cllable client
+     *
+     * @param string $domain
      *
      * @return Client
      */

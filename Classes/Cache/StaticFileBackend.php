@@ -10,7 +10,6 @@ namespace SFC\Staticfilecache\Cache;
 use SFC\Staticfilecache\QueueManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -37,8 +36,8 @@ class StaticFileBackend extends AbstractBackend
      *
      * @param string  $entryIdentifier An identifier for this specific cache entry
      * @param string  $data            The data to be stored
-     * @param array   $tags            Tags to associate with this cache entry. If the backend does not support tags, this option can be ignored.
-     * @param integer $lifetime        Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
+     * @param array   $tags            Tags to associate with this cache entry
+     * @param integer $lifetime        Lifetime of this cache entry in seconds
      *
      * @return void
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
@@ -121,8 +120,10 @@ class StaticFileBackend extends AbstractBackend
     protected function getCacheFilename($entryIdentifier)
     {
         $urlParts = parse_url($entryIdentifier);
-        $cacheFilename = GeneralUtility::getFileAbsFileName($this->cacheDirectory . $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim($urlParts['path'],
-                '/'));
+        $cacheFilename = GeneralUtility::getFileAbsFileName($this->cacheDirectory . $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim(
+            $urlParts['path'],
+            '/'
+        ));
         $fileExtension = PathUtility::pathinfo(basename($cacheFilename), PATHINFO_EXTENSION);
         if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
             $cacheFilename = rtrim($cacheFilename, '/') . '/index.html';

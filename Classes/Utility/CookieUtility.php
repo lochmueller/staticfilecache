@@ -51,11 +51,9 @@ class CookieUtility
                 $match = [];
                 $matchCnt = preg_match($cookieDomain, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
                 if ($matchCnt === false) {
-                    GeneralUtility::sysLog(
-                        'The regular expression for the cookie domain (' . $cookieDomain . ') contains errors. The session is not shared across sub-domains.',
-                        'Core',
-                        GeneralUtility::SYSLOG_SEVERITY_ERROR
-                    );
+                    $message = 'The regular expression for the cookie domain (' . $cookieDomain . ') contains errors.';
+                    $message .= 'The session is not shared across sub-domains.';
+                    GeneralUtility::sysLog($message, 'Core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
                 } elseif ($matchCnt) {
                     $result = $match[0];
                 }

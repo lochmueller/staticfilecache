@@ -87,15 +87,15 @@ class CacheModule extends AbstractFunctionModule
                 $isFirst = true;
                 foreach ($cacheEntries as $identifier => $info) {
                     $cell = [
-                        'uid' => $row['row']['uid'],
-                        'title' => $isFirst ? $row['HTML'] . BackendUtility::getRecordTitle(
+                        'uid'        => $row['row']['uid'],
+                        'title'      => $isFirst ? $row['HTML'] . BackendUtility::getRecordTitle(
                             'pages',
                             $row['row'],
                             true
                         ) : $row['HTML_depthData'],
                         'identifier' => $identifier,
-                        'info' => $info,
-                        'depthData' => $row['depthData'],
+                        'info'       => $info,
+                        'depthData'  => $row['depthData'],
                     ];
                     $isFirst = false;
 
@@ -103,8 +103,8 @@ class CacheModule extends AbstractFunctionModule
                 }
             } else {
                 $cell = [
-                    'uid' => $row['row']['uid'],
-                    'title' => $row['HTML'] . BackendUtility::getRecordTitle('pages', $row['row'], true),
+                    'uid'       => $row['row']['uid'],
+                    'title'     => $row['HTML'] . BackendUtility::getRecordTitle('pages', $row['row'], true),
                     'depthData' => $row['depthData'],
                 ];
                 $rows[] = $cell;
@@ -113,11 +113,12 @@ class CacheModule extends AbstractFunctionModule
 
         /** @var StandaloneView $renderer */
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
-        $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:staticfilecache/Resources/Private/Templates/Module.html'));
+        $moduleTemplate = 'EXT:staticfilecache/Resources/Private/Templates/Module.html';
+        $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($moduleTemplate));
         $renderer->assignMultiple([
             'requestUri' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-            'rows' => $rows,
-            'pageId' => $this->pageId
+            'rows'       => $rows,
+            'pageId'     => $this->pageId
         ]);
 
         return $renderer->render();
