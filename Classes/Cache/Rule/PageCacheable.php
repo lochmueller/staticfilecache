@@ -11,8 +11,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Check if the current page is static cacheable in Page property context
- *
- * @author Tim Lochmüller
  */
 class PageCacheable extends AbstractRule
 {

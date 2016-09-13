@@ -11,8 +11,6 @@ use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Handle extension and TS configuration
- *
- * @author Tim Lochmüller
  */
 class Configuration implements SingletonInterface
 {

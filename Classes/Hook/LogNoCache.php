@@ -2,7 +2,8 @@
 /**
  * Log no cache
  *
- * @author  Tim Lochmüller
+ * @author         Tim Lochmüller
+ * @author         Daniel Poetzinger
  */
 
 namespace SFC\Staticfilecache\Hook;
@@ -11,9 +12,6 @@ use SFC\Staticfilecache\StaticFileCache;
 
 /**
  * Log no cache
- *
- * @author         Tim Lochmüller
- * @author         Daniel Poetzinger
  */
 class LogNoCache
 {

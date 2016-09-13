@@ -13,8 +13,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Enable
- *
- * @author Tim Lochmüller
  */
 class Enable extends AbstractRule
 {

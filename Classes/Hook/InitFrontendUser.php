@@ -11,8 +11,6 @@ use SFC\Staticfilecache\Utility\CookieUtility;
 
 /**
  * Init frontend user
- *
- * @author Tim Lochmüller
  */
 class InitFrontendUser
 {

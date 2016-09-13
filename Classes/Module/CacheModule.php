@@ -3,6 +3,7 @@
  * Static file cache info module
  *
  * @author  Tim Lochmüller
+ * @author Michiel Roos
  */
 
 namespace SFC\Staticfilecache\Module;
@@ -16,9 +17,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Static file cache info module
- *
- * @author Tim Lochmüller
- * @author Michiel Roos
  */
 class CacheModule extends AbstractFunctionModule
 {

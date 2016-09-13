@@ -11,8 +11,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * No workspace preview
- *
- * @author Tim Lochmüller
  */
 class NoWorkspacePreview extends AbstractRule
 {

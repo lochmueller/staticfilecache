@@ -11,8 +11,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * NoUserOrGroupSet
- *
- * @author Tim Lochmüller
  */
 class NoUserOrGroupSet extends AbstractRule
 {

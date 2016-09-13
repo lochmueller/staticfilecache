@@ -11,8 +11,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Check if the current page is static cachable in TSFE context
- *
- * @author Tim Lochmüller
  */
 class StaticCacheable extends AbstractRule
 {

@@ -11,8 +11,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * No _INT scripts
- *
- * @author Tim Lochmüller
  */
 class NoIntScripts extends AbstractRule
 {

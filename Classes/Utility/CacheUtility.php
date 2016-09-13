@@ -14,8 +14,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Cache Utility
- *
- * @author Tim Lochmüller
  */
 class CacheUtility
 {

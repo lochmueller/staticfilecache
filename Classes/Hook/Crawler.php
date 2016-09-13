@@ -2,7 +2,8 @@
 /**
  * Crawler hook
  *
- * @author  Tim Lochmüller
+ * @author Tim Lochmüller
+ * @author Daniel Poetzinger
  */
 
 namespace SFC\Staticfilecache\Hook;
@@ -13,9 +14,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Crawler hook
- *
- * @author         Tim Lochmüller
- * @author         Daniel Poetzinger
  */
 class Crawler
 {

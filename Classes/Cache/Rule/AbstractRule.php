@@ -11,8 +11,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Abstract Rule
- *
- * @author Tim Lochmüller
  */
 abstract class AbstractRule
 {

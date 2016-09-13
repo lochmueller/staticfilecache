@@ -2,7 +2,8 @@
 /**
  * Static File Cache
  *
- * @author  Tim Lochmüller
+ * @author Michiel Roos
+ * @author Tim Lochmüller
  */
 
 namespace SFC\Staticfilecache;
@@ -19,9 +20,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Static File Cache
- *
- * @author Michiel Roos
- * @author Tim Lochmüller
  */
 class StaticFileCache implements SingletonInterface
 {

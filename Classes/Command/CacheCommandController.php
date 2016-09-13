@@ -14,8 +14,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * Cache commands
- *
- * @author Tim Lochmüller
  */
 class CacheCommandController extends CommandController
 {

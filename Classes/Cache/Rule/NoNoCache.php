@@ -11,8 +11,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * No no_cache
- *
- * @author Tim Lochmüller
  */
 class NoNoCache extends AbstractRule
 {

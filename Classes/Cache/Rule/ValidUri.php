@@ -11,8 +11,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Check if the URI is valid
- *
- * @author Tim Lochmüller
  */
 class ValidUri extends AbstractRule
 {

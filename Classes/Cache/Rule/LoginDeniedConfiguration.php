@@ -11,8 +11,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * LoginDeniedConfiguration
- *
- * @author Tim Lochmüller
  */
 class LoginDeniedConfiguration extends AbstractRule
 {
