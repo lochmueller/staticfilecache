@@ -20,7 +20,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteRule .* - [E=SFC_URI:/]
 
    # Cleanup HOST
-   RewriteCond %{HTTP_HOST} ([:]+).*$
+   RewriteCond %{HTTP_HOST} ^([^:]+)(:[0-9]+)?$
    RewriteRule .* - [E=SFC_HOST:%1]
 
    # Get scheme/protocol
