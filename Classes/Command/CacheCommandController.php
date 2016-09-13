@@ -37,4 +37,14 @@ class CacheCommandController extends CommandController
         $queue = GeneralUtility::makeInstance(QueueManager::class);
         $queue->run();
     }
+
+    /**
+     * Flush the cache
+     * If the boost mode is active, all pages are recrawlt
+     */
+    public function flushCacheCommand()
+    {
+        CacheUtility::getCache()
+            ->flush();
+    }
 }

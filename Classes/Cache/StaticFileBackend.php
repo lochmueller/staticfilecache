@@ -189,6 +189,7 @@ class StaticFileBackend extends AbstractBackend
      */
     public function flush()
     {
+
         if ((boolean)$this->configuration->get('clearCacheForAllDomains') === false) {
             $this->flushByTag('sfc_domain_' . str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
             return;

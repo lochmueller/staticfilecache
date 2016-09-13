@@ -30,19 +30,6 @@ class QueueManager implements SingletonInterface
     const QUEUE_TABLE = 'tx_staticfilecache_queue';
 
     /**
-     * @var UriFrontend
-     */
-    protected $cache;
-
-    /**
-     * QueueManager constructor.
-     */
-    public function __construct()
-    {
-        $this->cache = CacheUtility::getCache();
-    }
-
-    /**
      * Run the queue
      */
     public function run()
@@ -53,6 +40,8 @@ class QueueManager implements SingletonInterface
         if (empty($runEntries)) {
             return;
         }
+
+        $cache = CacheUtility::getCache();
 
         foreach ($runEntries as $runEntry) {
             $client = $this->getCallableClient(parse_url($runEntry['cache_url'], PHP_URL_HOST));
@@ -65,7 +54,7 @@ class QueueManager implements SingletonInterface
 
             if ($statusCode !== 200) {
                 // Call the flush, if the page is not accessable
-                $this->cache->flushByTag('sfc_pageId_' . $runEntry['page_uid']);
+                $cache->flushByTag('sfc_pageId_' . $runEntry['page_uid']);
             }
             $dbConnection->exec_UPDATEquery(self::QUEUE_TABLE, 'uid=' . $runEntry['uid'], $data);
         }
@@ -76,34 +65,18 @@ class QueueManager implements SingletonInterface
      */
     public function addIdentifier($identifier)
     {
-
-    }
-
-    /**
-     * Add the given page information to the cache
-     *
-     * @param int $pageUid
-     */
-    public function clearCacheForPage($pageUid)
-    {
-        $urls = array_keys($this->cache->getByTag('sfc_pageId_' . $pageUid));
-        $fields = [
-            'cache_url',
-            'page_uid',
-            'invalid_date',
-            'call_result'
-        ];
-        $rows = [];
-        foreach ($urls as $url) {
-            $rows[] = [
-                $url,
-                $pageUid,
-                time(),
-                ''
-            ];
+        $db = $this->getDatabaseConnection();
+        $row = $db->exec_SELECTgetSingleRow('*', self::QUEUE_TABLE, 'cache_url="' . $identifier . '" AND call_date=0');
+        if (is_array($row)) {
+            return;
         }
-        $this->getDatabaseConnection()
-            ->exec_INSERTmultipleRows(self::QUEUE_TABLE, $fields, $rows);
+        $data = [
+            'cache_url'    => $identifier,
+            'page_uid'     => 0,
+            'invalid_date' => time(),
+            'call_result'  => ''
+        ];
+        $db->exec_INSERTquery(self::QUEUE_TABLE, $data);
     }
 
     /**
