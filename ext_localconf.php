@@ -23,9 +23,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['log
 // register command controller
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \SFC\Staticfilecache\Command\CacheCommandController::class;
 
-// for boost mode
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['staticfilecache'] = \SFC\Staticfilecache\Hook\BoostCatcher::class . '->clearCachePostProc';
-
 $ruleClasses = [
     \SFC\Staticfilecache\Cache\Rule\StaticCacheable::class,
     \SFC\Staticfilecache\Cache\Rule\ValidUri::class,
