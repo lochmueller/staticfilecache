@@ -88,7 +88,6 @@ class QueueManager implements SingletonInterface
         $mh = curl_multi_init();
 
         foreach ($data as $id => $d) {
-
             $curly[$id] = curl_init();
 
             $url = (is_array($d) && !empty($d['cache_url'])) ? $d['cache_url'] : $d;
