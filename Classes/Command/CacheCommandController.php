@@ -29,11 +29,13 @@ class CacheCommandController extends CommandController
 
     /**
      * Run the cache boost queue
+     *
+     * @param int $limitItems Limit the items that are crawled. 0 => all
      */
-    public function runCacheBoostQueueCommand()
+    public function runCacheBoostQueueCommand($limitItems = 0)
     {
         $queue = GeneralUtility::makeInstance(QueueManager::class);
-        $queue->run();
+        $queue->run($limitItems);
     }
 
     /**

@@ -31,11 +31,14 @@ class QueueManager implements SingletonInterface
 
     /**
      * Run the queue
+     *
+     * @param int $limitItems
      */
-    public function run()
+    public function run($limitItems = 0)
     {
         $dbConnection = $this->getDatabaseConnection();
-        $runEntries = $dbConnection->exec_SELECTgetRows('*', self::QUEUE_TABLE, 'call_date=0');
+        $limit = $limitItems > 0 ? (int)$limitItems : '';
+        $runEntries = $dbConnection->exec_SELECTgetRows('*', self::QUEUE_TABLE, 'call_date=0', '', '', $limit);
 
         if (empty($runEntries)) {
             return;
