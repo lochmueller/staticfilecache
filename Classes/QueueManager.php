@@ -18,6 +18,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Queue manager
+ *
+ * @todo migrate to caching framework with UriFrontend and QueueBackend
  */
 class QueueManager implements SingletonInterface
 {
@@ -56,6 +58,15 @@ class QueueManager implements SingletonInterface
             }
             $dbConnection->exec_UPDATEquery(self::QUEUE_TABLE, 'uid=' . $runEntry['uid'], $data);
         }
+    }
+
+    /**
+     * Cleanup the cache queue
+     */
+    public function cleanup()
+    {
+        $dbConnection = $this->getDatabaseConnection();
+        $dbConnection->exec_DELETEquery(self::QUEUE_TABLE, 'call_date > 0');
     }
 
     /**
