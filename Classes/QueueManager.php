@@ -44,23 +44,99 @@ class QueueManager implements SingletonInterface
             return;
         }
 
-        $cache = CacheUtility::getCache();
-
         foreach ($runEntries as $runEntry) {
+            $this->runSingleRequest($runEntry);
+        }
+    }
+
+    /**
+     * Run a single request with guzzle
+     *
+     * @param $runEntry
+     */
+    protected function runSingleRequest($runEntry)
+    {
+        $dbConnection = $this->getDatabaseConnection();
+        $cache = CacheUtility::getCache();
+        try {
             $client = $this->getCallableClient(parse_url($runEntry['cache_url'], PHP_URL_HOST));
             $response = $client->get($runEntry['cache_url']);
             $statusCode = $response->getStatusCode();
-            $data = [
-                'call_date'   => time(),
-                'call_result' => $statusCode,
-            ];
-
-            if ($statusCode !== 200) {
-                // Call the flush, if the page is not accessable
-                $cache->flushByTag('sfc_pageId_' . $runEntry['page_uid']);
-            }
-            $dbConnection->exec_UPDATEquery(self::QUEUE_TABLE, 'uid=' . $runEntry['uid'], $data);
+        } catch (\Exception $ex) {
+            $statusCode = 900;
         }
+        $data = [
+            'call_date'   => time(),
+            'call_result' => $statusCode,
+        ];
+
+        if ($statusCode !== 200) {
+            // Call the flush, if the page is not accessable
+            $cache->flushByTag('sfc_pageId_' . $runEntry['page_uid']);
+        }
+        $dbConnection->exec_UPDATEquery(self::QUEUE_TABLE, 'uid=' . $runEntry['uid'], $data);
+    }
+
+    /**
+     * @todo integrate as alternativ for runSingleRequest
+     */
+    public function runMultiRequest($data, $options = [])
+    {
+
+        $curly = [];
+        $result = [];
+        $mh = curl_multi_init();
+
+        foreach ($data as $id => $d) {
+
+            $curly[$id] = curl_init();
+
+            $url = (is_array($d) && !empty($d['cache_url'])) ? $d['cache_url'] : $d;
+            curl_setopt($curly[$id], CURLOPT_URL, $url);
+            curl_setopt($curly[$id], CURLOPT_HEADER, 0);
+            curl_setopt($curly[$id], CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curly[$id], CURLOPT_FRESH_CONNECT, true);
+            curl_setopt($curly[$id], CURLOPT_TIMEOUT_MS, 2000);
+            curl_setopt($curly[$id], CURLOPT_COOKIE, 'staticfilecache=1');
+            curl_setopt($curly[$id], CURLOPT_USERAGENT, 'Staticfilecache Crawler');
+
+            if (is_array($d)) {
+                if (!empty($d['post'])) {
+                    curl_setopt($curly[$id], CURLOPT_POST, 1);
+                    curl_setopt($curly[$id], CURLOPT_POSTFIELDS, $d['post']);
+                }
+            }
+
+            // extra options?
+            if (!empty($options)) {
+                curl_setopt_array($curly[$id], $options);
+            }
+
+            curl_multi_add_handle($mh, $curly[$id]);
+        }
+
+        // execute the handles
+        $running = null;
+        do {
+            curl_multi_exec($mh, $running);
+        } while ($running > 0);
+
+
+        // get content and remove handles
+        foreach ($curly as $id => $c) {
+            $result[$id] = [
+                'call_date'   => time(),
+                'call_result' => curl_getinfo($c),
+                'page_uid'    => $data[$id]['page_uid'],
+
+            ];
+            curl_multi_remove_handle($mh, $c);
+        }
+
+        // all done
+        curl_multi_close($mh);
+
+        return $result;
     }
 
     /**
