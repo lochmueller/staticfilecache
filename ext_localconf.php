@@ -33,6 +33,7 @@ $ruleClasses = [
     \SFC\Staticfilecache\Cache\Rule\LoginDeniedConfiguration::class,
     \SFC\Staticfilecache\Cache\Rule\PageCacheable::class,
     \SFC\Staticfilecache\Cache\Rule\NoNoCache::class,
+    \SFC\Staticfilecache\Cache\Rule\NoBackendUser::class,
     \SFC\Staticfilecache\Cache\Rule\Enable::class,
 ];
 
