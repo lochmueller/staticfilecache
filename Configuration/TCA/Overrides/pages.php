@@ -20,7 +20,9 @@ $tmp = [
 ];
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tmp);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette(
     'pages',
-    'tx_staticfilecache_cache,tx_staticfilecache_cache_force'
+    'caching',
+    '--linebreak--,tx_staticfilecache_cache,tx_staticfilecache_cache_force'
 );
