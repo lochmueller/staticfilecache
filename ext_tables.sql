@@ -3,6 +3,7 @@
 #
 CREATE TABLE pages (
 	tx_staticfilecache_cache tinyint(1) DEFAULT '1',
+	tx_staticfilecache_cache_force tinyint(1) DEFAULT '0'
 );
 
 #

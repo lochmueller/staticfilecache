@@ -8,18 +8,20 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="module.title">Static File Cache</label>
-			<label index="staticfilecache.field">Cache page as static file</label>
+			<label index="staticfilecache.tx_staticfilecache_cache">Cache page as static file</label>
+			<label index="staticfilecache.tx_staticfilecache_cache_force">Force the static Cache generation (!!!)</label>
 			<label index="moduleFunction.tx_staticfilecache_infomodule">Static file cache</label>
 			<label index="staticfilecache_task_removeExpiredPages.name">Remove expired pages</label>
 			<label index="staticfilecache_task_removeExpiredPages.description">All expired pages will be removed from the cache.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="module.title">Statischer Datei Cache</label>
-			<label index="staticfilecache.field">Speichere Seitencache als statische Datei</label>
+			<label index="staticfilecache.tx_staticfilecache_cache">Speichere Seitencache als statische Datei</label>
+			<label index="staticfilecache.tx_staticfilecache_cache_force">Erwzingt die statische Generierung (!!!)</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="module.title">Statische html cache</label>
-			<label index="staticfilecache.field">Pagina opslaan als statische html</label>
+			<label index="staticfilecache.tx_staticfilecache_cache">Pagina opslaan als statische html</label>
 		</languageKey>
 	</data>
 </T3locallang>
