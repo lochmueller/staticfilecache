@@ -36,6 +36,7 @@ $ruleClasses = [
     \SFC\Staticfilecache\Cache\Rule\NoBackendUser::class,
     \SFC\Staticfilecache\Cache\Rule\Enable::class,
     \SFC\Staticfilecache\Cache\Rule\ValidRequestMethod::class,
+    \SFC\Staticfilecache\Cache\Rule\ForceStaticCache::class
 ];
 
 /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
