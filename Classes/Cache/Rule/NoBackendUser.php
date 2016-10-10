@@ -25,7 +25,7 @@ class NoBackendUser extends AbstractRule
      */
     public function checkRule($frontendController, $uri, &$explanation, &$skipProcessing)
     {
-        if ($frontendController->beUserLogin) {
+        if ($frontendController->isBackendUserLoggedIn()) {
             $skipProcessing = true;
             $explanation[__CLASS__] = 'Active BE Login (TSFE:beUserLogin)';
         }
