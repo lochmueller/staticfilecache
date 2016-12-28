@@ -31,7 +31,13 @@ class UriFrontend extends StringFrontend
             return false;
         }
         $urlParts = parse_url($identifier);
-        return isset($urlParts['host']) && strlen($urlParts['host']) && isset($urlParts['path']) && strlen($urlParts['path']);
+        $required = ['host', 'path', 'scheme'];
+        foreach ($required as $item) {
+            if (!isset($urlParts[$item]) || strlen($urlParts[$item]) <= 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
