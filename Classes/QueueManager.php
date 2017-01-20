@@ -36,6 +36,7 @@ class QueueManager implements SingletonInterface
      */
     public function run($limitItems = 0)
     {
+        define('SFC_QUEUE_WORKER', true);
         $dbConnection = $this->getDatabaseConnection();
         $limit = $limitItems > 0 ? (int)$limitItems : '';
         $runEntries = $dbConnection->exec_SELECTgetRows('*', self::QUEUE_TABLE, 'call_date=0', '', '', $limit);
@@ -119,7 +120,6 @@ class QueueManager implements SingletonInterface
         do {
             curl_multi_exec($mh, $running);
         } while ($running > 0);
-
 
         // get content and remove handles
         foreach ($curly as $id => $c) {

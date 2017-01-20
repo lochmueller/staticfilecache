@@ -34,10 +34,10 @@ class StaticFileBackend extends AbstractBackend
     /**
      * Saves data in the cache.
      *
-     * @param string  $entryIdentifier An identifier for this specific cache entry
-     * @param string  $data            The data to be stored
-     * @param array   $tags            Tags to associate with this cache entry
-     * @param integer $lifetime        Lifetime of this cache entry in seconds
+     * @param string $entryIdentifier An identifier for this specific cache entry
+     * @param string $data The data to be stored
+     * @param array $tags Tags to associate with this cache entry
+     * @param integer $lifetime Lifetime of this cache entry in seconds
      *
      * @return void
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
@@ -99,10 +99,10 @@ class StaticFileBackend extends AbstractBackend
             $renderer = GeneralUtility::makeInstance(StandaloneView::class);
             $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:staticfilecache/Resources/Private/Templates/Htaccess.html'));
             $renderer->assignMultiple([
-                'mode'                                            => $accessTimeout ? 'A' : 'M',
-                'lifetime'                                        => $lifetime,
-                'expires'                                         => time() + $lifetime,
-                'sendCacheControlHeader'                          => (bool)$this->configuration->get('sendCacheControlHeader'),
+                'mode' => $accessTimeout ? 'A' : 'M',
+                'lifetime' => $lifetime,
+                'expires' => time() + $lifetime,
+                'sendCacheControlHeader' => (bool)$this->configuration->get('sendCacheControlHeader'),
                 'sendCacheControlHeaderRedirectAfterCacheTimeout' => (bool)$this->configuration->get('sendCacheControlHeaderRedirectAfterCacheTimeout'),
             ]);
 
@@ -173,7 +173,7 @@ class StaticFileBackend extends AbstractBackend
             return false;
         }
 
-        if ((boolean)$this->configuration->get('boostMode')) {
+        if ($this->isBoostMode()) {
             $this->getQueue()
                 ->addIdentifier($entryIdentifier);
             return true;
@@ -196,7 +196,7 @@ class StaticFileBackend extends AbstractBackend
             return;
         }
 
-        if ((boolean)$this->configuration->get('boostMode')) {
+        if ($this->isBoostMode()) {
             $identifiers = $this->getDatabaseConnection()
                 ->exec_SELECTgetRows('identifier', 'cf_staticfilecache', '1=1');
             $queue = $this->getQueue();
@@ -227,14 +227,14 @@ class StaticFileBackend extends AbstractBackend
     public function flushByTag($tag)
     {
         $identifiers = $this->findIdentifiersByTag($tag);
-
-        if ((boolean)$this->configuration->get('boostMode')) {
+        if ($this->isBoostMode()) {
             $queue = $this->getQueue();
             foreach ($identifiers as $identifier) {
                 $queue->addIdentifier($identifier);
             }
             return;
         }
+        $identifiers = $this->findIdentifiersByTag($tag);
         foreach ($identifiers as $identifier) {
             $this->removeStaticFiles($identifier);
         }
@@ -284,5 +284,15 @@ class StaticFileBackend extends AbstractBackend
     protected function getQueue()
     {
         return GeneralUtility::makeInstance(QueueManager::class);
+    }
+
+    /**
+     * Check if boost mode is active and if the calls are not part of the worker
+     *
+     * @return bool
+     */
+    protected function isBoostMode()
+    {
+        return (boolean)$this->configuration->get('boostMode') && !defined('SFC_QUEUE_WORKER');
     }
 }
