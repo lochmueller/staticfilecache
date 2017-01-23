@@ -53,9 +53,9 @@ class QueueManager implements SingletonInterface
     /**
      * Run a single request with guzzle
      *
-     * @param $runEntry
+     * @param array $runEntry
      */
-    protected function runSingleRequest($runEntry)
+    protected function runSingleRequest(array $runEntry)
     {
         $dbConnection = $this->getDatabaseConnection();
         $cache = CacheUtility::getCache();
@@ -79,9 +79,13 @@ class QueueManager implements SingletonInterface
     }
 
     /**
-     * @todo integrate as alternativ for runSingleRequest
+     * Alternativ for runSingleRequest (not used at the moment)
+     *
+     * @param array $data
+     * @param array $options
+     * @return array
      */
-    public function runMultiRequest($data, $options = [])
+    public function runMultiRequest(array $data, $options = [])
     {
 
         $curly = [];
@@ -148,6 +152,8 @@ class QueueManager implements SingletonInterface
     }
 
     /**
+     * Add identifiert to Queue
+     *
      * @param string $identifier
      */
     public function addIdentifier($identifier)
