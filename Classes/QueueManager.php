@@ -58,7 +58,6 @@ class QueueManager implements SingletonInterface
     protected function runSingleRequest(array $runEntry)
     {
         $dbConnection = $this->getDatabaseConnection();
-        $cache = CacheUtility::getCache();
         try {
             $client = $this->getCallableClient(parse_url($runEntry['cache_url'], PHP_URL_HOST));
             $response = $client->get($runEntry['cache_url']);
@@ -73,7 +72,11 @@ class QueueManager implements SingletonInterface
 
         if ($statusCode !== 200) {
             // Call the flush, if the page is not accessable
+            $cache = CacheUtility::getCache();
             $cache->flushByTag('sfc_pageId_' . $runEntry['page_uid']);
+            if($cache->has($runEntry['cache_url'])) {
+                $cache->remove($runEntry['cache_url']);
+            }
         }
         $dbConnection->exec_UPDATEquery(self::QUEUE_TABLE, 'uid=' . $runEntry['uid'], $data);
     }
