@@ -74,7 +74,7 @@ class QueueManager implements SingletonInterface
             // Call the flush, if the page is not accessable
             $cache = CacheUtility::getCache();
             $cache->flushByTag('sfc_pageId_' . $runEntry['page_uid']);
-            if($cache->has($runEntry['cache_url'])) {
+            if ($cache->has($runEntry['cache_url'])) {
                 $cache->remove($runEntry['cache_url']);
             }
         }
