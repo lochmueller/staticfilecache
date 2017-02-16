@@ -9,6 +9,8 @@ namespace SFC\Staticfilecache\Service;
 
 use SFC\Staticfilecache\Cache\StaticFileBackend;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * PublishService
@@ -21,11 +23,13 @@ class PublishService implements SingletonInterface
      */
     public function publish()
     {
-        $cacheDir = StaticFileBackend::CACHE_DIRECTORY;
+        $arguments = [
+            'cacheDirectory' => StaticFileBackend::CACHE_DIRECTORY
+        ];
 
-        // @todo handle scheme
-        // @todo handle host
-
-        // @todo call signal and preperation
+        $objectManager = new ObjectManager();
+        /** @var Dispatcher $dispatcher */
+        $dispatcher = $objectManager->get(Dispatcher::class);
+        $dispatcher->dispatch(__CLASS__, __METHOD__, $arguments);
     }
 }
