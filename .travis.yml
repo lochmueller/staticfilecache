@@ -1,7 +1,6 @@
 language: php
 
 php:
-- 5.6
 - 7
 
 env:
@@ -11,14 +10,12 @@ matrix:
   fast_finish: true
   exclude:
     - php: 7
-      env: TYPO3_VERSION=^6.2.0 COVERAGE=0
-    - php: 7
       env: TYPO3_VERSION=^7.6.0 COVERAGE=0
   include:
     - php: 7
       env: TYPO3_VERSION=^7.6.0 COVERAGE=1
     - php: 7
-      env: TYPO3_VERSION=^8.5.0 COVERAGE=0
+      env: TYPO3_VERSION=^8.6.0 COVERAGE=0
     - php: 7
       env: TYPO3_VERSION=dev-master COVERAGE=0
   allow_failures:
@@ -42,13 +39,13 @@ before_script:
 - export TYPO3_PATH_WEB="$PWD/.Build/Web"
 
 script:
-- |
-  echo; echo "Running unit tests";
-  if [[ "$COVERAGE" == "1" ]]; then
-    .Build/bin/phpunit -c Tests/UnitTests.xml --coverage-clover=.Build/unittest-coverage.clover
-  else
-    .Build/bin/phpunit -c Tests/UnitTests.xml
-  fi;
+#- |
+#  echo; echo "Running unit tests";
+#  if [[ "$COVERAGE" == "1" ]]; then
+#    .Build/bin/phpunit -c Tests/UnitTests.xml --coverage-clover=.Build/unittest-coverage.clover
+#  else
+#    .Build/bin/phpunit -c Tests/UnitTests.xml
+#  fi;
 - |
   echo; echo "Executing PHP mess detector"; .Build/bin/phpmd Classes/ text cleancode,codesize,controversial,design,naming || true
 - |
