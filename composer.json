@@ -8,6 +8,12 @@
       "SFC\\Staticfilecache\\": "Classes"
     }
   },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://composer.typo3.org/"
+    }
+  ],
   "autoload-dev": {
     "psr-4": {
       "SFC\\Staticfilecache\\Tests\\": "Tests"
@@ -42,7 +48,8 @@
   },
   "require-dev": {
     "phpunit/phpunit": "~4.8.0",
-    "scrutinizer/ocular": "^1.3.0"
+    "scrutinizer/ocular": "^1.3.0",
+    "vimeo/psalm": "^0.3.23"
   },
   "config": {
     "vendor-dir": ".Build/vendor",
