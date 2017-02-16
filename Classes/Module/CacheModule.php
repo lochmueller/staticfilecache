@@ -85,15 +85,15 @@ class CacheModule extends AbstractFunctionModule
                 $isFirst = true;
                 foreach ($cacheEntries as $identifier => $info) {
                     $cell = [
-                        'uid'        => $row['row']['uid'],
-                        'title'      => $isFirst ? $row['HTML'] . BackendUtility::getRecordTitle(
-                            'pages',
-                            $row['row'],
-                            true
-                        ) : $row['HTML_depthData'],
+                        'uid' => $row['row']['uid'],
+                        'title' => $isFirst ? $row['HTML'] . BackendUtility::getRecordTitle(
+                                'pages',
+                                $row['row'],
+                                true
+                            ) : $row['HTML_depthData'],
                         'identifier' => $identifier,
-                        'info'       => $info,
-                        'depthData'  => $row['depthData'],
+                        'info' => $info,
+                        'depthData' => $row['depthData'],
                     ];
                     $isFirst = false;
 
@@ -101,8 +101,8 @@ class CacheModule extends AbstractFunctionModule
                 }
             } else {
                 $cell = [
-                    'uid'       => $row['row']['uid'],
-                    'title'     => $row['HTML'] . BackendUtility::getRecordTitle('pages', $row['row'], true),
+                    'uid' => $row['row']['uid'],
+                    'title' => $row['HTML'] . BackendUtility::getRecordTitle('pages', $row['row'], true),
                     'depthData' => $row['depthData'],
                 ];
                 $rows[] = $cell;
@@ -115,8 +115,8 @@ class CacheModule extends AbstractFunctionModule
         $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($moduleTemplate));
         $renderer->assignMultiple([
             'requestUri' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-            'rows'       => $rows,
-            'pageId'     => $this->pageId
+            'rows' => $rows,
+            'pageId' => $this->pageId
         ]);
 
         return $renderer->render();
@@ -157,20 +157,17 @@ class CacheModule extends AbstractFunctionModule
             );
         }
 
-        if (GeneralUtility::compat_version('7.0')) {
-            // Fix a bug in 7.x generation of the HTML (missing ") and also fix the style
-            // @see https://forge.typo3.org/issues/72453
-            $search = [
-                'list-tree-control list-tree-control-closed href',
-                'list-tree-control list-tree-control-open href',
-            ];
-            $replace = [
-                'list-tree-control list-tree-control-closed" style="margin-left: -5px" href',
-                'list-tree-control list-tree-control-open" style="margin-left: -5px" href',
-            ];
-            $content = str_replace($search, $replace, $content);
-        }
-
+        // Fix a bug in 7.x generation of the HTML (missing ") and also fix the style
+        // @see https://forge.typo3.org/issues/72453
+        $search = [
+            'list-tree-control list-tree-control-closed href',
+            'list-tree-control list-tree-control-open href',
+        ];
+        $replace = [
+            'list-tree-control list-tree-control-closed" style="margin-left: -5px" href',
+            'list-tree-control list-tree-control-open" style="margin-left: -5px" href',
+        ];
+        $content = str_replace($search, $replace, $content);
 
         return $content;
     }
