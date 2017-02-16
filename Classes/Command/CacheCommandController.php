@@ -10,12 +10,11 @@ namespace SFC\Staticfilecache\Command;
 use SFC\Staticfilecache\QueueManager;
 use SFC\Staticfilecache\Utility\CacheUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * Cache commands
  */
-class CacheCommandController extends CommandController
+class CacheCommandController extends AbstractCommandController
 {
 
     /**

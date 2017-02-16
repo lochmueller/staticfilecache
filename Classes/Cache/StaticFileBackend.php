@@ -29,7 +29,7 @@ class StaticFileBackend extends AbstractBackend
      *
      * @var string
      */
-    protected $cacheDirectory = 'typo3temp/tx_staticfilecache/';
+    const CACHE_DIRECTORY = 'typo3temp/tx_staticfilecache/';
 
     /**
      * Saves data in the cache.
@@ -120,7 +120,7 @@ class StaticFileBackend extends AbstractBackend
     protected function getCacheFilename($entryIdentifier)
     {
         $urlParts = parse_url($entryIdentifier);
-        $cacheFilename = GeneralUtility::getFileAbsFileName($this->cacheDirectory . $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim(
+        $cacheFilename = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY . $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim(
             $urlParts['path'],
             '/'
         ));
@@ -206,7 +206,7 @@ class StaticFileBackend extends AbstractBackend
             return;
         }
 
-        $absoluteCacheDir = GeneralUtility::getFileAbsFileName($this->cacheDirectory);
+        $absoluteCacheDir = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY);
         if (is_dir($absoluteCacheDir)) {
             $tempAbsoluteCacheDir = rtrim($absoluteCacheDir, '/') . '_' . GeneralUtility::milliseconds() . '/';
             rename($absoluteCacheDir, $tempAbsoluteCacheDir);
