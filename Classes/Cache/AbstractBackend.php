@@ -89,4 +89,6 @@ class AbstractBackend extends Typo3DatabaseBackend
     {
         return $GLOBALS['TYPO3_DB'];
     }
+
+
 }

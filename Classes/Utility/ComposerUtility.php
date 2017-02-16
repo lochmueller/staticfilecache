@@ -25,6 +25,6 @@ class ComposerUtility
             return;
         }
         $path = GeneralUtility::getFileAbsFileName('EXT:staticfilecache/Resources/Private/Contrib/vendor/autoload.php');
-        GeneralUtility::requireFile($path);
+        require_once($path);
     }
 }

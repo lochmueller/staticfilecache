@@ -36,7 +36,8 @@ class ValidUri extends AbstractRule
             $skipProcessing = true;
         }
         if (strpos(parse_url($uri, PHP_URL_PATH), '//') !== false) {
-            $explanation[__CLASS__] = 'Illegal link configuration. The URI should not contain a "//" because a folder name without name is not possible';
+            $explanation[__CLASS__] = 'Illegal link configuration. The URI should not contain a "//" ' .
+                'because a folder name without name is not possible';
             $skipProcessing = true;
         }
     }

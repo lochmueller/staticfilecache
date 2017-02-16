@@ -37,11 +37,13 @@ class InitFrontendUser
             return;
         }
 
-        if (($pObj->fe_user->loginSessionStarted || $pObj->fe_user->forceSetCookie) && $pObj->fe_user->lifetime == 0) {
+        $started = $pObj->fe_user->loginSessionStarted;
+
+        if (($started || $pObj->fe_user->forceSetCookie) && $pObj->fe_user->lifetime == 0) {
             // If new session and the cookie is a sessioncookie, we need to set it only once!
             // // isSetSessionCookie()
             CookieUtility::setCookie(0);
-        } elseif (($pObj->fe_user->loginSessionStarted || isset($_COOKIE[CookieUtility::FE_COOKIE_NAME])) && $pObj->fe_user->lifetime > 0) {
+        } elseif (($started || isset($_COOKIE[CookieUtility::FE_COOKIE_NAME])) && $pObj->fe_user->lifetime > 0) {
             // If it is NOT a session-cookie, we need to refresh it.
             // isRefreshTimeBasedCookie()
             CookieUtility::setCookie(time() + $pObj->fe_user->lifetime);

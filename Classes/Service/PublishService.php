@@ -27,8 +27,5 @@ class PublishService implements SingletonInterface
         // @todo handle host
 
         // @todo call signal and preperation
-
-
     }
-
 }

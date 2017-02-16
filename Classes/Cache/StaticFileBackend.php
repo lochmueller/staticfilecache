@@ -90,20 +90,23 @@ class StaticFileBackend extends AbstractBackend
      */
     protected function writeHtAccessFile($originalFileName, $lifetime)
     {
-        if ($this->configuration->get('sendCacheControlHeader') || $this->configuration->get('sendCacheControlHeaderRedirectAfterCacheTimeout')) {
+        $sendCCHeader = (bool)$this->configuration->get('sendCacheControlHeader');
+        $sendCCHeaderRedirectAfter = (bool)$this->configuration->get('sendCacheControlHeaderRedirectAfterCacheTimeout');
+        if ($sendCCHeader || $sendCCHeaderRedirectAfter) {
             $fileName = PathUtility::pathinfo($originalFileName, PATHINFO_DIRNAME) . '/.htaccess';
             $accessTimeout = $this->configuration->get('htaccessTimeout');
             $lifetime = $accessTimeout ? $accessTimeout : $this->getRealLifetime($lifetime);
 
             /** @var StandaloneView $renderer */
+            $templateName = 'EXT:staticfilecache/Resources/Private/Templates/Htaccess.html';
             $renderer = GeneralUtility::makeInstance(StandaloneView::class);
-            $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:staticfilecache/Resources/Private/Templates/Htaccess.html'));
+            $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateName));
             $renderer->assignMultiple([
                 'mode' => $accessTimeout ? 'A' : 'M',
                 'lifetime' => $lifetime,
                 'expires' => time() + $lifetime,
-                'sendCacheControlHeader' => (bool)$this->configuration->get('sendCacheControlHeader'),
-                'sendCacheControlHeaderRedirectAfterCacheTimeout' => (bool)$this->configuration->get('sendCacheControlHeaderRedirectAfterCacheTimeout'),
+                'sendCacheControlHeader' => $sendCCHeader,
+                'sendCacheControlHeaderRedirectAfterCacheTimeout' => $sendCCHeaderRedirectAfter,
             ]);
 
             GeneralUtility::writeFile($fileName, $renderer->render());
@@ -121,9 +124,9 @@ class StaticFileBackend extends AbstractBackend
     {
         $urlParts = parse_url($entryIdentifier);
         $cacheFilename = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY . $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim(
-            $urlParts['path'],
-            '/'
-        ));
+                $urlParts['path'],
+                '/'
+            ));
         $fileExtension = PathUtility::pathinfo(basename($cacheFilename), PATHINFO_EXTENSION);
         if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
             $cacheFilename = rtrim($cacheFilename, '/') . '/index.html';
@@ -249,7 +252,7 @@ class StaticFileBackend extends AbstractBackend
     public function collectGarbage()
     {
         $cacheEntryIdentifiers = $this->getDatabaseConnection()
-            ->exec_SELECTgetRows('DISTINCT identifier', $this->cacheTable, $this->expiredStatement);
+            ->exec_SELECTgetRows('DISTINCT identifier', $this->cacheTable, 'expires < ' . $GLOBALS['EXEC_TIME']);
         parent::collectGarbage();
         foreach ($cacheEntryIdentifiers as $row) {
             $this->removeStaticFiles($row['identifier']);

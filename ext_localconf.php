@@ -22,6 +22,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['log
 
 // register command controller
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \SFC\Staticfilecache\Command\CacheCommandController::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \SFC\Staticfilecache\Command\PublishCommandController::class;
 
 $ruleClasses = [
     \SFC\Staticfilecache\Cache\Rule\StaticCacheable::class,

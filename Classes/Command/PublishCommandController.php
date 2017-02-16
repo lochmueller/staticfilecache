@@ -24,5 +24,4 @@ class PublishCommandController extends AbstractCommandController
         $publishService = GeneralUtility::makeInstance(PublishService::class);
         $publishService->publish();
     }
-
 }

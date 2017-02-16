@@ -87,10 +87,10 @@ class CacheModule extends AbstractFunctionModule
                     $cell = [
                         'uid' => $row['row']['uid'],
                         'title' => $isFirst ? $row['HTML'] . BackendUtility::getRecordTitle(
-                                'pages',
-                                $row['row'],
-                                true
-                            ) : $row['HTML_depthData'],
+                            'pages',
+                            $row['row'],
+                            true
+                        ) : $row['HTML_depthData'],
                         'identifier' => $identifier,
                         'info' => $info,
                         'depthData' => $row['depthData'],

@@ -46,7 +46,7 @@ class UriFrontend extends StringFrontend
      * @param string $entryIdentifier An identifier used for this cache entry
      * @param string $string The variable to cache
      * @param array $tags Tags to associate with this cache entry
-     * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
+     * @param integer $lifetime Lifetime of this cache entry in seconds. NULL=default; 0=unlimited
      *
      * @return void
      * @throws \InvalidArgumentException if the identifier or tag is not valid
