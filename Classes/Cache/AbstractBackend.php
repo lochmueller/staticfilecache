@@ -9,7 +9,6 @@ namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\Configuration;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -79,16 +78,5 @@ class AbstractBackend extends Typo3DatabaseBackend
         }
         return $lifetime;
     }
-
-    /**
-     * Get the database connection
-     *
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
 
 }

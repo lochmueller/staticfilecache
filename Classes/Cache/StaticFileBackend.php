@@ -8,6 +8,7 @@
 namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\QueueManager;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -297,5 +298,16 @@ class StaticFileBackend extends AbstractBackend
     protected function isBoostMode()
     {
         return (boolean)$this->configuration->get('boostMode') && !defined('SFC_QUEUE_WORKER');
+    }
+
+
+    /**
+     * Get the database connection
+     *
+     * @return DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }
