@@ -1,12 +1,14 @@
+{namespace c=TYPO3\CMS\Core\ViewHelpers}
+
 <h1>Static file cache</h1>
 <p>
 
 	<a href="{requestUri}&ACTION[removeExpiredPages]=1" class="btn btn-default" onclick="return confirm('Are you sure?');">
-		<f:be.buttons.icon icon="actions-edit-delete" />
+		<c:icon identifier="actions-edit-delete" />
 		Remove all expired pages
 	</a>
 	<a href="{requestUri}&ACTION[removeExpiredPages]=0" class="btn btn-default">
-		<f:be.buttons.icon icon="actions-system-refresh" />
+		<c:icon identifier="actions-system-refresh" />
 		{f:translate(key: 'LLL:EXT:lang/locallang_core.xml:labels.refresh')}
 	</a>
 </p>
@@ -33,7 +35,7 @@
 						<td nowrap="nowrap">
 							<f:if condition="{cell.info.explanation -> f:count()}">
 								<f:then>
-									<f:be.buttons.icon icon="status-status-permission-denied" />
+									<c:icon identifier="status-status-permission-denied" />
 								</f:then>
 								<f:else>
 									<f:format.date format="d-m-Y H:i">@{cell.info.created}</f:format.date>
@@ -43,7 +45,7 @@
 						<td nowrap="nowrap">
 							<f:if condition="{cell.info.explanation -> f:count()}">
 								<f:then>
-									<f:be.buttons.icon icon="status-status-permission-denied" />
+									<c:icon identifier="status-status-permission-denied" />
 								</f:then>
 								<f:else>
 									<f:format.date format="d-m-Y H:i">@{cell.info.expires}</f:format.date>
@@ -55,12 +57,15 @@
 								<f:then>
 									<ul>
 										<f:for each="{cell.info.explanation}" as="explanation">
-											<li><f:format.crop maxCharacters="40" respectWordBoundaries="0" append="...{f:be.buttons.icon(icon:'status-dialog-information',title:'{explanation}')}">{explanation}</f:format.crop></li>
+											<li>
+												<c:icon identifier="status-dialog-information" />
+												{explanation}
+											</li>
 										</f:for>
 									</ul>
 								</f:then>
 								<f:else>
-									<f:be.buttons.icon icon="status-status-permission-granted" />
+									<c:icon identifier="status-status-permission-granted" />
 								</f:else>
 							</f:if>
 						</td>
