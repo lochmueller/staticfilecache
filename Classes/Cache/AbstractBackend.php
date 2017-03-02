@@ -78,5 +78,4 @@ class AbstractBackend extends Typo3DatabaseBackend
         }
         return $lifetime;
     }
-
 }

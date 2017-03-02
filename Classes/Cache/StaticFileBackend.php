@@ -125,9 +125,9 @@ class StaticFileBackend extends AbstractBackend
     {
         $urlParts = parse_url($entryIdentifier);
         $cacheFilename = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY . $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim(
-                $urlParts['path'],
-                '/'
-            ));
+            $urlParts['path'],
+            '/'
+        ));
         $fileExtension = PathUtility::pathinfo(basename($cacheFilename), PATHINFO_EXTENSION);
         if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
             $cacheFilename = rtrim($cacheFilename, '/') . '/index.html';
@@ -201,8 +201,7 @@ class StaticFileBackend extends AbstractBackend
         }
 
         if ($this->isBoostMode()) {
-            $identifiers = $this->getDatabaseConnection()
-                ->exec_SELECTgetRows('identifier', 'cf_staticfilecache', '1=1');
+            $identifiers = $this->getIdentifiers();
             $queue = $this->getQueue();
             foreach ($identifiers as $item) {
                 $queue->addIdentifier($item['identifier']);
@@ -252,8 +251,7 @@ class StaticFileBackend extends AbstractBackend
      */
     public function collectGarbage()
     {
-        $cacheEntryIdentifiers = $this->getDatabaseConnection()
-            ->exec_SELECTgetRows('DISTINCT identifier', $this->cacheTable, 'expires < ' . $GLOBALS['EXEC_TIME']);
+        $cacheEntryIdentifiers = $this->getIdentifiers('expires < ' . $GLOBALS['EXEC_TIME']);
         parent::collectGarbage();
         foreach ($cacheEntryIdentifiers as $row) {
             $this->removeStaticFiles($row['identifier']);
@@ -300,6 +298,18 @@ class StaticFileBackend extends AbstractBackend
         return (boolean)$this->configuration->get('boostMode') && !defined('SFC_QUEUE_WORKER');
     }
 
+    /**
+     * Get the cache identifiers
+     *
+     * @param string $where
+     * @return array
+     */
+    protected function getIdentifiers($where = '1=1')
+    {
+        // @todo DB Migration for 8.x
+        return (array)$this->getDatabaseConnection()
+            ->exec_SELECTgetRows('DISTINCT identifier', $this->cacheTable, 'expires < ' . $GLOBALS['EXEC_TIME']);
+    }
 
     /**
      * Get the database connection
