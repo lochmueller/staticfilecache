@@ -2,7 +2,7 @@
   "name": "lochmueller/staticfilecache",
   "version": "4.0.1",
   "type": "typo3-cms-extension",
-  "description": "Transparent static file cache solution using mod_rewrite and mod_expires. Increase response times for static pages by a factor of 230!!",
+  "description": "Transparent static file cache solution using mod_rewrite and mod_expires. Increase performance for static pages by a factor of 230!!",
   "autoload": {
     "psr-4": {
       "SFC\\Staticfilecache\\": "Classes"
