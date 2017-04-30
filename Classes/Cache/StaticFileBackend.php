@@ -221,6 +221,24 @@ class StaticFileBackend extends AbstractBackend
     }
 
     /**
+     * Removes all entries tagged by any of the specified tags.
+     *
+     * @param string[] $tags
+     */
+    public function flushByTags(array $tags)
+    {
+        $this->throwExceptionIfFrontendDoesNotExist();
+
+        if (empty($tags)) {
+            return;
+        }
+
+        foreach ($tags as $tag) {
+            $this->flushByTag($tag);
+        }
+    }
+
+    /**
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
