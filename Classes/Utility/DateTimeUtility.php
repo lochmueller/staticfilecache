@@ -35,5 +35,4 @@ class DateTimeUtility
         }
         return $time;
     }
-
 }
