@@ -8,6 +8,7 @@
 namespace SFC\Staticfilecache\Hook;
 
 use SFC\Staticfilecache\Utility\CookieUtility;
+use SFC\Staticfilecache\Utility\DateTimeUtility;
 
 /**
  * Init frontend user
@@ -46,7 +47,7 @@ class InitFrontendUser
         } elseif (($started || isset($_COOKIE[CookieUtility::FE_COOKIE_NAME])) && $pObj->fe_user->lifetime > 0) {
             // If it is NOT a session-cookie, we need to refresh it.
             // isRefreshTimeBasedCookie()
-            CookieUtility::setCookie(time() + $pObj->fe_user->lifetime);
+            CookieUtility::setCookie(DateTimeUtility::getCurrentTime() + $pObj->fe_user->lifetime);
         }
     }
 }

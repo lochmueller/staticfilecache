@@ -12,6 +12,7 @@ use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use SFC\Staticfilecache\Utility\CacheUtility;
 use SFC\Staticfilecache\Utility\ComposerUtility;
+use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -190,7 +191,7 @@ class QueueManager implements SingletonInterface
         $cookie->setName('staticfilecache');
         $cookie->setValue('1');
         $cookie->setPath('/');
-        $cookie->setExpires(time() + 30);
+        $cookie->setExpires(DateTimeUtility::getCurrentTime() + 30);
         $cookie->setDomain($domain);
         $jar->setCookie($cookie);
         $options = [

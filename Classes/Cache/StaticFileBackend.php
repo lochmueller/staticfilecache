@@ -8,6 +8,7 @@
 namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\QueueManager;
+use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -47,8 +48,8 @@ class StaticFileBackend extends AbstractBackend
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         $databaseData = [
-            'created' => $GLOBALS['EXEC_TIME'],
-            'expires' => ($GLOBALS['EXEC_TIME'] + $this->getRealLifetime($lifetime)),
+            'created' => DateTimeUtility::getCurrentTime(),
+            'expires' => (DateTimeUtility::getCurrentTime() + $this->getRealLifetime($lifetime)),
         ];
         if (in_array('explanation', $tags)) {
             $databaseData['explanation'] = $data;
@@ -105,7 +106,7 @@ class StaticFileBackend extends AbstractBackend
             $renderer->assignMultiple([
                 'mode' => $accessTimeout ? 'A' : 'M',
                 'lifetime' => $lifetime,
-                'expires' => time() + $lifetime,
+                'expires' => DateTimeUtility::getCurrentTime() + $lifetime,
                 'sendCacheControlHeader' => $sendCCHeader,
                 'sendCacheControlHeaderRedirectAfterCacheTimeout' => $sendCCHeaderRedirectAfter,
             ]);
@@ -269,7 +270,7 @@ class StaticFileBackend extends AbstractBackend
      */
     public function collectGarbage()
     {
-        $cacheEntryIdentifiers = $this->getIdentifiers('expires < ' . $GLOBALS['EXEC_TIME']);
+        $cacheEntryIdentifiers = $this->getIdentifiers('expires < ' . DateTimeUtility::getCurrentTime());
         parent::collectGarbage();
         foreach ($cacheEntryIdentifiers as $row) {
             $this->removeStaticFiles($row['identifier']);
@@ -326,7 +327,7 @@ class StaticFileBackend extends AbstractBackend
     {
         // @todo DB Migration for 8.x
         return (array)$this->getDatabaseConnection()
-            ->exec_SELECTgetRows('DISTINCT identifier', $this->cacheTable, 'expires < ' . $GLOBALS['EXEC_TIME']);
+            ->exec_SELECTgetRows('DISTINCT identifier', $this->cacheTable, 'expires < ' . DateTimeUtility::getCurrentTime());
     }
 
     /**

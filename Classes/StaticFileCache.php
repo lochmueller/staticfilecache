@@ -10,6 +10,7 @@ namespace SFC\Staticfilecache;
 
 use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Utility\CacheUtility;
+use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -117,13 +118,13 @@ class StaticFileCache implements SingletonInterface
                     $timeOutTime = $pObj->page['endtime'];
                 }
 
-                $timeOutSeconds = $timeOutTime - $GLOBALS['EXEC_TIME'];
+                $timeOutSeconds = $timeOutTime - DateTimeUtility::getCurrentTime();
 
                 $content = $pObj->content;
                 if ($this->configuration->get('showGenerationSignature')) {
                     $content .= "\n<!-- cached statically on: " . strftime(
                         $this->configuration->get('strftime'),
-                        $GLOBALS['EXEC_TIME']
+                        DateTimeUtility::getCurrentTime()
                     ) . ' -->';
                     $content .= "\n<!-- expires on: " . strftime(
                         $this->configuration->get('strftime'),
@@ -222,6 +223,6 @@ class StaticFileCache implements SingletonInterface
         $entry = $this->cache->get($uri);
         return ($entry !== null &&
                 count($entry['explanation']) === 0 &&
-                $entry['expires'] >= $GLOBALS['EXEC_TIME']);
+                $entry['expires'] >= DateTimeUtility::getCurrentTime());
     }
 }
