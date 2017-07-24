@@ -259,8 +259,9 @@ class StaticFileBackend extends AbstractBackend
             return;
         }
 
-        foreach ($tags as $tag) {
-            $this->flushByTag($tag);
+        $this->removeStaticFilesByTags($tags);
+        if (!$this->isBoostMode()) {
+            parent::flushByTags($tags);
         }
     }
 
@@ -273,19 +274,10 @@ class StaticFileBackend extends AbstractBackend
      */
     public function flushByTag($tag)
     {
-        $identifiers = $this->findIdentifiersByTag($tag);
-        if ($this->isBoostMode()) {
-            $queue = $this->getQueue();
-            foreach ($identifiers as $identifier) {
-                $queue->addIdentifier($identifier);
-            }
-            return;
+        $this->removeStaticFilesByTags([$tag]);
+        if (!$this->isBoostMode()) {
+            parent::flushByTag($tag);
         }
-        $identifiers = $this->findIdentifiersByTag($tag);
-        foreach ($identifiers as $identifier) {
-            $this->removeStaticFiles($identifier);
-        }
-        parent::flushByTag($tag);
     }
 
     /**
@@ -299,6 +291,28 @@ class StaticFileBackend extends AbstractBackend
         parent::collectGarbage();
         foreach ($cacheEntryIdentifiers as $row) {
             $this->removeStaticFiles($row['identifier']);
+        }
+    }
+
+    /**
+     * Remove the static files of the given tag entries or add it to the queue
+     *
+     * @param $tags
+     */
+    protected function removeStaticFilesByTags($tags)
+    {
+        $queue = $this->getQueue();
+        foreach ($tags as $tag) {
+            $identifiers = $this->findIdentifiersByTag($tag);
+            if ($this->isBoostMode()) {
+                foreach ($identifiers as $identifier) {
+                    $queue->addIdentifier($identifier);
+                }
+            } else {
+                foreach ($identifiers as $identifier) {
+                    $this->removeStaticFiles($identifier);
+                }
+            }
         }
     }
 
