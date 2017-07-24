@@ -13,6 +13,7 @@ use SFC\Staticfilecache\Utility\CacheUtility;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -178,9 +179,9 @@ class StaticFileCache implements SingletonInterface
         $isHttp = (strpos(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), 'http://') === 0);
         $uri = GeneralUtility::getIndpEnv('REQUEST_URI');
         if ($this->configuration->get('recreateURI')) {
-            $uri = $this->recreateURI($uri);
+            $uri = $this->recreateUriPath($uri);
         }
-        return ($isHttp ? 'http://' : 'https://') . strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . $uri;
+        return ($isHttp ? 'http://' : 'https://') . strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . ltrim($uri, '/');
     }
 
     /**
@@ -194,7 +195,7 @@ class StaticFileCache implements SingletonInterface
      *
      * @return    string        The recreated URI of the current request
      */
-    protected function recreateURI($uri)
+    protected function recreateUriPath($uri)
     {
         $objectManager = new ObjectManager();
         /** @var UriBuilder $uriBuilder */
@@ -206,9 +207,14 @@ class StaticFileCache implements SingletonInterface
         }
         $url = $uriBuilder->reset()
             ->setAddQueryString(true)
+            ->setCreateAbsoluteUri(true)
             ->build();
 
-        return preg_replace('/https?:\/\/[^\/]+/is', '', $url);
+        $parts = parse_url($url);
+        unset($parts['scheme']);
+        unset($parts['host']);
+
+        return HttpUtility::buildUrl($parts);
     }
 
     /**
