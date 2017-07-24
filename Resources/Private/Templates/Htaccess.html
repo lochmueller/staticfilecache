@@ -19,3 +19,10 @@
 	RewriteRule ^.*$ /index.php
 </IfModule>
 </f:if>
+<f:if condition="{sendTypo3Headers}">
+<ifModule mod_headers.c>
+	<f:for each="{typo3headers}" key="name" as="value">
+	Header set {name} "{value}"
+	</f:for>
+</ifModule>
+</f:if>

@@ -13,6 +13,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Cache backend for static file cache
@@ -94,7 +95,8 @@ class StaticFileBackend extends AbstractBackend
     {
         $sendCCHeader = (bool)$this->configuration->get('sendCacheControlHeader');
         $sendCCHeaderRedirectAfter = (bool)$this->configuration->get('sendCacheControlHeaderRedirectAfterCacheTimeout');
-        if ($sendCCHeader || $sendCCHeaderRedirectAfter) {
+        $sendTypo3Headers = (bool)$this->configuration->get('sendTypo3Headers');
+        if ($sendCCHeader || $sendCCHeaderRedirectAfter || $sendTypo3Headers) {
             $fileName = PathUtility::pathinfo($originalFileName, PATHINFO_DIRNAME) . '/.htaccess';
             $accessTimeout = $this->configuration->get('htaccessTimeout');
             $lifetime = $accessTimeout ? $accessTimeout : $this->getRealLifetime($lifetime);
@@ -107,12 +109,35 @@ class StaticFileBackend extends AbstractBackend
                 'mode' => $accessTimeout ? 'A' : 'M',
                 'lifetime' => $lifetime,
                 'expires' => DateTimeUtility::getCurrentTime() + $lifetime,
+                'typo3headers' => $this->getTypoHeaders(),
                 'sendCacheControlHeader' => $sendCCHeader,
                 'sendCacheControlHeaderRedirectAfterCacheTimeout' => $sendCCHeaderRedirectAfter,
+                'sendTypo3Headers' => $sendTypo3Headers,
             ]);
 
             GeneralUtility::writeFile($fileName, $renderer->render());
         }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getTypoHeaders()
+    {
+        $headers = [];
+        if (!($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
+            return $headers;
+        }
+        // Set headers, if any
+        if (is_array($GLOBALS['TSFE']->config['config']['additionalHeaders.'])) {
+            ksort($GLOBALS['TSFE']->config['config']['additionalHeaders.']);
+            foreach ($GLOBALS['TSFE']->config['config']['additionalHeaders.'] as $options) {
+                $complete = trim($options['header']);
+                $parts = explode(':', $complete, 2);
+                $headers[trim($parts[0])] = trim($parts[1]);
+            }
+        }
+        return $headers;
     }
 
     /**

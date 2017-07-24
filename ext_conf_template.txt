@@ -7,6 +7,9 @@ sendCacheControlHeader = 1
 # cat=basic; type=boolean; label=Send Cache-Control header redirect after cache timeout: Add a mod_rewrite statement to the generated htaccess files, that redirect the user to the index.php, if the Cache is invalid.
 sendCacheControlHeaderRedirectAfterCacheTimeout = 0
 
+# cat=basic; type=boolean; label=Send TYPO3 Headers: Send the config.additionalHeaders header via .htacess files
+sendTypo3Headers = 0
+
 # cat=basic; type=boolean; label=Enable static file compression: When checked, a gzipped version of the static file is written to the cache directory as well as a plain version (used for fallback, not all browsers and proxies support gzip). This will speed up file transfer time. Apache can also compress files using mod_deflate, but does so on each request. Enabling this option makes sure it is done only once. Take care to also choose the proper .htaccess configuration when enabling this option.
 enableStaticFileCompression = 1
 
