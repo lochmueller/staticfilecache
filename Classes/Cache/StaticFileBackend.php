@@ -303,7 +303,7 @@ class StaticFileBackend extends AbstractBackend
     {
         $queue = $this->getQueue();
         foreach ($tags as $tag) {
-            $identifiers = $this->findIdentifiersByTag($tag);
+            $identifiers = $this->findIdentifiersByTagIncludingExpired($tag);
             if ($this->isBoostMode()) {
                 foreach ($identifiers as $identifier) {
                     $queue->addIdentifier($identifier);
@@ -314,6 +314,21 @@ class StaticFileBackend extends AbstractBackend
                 }
             }
         }
+    }
+
+    /**
+     * Call findIdentifiersByTag but ignore the expires check
+     *
+     * @param string $tag
+     * @return array
+     */
+    protected function findIdentifiersByTagIncludingExpired($tag)
+    {
+        $base = $GLOBALS['EXEC_TIME'];
+        $GLOBALS['EXEC_TIME'] = 0;
+        $identifiers = $this->findIdentifiersByTag($tag);
+        $GLOBALS['EXEC_TIME'] = $base;
+        return $identifiers;
     }
 
     /**
