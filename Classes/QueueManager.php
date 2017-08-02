@@ -180,10 +180,13 @@ class QueueManager implements SingletonInterface
         $queryBuilder
             ->getRestrictions()
             ->removeAll();
+        $where = $queryBuilder->expr()->andX([
+            $queryBuilder->expr()->eq('cache_url', $queryBuilder->createNamedParameter($identifier)),
+            $queryBuilder->expr()->eq('call_date', $queryBuilder->createNamedParameter(0))
+        ]);
         $rows = $queryBuilder->select('uid', 'TSconfig')
             ->from(self::QUEUE_TABLE)
-            ->where($queryBuilder->expr()->andX([$queryBuilder->expr()->eq('cache_url', $queryBuilder->createNamedParameter($identifier)),
-                $queryBuilder->expr()->eq('call_date', $queryBuilder->createNamedParameter(0))]))
+            ->where($where)
             ->execute()
             ->fetchAll();
 

@@ -151,10 +151,8 @@ class StaticFileBackend extends AbstractBackend
     protected function getCacheFilename($entryIdentifier)
     {
         $urlParts = parse_url($entryIdentifier);
-        $cacheFilename = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY . $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim(
-                $urlParts['path'],
-                '/'
-            ));
+        $path = $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim($urlParts['path'], '/');
+        $cacheFilename = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY . $path);
         $fileExtension = PathUtility::pathinfo(basename($cacheFilename), PATHINFO_EXTENSION);
         if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
             $cacheFilename = rtrim($cacheFilename, '/') . '/index.html';
