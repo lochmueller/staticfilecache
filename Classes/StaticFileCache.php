@@ -85,7 +85,7 @@ class StaticFileCache implements SingletonInterface
             'frontendController' => $pObj,
             'uri' => $uri,
         ];
-        $preProcessArguments = $this->signalDispatcher->dispatch(__CLASS__, 'preProcess', $preProcessArguments);
+        $preProcessArguments = $this->dispatch('preProcess', $preProcessArguments);
         $uri = $preProcessArguments['uri'];
 
         // cache rules
@@ -95,7 +95,7 @@ class StaticFileCache implements SingletonInterface
             'explanation' => [],
             'skipProcessing' => false,
         ];
-        $ruleArguments = $this->signalDispatcher->dispatch(__CLASS__, 'cacheRule', $ruleArguments);
+        $ruleArguments = $this->dispatch('cacheRule', $ruleArguments);
         $explanation = $ruleArguments['explanation'];
 
         if (!$ruleArguments['skipProcessing']) {
@@ -140,8 +140,7 @@ class StaticFileCache implements SingletonInterface
                     'content' => $content,
                     'timeOutSeconds' => $timeOutSeconds,
                 ];
-                $processContentArguments = $this->signalDispatcher->dispatch(
-                    __CLASS__,
+                $processContentArguments = $this->dispatch(
                     'processContent',
                     $processContentArguments
                 );
@@ -165,7 +164,7 @@ class StaticFileCache implements SingletonInterface
             'uri' => $uri,
             'isStaticCached' => $isStaticCached,
         ];
-        $this->signalDispatcher->dispatch(__CLASS__, 'postProcess', $postProcessArguments);
+        $this->dispatch('postProcess', $postProcessArguments);
     }
 
     /**
@@ -220,7 +219,7 @@ class StaticFileCache implements SingletonInterface
     /**
      * Determines whether the given $uri has a valid cache entry.
      *
-     * @param     string  $uri
+     * @param     string $uri
      *
      * @return    bool    is available and valid
      */
@@ -228,7 +227,20 @@ class StaticFileCache implements SingletonInterface
     {
         $entry = $this->cache->get($uri);
         return ($entry !== null &&
-                count($entry['explanation']) === 0 &&
-                $entry['expires'] >= DateTimeUtility::getCurrentTime());
+            count($entry['explanation']) === 0 &&
+            $entry['expires'] >= DateTimeUtility::getCurrentTime());
+    }
+
+    /**
+     * Call Dispatcher
+     *
+     * @param string $signalName
+     * @param array $arguments
+     *
+     * @return mixed
+     */
+    protected function dispatch(string $signalName, array $arguments)
+    {
+        return $this->signalDispatcher->dispatch(__CLASS__, $signalName, $arguments);
     }
 }
