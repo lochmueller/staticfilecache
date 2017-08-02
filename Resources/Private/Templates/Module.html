@@ -21,68 +21,42 @@
 			<th>Identifier</th>
 			<th>Created</th>
 			<th>Expires</th>
-			<th>Explanation</th>
 		</tr>
 		</thead>
 		<tbody>
 		<f:for each="{rows}" as="cell">
-			<tr>
-				<f:if condition="{cell.info}">
-					<f:then>
-						<td nowrap="nowrap">
-							<f:format.raw>{cell.depthData}</f:format.raw>
-							<f:format.raw>{cell.title}</f:format.raw>
-						</td>
-						<td>{cell.identifier}</td>
-						<td nowrap="nowrap">
-							<f:if condition="{cell.info.explanation -> f:count()}">
-								<f:then>
-									<c:icon identifier="status-status-permission-denied"/>
-								</f:then>
-								<f:else>
-									<f:format.date format="d-m-Y H:i">@{cell.info.created}</f:format.date>
-								</f:else>
-							</f:if>
-						</td>
-						<td nowrap="nowrap">
-							<f:if condition="{cell.info.explanation -> f:count()}">
-								<f:then>
-									<c:icon identifier="status-status-permission-denied"/>
-								</f:then>
-								<f:else>
-									<f:format.date format="d-m-Y H:i">@{cell.info.expires}</f:format.date>
-								</f:else>
-							</f:if>
-						</td>
-						<td nowrap="nowrap">
-							<f:if condition="{cell.info.explanation -> f:count()}">
-								<f:then>
+			<f:if condition="{cell.info}">
+				<f:then>
+					<f:render section="cellLine" arguments="{cell:cell}"/>
+					<f:if condition="{cell.info.explanation -> f:count()}">
+						<f:then>
+							<tr>
+								<td colspan="4" class="danger">
 									<ul>
 										<f:for each="{cell.info.explanation}" as="explanation">
 											<li>
-												<c:icon identifier="status-dialog-information"/>
 												{explanation}
 											</li>
 										</f:for>
 									</ul>
-								</f:then>
-								<f:else>
-									<c:icon identifier="status-status-permission-granted"/>
-								</f:else>
-							</f:if>
-						</td>
-					</f:then>
-					<f:else>
-						<td nowrap="nowrap" colspan="4">
+								</td>
+							</tr>
+							<c:icon identifier="status-status-permission-denied"/>
+						</f:then>
+					</f:if>
+				</f:then>
+				<f:else>
+					<tr>
+						<td nowrap="nowrap" colspan="3">
 							<f:format.raw>{cell.depthData}</f:format.raw>
 							<f:format.raw>{cell.title}</f:format.raw>
 						</td>
 						<td>
 							<f:if condition="{cell.uid}"><span class="typo3-dimmed">not hit</span></f:if>
 						</td>
-					</f:else>
-				</f:if>
-			</tr>
+					</tr>
+				</f:else>
+			</f:if>
 		</f:for>
 		</tbody>
 	</table>
@@ -90,3 +64,43 @@
 <f:if condition="{pageId} > 0">
 	<input type="hidden" name="id" value="{pageId}"/>
 </f:if>
+
+
+<f:section name="cellLine">
+	<tr>
+		<td nowrap="nowrap">
+			<f:format.raw>{cell.depthData}</f:format.raw>
+			<f:format.raw>{cell.title}</f:format.raw>
+		</td>
+		<td><a href="{cell.identifier}">{cell.identifier}</a>
+			<f:if condition="{cell.info.explanation -> f:count()}">
+				<f:then>
+					<c:icon identifier="status-status-permission-denied"/>
+				</f:then>
+				<f:else>
+					<c:icon identifier="status-status-permission-granted"/>
+				</f:else>
+			</f:if>
+		</td>
+		<td nowrap="nowrap">
+			<f:if condition="{cell.info.explanation -> f:count()}">
+				<f:then>
+					<c:icon identifier="status-status-permission-denied"/>
+				</f:then>
+				<f:else>
+					<f:format.date format="d-m-Y H:i">@{cell.info.created}</f:format.date>
+				</f:else>
+			</f:if>
+		</td>
+		<td nowrap="nowrap">
+			<f:if condition="{cell.info.explanation -> f:count()}">
+				<f:then>
+					<c:icon identifier="status-status-permission-denied"/>
+				</f:then>
+				<f:else>
+					<f:format.date format="d-m-Y H:i">@{cell.info.expires}</f:format.date>
+				</f:else>
+			</f:if>
+		</td>
+	</tr>
+</f:section>
