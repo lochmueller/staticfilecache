@@ -13,7 +13,7 @@ use GuzzleHttp\Cookie\SetCookie;
 use SFC\Staticfilecache\Utility\CacheUtility;
 use SFC\Staticfilecache\Utility\ComposerUtility;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -38,7 +38,7 @@ class QueueManager implements SingletonInterface
     public function run($limitItems = 0)
     {
         define('SFC_QUEUE_WORKER', true);
-        $dbConnection = $this->getDatabaseConnection();
+        $dbConnection = $GLOBALS['TYPO3_DB'];
         $limit = $limitItems > 0 ? (int)$limitItems : '';
         $runEntries = $dbConnection->exec_SELECTgetRows('*', self::QUEUE_TABLE, 'call_date=0', '', '', $limit);
 
@@ -58,7 +58,6 @@ class QueueManager implements SingletonInterface
      */
     protected function runSingleRequest(array $runEntry)
     {
-        $dbConnection = $this->getDatabaseConnection();
         try {
             $client = $this->getCallableClient(parse_url($runEntry['cache_url'], PHP_URL_HOST));
             $response = $client->get($runEntry['cache_url']);
@@ -67,7 +66,7 @@ class QueueManager implements SingletonInterface
             $statusCode = 900;
         }
         $data = [
-            'call_date'   => time(),
+            'call_date' => time(),
             'call_result' => $statusCode,
         ];
 
@@ -79,6 +78,17 @@ class QueueManager implements SingletonInterface
                 $cache->remove($runEntry['cache_url']);
             }
         }
+
+
+        #$connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        #$connection = $connectionPool->getConnectionForTable(self::QUEUE_TABLE);
+        #$connection->update(
+        #    self::QUEUE_TABLE,
+        #    $data
+        #);
+        # @todo
+
+        $dbConnection = $GLOBALS['TYPO3_DB'];
         $dbConnection->exec_UPDATEquery(self::QUEUE_TABLE, 'uid=' . $runEntry['uid'], $data);
     }
 
@@ -132,9 +142,9 @@ class QueueManager implements SingletonInterface
         // get content and remove handles
         foreach ($curly as $id => $c) {
             $result[$id] = [
-                'call_date'   => time(),
+                'call_date' => time(),
                 'call_result' => curl_getinfo($c),
-                'page_uid'    => $data[$id]['page_uid'],
+                'page_uid' => $data[$id]['page_uid'],
 
             ];
             curl_multi_remove_handle($mh, $c);
@@ -151,7 +161,10 @@ class QueueManager implements SingletonInterface
      */
     public function cleanup()
     {
-        $dbConnection = $this->getDatabaseConnection();
+        //$connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable(self::QUEUE_TABLE);
+        //$connection->delete(self::QUEUE_TABLE);
+        // @todo
+        $dbConnection = $GLOBALS['TYPO3_DB'];
         $dbConnection->exec_DELETEquery(self::QUEUE_TABLE, 'call_date > 0');
     }
 
@@ -162,18 +175,33 @@ class QueueManager implements SingletonInterface
      */
     public function addIdentifier($identifier)
     {
-        $db = $this->getDatabaseConnection();
-        $row = $db->exec_SELECTgetSingleRow('*', self::QUEUE_TABLE, 'cache_url="' . $identifier . '" AND call_date=0');
-        if (is_array($row)) {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll();
+        $rows = $queryBuilder->select('uid', 'TSconfig')
+            ->from(self::QUEUE_TABLE)
+            ->where($queryBuilder->expr()->andX([$queryBuilder->expr()->eq('cache_url', $queryBuilder->createNamedParameter($identifier)),
+                $queryBuilder->expr()->eq('call_date', $queryBuilder->createNamedParameter(0))]))
+            ->execute()
+            ->fetchAll();
+
+        if (!empty($rows)) {
             return;
         }
+
         $data = [
-            'cache_url'    => $identifier,
-            'page_uid'     => 0,
+            'cache_url' => $identifier,
+            'page_uid' => 0,
             'invalid_date' => time(),
-            'call_result'  => ''
+            'call_result' => ''
         ];
-        $db->exec_INSERTquery(self::QUEUE_TABLE, $data);
+        $connection = $connectionPool->getConnectionForTable(self::QUEUE_TABLE);
+        $connection->insert(
+            self::QUEUE_TABLE,
+            $data
+        );
     }
 
     /**
@@ -201,15 +229,5 @@ class QueueManager implements SingletonInterface
             ]
         ];
         return GeneralUtility::makeInstance(Client::class, $options);
-    }
-
-    /**
-     * Get the database connection
-     *
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

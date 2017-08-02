@@ -9,6 +9,7 @@ namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\QueueManager;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -151,9 +152,9 @@ class StaticFileBackend extends AbstractBackend
     {
         $urlParts = parse_url($entryIdentifier);
         $cacheFilename = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY . $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim(
-            $urlParts['path'],
-            '/'
-        ));
+                $urlParts['path'],
+                '/'
+            ));
         $fileExtension = PathUtility::pathinfo(basename($cacheFilename), PATHINFO_EXTENSION);
         if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
             $cacheFilename = rtrim($cacheFilename, '/') . '/index.html';
@@ -227,10 +228,10 @@ class StaticFileBackend extends AbstractBackend
         }
 
         if ($this->isBoostMode()) {
-            $identifiers = $this->getIdentifiers();
+            $identifiers = $this->getExpiredIdentifiers();
             $queue = $this->getQueue();
-            foreach ($identifiers as $item) {
-                $queue->addIdentifier($item['identifier']);
+            foreach ($identifiers as $identifier) {
+                $queue->addIdentifier($identifier);
             }
             return;
         }
@@ -287,10 +288,10 @@ class StaticFileBackend extends AbstractBackend
      */
     public function collectGarbage()
     {
-        $cacheEntryIdentifiers = $this->getIdentifiers('expires < ' . DateTimeUtility::getCurrentTime());
+        $cacheEntryIdentifiers = $this->getExpiredIdentifiers();
         parent::collectGarbage();
-        foreach ($cacheEntryIdentifiers as $row) {
-            $this->removeStaticFiles($row['identifier']);
+        foreach ($cacheEntryIdentifiers as $identifier) {
+            $this->removeStaticFiles($identifier);
         }
     }
 
@@ -374,23 +375,28 @@ class StaticFileBackend extends AbstractBackend
     /**
      * Get the cache identifiers
      *
-     * @param string $where
      * @return array
      */
-    protected function getIdentifiers($where = '1=1')
+    protected function getExpiredIdentifiers()
     {
-        // @todo DB Migration for 8.x
-        return (array)$this->getDatabaseConnection()
-            ->exec_SELECTgetRows('DISTINCT identifier', $this->cacheTable, 'expires < ' . DateTimeUtility::getCurrentTime());
-    }
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
+        $queryBuilder = $connection->createQueryBuilder();
+        $result = $queryBuilder->select('identifier')
+            ->from($this->cacheTable)
+            ->where($queryBuilder->expr()->lt(
+                'expires',
+                $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+            ))
+            // group by is like DISTINCT and used here to suppress possible duplicate identifiers
+            ->groupBy('identifier')
+            ->execute();
 
-    /**
-     * Get the database connection
-     *
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
+        // Get identifiers of expired cache entries
+        $cacheEntryIdentifiers = [];
+        while ($row = $result->fetch()) {
+            $cacheEntryIdentifiers[] = $row['identifier'];
+        }
+
+        return $cacheEntryIdentifiers;
     }
 }

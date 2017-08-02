@@ -3,19 +3,11 @@ language: php
 php:
 - 7
 
-env:
-- TYPO3_VERSION=^7.6.0 COVERAGE=0
-
 matrix:
   fast_finish: true
-  exclude:
-    - php: 7
-      env: TYPO3_VERSION=^7.6.0 COVERAGE=0
   include:
     - php: 7
-      env: TYPO3_VERSION=^7.6.0 COVERAGE=1
-    - php: 7
-      env: TYPO3_VERSION=^8.6.0 COVERAGE=0
+      env: TYPO3_VERSION=^8.7.0 COVERAGE=1
     - php: 7
       env: TYPO3_VERSION=dev-master COVERAGE=0
   allow_failures:
