@@ -38,15 +38,22 @@ class QueueManager implements SingletonInterface
     public function run($limitItems = 0)
     {
         define('SFC_QUEUE_WORKER', true);
-        $dbConnection = $GLOBALS['TYPO3_DB'];
-        $limit = $limitItems > 0 ? (int)$limitItems : '';
-        $runEntries = $dbConnection->exec_SELECTgetRows('*', self::QUEUE_TABLE, 'call_date=0', '', '', $limit);
 
-        if (empty($runEntries)) {
-            return;
-        }
+        $limit = $limitItems > 0 ? (int)$limitItems : 999;
 
-        foreach ($runEntries as $runEntry) {
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable(self::QUEUE_TABLE);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll();
+        $rows = $queryBuilder->select('*')
+            ->from(self::QUEUE_TABLE)
+            ->where($queryBuilder->expr()->eq('call_date', $queryBuilder->createNamedParameter(0)))
+            ->setMaxResults($limit)
+            ->execute()
+            ->fetchAll();
+        foreach ($rows as $runEntry) {
             $this->runSingleRequest($runEntry);
         }
     }
@@ -80,16 +87,14 @@ class QueueManager implements SingletonInterface
         }
 
 
-        #$connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        #$connection = $connectionPool->getConnectionForTable(self::QUEUE_TABLE);
-        #$connection->update(
-        #    self::QUEUE_TABLE,
-        #    $data
-        #);
-        # @todo
-
-        $dbConnection = $GLOBALS['TYPO3_DB'];
-        $dbConnection->exec_UPDATEquery(self::QUEUE_TABLE, 'uid=' . $runEntry['uid'], $data);
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connection = $connectionPool->getConnectionForTable(self::QUEUE_TABLE);
+        $connection->update(
+            self::QUEUE_TABLE,
+            $data,
+            ['uid' => (int)$runEntry['uid']]
+        );
     }
 
     /**
@@ -161,8 +166,10 @@ class QueueManager implements SingletonInterface
      */
     public function cleanup()
     {
-        //$connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable(self::QUEUE_TABLE);
-        //$connection->delete(self::QUEUE_TABLE);
+        /** @var ConnectionPool $connectionPool */
+        #$connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        #$connection = $connectionPool->getConnectionForTable(self::QUEUE_TABLE);
+        #$connection->delete(self::QUEUE_TABLE);
         // @todo
         $dbConnection = $GLOBALS['TYPO3_DB'];
         $dbConnection->exec_DELETEquery(self::QUEUE_TABLE, 'call_date > 0');
@@ -175,8 +182,9 @@ class QueueManager implements SingletonInterface
      */
     public function addIdentifier($identifier)
     {
+        /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('pages');
+        $queryBuilder = $connectionPool->getQueryBuilderForTable(self::QUEUE_TABLE);
         $queryBuilder
             ->getRestrictions()
             ->removeAll();
