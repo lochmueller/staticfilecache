@@ -15,11 +15,10 @@ use GuzzleHttp\Cookie\SetCookie;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Queue service
- *
- * @todo migrate to caching framework with UriFrontend and QueueBackend
  */
 class QueueService extends AbstractService
 {
@@ -52,6 +51,7 @@ class QueueService extends AbstractService
             ->setMaxResults($limit)
             ->execute()
             ->fetchAll();
+
         foreach ($rows as $runEntry) {
             $this->runSingleRequest($runEntry);
         }
@@ -166,12 +166,22 @@ class QueueService extends AbstractService
     public function cleanup()
     {
         /** @var ConnectionPool $connectionPool */
-        #$connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        #$connection = $connectionPool->getConnectionForTable(self::QUEUE_TABLE);
-        #$connection->delete(self::QUEUE_TABLE);
-        // @todo
-        $dbConnection = $GLOBALS['TYPO3_DB'];
-        $dbConnection->exec_DELETEquery(self::QUEUE_TABLE, 'call_date > 0');
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+
+        $queryBuilder = $connectionPool->getQueryBuilderForTable(self::QUEUE_TABLE);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll();
+        $rows = $queryBuilder->select('uid')
+            ->from(self::QUEUE_TABLE)
+            ->where($queryBuilder->expr()->gt('call_date', $queryBuilder->createNamedParameter(0)))
+            ->execute()
+            ->fetchAll();
+
+        $connection = $connectionPool->getConnectionForTable(self::QUEUE_TABLE);
+        foreach ($rows as $row) {
+            $connection->delete(self::QUEUE_TABLE, ['uid' => $row['uid']]);
+        }
     }
 
     /**
