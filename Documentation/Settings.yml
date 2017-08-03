@@ -6,8 +6,8 @@
 conf.py:
   copyright: 2015
   project: 'Static File cache'
-  version: 3.4
-  release: 3.4.0
+  version: 5.0
+  release: 5.0.0
   highlight_language: php
   latex_documents:
   - - Index
