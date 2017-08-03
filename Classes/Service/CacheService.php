@@ -1,13 +1,13 @@
 <?php
 /**
- * Cache Utility
+ * Cache Service
  *
  * @author  Tim Lochmüller
  */
 
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache\Utility;
+namespace SFC\Staticfilecache\Service;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
@@ -15,9 +15,9 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
- * Cache Utility
+ * Cache Service
  */
-class CacheUtility
+class CacheService extends AbstractService
 {
 
     /**
@@ -26,7 +26,7 @@ class CacheUtility
      * @return FrontendInterface
      * @throws NoSuchCacheException
      */
-    public static function getCache(): FrontendInterface
+    public function getCache(): FrontendInterface
     {
         /** @var CacheManager $cacheManager */
         $objectManager = new ObjectManager();
@@ -39,9 +39,9 @@ class CacheUtility
      *
      * @param int $pageId
      */
-    public static function clearByPageId($pageId)
+    public function clearByPageId(int $pageId)
     {
-        $cache = self::getCache();
+        $cache = $this->getCache();
         $cacheEntries = array_keys($cache->getByTag('pageId_' . (int)$pageId));
         foreach ($cacheEntries as $cacheEntry) {
             $cache->remove($cacheEntry);

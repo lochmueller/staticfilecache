@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Command;
 
 use SFC\Staticfilecache\QueueManager;
-use SFC\Staticfilecache\Utility\CacheUtility;
+use SFC\Staticfilecache\Service\CacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -24,8 +24,7 @@ class CacheCommandController extends AbstractCommandController
      */
     public function removeExpiredPagesCommand()
     {
-        CacheUtility::getCache()
-            ->collectGarbage();
+        GeneralUtility::makeInstance(CacheService::class)->getCache()->collectGarbage();
     }
 
     /**
@@ -54,7 +53,6 @@ class CacheCommandController extends AbstractCommandController
      */
     public function flushCacheCommand()
     {
-        CacheUtility::getCache()
-            ->flush();
+        GeneralUtility::makeInstance(CacheService::class)->getCache()->flush();
     }
 }

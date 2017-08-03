@@ -12,7 +12,7 @@ namespace SFC\Staticfilecache;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
-use SFC\Staticfilecache\Utility\CacheUtility;
+use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -80,7 +80,7 @@ class QueueManager implements SingletonInterface
 
         if ($statusCode !== 200) {
             // Call the flush, if the page is not accessable
-            $cache = CacheUtility::getCache();
+            $cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
             $cache->flushByTag('sfc_pageId_' . $runEntry['page_uid']);
             if ($cache->has($runEntry['cache_url'])) {
                 $cache->remove($runEntry['cache_url']);

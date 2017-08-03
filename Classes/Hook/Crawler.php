@@ -10,8 +10,9 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Hook;
 
-use SFC\Staticfilecache\Utility\CacheUtility;
+use SFC\Staticfilecache\Service\CacheService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -23,8 +24,8 @@ class Crawler extends AbstractHook
     /**
      * (Hook-function called from TypoScriptFrontend, see ext_localconf.php for configuration)
      *
-     * @param array                        $parameters Parameters delivered by TypoScriptFrontend
-     * @param TypoScriptFrontendController $pObj       The calling parent object (TypoScriptFrontend)
+     * @param array $parameters Parameters delivered by TypoScriptFrontend
+     * @param TypoScriptFrontendController $pObj The calling parent object (TypoScriptFrontend)
      *
      * @returnvoid
      */
@@ -40,7 +41,7 @@ class Crawler extends AbstractHook
         ) {
             $pageId = $GLOBALS['TSFE']->id;
             if (is_numeric($pageId)) {
-                CacheUtility::clearByPageId($pageId);
+                GeneralUtility::makeInstance(CacheService::class)->clearByPageId($pageId);
                 $pObj->applicationData['tx_crawler']['log'][] = 'EXT:staticfilecache cleared static file';
             } else {
                 $pObj->applicationData['tx_crawler']['log'][] = 'EXT:staticfilecache skipped';

@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Module;
 
-use SFC\Staticfilecache\Utility\CacheUtility;
+use SFC\Staticfilecache\Service\CacheService;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Tree\View\BrowseTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -75,7 +75,7 @@ class CacheModule extends AbstractFunctionModule
     protected function renderModule(BrowseTreeView $tree)
     {
         $rows = [];
-        $cache = CacheUtility::getCache();
+        $cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
 
         foreach ($tree->tree as $row) {
             $cacheEntries = $cache->getByTag('sfc_pageId_' . $row['row']['uid']);
@@ -130,8 +130,7 @@ class CacheModule extends AbstractFunctionModule
         $action = GeneralUtility::_GP('ACTION');
 
         if (isset($action['removeExpiredPages']) && (bool)$action['removeExpiredPages']) {
-            CacheUtility::getCache()
-                ->collectGarbage();
+            GeneralUtility::makeInstance(CacheService::class)->getCache()->collectGarbage();
         }
     }
 

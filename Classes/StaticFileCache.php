@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache;
 
 use SFC\Staticfilecache\Cache\UriFrontend;
-use SFC\Staticfilecache\Utility\CacheUtility;
+use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -64,7 +64,7 @@ class StaticFileCache implements SingletonInterface
      */
     public function __construct()
     {
-        $this->cache = CacheUtility::getCache();
+        $this->cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
         $this->signalDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $this->configuration = GeneralUtility::makeInstance(Configuration::class);
     }
