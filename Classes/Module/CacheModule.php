@@ -37,12 +37,10 @@ class CacheModule extends AbstractFunctionModule
      */
     public function main()
     {
-        // Handle actions:
         $this->handleActions();
 
         $this->pageId = intval($this->pObj->id);
 
-        // Initialize tree object:
         /* @var $tree BrowseTreeView */
         $tree = GeneralUtility::makeInstance(BrowseTreeView::class);
         $tree->makeHTML = 2;
@@ -58,10 +56,8 @@ class CacheModule extends AbstractFunctionModule
         $tree->thisScript = BackendUtility::getModuleUrl(GeneralUtility::_GP('M'));
         $tree->treeName = 'staticfilecache';
 
-        // Creating top icon; the current page
         $tree->getBrowsableTree();
 
-        // Render information table:
         return $this->processExpandCollapseLinks($this->renderModule($tree));
     }
 
@@ -153,19 +149,6 @@ class CacheModule extends AbstractFunctionModule
                 $content
             );
         }
-
-        // Fix a bug in 7.x generation of the HTML (missing ") and also fix the style
-        // @see https://forge.typo3.org/issues/72453
-        $search = [
-            'list-tree-control list-tree-control-closed href',
-            'list-tree-control list-tree-control-open href',
-        ];
-        $replace = [
-            'list-tree-control list-tree-control-closed" style="margin-left: -5px" href',
-            'list-tree-control list-tree-control-open" style="margin-left: -5px" href',
-        ];
-        $content = str_replace($search, $replace, $content);
-
         return $content;
     }
 }

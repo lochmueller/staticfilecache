@@ -15,7 +15,6 @@ use GuzzleHttp\Cookie\SetCookie;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Queue service
@@ -42,9 +41,6 @@ class QueueService extends AbstractService
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable(self::QUEUE_TABLE);
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll();
         $rows = $queryBuilder->select('*')
             ->from(self::QUEUE_TABLE)
             ->where($queryBuilder->expr()->eq('call_date', $queryBuilder->createNamedParameter(0)))
@@ -97,70 +93,6 @@ class QueueService extends AbstractService
     }
 
     /**
-     * Alternativ for runSingleRequest (not used at the moment)
-     *
-     * @param array $data
-     * @param array $options
-     * @return array
-     */
-    public function runMultiRequest(array $data, $options = [])
-    {
-
-        $curly = [];
-        $result = [];
-        $mh = curl_multi_init();
-
-        foreach ($data as $id => $d) {
-            $curly[$id] = curl_init();
-
-            $url = (is_array($d) && !empty($d['cache_url'])) ? $d['cache_url'] : $d;
-            curl_setopt($curly[$id], CURLOPT_URL, $url);
-            curl_setopt($curly[$id], CURLOPT_HEADER, 0);
-            curl_setopt($curly[$id], CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curly[$id], CURLOPT_FRESH_CONNECT, true);
-            curl_setopt($curly[$id], CURLOPT_TIMEOUT_MS, 2000);
-            curl_setopt($curly[$id], CURLOPT_COOKIE, 'staticfilecache=1');
-            curl_setopt($curly[$id], CURLOPT_USERAGENT, 'Staticfilecache Crawler');
-
-            if (is_array($d)) {
-                if (!empty($d['post'])) {
-                    curl_setopt($curly[$id], CURLOPT_POST, 1);
-                    curl_setopt($curly[$id], CURLOPT_POSTFIELDS, $d['post']);
-                }
-            }
-
-            // extra options?
-            if (!empty($options)) {
-                curl_setopt_array($curly[$id], $options);
-            }
-
-            curl_multi_add_handle($mh, $curly[$id]);
-        }
-
-        // execute the handles
-        $running = null;
-        do {
-            curl_multi_exec($mh, $running);
-        } while ($running > 0);
-
-        // get content and remove handles
-        foreach ($curly as $id => $c) {
-            $result[$id] = [
-                'call_date' => time(),
-                'call_result' => curl_getinfo($c),
-                'page_uid' => $data[$id]['page_uid'],
-
-            ];
-            curl_multi_remove_handle($mh, $c);
-        }
-
-        // all done
-        curl_multi_close($mh);
-
-        return $result;
-    }
-
-    /**
      * Cleanup the cache queue
      */
     public function cleanup()
@@ -169,9 +101,6 @@ class QueueService extends AbstractService
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
         $queryBuilder = $connectionPool->getQueryBuilderForTable(self::QUEUE_TABLE);
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll();
         $rows = $queryBuilder->select('uid')
             ->from(self::QUEUE_TABLE)
             ->where($queryBuilder->expr()->gt('call_date', $queryBuilder->createNamedParameter(0)))
@@ -194,9 +123,6 @@ class QueueService extends AbstractService
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable(self::QUEUE_TABLE);
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll();
         $where = $queryBuilder->expr()->andX([
             $queryBuilder->expr()->eq('cache_url', $queryBuilder->createNamedParameter($identifier)),
             $queryBuilder->expr()->eq('call_date', $queryBuilder->createNamedParameter(0))
