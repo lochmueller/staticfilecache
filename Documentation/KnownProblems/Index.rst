@@ -24,3 +24,18 @@ Please take some time and make a proper report stating at least:
 - expected behavior
 
 Writing a good bug report will help us to fix the bugs faster and better.
+
+*insertPageIncache hook problem*
+
+There are situations, where the page is created with a new URL, but TYPO3 could fetch the page via cache already. In this case the insertPageIncache hook is not called again and the page will not cached staticly.
+
+.. code-block:: typoscript
+
+   config.linkVars = L
+   config.defaultGetVars {
+       L = 0
+   }
+
+In this configuration example you get two pages like http://www.domain.org/ and http://www.domain.org/en/ but TYPO3 call the hook only once.
+
+More details and a workarround of this problem: https://github.com/lochmueller/staticfilecache/issues/7#issuecomment-317096513
