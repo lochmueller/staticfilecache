@@ -6,21 +6,21 @@
 	<a href="{requestUri}&ACTION[removeExpiredPages]=1" class="btn btn-default"
 		 onclick="return confirm('Are you sure?');">
 		<c:icon identifier="actions-edit-delete"/>
-		Remove all expired pages
+		{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:removeAllExpired')}
 	</a>
 	<a href="{requestUri}&ACTION[removeExpiredPages]=0" class="btn btn-default">
 		<c:icon identifier="actions-system-refresh"/>
-		{f:translate(key: 'LLL:EXT:lang/locallang_core.xml:labels.refresh')}
+		{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:refresh')}
 	</a>
 </p>
 <div class="table-fit">
 	<table border="0" cellspacing="1" cellpadding="0" class="t3-table table table-striped table-hover">
 		<thead>
 		<tr class="bgColor5 tableheader">
-			<th>Page</th>
-			<th>Identifier</th>
-			<th>Created</th>
-			<th>Expires</th>
+			<th>{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:page')}</th>
+			<th>{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:identifier')}</th>
+			<th>{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:created')}</th>
+			<th>{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:expires')}</th>
 		</tr>
 		</thead>
 		<tbody>
