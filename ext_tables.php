@@ -10,6 +10,6 @@ if (TYPO3_MODE == 'BE') {
         'web_info',
         \SFC\Staticfilecache\Module\CacheModule::class,
         null,
-        'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xml:module.title'
+        'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:module.title'
     );
 }

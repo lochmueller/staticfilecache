@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2017-08-02T14:22:55Z">
+		<header>
+			<type>misc</type>
+			<description>Language file for the StaticFileCache extension</description>
+		</header>
+		<body>
+
+		<trans-unit id="module.title">
+			<source>Static File Cache</source>
+		</trans-unit>
+		<trans-unit id="staticfilecache.tx_staticfilecache_cache">
+			<source>Cache page as static file</source>
+		</trans-unit>
+		<trans-unit id="staticfilecache.tx_staticfilecache_cache_force">
+			<source>Force the static cache generation (!!!)</source>
+		</trans-unit>
+		<trans-unit id="moduleFunction.tx_staticfilecache_infomodule">
+			<source>Static file cache</source>
+		</trans-unit>
+		<trans-unit id="staticfilecache_task_removeExpiredPages.name">
+			<source>Remove expired pages</source>
+		</trans-unit>
+		<trans-unit id="staticfilecache_task_removeExpiredPages.description">
+			<source>All expired pages will be removed from the cache.</source>
+		</trans-unit>
+
+		</body>
+	</file>
+</xliff>
