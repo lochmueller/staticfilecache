@@ -5,6 +5,8 @@
  * @author  Tim Lochmüller
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Hook;
 
 use SFC\Staticfilecache\Utility\CookieUtility;
@@ -13,7 +15,7 @@ use SFC\Staticfilecache\Utility\DateTimeUtility;
 /**
  * Init frontend user
  */
-class InitFrontendUser
+class InitFrontendUser extends AbstractHook
 {
 
     /**

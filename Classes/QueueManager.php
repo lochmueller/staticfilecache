@@ -5,13 +5,14 @@
  * @author  Tim Lochmüller
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use SFC\Staticfilecache\Utility\CacheUtility;
-use SFC\Staticfilecache\Utility\ComposerUtility;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -219,12 +220,14 @@ class QueueManager implements SingletonInterface
      * Get a cllable client
      *
      * @param string $domain
-     *
      * @return Client
+     * @throws \Exception
      */
     protected function getCallableClient($domain)
     {
-        ComposerUtility::check();
+        if (!class_exists(Client::class) || !class_exists(CookieJar::class)) {
+            throw new \Exception('You need guzzle to handle the Queue Management', 1236728342);
+        }
         $jar = GeneralUtility::makeInstance(CookieJar::class);
         $cookie = GeneralUtility::makeInstance(SetCookie::class);
         $cookie->setName('staticfilecache');

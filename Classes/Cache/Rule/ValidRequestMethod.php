@@ -4,6 +4,8 @@
  * ValidRequestMethod
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Cache\Rule;
 
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -22,7 +24,7 @@ class ValidRequestMethod extends AbstractRule
      * @param array $explanation
      * @param bool $skipProcessing
      */
-    protected function checkRule($frontendController, $uri, &$explanation, &$skipProcessing)
+    public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
             $explanation[__CLASS__] = 'The request methode has to be GET';

@@ -1,7 +1,0 @@
-{
-    "name": "lochmueller/staticfilecachetemp",
-    "version": "3.6.1",
-    "require": {
-        "guzzlehttp/guzzle": "~6.2.1"
-    }
-}

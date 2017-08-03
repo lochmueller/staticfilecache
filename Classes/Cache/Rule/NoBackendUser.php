@@ -5,6 +5,8 @@
  * @author  Tim Lochmüller
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Cache\Rule;
 
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -15,7 +17,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class NoBackendUser extends AbstractRule
 {
 
-   /**
+    /**
      * No active BE user
      *
      * @param TypoScriptFrontendController $frontendController
@@ -23,7 +25,7 @@ class NoBackendUser extends AbstractRule
      * @param array $explanation
      * @param bool $skipProcessing
      */
-    public function checkRule($frontendController, $uri, &$explanation, &$skipProcessing)
+    public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
         if ($frontendController->isBackendUserLoggedIn() || $this->hasActiveBackendCookies()) {
             $skipProcessing = true;
@@ -40,7 +42,7 @@ class NoBackendUser extends AbstractRule
      *
      * @return bool
      */
-    protected function hasActiveBackendCookies()
+    protected function hasActiveBackendCookies(): bool
     {
         $cookieNames = [
             'be_typo_user',

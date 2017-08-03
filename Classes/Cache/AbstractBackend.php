@@ -5,6 +5,8 @@
  * @author  Tim Lochmüller
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\Configuration;
@@ -35,8 +37,8 @@ class AbstractBackend extends Typo3DatabaseBackend
     /**
      * Constructs this backend
      *
-     * @param string $context FLOW3's application context
-     * @param array  $options Configuration options - depends on the actual backend
+     * @param string $context application context
+     * @param array $options Configuration options - depends on the actual backend
      */
     public function __construct($context, array $options = [])
     {
@@ -49,7 +51,7 @@ class AbstractBackend extends Typo3DatabaseBackend
      *
      * @return int
      */
-    protected function getCompressionLevel()
+    protected function getCompressionLevel(): int
     {
         $level = self::DEFAULT_COMPRESSION_LEVEL;
         if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {
@@ -68,7 +70,7 @@ class AbstractBackend extends Typo3DatabaseBackend
      *
      * @return int
      */
-    protected function getRealLifetime($lifetime)
+    protected function getRealLifetime($lifetime): int
     {
         if (is_null($lifetime)) {
             $lifetime = $this->defaultLifetime;
@@ -76,6 +78,6 @@ class AbstractBackend extends Typo3DatabaseBackend
         if ($lifetime === 0 || $lifetime > $this->maximumLifetime) {
             $lifetime = $this->maximumLifetime;
         }
-        return $lifetime;
+        return (int)$lifetime;
     }
 }

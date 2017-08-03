@@ -5,12 +5,13 @@
  * @author  Tim Lochmüller
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\QueueManager;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -92,7 +93,7 @@ class StaticFileBackend extends AbstractBackend
      * @param string $originalFileName
      * @param string $lifetime
      */
-    protected function writeHtAccessFile($originalFileName, $lifetime)
+    protected function writeHtAccessFile(string $originalFileName, $lifetime)
     {
         $sendCCHeader = (bool)$this->configuration->get('sendCacheControlHeader');
         $sendCCHeaderRedirectAfter = (bool)$this->configuration->get('sendCacheControlHeaderRedirectAfterCacheTimeout');
@@ -121,9 +122,11 @@ class StaticFileBackend extends AbstractBackend
     }
 
     /**
+     * Get TYPO3 headers
+     *
      * @return array
      */
-    protected function getTypoHeaders()
+    protected function getTypoHeaders(): array
     {
         $headers = [];
         if (!($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
@@ -148,7 +151,7 @@ class StaticFileBackend extends AbstractBackend
      *
      * @return string
      */
-    protected function getCacheFilename($entryIdentifier)
+    protected function getCacheFilename(string $entryIdentifier): string
     {
         $urlParts = parse_url($entryIdentifier);
         $path = $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim($urlParts['path'], '/');
@@ -365,7 +368,7 @@ class StaticFileBackend extends AbstractBackend
      *
      * @return bool
      */
-    protected function isBoostMode()
+    protected function isBoostMode(): bool
     {
         return (boolean)$this->configuration->get('boostMode') && !defined('SFC_QUEUE_WORKER');
     }
@@ -375,7 +378,7 @@ class StaticFileBackend extends AbstractBackend
      *
      * @return array
      */
-    protected function getExpiredIdentifiers()
+    protected function getExpiredIdentifiers(): array
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
         $queryBuilder = $connection->createQueryBuilder();

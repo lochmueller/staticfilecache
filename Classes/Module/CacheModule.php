@@ -6,6 +6,8 @@
  * @author Michiel Roos
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Module;
 
 use SFC\Staticfilecache\Utility\CacheUtility;

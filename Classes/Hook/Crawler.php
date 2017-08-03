@@ -6,6 +6,8 @@
  * @author Daniel Poetzinger
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Hook;
 
 use SFC\Staticfilecache\Utility\CacheUtility;
@@ -15,7 +17,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Crawler hook
  */
-class Crawler
+class Crawler extends AbstractHook
 {
 
     /**

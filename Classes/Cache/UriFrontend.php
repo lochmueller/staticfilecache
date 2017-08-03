@@ -5,6 +5,8 @@
  * @author  Tim Lochmüller
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Cache;
 
 use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;

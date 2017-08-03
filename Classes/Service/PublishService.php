@@ -5,17 +5,18 @@
  * @author  Tim Lochmüller
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Service;
 
 use SFC\Staticfilecache\Cache\StaticFileBackend;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * PublishService
  */
-class PublishService implements SingletonInterface
+class PublishService extends AbstractService
 {
 
     /**

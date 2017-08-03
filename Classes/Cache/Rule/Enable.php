@@ -5,6 +5,8 @@
  * @author  Tim Lochmüller
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Cache\Rule;
 
 use SFC\Staticfilecache\Configuration;
@@ -25,7 +27,7 @@ class Enable extends AbstractRule
      * @param array $explanation
      * @param bool $skipProcessing
      */
-    public function checkRule($frontendController, $uri, &$explanation, &$skipProcessing)
+    public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
         /** @var Configuration $configuration */
         $configuration = GeneralUtility::makeInstance(Configuration::class);

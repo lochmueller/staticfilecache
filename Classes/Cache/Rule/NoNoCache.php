@@ -5,6 +5,8 @@
  * @author  Tim Lochmüller
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Cache\Rule;
 
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -23,7 +25,7 @@ class NoNoCache extends AbstractRule
      * @param array $explanation
      * @param bool $skipProcessing
      */
-    public function checkRule($frontendController, $uri, &$explanation, &$skipProcessing)
+    public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
         if ($frontendController->no_cache) {
             $explanation[__CLASS__] = 'config.no_cache is true';

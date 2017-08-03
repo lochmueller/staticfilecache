@@ -5,6 +5,8 @@
  * @author  Tim Lochmüller
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Utility;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -24,7 +26,7 @@ class CacheUtility
      * @return FrontendInterface
      * @throws NoSuchCacheException
      */
-    public static function getCache()
+    public static function getCache(): FrontendInterface
     {
         /** @var CacheManager $cacheManager */
         $objectManager = new ObjectManager();

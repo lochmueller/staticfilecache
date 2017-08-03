@@ -4,6 +4,8 @@
  * Logoff process
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Hook;
 
 use SFC\Staticfilecache\Utility\CookieUtility;
@@ -12,7 +14,7 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 /**
  * LogoffFrontendUser
  */
-class LogoffFrontendUser
+class LogoffFrontendUser extends AbstractHook
 {
     /**
      * Logoff process

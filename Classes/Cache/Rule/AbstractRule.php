@@ -5,6 +5,8 @@
  * @author  Tim Lochmüller
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Cache\Rule;
 
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -25,7 +27,7 @@ abstract class AbstractRule
      *
      * @return array
      */
-    public function check($frontendController, $uri, $explanation, $skipProcessing)
+    public function check(TypoScriptFrontendController $frontendController, string $uri, array $explanation, bool $skipProcessing): array
     {
         $this->checkRule($frontendController, $uri, $explanation, $skipProcessing);
         return [
@@ -44,5 +46,5 @@ abstract class AbstractRule
      * @param array $explanation
      * @param bool $skipProcessing
      */
-    abstract protected function checkRule($frontendController, $uri, &$explanation, &$skipProcessing);
+    abstract protected function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing);
 }

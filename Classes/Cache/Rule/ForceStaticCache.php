@@ -5,6 +5,8 @@
  * @author  Tim Lochmüller
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Cache\Rule;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,7 +38,7 @@ class ForceStaticCache extends AbstractRule
      * @param array $explanation
      * @param bool $skipProcessing
      */
-    protected function checkRule($frontendController, $uri, &$explanation, &$skipProcessing)
+    public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
         if ($this->isForceCacheUri($frontendController, $uri)) {
             foreach ($explanation as $key => $value) {
@@ -65,7 +67,7 @@ class ForceStaticCache extends AbstractRule
      *
      * @return bool
      */
-    protected function isForceCacheUri($frontendController, $uri)
+    protected function isForceCacheUri(TypoScriptFrontendController $frontendController, string $uri): bool
     {
         $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $forceStatic = (bool)$frontendController->page['tx_staticfilecache_cache_force'];
@@ -75,6 +77,6 @@ class ForceStaticCache extends AbstractRule
             'uri' => $uri,
         ];
         $params = $signalSlotDispatcher->dispatch(__CLASS__, 'isForceCacheUri', $params);
-        return $params['forceStatic'];
+        return (bool)$params['forceStatic'];
     }
 }

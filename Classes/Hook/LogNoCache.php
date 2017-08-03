@@ -6,6 +6,8 @@
  * @author         Daniel Poetzinger
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Hook;
 
 use SFC\Staticfilecache\StaticFileCache;
@@ -13,7 +15,7 @@ use SFC\Staticfilecache\StaticFileCache;
 /**
  * Log no cache
  */
-class LogNoCache
+class LogNoCache extends AbstractHook
 {
 
     /**

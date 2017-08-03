@@ -4,6 +4,8 @@
  * Handle cookie related stuff
  */
 
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Utility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
