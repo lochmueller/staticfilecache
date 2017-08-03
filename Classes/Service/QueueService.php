@@ -1,29 +1,27 @@
 <?php
 /**
- * Queue manager
+ * Queue service
  *
  * @author  Tim Lochmüller
  */
 
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache;
+namespace SFC\Staticfilecache\Service;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
-use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Queue manager
+ * Queue service
  *
  * @todo migrate to caching framework with UriFrontend and QueueBackend
  */
-class QueueManager implements SingletonInterface
+class QueueService extends AbstractService
 {
 
     /**

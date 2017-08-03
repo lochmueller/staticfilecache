@@ -8,8 +8,9 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Hook;
 
-use SFC\Staticfilecache\Utility\CookieUtility;
+use SFC\Staticfilecache\Service\CookieService;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * LogoffFrontendUser
@@ -27,7 +28,6 @@ class LogoffFrontendUser extends AbstractHook
         if ($parent->loginType !== 'FE') {
             return;
         }
-
-        CookieUtility::setCookie(1);
+        GeneralUtility::makeInstance(CookieService::class)->setCookie(1);
     }
 }

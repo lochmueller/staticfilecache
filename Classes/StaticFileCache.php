@@ -12,6 +12,7 @@ namespace SFC\Staticfilecache;
 
 use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Service\CacheService;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -31,7 +32,7 @@ class StaticFileCache implements SingletonInterface
     /**
      * Configuration of the extension
      *
-     * @var Configuration
+     * @var ConfigurationService
      */
     protected $configuration;
 
@@ -66,7 +67,7 @@ class StaticFileCache implements SingletonInterface
     {
         $this->cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
         $this->signalDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $this->configuration = GeneralUtility::makeInstance(Configuration::class);
+        $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
     }
 
     /**
@@ -179,7 +180,7 @@ class StaticFileCache implements SingletonInterface
         // Find host-name / IP, always in lowercase:
         $isHttp = (strpos(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), 'http://') === 0);
         $uri = GeneralUtility::getIndpEnv('REQUEST_URI');
-        if ($this->configuration->get('recreateURI')) {
+        if ($this->configuration->getBool('recreateURI')) {
             $uri = $this->recreateUriPath($uri);
         }
         return ($isHttp ? 'http://' : 'https://') . strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . ltrim($uri, '/');

@@ -7,14 +7,12 @@
 
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache;
-
-use TYPO3\CMS\Core\SingletonInterface;
+namespace SFC\Staticfilecache\Service;
 
 /**
  * Handle extension and TS configuration
  */
-class Configuration implements SingletonInterface
+class ConfigurationService extends AbstractService
 {
 
     /**
@@ -50,7 +48,7 @@ class Configuration implements SingletonInterface
      *
      * @return null|mixed
      */
-    public function get($key)
+    public function get(string $key)
     {
         $result = null;
         if (isset($this->configuration[$key])) {
@@ -59,5 +57,16 @@ class Configuration implements SingletonInterface
             $result = $GLOBALS['TSFE']->config['config']['tx_staticfilecache.'][$key];
         }
         return $result;
+    }
+
+    /**
+     * Get the configuration as bool
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function getBool(string $key)
+    {
+        return (bool)$this->get($key);
     }
 }

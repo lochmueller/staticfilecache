@@ -9,8 +9,9 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Hook;
 
-use SFC\Staticfilecache\Utility\CookieUtility;
+use SFC\Staticfilecache\Service\CookieService;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Init frontend user
@@ -42,14 +43,15 @@ class InitFrontendUser extends AbstractHook
 
         $started = $pObj->fe_user->loginSessionStarted;
 
+        $cookieService = GeneralUtility::makeInstance(CookieService::class);
         if (($started || $pObj->fe_user->forceSetCookie) && $pObj->fe_user->lifetime == 0) {
             // If new session and the cookie is a sessioncookie, we need to set it only once!
             // // isSetSessionCookie()
-            CookieUtility::setCookie(0);
-        } elseif (($started || isset($_COOKIE[CookieUtility::FE_COOKIE_NAME])) && $pObj->fe_user->lifetime > 0) {
+            $cookieService->setCookie(0);
+        } elseif (($started || isset($_COOKIE[CookieService::FE_COOKIE_NAME])) && $pObj->fe_user->lifetime > 0) {
             // If it is NOT a session-cookie, we need to refresh it.
             // isRefreshTimeBasedCookie()
-            CookieUtility::setCookie(DateTimeUtility::getCurrentTime() + $pObj->fe_user->lifetime);
+            $cookieService->setCookie(DateTimeUtility::getCurrentTime() + $pObj->fe_user->lifetime);
         }
     }
 }

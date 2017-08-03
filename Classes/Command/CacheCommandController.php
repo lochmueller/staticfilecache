@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Command;
 
-use SFC\Staticfilecache\QueueManager;
 use SFC\Staticfilecache\Service\CacheService;
+use SFC\Staticfilecache\Service\QueueService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -34,7 +34,7 @@ class CacheCommandController extends AbstractCommandController
      */
     public function runCacheBoostQueueCommand($limitItems = 0)
     {
-        $queue = GeneralUtility::makeInstance(QueueManager::class);
+        $queue = GeneralUtility::makeInstance(QueueService::class);
         $queue->run($limitItems);
     }
 
@@ -43,7 +43,7 @@ class CacheCommandController extends AbstractCommandController
      */
     public function cleanupCacheBoostQueueCommand()
     {
-        $queue = GeneralUtility::makeInstance(QueueManager::class);
+        $queue = GeneralUtility::makeInstance(QueueService::class);
         $queue->cleanup();
     }
 

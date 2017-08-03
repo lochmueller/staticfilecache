@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
-use SFC\Staticfilecache\QueueManager;
+use SFC\Staticfilecache\Service\QueueService;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -76,7 +76,7 @@ class StaticFileBackend extends AbstractBackend
         GeneralUtility::writeFile($fileName, $data);
 
         // gz
-        if ($this->configuration->get('enableStaticFileCompression')) {
+        if ($this->configuration->getBool('enableStaticFileCompression')) {
             $contentGzip = gzencode($data, $this->getCompressionLevel());
             if ($contentGzip) {
                 GeneralUtility::writeFile($fileName . '.gz', $contentGzip);
@@ -95,9 +95,9 @@ class StaticFileBackend extends AbstractBackend
      */
     protected function writeHtAccessFile(string $originalFileName, $lifetime)
     {
-        $sendCCHeader = (bool)$this->configuration->get('sendCacheControlHeader');
-        $sendCCHeaderRedirectAfter = (bool)$this->configuration->get('sendCacheControlHeaderRedirectAfterCacheTimeout');
-        $sendTypo3Headers = (bool)$this->configuration->get('sendTypo3Headers');
+        $sendCCHeader = $this->configuration->getBool('sendCacheControlHeader');
+        $sendCCHeaderRedirectAfter = $this->configuration->getBool('sendCacheControlHeaderRedirectAfterCacheTimeout');
+        $sendTypo3Headers = $this->configuration->getBool('sendTypo3Headers');
         if ($sendCCHeader || $sendCCHeaderRedirectAfter || $sendTypo3Headers) {
             $fileName = PathUtility::pathinfo($originalFileName, PATHINFO_DIRNAME) . '/.htaccess';
             $accessTimeout = $this->configuration->get('htaccessTimeout');
@@ -356,11 +356,11 @@ class StaticFileBackend extends AbstractBackend
     /**
      * Get queue manager
      *
-     * @return QueueManager
+     * @return QueueService
      */
     protected function getQueue()
     {
-        return GeneralUtility::makeInstance(QueueManager::class);
+        return GeneralUtility::makeInstance(QueueService::class);
     }
 
     /**

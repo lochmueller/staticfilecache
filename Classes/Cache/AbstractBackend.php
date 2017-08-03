@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
-use SFC\Staticfilecache\Configuration;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -30,7 +30,7 @@ class AbstractBackend extends Typo3DatabaseBackend
     /**
      * Configuration
      *
-     * @var Configuration
+     * @var ConfigurationService
      */
     protected $configuration;
 
@@ -43,7 +43,7 @@ class AbstractBackend extends Typo3DatabaseBackend
     public function __construct($context, array $options = [])
     {
         parent::__construct($context, $options);
-        $this->configuration = GeneralUtility::makeInstance(Configuration::class);
+        $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
     }
 
     /**

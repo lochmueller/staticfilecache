@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 
-use SFC\Staticfilecache\Configuration;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -29,9 +29,9 @@ class Enable extends AbstractRule
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
-        /** @var Configuration $configuration */
-        $configuration = GeneralUtility::makeInstance(Configuration::class);
-        if ((boolean)$configuration->get('disableCache') === true) {
+        /** @var ConfigurationService $configuration */
+        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+        if ($configuration->getBool('disableCache')) {
             $explanation[__CLASS__] = 'static cache disabled by TypoScript';
         }
     }
