@@ -32,11 +32,11 @@ class QueueService extends AbstractService
      *
      * @param int $limitItems
      */
-    public function run($limitItems = 0)
+    public function run(int $limitItems = 0)
     {
         define('SFC_QUEUE_WORKER', true);
 
-        $limit = $limitItems > 0 ? (int)$limitItems : 999;
+        $limit = $limitItems > 0 ? $limitItems : 999;
 
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -118,7 +118,7 @@ class QueueService extends AbstractService
      *
      * @param string $identifier
      */
-    public function addIdentifier($identifier)
+    public function addIdentifier(string $identifier)
     {
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -157,7 +157,7 @@ class QueueService extends AbstractService
      * @return Client
      * @throws \Exception
      */
-    protected function getCallableClient($domain)
+    protected function getCallableClient(string $domain):Client
     {
         if (!class_exists(Client::class) || !class_exists(CookieJar::class)) {
             throw new \Exception('You need guzzle to handle the Queue Management', 1236728342);

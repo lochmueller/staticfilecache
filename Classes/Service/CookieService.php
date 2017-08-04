@@ -39,7 +39,7 @@ class CookieService extends AbstractService
      * @return string The domain to be used on setting cookies
      * @see AbstractUserAuthentication::getCookieDomain
      */
-    protected function getCookieDomain()
+    protected function getCookieDomain():string
     {
         $result = '';
         $cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'];

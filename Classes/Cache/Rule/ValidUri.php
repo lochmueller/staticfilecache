@@ -19,6 +19,7 @@ class ValidUri extends AbstractRule
 
     /**
      * Check if the URI is valid
+     * Note: A FILTER_VALIDATE_URL check is already done in the URI frontend
      *
      * @param TypoScriptFrontendController $frontendController
      * @param string $uri
@@ -27,8 +28,6 @@ class ValidUri extends AbstractRule
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
-        // Note: A FILTER_VALIDATE_URL check is done in the URI frontend
-
         if (strpos($uri, '?') !== false) {
             $explanation[__CLASS__] = 'The URI contain a "?" that is not allowed for static file cache';
             $skipProcessing = true;

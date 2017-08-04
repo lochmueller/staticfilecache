@@ -96,7 +96,7 @@ class StaticFileBackend extends AbstractBackend
         $urlParts = parse_url($entryIdentifier);
         $path = $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim($urlParts['path'], '/');
         $cacheFilename = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY . $path);
-        $fileExtension = PathUtility::pathinfo(basename($cacheFilename), PATHINFO_EXTENSION);
+        $fileExtension = PathUtility::pathinfo(PathUtility::basename($cacheFilename), PATHINFO_EXTENSION);
         if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
             $cacheFilename = rtrim($cacheFilename, '/') . '/index.html';
         }
@@ -162,7 +162,6 @@ class StaticFileBackend extends AbstractBackend
      */
     public function flush()
     {
-
         if ((boolean)$this->configuration->get('clearCacheForAllDomains') === false) {
             $this->flushByTag('sfc_domain_' . str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
             return;
@@ -264,7 +263,7 @@ class StaticFileBackend extends AbstractBackend
      * @param string $tag
      * @return array
      */
-    protected function findIdentifiersByTagIncludingExpired($tag)
+    protected function findIdentifiersByTagIncludingExpired($tag):array
     {
         $base = $GLOBALS['EXEC_TIME'];
         $GLOBALS['EXEC_TIME'] = 0;
@@ -276,9 +275,9 @@ class StaticFileBackend extends AbstractBackend
     /**
      * Remove the static files of the given identifier
      *
-     * @param $entryIdentifier
+     * @param string $entryIdentifier
      */
-    protected function removeStaticFiles($entryIdentifier)
+    protected function removeStaticFiles(string $entryIdentifier)
     {
         $fileName = $this->getCacheFilename($entryIdentifier);
         $files = [
@@ -298,7 +297,7 @@ class StaticFileBackend extends AbstractBackend
      *
      * @return QueueService
      */
-    protected function getQueue()
+    protected function getQueue():QueueService
     {
         return GeneralUtility::makeInstance(QueueService::class);
     }
@@ -322,19 +321,18 @@ class StaticFileBackend extends AbstractBackend
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
         $queryBuilder = $connection->createQueryBuilder();
-        $result = $queryBuilder->select('identifier')
+        $rows = $queryBuilder->select('identifier')
             ->from($this->cacheTable)
             ->where($queryBuilder->expr()->lt(
                 'expires',
                 $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
             ))
-            // group by is like DISTINCT and used here to suppress possible duplicate identifiers
             ->groupBy('identifier')
-            ->execute();
+            ->execute()
+            ->fetchAll();
 
-        // Get identifiers of expired cache entries
         $cacheEntryIdentifiers = [];
-        while ($row = $result->fetch()) {
+        foreach ($rows as $row) {
             $cacheEntryIdentifiers[] = $row['identifier'];
         }
 
