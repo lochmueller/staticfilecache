@@ -1,11 +1,107 @@
-{namespace c=TYPO3\CMS\Core\ViewHelpers}
-
-<h1>Static file cache</h1>
+<h1>
+	<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:module.title"/>
+</h1>
 <p>
+	<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:module.intro"/>
+</p>
 
-	<a href="{requestUri}&ACTION[removeExpiredPages]=1" class="btn btn-default"
+<f:flashMessages/>
+
+<table class="table table-striped">
+	<tr>
+		<th class="col-sm-4">
+			<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:page"/>
+		</th>
+		<th class="col-sm-6">
+			<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:identifier"/>
+		</th>
+		<th class="col-sm-1">
+			<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:created"/>
+		</th>
+		<th class="col-sm-1">
+			<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:expires"/>
+		</th>
+	</tr>
+
+	<f:for each="{rows}" as="row">
+		<f:render section="singleEntryRow" arguments="{row:row}"/>
+	</f:for>
+</table>
+
+
+<f:section name="singleEntryRow">
+	<tr>
+		<td>
+			<f:format.raw>{row.title}</f:format.raw>
+		</td>
+		<f:if condition="{row.info}">
+			<f:then>
+				<td><a href="{row.identifier}">{row.identifier}</a>
+					<f:if condition="{row.info.explanation -> f:count()}">
+						<f:then>
+							<c:icon identifier="status-status-permission-denied"/>
+						</f:then>
+						<f:else>
+							<c:icon identifier="status-status-permission-granted"/>
+						</f:else>
+					</f:if>
+				</td>
+				<td>
+					<f:if condition="{row.info.explanation -> f:count()}">
+						<f:then>
+							<c:icon identifier="status-status-permission-denied"/>
+						</f:then>
+						<f:else>
+							<f:format.date format="d-m-Y H:i">@{row.info.created}</f:format.date>
+						</f:else>
+					</f:if>
+				</td>
+				<td>
+					<f:if condition="{row.info.explanation -> f:count()}">
+						<f:then>
+							<c:icon identifier="status-status-permission-denied"/>
+						</f:then>
+						<f:else>
+							<f:format.date format="d-m-Y H:i">@{row.info.expires}</f:format.date>
+						</f:else>
+					</f:if>
+				</td>
+			</f:then>
+			<f:else>
+				<td>
+					-
+				</td>
+				<td>
+					-
+				</td>
+				<td>
+					-
+				</td>
+			</f:else>
+		</f:if>
+	</tr>
+	<f:if condition="{row.info.explanation -> f:count()}">
+		<f:then>
+			<tr>
+				<td colspan="4" class="danger">
+					<ul>
+						<f:for each="{row.info.explanation}" as="explanation">
+							<li>
+								{explanation}
+							</li>
+						</f:for>
+					</ul>
+				</td>
+			</tr>
+		</f:then>
+	</f:if>
+</f:section>
+
+
+<p>
+	<a class="btn btn-danger" href="{requestUri}&ACTION[removeExpiredPages]=1"
 		 onclick="return confirm('Are you sure?');">
-		<c:icon identifier="actions-edit-delete"/>
+		<c:icon identifier="actions-delete"/>
 		{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:removeAllExpired')}
 	</a>
 	<a href="{requestUri}&ACTION[removeExpiredPages]=0" class="btn btn-default">
@@ -13,94 +109,3 @@
 		{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:refresh')}
 	</a>
 </p>
-<div class="table-fit">
-	<table border="0" cellspacing="1" cellpadding="0" class="t3-table table table-striped table-hover">
-		<thead>
-		<tr class="bgColor5 tableheader">
-			<th>{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:page')}</th>
-			<th>{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:identifier')}</th>
-			<th>{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:created')}</th>
-			<th>{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:expires')}</th>
-		</tr>
-		</thead>
-		<tbody>
-		<f:for each="{rows}" as="cell">
-			<f:if condition="{cell.info}">
-				<f:then>
-					<f:render section="cellLine" arguments="{cell:cell}"/>
-					<f:if condition="{cell.info.explanation -> f:count()}">
-						<f:then>
-							<tr>
-								<td colspan="4" class="danger">
-									<ul>
-										<f:for each="{cell.info.explanation}" as="explanation">
-											<li>
-												{explanation}
-											</li>
-										</f:for>
-									</ul>
-								</td>
-							</tr>
-							<c:icon identifier="status-status-permission-denied"/>
-						</f:then>
-					</f:if>
-				</f:then>
-				<f:else>
-					<tr>
-						<td nowrap="nowrap" colspan="3">
-							<f:format.raw>{cell.depthData}</f:format.raw>
-							<f:format.raw>{cell.title}</f:format.raw>
-						</td>
-						<td>
-							<f:if condition="{cell.uid}"><span class="typo3-dimmed">not hit</span></f:if>
-						</td>
-					</tr>
-				</f:else>
-			</f:if>
-		</f:for>
-		</tbody>
-	</table>
-</div>
-<f:if condition="{pageId} > 0">
-	<input type="hidden" name="id" value="{pageId}"/>
-</f:if>
-
-
-<f:section name="cellLine">
-	<tr>
-		<td nowrap="nowrap">
-			<f:format.raw>{cell.depthData}</f:format.raw>
-			<f:format.raw>{cell.title}</f:format.raw>
-		</td>
-		<td><a href="{cell.identifier}">{cell.identifier}</a>
-			<f:if condition="{cell.info.explanation -> f:count()}">
-				<f:then>
-					<c:icon identifier="status-status-permission-denied"/>
-				</f:then>
-				<f:else>
-					<c:icon identifier="status-status-permission-granted"/>
-				</f:else>
-			</f:if>
-		</td>
-		<td nowrap="nowrap">
-			<f:if condition="{cell.info.explanation -> f:count()}">
-				<f:then>
-					<c:icon identifier="status-status-permission-denied"/>
-				</f:then>
-				<f:else>
-					<f:format.date format="d-m-Y H:i">@{cell.info.created}</f:format.date>
-				</f:else>
-			</f:if>
-		</td>
-		<td nowrap="nowrap">
-			<f:if condition="{cell.info.explanation -> f:count()}">
-				<f:then>
-					<c:icon identifier="status-status-permission-denied"/>
-				</f:then>
-				<f:else>
-					<f:format.date format="d-m-Y H:i">@{cell.info.expires}</f:format.date>
-				</f:else>
-			</f:if>
-		</td>
-	</tr>
-</f:section>
