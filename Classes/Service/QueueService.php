@@ -123,10 +123,10 @@ class QueueService extends AbstractService
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable(self::QUEUE_TABLE);
-        $where = $queryBuilder->expr()->andX([
+        $where = $queryBuilder->expr()->andX(
             $queryBuilder->expr()->eq('cache_url', $queryBuilder->createNamedParameter($identifier)),
             $queryBuilder->expr()->eq('call_date', $queryBuilder->createNamedParameter(0))
-        ]);
+        );
         $rows = $queryBuilder->select('uid')
             ->from(self::QUEUE_TABLE)
             ->where($where)
