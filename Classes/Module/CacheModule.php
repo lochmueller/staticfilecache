@@ -38,16 +38,27 @@ class CacheModule extends AbstractFunctionModule
     public function main()
     {
         $this->handleActions();
-        $this->pageId = intval($this->pObj->id);
-        return $this->renderModule();
+        $this->pageId = (int)$this->pObj->id;
+
+        /** @var StandaloneView $renderer */
+        $renderer = GeneralUtility::makeInstance(StandaloneView::class);
+        $moduleTemplate = 'EXT:staticfilecache/Resources/Private/Templates/Module.html';
+        $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($moduleTemplate));
+        $renderer->assignMultiple([
+            'requestUri' => GeneralUtility::getIndpEnv('REQUEST_URI'),
+            'rows' => $this->getCachePagesEntries(),
+            'pageId' => $this->pageId
+        ]);
+
+        return $renderer->render();
     }
 
     /**
-     * Rendering the information
+     * Get cache pages entries
      *
-     * @return    string        HTML for the information table.
+     * @return array
      */
-    protected function renderModule()
+    protected function getCachePagesEntries(): array
     {
         $rows = [];
         $cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
@@ -64,42 +75,20 @@ class CacheModule extends AbstractFunctionModule
 
         foreach ($dbRows as $row) {
             $cacheEntries = $cache->getByTag('sfc_pageId_' . $row['uid']);
-
-            if ($cacheEntries) {
-                foreach ($cacheEntries as $identifier => $info) {
-                    $cell = [
-                        'uid' => $row['uid'],
-                        'title' => BackendUtility::getRecordTitle(
-                            'pages',
-                            $row,
-                            true
-                        ),
-                        'identifier' => $identifier,
-                        'info' => $info,
-                    ];
-
-                    $rows[] = $cell;
-                }
-            } else {
-                $cell = [
+            foreach ($cacheEntries as $identifier => $info) {
+                $rows[] = [
                     'uid' => $row['uid'],
-                    'title' => BackendUtility::getRecordTitle('pages', $row, true),
+                    'title' => BackendUtility::getRecordTitle(
+                        'pages',
+                        $row,
+                        true
+                    ),
+                    'identifier' => $identifier,
+                    'info' => $info,
                 ];
-                $rows[] = $cell;
             }
         }
-
-        /** @var StandaloneView $renderer */
-        $renderer = GeneralUtility::makeInstance(StandaloneView::class);
-        $moduleTemplate = 'EXT:staticfilecache/Resources/Private/Templates/Module.html';
-        $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($moduleTemplate));
-        $renderer->assignMultiple([
-            'requestUri' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-            'rows' => $rows,
-            'pageId' => $this->pageId
-        ]);
-
-        return $renderer->render();
+        return $rows;
     }
 
     /**
