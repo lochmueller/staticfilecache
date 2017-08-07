@@ -50,7 +50,6 @@ class UriFrontend extends StringFrontend
      * @param array $tags Tags to associate with this cache entry
      * @param integer $lifetime Lifetime of this cache entry in seconds. NULL=default; 0=unlimited
      *
-     * @return void
      * @throws \InvalidArgumentException if the identifier or tag is not valid
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the variable to cache is not of type string
      * @api

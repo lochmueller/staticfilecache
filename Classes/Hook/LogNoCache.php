@@ -21,18 +21,16 @@ class LogNoCache extends AbstractHook
     /**
      * Log cache miss if no_cache is true
      *
-     * @param    array $params : Parameters delivered by the calling object
-     * @param    object $parent : The calling parent object
-     *
-     * @return    void
+     * @param array $parameters
+     * @param object $parentObject
      */
-    public function log(&$params, $parent)
+    public function log(&$parameters, $parentObject)
     {
-        if ($params['pObj']) {
-            if ($params['pObj']->no_cache) {
+        if ($parameters['pObj']) {
+            if ($parameters['pObj']->no_cache) {
                 $timeOutTime = 0;
                 StaticFileCache::getInstance()
-                    ->insertPageInCache($params['pObj'], $timeOutTime);
+                    ->insertPageInCache($parameters['pObj'], $timeOutTime);
             }
         }
     }

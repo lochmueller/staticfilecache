@@ -29,29 +29,27 @@ class InitFrontendUser extends AbstractHook
      *
      * Checking code taken from class.t3lib_userauth.php
      *
-     * @param    object $params : parameter array
-     * @param    object $pObj : partent object
-     *
-     * @return    void
+     * @param object $parameters
+     * @param object $parentObject
      */
-    public function setFeUserCookie(&$params, &$pObj)
+    public function setFeUserCookie(&$parameters, &$parentObject)
     {
-        if ($pObj->fe_user->dontSetCookie) {
+        if ($parentObject->fe_user->dontSetCookie) {
             // do not set any cookie
             return;
         }
 
-        $started = $pObj->fe_user->loginSessionStarted;
+        $started = $parentObject->fe_user->loginSessionStarted;
 
         $cookieService = GeneralUtility::makeInstance(CookieService::class);
-        if (($started || $pObj->fe_user->forceSetCookie) && $pObj->fe_user->lifetime == 0) {
+        if (($started || $parentObject->fe_user->forceSetCookie) && $parentObject->fe_user->lifetime == 0) {
             // If new session and the cookie is a sessioncookie, we need to set it only once!
             // // isSetSessionCookie()
             $cookieService->setCookie(0);
-        } elseif (($started || isset($_COOKIE[CookieService::FE_COOKIE_NAME])) && $pObj->fe_user->lifetime > 0) {
+        } elseif (($started || isset($_COOKIE[CookieService::FE_COOKIE_NAME])) && $parentObject->fe_user->lifetime > 0) {
             // If it is NOT a session-cookie, we need to refresh it.
             // isRefreshTimeBasedCookie()
-            $cookieService->setCookie(DateTimeUtility::getCurrentTime() + $pObj->fe_user->lifetime);
+            $cookieService->setCookie(DateTimeUtility::getCurrentTime() + $parentObject->fe_user->lifetime);
         }
     }
 }

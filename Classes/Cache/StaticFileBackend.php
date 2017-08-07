@@ -42,7 +42,6 @@ class StaticFileBackend extends AbstractBackend
      * @param array $tags Tags to associate with this cache entry
      * @param integer $lifetime Lifetime of this cache entry in seconds
      *
-     * @return void
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the data is not a string
      */
@@ -157,8 +156,6 @@ class StaticFileBackend extends AbstractBackend
 
     /**
      * Removes all cache entries of this cache.
-     *
-     * @return void
      */
     public function flush()
     {
@@ -210,8 +207,6 @@ class StaticFileBackend extends AbstractBackend
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
-     *
-     * @return void
      */
     public function flushByTag($tag)
     {
@@ -223,8 +218,6 @@ class StaticFileBackend extends AbstractBackend
 
     /**
      * Does garbage collection
-     *
-     * @return void
      */
     public function collectGarbage()
     {

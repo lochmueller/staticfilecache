@@ -75,8 +75,6 @@ class StaticFileCache implements SingletonInterface
      *
      * @param    TypoScriptFrontendController $pObj : The parent object
      * @param    string $timeOutTime : The timestamp when the page times out
-     *
-     * @return    void
      */
     public function insertPageInCache(TypoScriptFrontendController &$pObj, &$timeOutTime)
     {

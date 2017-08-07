@@ -93,8 +93,6 @@ class CacheModule extends AbstractFunctionModule
 
     /**
      * Handles incoming actions (e.g. removing all expired pages).
-     *
-     * @return    void
      */
     protected function handleActions()
     {
