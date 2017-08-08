@@ -5,7 +5,6 @@
  * @author Michiel Roos
  * @author Tim Lochmüller
  */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache;
@@ -114,7 +113,7 @@ class StaticFileCache implements SingletonInterface
 
             // This is supposed to have "&& !$pObj->beUserLogin" in there as well
             // This fsck's up the ctrl-shift-reload hack, so I pulled it out.
-            if (sizeof($explanation) === 0) {
+            if (count($explanation) === 0) {
                 // If page has a endtime before the current timeOutTime, use it instead:
                 if ($pObj->page['endtime'] > 0 && $pObj->page['endtime'] < $timeOutTime) {
                     $timeOutTime = $pObj->page['endtime'];
@@ -227,9 +226,9 @@ class StaticFileCache implements SingletonInterface
     protected function hasValidCacheEntry($uri)
     {
         $entry = $this->cache->get($uri);
-        return ($entry !== null &&
+        return $entry !== null &&
             count($entry['explanation']) === 0 &&
-            $entry['expires'] >= DateTimeUtility::getCurrentTime());
+            $entry['expires'] >= DateTimeUtility::getCurrentTime();
     }
 
     /**
