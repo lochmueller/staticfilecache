@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 $tmp = [
     'tx_staticfilecache_cache' => [
         'exclude' => 0,

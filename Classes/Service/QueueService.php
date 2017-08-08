@@ -153,8 +153,8 @@ class QueueService extends AbstractService
      * Get a cllable client
      *
      * @param string $domain
-     * @return Client
      * @throws \Exception
+     * @return Client
      */
     protected function getCallableClient(string $domain):Client
     {
