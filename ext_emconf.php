@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Static File Cache',
     'description' => 'Transparent static file cache solution using mod_rewrite and mod_expires. Increase performance for static pages by a factor of 230!!',

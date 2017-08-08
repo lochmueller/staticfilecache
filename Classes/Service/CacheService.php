@@ -22,8 +22,8 @@ class CacheService extends AbstractService
     /**
      * Get the static file cache
      *
-     * @return FrontendInterface
      * @throws NoSuchCacheException
+     * @return FrontendInterface
      */
     public function getCache(): FrontendInterface
     {
