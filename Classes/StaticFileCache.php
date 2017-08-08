@@ -177,7 +177,7 @@ class StaticFileCache implements SingletonInterface
         // Find host-name / IP, always in lowercase:
         $isHttp = (strpos(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), 'http://') === 0);
         $uri = GeneralUtility::getIndpEnv('REQUEST_URI');
-        if ($this->configuration->is('recreateURI')) {
+        if ($this->configuration->isBool('recreateURI')) {
             $uri = $this->recreateUriPath($uri);
         }
         return ($isHttp ? 'http://' : 'https://') . strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . ltrim($uri, '/');

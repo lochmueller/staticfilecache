@@ -32,9 +32,9 @@ class Crawler extends AbstractHook
             return;
         }
         if ($parentObject->applicationData['tx_crawler']['running'] && in_array(
-                'tx_staticfilecache_clearstaticfile',
-                $parentObject->applicationData['tx_crawler']['parameters']['procInstructions']
-            )
+            'tx_staticfilecache_clearstaticfile',
+            $parentObject->applicationData['tx_crawler']['parameters']['procInstructions']
+        )
         ) {
             $this->clearCache($parentObject);
         }

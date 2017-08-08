@@ -46,10 +46,10 @@ class HtaccessGenerator
      */
     public function write(string $originalFileName, int $lifetime)
     {
-        $sendCCHeader = $this->configuration->is('sendCacheControlHeader');
-        $ccHeaderRedirectAfter = $this->configuration->is('sendCacheControlHeaderRedirectAfterCacheTimeout');
-        $sendTypo3Headers = $this->configuration->is('sendTypo3Headers');
-        if (!$sendCCHeader && !$ccHeaderRedirectAfter && !$sendTypo3Headers) {
+        $sendCCHeader = $this->configuration->isBool('sendCacheControlHeader');
+        $redirectAfter = $this->configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout');
+        $sendTypo3Headers = $this->configuration->isBool('sendTypo3Headers');
+        if (!$sendCCHeader && !$redirectAfter && !$sendTypo3Headers) {
             return;
         }
 
@@ -67,7 +67,7 @@ class HtaccessGenerator
             'expires' => DateTimeUtility::getCurrentTime() + $lifetime,
             'typo3headers' => $this->getTypoHeaders(),
             'sendCacheControlHeader' => $sendCCHeader,
-            'sendCacheControlHeaderRedirectAfterCacheTimeout' => $ccHeaderRedirectAfter,
+            'sendCacheControlHeaderRedirectAfterCacheTimeout' => $redirectAfter,
             'sendTypo3Headers' => $sendTypo3Headers,
         ]);
 

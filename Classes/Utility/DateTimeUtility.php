@@ -29,10 +29,9 @@ class DateTimeUtility
         if ($time !== 0) {
             return $time;
         }
+        $time = time();
         if (isset($GLOBALS['EXEC_TIME']) && MathUtility::canBeInterpretedAsInteger($GLOBALS['EXEC_TIME'])) {
             $time = (int)$GLOBALS['EXEC_TIME'];
-        } else {
-            $time = time();
         }
         return $time;
     }

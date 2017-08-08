@@ -72,7 +72,7 @@ class StaticFileBackend extends AbstractBackend
         GeneralUtility::writeFile($fileName, $data);
 
         // gz
-        if ($this->configuration->is('enableStaticFileCompression')) {
+        if ($this->configuration->isBool('enableStaticFileCompression')) {
             $contentGzip = gzencode($data, $this->getCompressionLevel());
             if ($contentGzip) {
                 GeneralUtility::writeFile($fileName . '.gz', $contentGzip);
