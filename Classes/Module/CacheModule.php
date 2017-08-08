@@ -5,7 +5,6 @@
  * @author  Tim Lochmüller
  * @author Michiel Roos
  */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Module;
@@ -26,7 +25,7 @@ class CacheModule extends AbstractFunctionModule
     /**
      * Page ID
      *
-     * @var integer
+     * @var int
      */
     protected $pageId = 0;
 

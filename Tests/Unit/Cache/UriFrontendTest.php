@@ -4,7 +4,6 @@
  *
  * @author  Tim Lochmüller
  */
-
 namespace SFC\Staticfilecache\Tests\Unit\Cache;
 
 use SFC\Staticfilecache\Cache\UriFrontend;
@@ -43,5 +42,4 @@ class UriFrontendTest extends \PHPUnit_Framework_TestCase
     {
         return new UriFrontend('test', new NullBackend(''));
     }
-
 }
