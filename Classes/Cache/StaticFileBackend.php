@@ -72,7 +72,7 @@ class StaticFileBackend extends AbstractBackend
         GeneralUtility::writeFile($fileName, $data);
 
         // gz
-        if ($this->configuration->getBool('enableStaticFileCompression')) {
+        if ($this->configuration->is('enableStaticFileCompression')) {
             $contentGzip = gzencode($data, $this->getCompressionLevel());
             if ($contentGzip) {
                 GeneralUtility::writeFile($fileName . '.gz', $contentGzip);
@@ -220,9 +220,9 @@ class StaticFileBackend extends AbstractBackend
      */
     public function collectGarbage()
     {
-        $cacheEntryIdentifiers = $this->getExpiredIdentifiers();
+        $expiredIdentifiers = $this->getExpiredIdentifiers();
         parent::collectGarbage();
-        foreach ($cacheEntryIdentifiers as $identifier) {
+        foreach ($expiredIdentifiers as $identifier) {
             $this->removeStaticFiles($identifier);
         }
     }
@@ -234,18 +234,21 @@ class StaticFileBackend extends AbstractBackend
      */
     protected function removeStaticFilesByTags($tags)
     {
-        $queue = $this->getQueue();
+        $identifiers = [];
         foreach ($tags as $tag) {
-            $identifiers = $this->findIdentifiersByTagIncludingExpired($tag);
-            if ($this->isBoostMode()) {
-                foreach ($identifiers as $identifier) {
-                    $queue->addIdentifier($identifier);
-                }
-            } else {
-                foreach ($identifiers as $identifier) {
-                    $this->removeStaticFiles($identifier);
-                }
+            $identifiers = array_merge($identifiers, $this->findIdentifiersByTagIncludingExpired($tag));
+        }
+
+        if ($this->isBoostMode()) {
+            $queue = $this->getQueue();
+            foreach ($identifiers as $identifier) {
+                $queue->addIdentifier($identifier);
             }
+            return;
+        }
+
+        foreach ($identifiers as $identifier) {
+            $this->removeStaticFiles($identifier);
         }
     }
 
@@ -255,7 +258,7 @@ class StaticFileBackend extends AbstractBackend
      * @param string $tag
      * @return array
      */
-    protected function findIdentifiersByTagIncludingExpired($tag):array
+    protected function findIdentifiersByTagIncludingExpired($tag): array
     {
         $base = $GLOBALS['EXEC_TIME'];
         $GLOBALS['EXEC_TIME'] = 0;
@@ -289,7 +292,7 @@ class StaticFileBackend extends AbstractBackend
      *
      * @return QueueService
      */
-    protected function getQueue():QueueService
+    protected function getQueue(): QueueService
     {
         return GeneralUtility::makeInstance(QueueService::class);
     }
@@ -323,11 +326,11 @@ class StaticFileBackend extends AbstractBackend
             ->execute()
             ->fetchAll();
 
-        $cacheEntryIdentifiers = [];
+        $cacheIdentifiers = [];
         foreach ($rows as $row) {
-            $cacheEntryIdentifiers[] = $row['identifier'];
+            $cacheIdentifiers[] = $row['identifier'];
         }
 
-        return $cacheEntryIdentifiers;
+        return $cacheIdentifiers;
     }
 }

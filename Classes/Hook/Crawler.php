@@ -32,17 +32,28 @@ class Crawler extends AbstractHook
             return;
         }
         if ($parentObject->applicationData['tx_crawler']['running'] && in_array(
-            'tx_staticfilecache_clearstaticfile',
-            $parentObject->applicationData['tx_crawler']['parameters']['procInstructions']
-        )
+                'tx_staticfilecache_clearstaticfile',
+                $parentObject->applicationData['tx_crawler']['parameters']['procInstructions']
+            )
         ) {
-            $pageId = $GLOBALS['TSFE']->id;
-            if (is_numeric($pageId)) {
-                GeneralUtility::makeInstance(CacheService::class)->clearByPageId($pageId);
-                $parentObject->applicationData['tx_crawler']['log'][] = 'EXT:staticfilecache cleared static file';
-            } else {
-                $parentObject->applicationData['tx_crawler']['log'][] = 'EXT:staticfilecache skipped';
-            }
+            $this->clearCache($parentObject);
         }
+    }
+
+    /**
+     * Execute the clear cache
+     *
+     * @param TypoScriptFrontendController $parentObject
+     */
+    protected function clearCache(TypoScriptFrontendController $parentObject)
+    {
+        $pageId = $parentObject->id;
+        if (!is_numeric($pageId)) {
+            $parentObject->applicationData['tx_crawler']['log'][] = 'EXT:staticfilecache skipped';
+            return;
+        }
+
+        GeneralUtility::makeInstance(CacheService::class)->clearByPageId($pageId);
+        $parentObject->applicationData['tx_crawler']['log'][] = 'EXT:staticfilecache cleared static file';
     }
 }

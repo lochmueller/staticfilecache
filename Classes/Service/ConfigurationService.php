@@ -64,7 +64,7 @@ class ConfigurationService extends AbstractService
      * @param string $key
      * @return bool
      */
-    public function getBool(string $key)
+    public function is(string $key)
     {
         return (bool)$this->get($key);
     }

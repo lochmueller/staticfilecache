@@ -23,7 +23,7 @@ class ForceStaticCache extends AbstractRule
      *
      * @var array
      */
-    protected $ignoreRulesInForceMode = [
+    protected $ignoreRules = [
         StaticCacheable::class,
         NoIntScripts::class,
         NoNoCache::class,
@@ -41,7 +41,7 @@ class ForceStaticCache extends AbstractRule
     {
         if ($this->isForceCacheUri($frontendController, $uri)) {
             foreach ($explanation as $key => $value) {
-                foreach ($this->ignoreRulesInForceMode as $ignore) {
+                foreach ($this->ignoreRules as $ignore) {
                     if (GeneralUtility::isFirstPartOfStr($key, $ignore)) {
                         unset($explanation[$key]);
                         continue;

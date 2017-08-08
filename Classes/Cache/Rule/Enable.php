@@ -30,7 +30,7 @@ class Enable extends AbstractRule
     {
         /** @var ConfigurationService $configuration */
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        if ($configuration->getBool('disableCache')) {
+        if ($configuration->is('disableCache')) {
             $explanation[__CLASS__] = 'static cache disabled by TypoScript';
         }
     }

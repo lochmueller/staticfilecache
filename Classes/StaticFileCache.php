@@ -134,19 +134,19 @@ class StaticFileCache implements SingletonInterface
                 }
 
                 // Signal: Process content before writing to static cached file
-                $processContentArguments = [
+                $contentArguments = [
                     'frontendController' => $pObj,
                     'uri' => $uri,
                     'content' => $content,
                     'timeOutSeconds' => $timeOutSeconds,
                 ];
-                $processContentArguments = $this->dispatch(
+                $contentArguments = $this->dispatch(
                     'processContent',
-                    $processContentArguments
+                    $contentArguments
                 );
-                $content = $processContentArguments['content'];
-                $timeOutSeconds = $processContentArguments['timeOutSeconds'];
-                $uri = $processContentArguments['uri'];
+                $content = $contentArguments['content'];
+                $timeOutSeconds = $contentArguments['timeOutSeconds'];
+                $uri = $contentArguments['uri'];
                 $isStaticCached = true;
             } else {
                 $cacheTags[] = 'explanation';
@@ -177,7 +177,7 @@ class StaticFileCache implements SingletonInterface
         // Find host-name / IP, always in lowercase:
         $isHttp = (strpos(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), 'http://') === 0);
         $uri = GeneralUtility::getIndpEnv('REQUEST_URI');
-        if ($this->configuration->getBool('recreateURI')) {
+        if ($this->configuration->is('recreateURI')) {
             $uri = $this->recreateUriPath($uri);
         }
         return ($isHttp ? 'http://' : 'https://') . strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . ltrim($uri, '/');
