@@ -28,7 +28,11 @@ class CookieService extends AbstractService
     public function setCookie($lifetime)
     {
         $cookieDomain = $this->getCookieDomain();
-        setcookie(self::FE_COOKIE_NAME, 'fe_typo_user_logged_in', $lifetime, '/', $cookieDomain ? $cookieDomain : null);
+        if ($cookieDomain) {
+            setcookie(self::FE_COOKIE_NAME, 'fe_typo_user_logged_in', $lifetime, '/', $cookieDomain);
+            return;
+        }
+        setcookie(self::FE_COOKIE_NAME, 'fe_typo_user_logged_in', $lifetime, '/');
     }
 
     /**
