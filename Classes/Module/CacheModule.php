@@ -2,8 +2,6 @@
 /**
  * Static file cache info module
  *
- * @author  Tim Lochmüller
- * @author Michiel Roos
  */
 declare(strict_types=1);
 

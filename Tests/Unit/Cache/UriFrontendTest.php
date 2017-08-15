@@ -2,7 +2,6 @@
 /**
  * Test the URI frontend
  *
- * @author  Tim Lochmüller
  */
 namespace SFC\Staticfilecache\Tests\Unit\Cache;
 

@@ -2,7 +2,6 @@
 /**
  * LoginDeniedConfiguration
  *
- * @author  Tim Lochmüller
  */
 declare(strict_types=1);
 

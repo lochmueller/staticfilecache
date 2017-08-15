@@ -2,7 +2,6 @@
 /**
  * Cache backend for static file cache
  *
- * @author  Tim Lochmüller
  */
 declare(strict_types=1);
 
@@ -21,7 +20,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * - CacheFileName
  * - CacheFileName.gz
  *
- * @author Tim Lochmüller
  */
 class StaticFileBackend extends AbstractBackend
 {

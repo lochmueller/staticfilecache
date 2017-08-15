@@ -2,7 +2,6 @@
 /**
  * Check if the URI is valid
  *
- * @author  Tim Lochmüller
  */
 declare(strict_types=1);
 

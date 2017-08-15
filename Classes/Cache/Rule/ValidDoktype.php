@@ -2,7 +2,6 @@
 /**
  * Check if the doktype is valid
  *
- * @author  Tim Lochmüller
  */
 declare(strict_types=1);
 

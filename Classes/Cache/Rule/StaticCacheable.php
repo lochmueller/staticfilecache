@@ -2,7 +2,6 @@
 /**
  * Check if the current page is static cachable in TSFE context
  *
- * @author  Tim Lochmüller
  */
 declare(strict_types=1);
 

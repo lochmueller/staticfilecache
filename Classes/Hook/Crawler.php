@@ -2,8 +2,6 @@
 /**
  * Crawler hook
  *
- * @author Tim Lochmüller
- * @author Daniel Poetzinger
  */
 declare(strict_types=1);
 

@@ -2,7 +2,6 @@
 /**
  * General Cache functions for Static File Cache
  *
- * @author  Tim Lochmüller
  */
 declare(strict_types=1);
 
@@ -16,7 +15,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * General Cache functions for Static File Cache
  *
- * @author Tim Lochmüller
  */
 class AbstractBackend extends Typo3DatabaseBackend
 {

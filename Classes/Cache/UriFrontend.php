@@ -2,7 +2,6 @@
 /**
  * Cache frontend for static file cache
  *
- * @author  Tim Lochmüller
  */
 declare(strict_types=1);
 
@@ -14,7 +13,6 @@ use TYPO3\CMS\Core\Cache\Frontend\StringFrontend;
 /**
  * Cache frontend for static file cache
  *
- * @author Tim Lochmüller
  */
 class UriFrontend extends StringFrontend
 {

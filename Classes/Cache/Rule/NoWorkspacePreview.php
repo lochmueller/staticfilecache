@@ -2,7 +2,6 @@
 /**
  * No workspace preview
  *
- * @author  Tim Lochmüller
  */
 declare(strict_types=1);
 

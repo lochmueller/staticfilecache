@@ -2,7 +2,6 @@
 /**
  * Force the cache for special pages
  *
- * @author  Tim Lochmüller
  */
 declare(strict_types=1);
 

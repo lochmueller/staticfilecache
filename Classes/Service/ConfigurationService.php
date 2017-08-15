@@ -2,7 +2,6 @@
 /**
  * Handle extension and TS configuration
  *
- * @author  Tim Lochmüller
  */
 declare(strict_types=1);
 
