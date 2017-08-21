@@ -28,12 +28,9 @@ class HtaccessGenerator
     protected $configuration;
 
     /**
-     * Constructs this backend
-     *
-     * @param string $context application context
-     * @param array $options Configuration options - depends on the actual backend
+     * Constructs this generator
      */
-    public function __construct($context, array $options = [])
+    public function __construct()
     {
         $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
     }
