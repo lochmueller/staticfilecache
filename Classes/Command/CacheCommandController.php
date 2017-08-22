@@ -48,9 +48,14 @@ class CacheCommandController extends AbstractCommandController
     /**
      * Flush the cache
      * If the boost mode is active, all pages are recrawlt
+     * 
+     * @param bool $forceBoostModeFlush
      */
-    public function flushCacheCommand()
+    public function flushCacheCommand($forceBoostModeFlush = false)
     {
+        if ($forceBoostModeFlush) {
+            define('SFC_QUEUE_WORKER', true);
+        }
         GeneralUtility::makeInstance(CacheService::class)->getCache()->flush();
     }
 }
