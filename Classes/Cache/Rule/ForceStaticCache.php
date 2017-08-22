@@ -1,7 +1,6 @@
 <?php
 /**
- * Force the cache for special pages
- *
+ * Force the cache for special pages.
  */
 declare(strict_types=1);
 
@@ -12,13 +11,12 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * Force the cache for special pages
+ * Force the cache for special pages.
  */
 class ForceStaticCache extends AbstractRule
 {
-
     /**
-     * Ignore rule in force mode
+     * Ignore rule in force mode.
      *
      * @var array
      */
@@ -29,12 +27,12 @@ class ForceStaticCache extends AbstractRule
     ];
 
     /**
-     * Method to check the rul and modify $explanation and/or $skipProcessing
+     * Method to check the rul and modify $explanation and/or $skipProcessing.
      *
      * @param TypoScriptFrontendController $frontendController
-     * @param string $uri
-     * @param array $explanation
-     * @param bool $skipProcessing
+     * @param string                       $uri
+     * @param array                        $explanation
+     * @param bool                         $skipProcessing
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
@@ -61,20 +59,21 @@ class ForceStaticCache extends AbstractRule
      * Is force cache URI?
      *
      * @param TypoScriptFrontendController $frontendController
-     * @param string $uri
+     * @param string                       $uri
      *
      * @return bool
      */
     protected function isForceCacheUri(TypoScriptFrontendController $frontendController, string $uri): bool
     {
         $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $forceStatic = (bool)$frontendController->page['tx_staticfilecache_cache_force'];
+        $forceStatic = (bool) $frontendController->page['tx_staticfilecache_cache_force'];
         $params = [
             'forceStatic' => $forceStatic,
             'frontendController' => $frontendController,
             'uri' => $uri,
         ];
         $params = $signalSlotDispatcher->dispatch(__CLASS__, 'isForceCacheUri', $params);
-        return (bool)$params['forceStatic'];
+
+        return (bool) $params['forceStatic'];
     }
 }

@@ -1,7 +1,6 @@
 <?php
 /**
- * Cache backend for static file cache
- *
+ * Cache backend for static file cache.
  */
 declare(strict_types=1);
 
@@ -14,18 +13,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Cache backend for static file cache
+ * Cache backend for static file cache.
  *
  * This cache handle the file representation of the cache and handle
  * - CacheFileName
  * - CacheFileName.gz
- *
  */
 class StaticFileBackend extends AbstractBackend
 {
-
     /**
-     * Cache directory
+     * Cache directory.
      *
      * @var string
      */
@@ -35,11 +32,11 @@ class StaticFileBackend extends AbstractBackend
      * Saves data in the cache.
      *
      * @param string $entryIdentifier An identifier for this specific cache entry
-     * @param string $data The data to be stored
-     * @param array $tags Tags to associate with this cache entry
-     * @param int $lifetime Lifetime of this cache entry in seconds
+     * @param string $data            The data to be stored
+     * @param array  $tags            Tags to associate with this cache entry
+     * @param int    $lifetime        Lifetime of this cache entry in seconds
      *
-     * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
+     * @throws \TYPO3\CMS\Core\Cache\Exception                      if no cache frontend has been set
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the data is not a string
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
@@ -51,6 +48,7 @@ class StaticFileBackend extends AbstractBackend
         if (in_array('explanation', $tags)) {
             $databaseData['explanation'] = $data;
             parent::set($entryIdentifier, serialize($databaseData), $tags, $lifetime);
+
             return;
         }
 
@@ -81,7 +79,7 @@ class StaticFileBackend extends AbstractBackend
     }
 
     /**
-     * Get the cache folder for the given entry
+     * Get the cache folder for the given entry.
      *
      * @param $entryIdentifier
      *
@@ -96,6 +94,7 @@ class StaticFileBackend extends AbstractBackend
         if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
             $cacheFilename = rtrim($cacheFilename, '/') . '/index.html';
         }
+
         return $cacheFilename;
     }
 
@@ -111,6 +110,7 @@ class StaticFileBackend extends AbstractBackend
         if (!$this->has($entryIdentifier)) {
             return null;
         }
+
         return unserialize(parent::get($entryIdentifier));
     }
 
@@ -144,10 +144,12 @@ class StaticFileBackend extends AbstractBackend
         if ($this->isBoostMode()) {
             $this->getQueue()
                 ->addIdentifier($entryIdentifier);
+
             return true;
         }
 
         $this->removeStaticFiles($entryIdentifier);
+
         return parent::remove($entryIdentifier);
     }
 
@@ -156,8 +158,9 @@ class StaticFileBackend extends AbstractBackend
      */
     public function flush()
     {
-        if ((boolean)$this->configuration->get('clearCacheForAllDomains') === false) {
+        if ((bool) $this->configuration->get('clearCacheForAllDomains') === false) {
             $this->flushByTag('sfc_domain_' . str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
+
             return;
         }
 
@@ -167,6 +170,7 @@ class StaticFileBackend extends AbstractBackend
             foreach ($identifiers as $identifier) {
                 $queue->addIdentifier($identifier);
             }
+
             return;
         }
 
@@ -214,7 +218,7 @@ class StaticFileBackend extends AbstractBackend
     }
 
     /**
-     * Does garbage collection
+     * Does garbage collection.
      */
     public function collectGarbage()
     {
@@ -226,7 +230,7 @@ class StaticFileBackend extends AbstractBackend
     }
 
     /**
-     * Remove the static files of the given tag entries or add it to the queue
+     * Remove the static files of the given tag entries or add it to the queue.
      *
      * @param $tags
      */
@@ -242,6 +246,7 @@ class StaticFileBackend extends AbstractBackend
             foreach ($identifiers as $identifier) {
                 $queue->addIdentifier($identifier);
             }
+
             return;
         }
 
@@ -251,9 +256,10 @@ class StaticFileBackend extends AbstractBackend
     }
 
     /**
-     * Call findIdentifiersByTag but ignore the expires check
+     * Call findIdentifiersByTag but ignore the expires check.
      *
      * @param string $tag
+     *
      * @return array
      */
     protected function findIdentifiersByTagIncludingExpired($tag): array
@@ -262,11 +268,12 @@ class StaticFileBackend extends AbstractBackend
         $GLOBALS['EXEC_TIME'] = 0;
         $identifiers = $this->findIdentifiersByTag($tag);
         $GLOBALS['EXEC_TIME'] = $base;
+
         return $identifiers;
     }
 
     /**
-     * Remove the static files of the given identifier
+     * Remove the static files of the given identifier.
      *
      * @param string $entryIdentifier
      */
@@ -276,7 +283,7 @@ class StaticFileBackend extends AbstractBackend
         $files = [
             $fileName,
             $fileName . '.gz',
-            PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess'
+            PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess',
         ];
         foreach ($files as $file) {
             if (is_file($file)) {
@@ -286,7 +293,7 @@ class StaticFileBackend extends AbstractBackend
     }
 
     /**
-     * Get queue manager
+     * Get queue manager.
      *
      * @return QueueService
      */
@@ -296,17 +303,17 @@ class StaticFileBackend extends AbstractBackend
     }
 
     /**
-     * Check if boost mode is active and if the calls are not part of the worker
+     * Check if boost mode is active and if the calls are not part of the worker.
      *
      * @return bool
      */
     protected function isBoostMode(): bool
     {
-        return (boolean)$this->configuration->get('boostMode') && !defined('SFC_QUEUE_WORKER');
+        return (bool) $this->configuration->get('boostMode') && !defined('SFC_QUEUE_WORKER');
     }
 
     /**
-     * Get the cache identifiers
+     * Get the cache identifiers.
      *
      * @return array
      */

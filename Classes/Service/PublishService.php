@@ -1,7 +1,6 @@
 <?php
 /**
- * PublishService
- *
+ * PublishService.
  */
 declare(strict_types=1);
 
@@ -12,18 +11,17 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
- * PublishService
+ * PublishService.
  */
 class PublishService extends AbstractService
 {
-
     /**
-     * Publish
+     * Publish.
      */
     public function publish()
     {
         $arguments = [
-            'cacheDirectory' => StaticFileBackend::CACHE_DIRECTORY
+            'cacheDirectory' => StaticFileBackend::CACHE_DIRECTORY,
         ];
 
         $objectManager = new ObjectManager();

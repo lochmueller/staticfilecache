@@ -1,7 +1,6 @@
 <?php
 /**
- * Log no cache
- *
+ * Log no cache.
  */
 declare(strict_types=1);
 
@@ -10,15 +9,14 @@ namespace SFC\Staticfilecache\Hook;
 use SFC\Staticfilecache\StaticFileCache;
 
 /**
- * Log no cache
+ * Log no cache.
  */
 class LogNoCache extends AbstractHook
 {
-
     /**
-     * Log cache miss if no_cache is true
+     * Log cache miss if no_cache is true.
      *
-     * @param array $parameters
+     * @param array  $parameters
      * @param object $parentObject
      */
     public function log(&$parameters, $parentObject)

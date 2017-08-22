@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handle cookie related stuff
+ * Handle cookie related stuff.
  */
 declare(strict_types=1);
 
@@ -10,18 +10,17 @@ namespace SFC\Staticfilecache\Service;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Handle cookie related stuff
+ * Handle cookie related stuff.
  */
 class CookieService extends AbstractService
 {
-
     /**
-     * The name of the cookie
+     * The name of the cookie.
      */
     const FE_COOKIE_NAME = 'staticfilecache';
 
     /**
-     * Set the Cookie
+     * Set the Cookie.
      *
      * @param $lifetime
      */
@@ -30,6 +29,7 @@ class CookieService extends AbstractService
         $cookieDomain = $this->getCookieDomain();
         if ($cookieDomain) {
             setcookie(self::FE_COOKIE_NAME, 'fe_typo_user_logged_in', $lifetime, '/', $cookieDomain);
+
             return;
         }
         setcookie(self::FE_COOKIE_NAME, 'fe_typo_user_logged_in', $lifetime, '/');
@@ -40,9 +40,10 @@ class CookieService extends AbstractService
      * The information is taken from the value in $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'].
      *
      * @return string The domain to be used on setting cookies
+     *
      * @see AbstractUserAuthentication::getCookieDomain
      */
-    protected function getCookieDomain():string
+    protected function getCookieDomain(): string
     {
         $result = '';
         $cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'];
@@ -66,6 +67,7 @@ class CookieService extends AbstractService
                 $result = $cookieDomain;
             }
         }
+
         return $result;
     }
 }

@@ -1,7 +1,6 @@
 <?php
 /**
- * Static file cache info module
- *
+ * Static file cache info module.
  */
 declare(strict_types=1);
 
@@ -15,27 +14,26 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Static file cache info module
+ * Static file cache info module.
  */
 class CacheModule extends AbstractFunctionModule
 {
-
     /**
-     * Page ID
+     * Page ID.
      *
      * @var int
      */
     protected $pageId = 0;
 
     /**
-     * MAIN function for static publishing information
+     * MAIN function for static publishing information.
      *
-     * @return    string        Output HTML for the module.
+     * @return string output HTML for the module
      */
     public function main()
     {
         $this->handleActions();
-        $this->pageId = (int)$this->pObj->id;
+        $this->pageId = (int) $this->pObj->id;
 
         /** @var StandaloneView $renderer */
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
@@ -44,14 +42,14 @@ class CacheModule extends AbstractFunctionModule
         $renderer->assignMultiple([
             'requestUri' => GeneralUtility::getIndpEnv('REQUEST_URI'),
             'rows' => $this->getCachePagesEntries(),
-            'pageId' => $this->pageId
+            'pageId' => $this->pageId,
         ]);
 
         return $renderer->render();
     }
 
     /**
-     * Get cache pages entries
+     * Get cache pages entries.
      *
      * @return array
      */
@@ -59,7 +57,6 @@ class CacheModule extends AbstractFunctionModule
     {
         $rows = [];
         $cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
-
 
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -85,6 +82,7 @@ class CacheModule extends AbstractFunctionModule
                 ];
             }
         }
+
         return $rows;
     }
 
@@ -95,7 +93,7 @@ class CacheModule extends AbstractFunctionModule
     {
         $action = GeneralUtility::_GP('ACTION');
 
-        if (isset($action['removeExpiredPages']) && (bool)$action['removeExpiredPages']) {
+        if (isset($action['removeExpiredPages']) && (bool) $action['removeExpiredPages']) {
             GeneralUtility::makeInstance(CacheService::class)->getCache()->collectGarbage();
         }
     }

@@ -1,7 +1,6 @@
 <?php
 /**
- * DateTimeUtility
- *
+ * DateTimeUtility.
  */
 declare(strict_types=1);
 
@@ -10,15 +9,13 @@ namespace SFC\Staticfilecache\Utility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * DateTimeUtility
- *
+ * DateTimeUtility.
  */
 class DateTimeUtility
 {
-
     /**
      * Get current time (respect EXEC_TIME)
-     * Same time for the complete request
+     * Same time for the complete request.
      *
      * @return int
      */
@@ -30,8 +27,9 @@ class DateTimeUtility
         }
         $time = time();
         if (isset($GLOBALS['EXEC_TIME']) && MathUtility::canBeInterpretedAsInteger($GLOBALS['EXEC_TIME'])) {
-            $time = (int)$GLOBALS['EXEC_TIME'];
+            $time = (int) $GLOBALS['EXEC_TIME'];
         }
+
         return $time;
     }
 }

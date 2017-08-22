@@ -1,19 +1,20 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /**
- * Test the URI frontend
- *
+ * Test the URI frontend.
  */
+
 namespace SFC\Staticfilecache\Tests\Unit\Cache;
 
 use SFC\Staticfilecache\Cache\UriFrontend;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 
 /**
- * Test the URI frontend
+ * Test the URI frontend.
  */
 class UriFrontendTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */
@@ -33,7 +34,7 @@ class UriFrontendTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get the subject
+     * Get the subject.
      *
      * @return UriFrontend
      */

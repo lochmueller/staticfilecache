@@ -1,7 +1,7 @@
 <?php
 
 /**
- * HtaccessGenerator
+ * HtaccessGenerator.
  */
 declare(strict_types=1);
 
@@ -15,20 +15,19 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * HtaccessGenerator
+ * HtaccessGenerator.
  */
 class HtaccessGenerator
 {
-
     /**
-     * Configuration
+     * Configuration.
      *
      * @var ConfigurationService
      */
     protected $configuration;
 
     /**
-     * Constructs this generator
+     * Constructs this generator.
      */
     public function __construct()
     {
@@ -36,10 +35,10 @@ class HtaccessGenerator
     }
 
     /**
-     * Write htaccess file
+     * Write htaccess file.
      *
      * @param string $originalFileName
-     * @param int $lifetime
+     * @param int    $lifetime
      */
     public function write(string $originalFileName, int $lifetime)
     {
@@ -72,7 +71,7 @@ class HtaccessGenerator
     }
 
     /**
-     * Get TYPO3 headers
+     * Get TYPO3 headers.
      *
      * @return array
      */
@@ -91,6 +90,7 @@ class HtaccessGenerator
                 $headers[trim($parts[0])] = trim($parts[1]);
             }
         }
+
         return $headers;
     }
 }

@@ -1,7 +1,6 @@
 <?php
 /**
- * Queue service
- *
+ * Queue service.
  */
 declare(strict_types=1);
 
@@ -15,18 +14,17 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Queue service
+ * Queue service.
  */
 class QueueService extends AbstractService
 {
-
     /**
-     * Queue table
+     * Queue table.
      */
     const QUEUE_TABLE = 'tx_staticfilecache_queue';
 
     /**
-     * Run the queue
+     * Run the queue.
      *
      * @param int $limitItems
      */
@@ -52,7 +50,7 @@ class QueueService extends AbstractService
     }
 
     /**
-     * Run a single request with guzzle
+     * Run a single request with guzzle.
      *
      * @param array $runEntry
      */
@@ -79,19 +77,18 @@ class QueueService extends AbstractService
             }
         }
 
-
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionForTable(self::QUEUE_TABLE);
         $connection->update(
             self::QUEUE_TABLE,
             $data,
-            ['uid' => (int)$runEntry['uid']]
+            ['uid' => (int) $runEntry['uid']]
         );
     }
 
     /**
-     * Cleanup the cache queue
+     * Cleanup the cache queue.
      */
     public function cleanup()
     {
@@ -112,7 +109,7 @@ class QueueService extends AbstractService
     }
 
     /**
-     * Add identifiert to Queue
+     * Add identifiert to Queue.
      *
      * @param string $identifier
      */
@@ -139,7 +136,7 @@ class QueueService extends AbstractService
             'cache_url' => $identifier,
             'page_uid' => 0,
             'invalid_date' => time(),
-            'call_result' => ''
+            'call_result' => '',
         ];
         $connection = $connectionPool->getConnectionForTable(self::QUEUE_TABLE);
         $connection->insert(
@@ -149,13 +146,15 @@ class QueueService extends AbstractService
     }
 
     /**
-     * Get a cllable client
+     * Get a cllable client.
      *
      * @param string $domain
+     *
      * @throws \Exception
+     *
      * @return Client
      */
-    protected function getCallableClient(string $domain):Client
+    protected function getCallableClient(string $domain): Client
     {
         if (!class_exists(Client::class) || !class_exists(CookieJar::class)) {
             throw new \Exception('You need guzzle to handle the Queue Management', 1236728342);
@@ -171,9 +170,10 @@ class QueueService extends AbstractService
         $options = [
             'cookies' => $jar,
             'headers' => [
-                'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:54.0) Gecko/20100101 Firefox/54.0'
-            ]
+                'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:54.0) Gecko/20100101 Firefox/54.0',
+            ],
         ];
+
         return GeneralUtility::makeInstance(Client::class, $options);
     }
 }

@@ -1,7 +1,6 @@
 <?php
 /**
- * PublishCommandController
- *
+ * PublishCommandController.
  */
 declare(strict_types=1);
 
@@ -11,13 +10,12 @@ use SFC\Staticfilecache\Service\PublishService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * PublishCommandController
+ * PublishCommandController.
  */
 class PublishCommandController extends AbstractCommandController
 {
-
     /**
-     * Publish command
+     * Publish command.
      */
     public function publishCommand()
     {

@@ -1,7 +1,6 @@
 <?php
 /**
- * Crawler hook
- *
+ * Crawler hook.
  */
 declare(strict_types=1);
 
@@ -13,15 +12,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * Crawler hook
+ * Crawler hook.
  */
 class Crawler extends AbstractHook
 {
-
     /**
-     * (Hook-function called from TypoScriptFrontend, see ext_localconf.php for configuration)
+     * (Hook-function called from TypoScriptFrontend, see ext_localconf.php for configuration).
      *
-     * @param array $parameters Parameters delivered by TypoScriptFrontend
+     * @param array                        $parameters   Parameters delivered by TypoScriptFrontend
      * @param TypoScriptFrontendController $parentObject The calling parent object (TypoScriptFrontend)
      */
     public function clearStaticFile(array $parameters, TypoScriptFrontendController $parentObject)
@@ -39,7 +37,7 @@ class Crawler extends AbstractHook
     }
 
     /**
-     * Execute the clear cache
+     * Execute the clear cache.
      *
      * @param TypoScriptFrontendController $parentObject
      */
@@ -48,6 +46,7 @@ class Crawler extends AbstractHook
         $pageId = $parentObject->id;
         if (!is_numeric($pageId)) {
             $parentObject->applicationData['tx_crawler']['log'][] = 'EXT:staticfilecache skipped';
+
             return;
         }
 

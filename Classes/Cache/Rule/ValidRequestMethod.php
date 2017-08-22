@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ValidRequestMethod
+ * ValidRequestMethod.
  */
 declare(strict_types=1);
 
@@ -12,18 +12,17 @@ use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * ValidRequestMethod
+ * ValidRequestMethod.
  */
 class ValidRequestMethod extends AbstractRule
 {
-
     /**
-     * Method to check the rul and modify $explanation and/or $skipProcessing
+     * Method to check the rul and modify $explanation and/or $skipProcessing.
      *
      * @param TypoScriptFrontendController $frontendController
-     * @param string $uri
-     * @param array $explanation
-     * @param bool $skipProcessing
+     * @param string                       $uri
+     * @param array                        $explanation
+     * @param bool                         $skipProcessing
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {

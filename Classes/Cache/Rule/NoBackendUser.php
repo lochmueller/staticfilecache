@@ -1,7 +1,6 @@
 <?php
 /**
- * No active BE user
- *
+ * No active BE user.
  */
 declare(strict_types=1);
 
@@ -10,18 +9,17 @@ namespace SFC\Staticfilecache\Cache\Rule;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * No active BE user
+ * No active BE user.
  */
 class NoBackendUser extends AbstractRule
 {
-
     /**
-     * No active BE user
+     * No active BE user.
      *
      * @param TypoScriptFrontendController $frontendController
-     * @param string $uri
-     * @param array $explanation
-     * @param bool $skipProcessing
+     * @param string                       $uri
+     * @param array                        $explanation
+     * @param bool                         $skipProcessing
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
@@ -32,7 +30,7 @@ class NoBackendUser extends AbstractRule
     }
 
     /**
-     * Has active backend cookies
+     * Has active backend cookies.
      *
      * The Server rewrite rules can only check the existence of an cookie and not the valid
      * auth process behind. This is the reason, why we call a user with a BE cookie "active"
@@ -44,13 +42,14 @@ class NoBackendUser extends AbstractRule
     {
         $cookieNames = [
             'be_typo_user',
-            $GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']
+            $GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName'],
         ];
         foreach ($cookieNames as $cookieName) {
             if (isset($_COOKIE[$cookieName])) {
                 return true;
             }
         }
+
         return false;
     }
 }

@@ -1,7 +1,6 @@
 <?php
 /**
- * No _INT scripts
- *
+ * No _INT scripts.
  */
 declare(strict_types=1);
 
@@ -10,18 +9,17 @@ namespace SFC\Staticfilecache\Cache\Rule;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * No _INT scripts
+ * No _INT scripts.
  */
 class NoIntScripts extends AbstractRule
 {
-
     /**
-     * Check if there are no _INT scripts
+     * Check if there are no _INT scripts.
      *
      * @param TypoScriptFrontendController $frontendController
-     * @param string $uri
-     * @param array $explanation
-     * @param bool $skipProcessing
+     * @param string                       $uri
+     * @param array                        $explanation
+     * @param bool                         $skipProcessing
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {

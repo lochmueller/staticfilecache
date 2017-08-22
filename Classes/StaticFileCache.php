@@ -1,7 +1,6 @@
 <?php
 /**
- * Static File Cache
- *
+ * Static File Cache.
  */
 declare(strict_types=1);
 
@@ -21,34 +20,33 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * Static File Cache
+ * Static File Cache.
  */
 class StaticFileCache implements SingletonInterface
 {
-
     /**
-     * Configuration of the extension
+     * Configuration of the extension.
      *
      * @var ConfigurationService
      */
     protected $configuration;
 
     /**
-     * Cache
+     * Cache.
      *
      * @var UriFrontend
      */
     protected $cache;
 
     /**
-     * Cache
+     * Cache.
      *
      * @var Dispatcher
      */
     protected $signalDispatcher;
 
     /**
-     * Get the current object
+     * Get the current object.
      *
      * @return StaticFileCache
      */
@@ -68,10 +66,10 @@ class StaticFileCache implements SingletonInterface
     }
 
     /**
-     * Check if the SFC should create the cache
+     * Check if the SFC should create the cache.
      *
-     * @param    TypoScriptFrontendController $pObj : The parent object
-     * @param    string $timeOutTime : The timestamp when the page times out
+     * @param TypoScriptFrontendController $pObj        : The parent object
+     * @param string                       $timeOutTime : The timestamp when the page times out
      */
     public function insertPageInCache(TypoScriptFrontendController &$pObj, &$timeOutTime)
     {
@@ -166,7 +164,7 @@ class StaticFileCache implements SingletonInterface
     }
 
     /**
-     * get the URI for the current cache ident
+     * get the URI for the current cache ident.
      *
      * @return string
      */
@@ -178,6 +176,7 @@ class StaticFileCache implements SingletonInterface
         if ($this->configuration->isBool('recreateURI')) {
             $uri = $this->recreateUriPath($uri);
         }
+
         return ($isHttp ? 'http://' : 'https://') . strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . ltrim($uri, '/');
     }
 
@@ -190,7 +189,7 @@ class StaticFileCache implements SingletonInterface
      *
      * @param string $uri
      *
-     * @return    string        The recreated URI of the current request
+     * @return string The recreated URI of the current request
      */
     protected function recreateUriPath($uri)
     {
@@ -217,23 +216,24 @@ class StaticFileCache implements SingletonInterface
     /**
      * Determines whether the given $uri has a valid cache entry.
      *
-     * @param     string $uri
+     * @param string $uri
      *
-     * @return    bool    is available and valid
+     * @return bool is available and valid
      */
     protected function hasValidCacheEntry($uri)
     {
         $entry = $this->cache->get($uri);
+
         return $entry !== null &&
             count($entry['explanation']) === 0 &&
             $entry['expires'] >= DateTimeUtility::getCurrentTime();
     }
 
     /**
-     * Call Dispatcher
+     * Call Dispatcher.
      *
      * @param string $signalName
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return mixed
      */

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Logoff process
+ * Logoff process.
  */
 declare(strict_types=1);
 
@@ -12,14 +12,14 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * LogoffFrontendUser
+ * LogoffFrontendUser.
  */
 class LogoffFrontendUser extends AbstractHook
 {
     /**
-     * Logoff process
+     * Logoff process.
      *
-     * @param array $parameters
+     * @param array                      $parameters
      * @param AbstractUserAuthentication $parentObject
      */
     public function logoff($parameters, AbstractUserAuthentication $parentObject)

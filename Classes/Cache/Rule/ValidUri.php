@@ -1,7 +1,6 @@
 <?php
 /**
- * Check if the URI is valid
- *
+ * Check if the URI is valid.
  */
 declare(strict_types=1);
 
@@ -10,19 +9,18 @@ namespace SFC\Staticfilecache\Cache\Rule;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * Check if the URI is valid
+ * Check if the URI is valid.
  */
 class ValidUri extends AbstractRule
 {
-
     /**
      * Check if the URI is valid
-     * Note: A FILTER_VALIDATE_URL check is already done in the URI frontend
+     * Note: A FILTER_VALIDATE_URL check is already done in the URI frontend.
      *
      * @param TypoScriptFrontendController $frontendController
-     * @param string $uri
-     * @param array $explanation
-     * @param bool $skipProcessing
+     * @param string                       $uri
+     * @param array                        $explanation
+     * @param bool                         $skipProcessing
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {

@@ -1,7 +1,6 @@
 <?php
 /**
- * Enable
- *
+ * Enable.
  */
 declare(strict_types=1);
 
@@ -12,18 +11,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * Enable
+ * Enable.
  */
 class Enable extends AbstractRule
 {
-
     /**
-     * Enable
+     * Enable.
      *
      * @param TypoScriptFrontendController $frontendController
-     * @param string $uri
-     * @param array $explanation
-     * @param bool $skipProcessing
+     * @param string                       $uri
+     * @param array                        $explanation
+     * @param bool                         $skipProcessing
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {

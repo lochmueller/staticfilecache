@@ -1,7 +1,6 @@
 <?php
 /**
- * Cache commands
- *
+ * Cache commands.
  */
 declare(strict_types=1);
 
@@ -12,13 +11,12 @@ use SFC\Staticfilecache\Service\QueueService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Cache commands
+ * Cache commands.
  */
 class CacheCommandController extends AbstractCommandController
 {
-
     /**
-     * Remove the expired pages
+     * Remove the expired pages.
      */
     public function removeExpiredPagesCommand()
     {
@@ -26,7 +24,7 @@ class CacheCommandController extends AbstractCommandController
     }
 
     /**
-     * Run the cache boost queue
+     * Run the cache boost queue.
      *
      * @param int $limitItems Limit the items that are crawled. 0 => all
      */
@@ -37,7 +35,7 @@ class CacheCommandController extends AbstractCommandController
     }
 
     /**
-     * Run the cache boost queue
+     * Run the cache boost queue.
      */
     public function cleanupCacheBoostQueueCommand()
     {
@@ -47,8 +45,8 @@ class CacheCommandController extends AbstractCommandController
 
     /**
      * Flush the cache
-     * If the boost mode is active, all pages are recrawlt
-     * 
+     * If the boost mode is active, all pages are recrawlt.
+     *
      * @param bool $forceBoostModeFlush
      */
     public function flushCacheCommand($forceBoostModeFlush = false)

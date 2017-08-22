@@ -1,7 +1,6 @@
 <?php
 /**
- * Init frontend user
- *
+ * Init frontend user.
  */
 declare(strict_types=1);
 
@@ -12,13 +11,12 @@ use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Init frontend user
+ * Init frontend user.
  */
 class InitFrontendUser extends AbstractHook
 {
-
     /**
-     * Set a cookie if a user logs in or refresh it
+     * Set a cookie if a user logs in or refresh it.
      *
      * This function is needed because TYPO3 always sets the fe_typo_user cookie,
      * even if the user never logs in. We want to be able to check against logged
