@@ -27,12 +27,10 @@ class ValidUri extends AbstractRule
         if (strpos($uri, '?') !== false) {
             $explanation[__CLASS__] = 'The URI contain a "?" that is not allowed for static file cache';
             $skipProcessing = true;
-        }
-        if (strpos($uri, 'index.php') !== false) {
+        } elseif (strpos($uri, 'index.php') !== false) {
             $explanation[__CLASS__] = 'The URI contain a "index.php" that is not allowed for static file cache';
             $skipProcessing = true;
-        }
-        if (strpos(parse_url($uri, PHP_URL_PATH), '//') !== false) {
+        } elseif (strpos(parse_url($uri, PHP_URL_PATH), '//') !== false) {
             $explanation[__CLASS__] = 'Illegal link configuration. The URI should not contain a "//" ' .
                 'because a folder name without name is not possible';
             $skipProcessing = true;
