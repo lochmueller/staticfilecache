@@ -19,13 +19,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class CacheModule extends AbstractFunctionModule
 {
     /**
-     * Page ID.
-     *
-     * @var int
-     */
-    protected $pageId = 0;
-
-    /**
      * MAIN function for static publishing information.
      *
      * @return string output HTML for the module
@@ -33,7 +26,7 @@ class CacheModule extends AbstractFunctionModule
     public function main()
     {
         $this->handleActions();
-        $this->pageId = (int) $this->pObj->id;
+        $pageId = (int) $this->pObj->id;
 
         /** @var StandaloneView $renderer */
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
@@ -41,8 +34,8 @@ class CacheModule extends AbstractFunctionModule
         $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($moduleTemplate));
         $renderer->assignMultiple([
             'requestUri' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-            'rows' => $this->getCachePagesEntries(),
-            'pageId' => $this->pageId,
+            'rows' => $this->getCachePagesEntries($pageId),
+            'pageId' => $pageId,
         ]);
 
         return $renderer->render();
@@ -51,9 +44,11 @@ class CacheModule extends AbstractFunctionModule
     /**
      * Get cache pages entries.
      *
+     * @param int $pageId
+     *
      * @return array
      */
-    protected function getCachePagesEntries(): array
+    protected function getCachePagesEntries(int $pageId): array
     {
         $rows = [];
         $cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
@@ -63,7 +58,7 @@ class CacheModule extends AbstractFunctionModule
         $queryBuilder = $connectionPool->getQueryBuilderForTable('pages');
         $dbRows = $queryBuilder->select('*')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($this->pageId)))
+            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId)))
             ->execute()
             ->fetchAll();
 
