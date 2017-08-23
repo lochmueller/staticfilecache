@@ -169,7 +169,9 @@ class QueueService extends AbstractService
         $jar->setCookie($cookie);
         $options = [
             'cookies' => $jar,
-            //'redirect.disable' => true, // @todo Test!!!
+            'allow_redirects' => [
+                'max' => false,
+            ],
             'headers' => [
                 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:54.0) Gecko/20100101 Firefox/54.0',
             ],
