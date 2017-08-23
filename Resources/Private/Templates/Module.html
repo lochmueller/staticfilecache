@@ -41,11 +41,11 @@
 <p>
 	<a class="btn btn-danger" href="{requestUri}&ACTION[removeExpiredPages]=1"
 		 onclick="return confirm('Are you sure?');">
-		<c:icon identifier="actions-delete"/>
+		<core:icon identifier="actions-delete"/>
 		{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:removeAllExpired')}
 	</a>
 	<a href="{requestUri}&ACTION[removeExpiredPages]=0" class="btn btn-default">
-		<c:icon identifier="actions-system-refresh"/>
+		<core:icon identifier="actions-system-refresh"/>
 		{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:refresh')}
 	</a>
 </p>
@@ -59,17 +59,17 @@
 		<td><a href="{row.identifier}">{row.identifier}</a>
 			<f:if condition="{row.info.explanation -> f:count()}">
 				<f:then>
-					<c:icon identifier="status-status-permission-denied"/>
+					<core:icon identifier="status-status-permission-denied"/>
 				</f:then>
 				<f:else>
-					<c:icon identifier="status-status-permission-granted"/>
+					<core:icon identifier="status-status-permission-granted"/>
 				</f:else>
 			</f:if>
 		</td>
 		<td>
 			<f:if condition="{row.info.explanation -> f:count()}">
 				<f:then>
-					<c:icon identifier="status-status-permission-denied"/>
+					<core:icon identifier="status-status-permission-denied"/>
 				</f:then>
 				<f:else>
 					<f:format.date format="d-m-Y H:i">@{row.info.created}</f:format.date>
@@ -79,7 +79,7 @@
 		<td>
 			<f:if condition="{row.info.explanation -> f:count()}">
 				<f:then>
-					<c:icon identifier="status-status-permission-denied"/>
+					<core:icon identifier="status-status-permission-denied"/>
 				</f:then>
 				<f:else>
 					<f:format.date format="d-m-Y H:i">@{row.info.expires}</f:format.date>
