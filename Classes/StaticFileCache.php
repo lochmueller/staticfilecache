@@ -10,7 +10,6 @@ use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -22,7 +21,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Static File Cache.
  */
-class StaticFileCache implements SingletonInterface
+class StaticFileCache implements StaticFileCacheSingletonInterface
 {
     /**
      * Configuration of the extension.

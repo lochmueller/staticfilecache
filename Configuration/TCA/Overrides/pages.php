@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 $tmp = [
     'tx_staticfilecache_cache' => [
         'exclude' => 0,
@@ -21,9 +23,9 @@ $tmp = [
     ],
 ];
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tmp);
+ExtensionManagementUtility::addTCAcolumns('pages', $tmp);
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette(
+ExtensionManagementUtility::addFieldsToPalette(
     'pages',
     'caching',
     '--linebreak--,tx_staticfilecache_cache,tx_staticfilecache_cache_force'

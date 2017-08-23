@@ -7,11 +7,11 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Hook;
 
-use TYPO3\CMS\Core\SingletonInterface;
+use SFC\Staticfilecache\StaticFileCacheSingletonInterface;
 
 /**
  * AbstractHook.
  */
-class AbstractHook implements SingletonInterface
+class AbstractHook implements StaticFileCacheSingletonInterface
 {
 }
