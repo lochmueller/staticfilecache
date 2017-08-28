@@ -110,8 +110,12 @@ class StaticFileBackend extends AbstractBackend
         if (!$this->has($entryIdentifier)) {
             return null;
         }
+        $result = parent::get($entryIdentifier);
+        if (!is_string($result)) {
+            return null;
+        }
 
-        return unserialize(parent::get($entryIdentifier));
+        return unserialize($result);
     }
 
     /**

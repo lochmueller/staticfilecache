@@ -3,6 +3,7 @@
 /**
  * StaticFileCacheSingletonInterface.
  */
+
 namespace SFC\Staticfilecache;
 
 use TYPO3\CMS\Core\SingletonInterface;
