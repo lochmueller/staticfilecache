@@ -27,7 +27,7 @@ class ValidRequestMethod extends AbstractRule
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
         $envService = GeneralUtility::makeInstance(EnvironmentService::class);
-        if ($envService->getServerRequestMethod() !== 'GET') {
+        if ('GET' !== $envService->getServerRequestMethod()) {
             $explanation[__CLASS__] = 'The request methode has to be GET';
             $skipProcessing = true;
         }

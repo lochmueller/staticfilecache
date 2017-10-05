@@ -22,7 +22,7 @@ class DateTimeUtility
     public static function getCurrentTime()
     {
         static $time = 0;
-        if ($time !== 0) {
+        if (0 !== $time) {
             return $time;
         }
         $time = time();

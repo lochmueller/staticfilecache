@@ -38,7 +38,7 @@ class InitFrontendUser extends AbstractHook
         $started = $parentObject->fe_user->loginSessionStarted;
 
         $cookieService = GeneralUtility::makeInstance(CookieService::class);
-        if (($started || $parentObject->fe_user->forceSetCookie) && $parentObject->fe_user->lifetime == 0) {
+        if (($started || $parentObject->fe_user->forceSetCookie) && 0 === $parentObject->fe_user->lifetime) {
             // If new session and the cookie is a sessioncookie, we need to set it only once!
             // // isSetSessionCookie()
             $cookieService->setCookie(0);

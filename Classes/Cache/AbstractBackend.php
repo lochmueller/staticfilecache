@@ -67,10 +67,10 @@ class AbstractBackend extends Typo3DatabaseBackend
      */
     protected function getRealLifetime($lifetime): int
     {
-        if (is_null($lifetime)) {
+        if (null === $lifetime) {
             $lifetime = $this->defaultLifetime;
         }
-        if ($lifetime === 0 || $lifetime > $this->maximumLifetime) {
+        if (0 === $lifetime || $lifetime > $this->maximumLifetime) {
             $lifetime = $this->maximumLifetime;
         }
 

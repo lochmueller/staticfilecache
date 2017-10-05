@@ -108,7 +108,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
 
             // This is supposed to have "&& !$pObj->beUserLogin" in there as well
             // This fsck's up the ctrl-shift-reload hack, so I pulled it out.
-            if (count($explanation) === 0) {
+            if (0 === count($explanation)) {
                 // If page has a endtime before the current timeOutTime, use it instead:
                 if ($pObj->page['endtime'] > 0 && $pObj->page['endtime'] < $timeOutTime) {
                     $timeOutTime = $pObj->page['endtime'];
@@ -170,13 +170,13 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
     protected function getUri()
     {
         // Find host-name / IP, always in lowercase:
-        $isHttp = (strpos(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), 'http://') === 0);
+        $isHttp = (0 === mb_strpos(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), 'http://'));
         $uri = GeneralUtility::getIndpEnv('REQUEST_URI');
         if ($this->configuration->isBool('recreateURI')) {
             $uri = $this->recreateUriPath($uri);
         }
 
-        return ($isHttp ? 'http://' : 'https://') . strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . ltrim($uri, '/');
+        return ($isHttp ? 'http://' : 'https://') . mb_strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . ltrim($uri, '/');
     }
 
     /**
@@ -195,7 +195,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
         $objectManager = new ObjectManager();
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = $objectManager->get(UriBuilder::class);
-        if (ObjectAccess::getProperty($uriBuilder, 'contentObject', true) === null) {
+        if (null === ObjectAccess::getProperty($uriBuilder, 'contentObject', true)) {
             // there are situations without a valid contentObject in the URI builder
             // prevent this situation by return the original request URI
             return $uri;
@@ -223,8 +223,8 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
     {
         $entry = $this->cache->get($uri);
 
-        return $entry !== null &&
-            count($entry['explanation']) === 0 &&
+        return null !== $entry &&
+            0 === count($entry['explanation']) &&
             $entry['expires'] >= DateTimeUtility::getCurrentTime();
     }
 

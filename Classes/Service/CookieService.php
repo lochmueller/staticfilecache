@@ -53,10 +53,10 @@ class CookieService extends AbstractService
             $cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieDomain'];
         }
         if ($cookieDomain) {
-            if ($cookieDomain[0] == '/') {
+            if ('/' === $cookieDomain[0]) {
                 $match = [];
                 $matchCnt = preg_match($cookieDomain, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
-                if ($matchCnt === false) {
+                if (false === $matchCnt) {
                     $message = 'The regular expression for the cookie domain (' . $cookieDomain . ') contains errors.';
                     $message .= 'The session is not shared across sub-domains.';
                     GeneralUtility::sysLog($message, 'Core', GeneralUtility::SYSLOG_SEVERITY_ERROR);

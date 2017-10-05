@@ -23,13 +23,13 @@ class UriFrontend extends StringFrontend
      */
     public function isValidEntryIdentifier($identifier)
     {
-        if (filter_var($identifier, FILTER_VALIDATE_URL) === false) {
+        if (false === filter_var($identifier, FILTER_VALIDATE_URL)) {
             return false;
         }
         $urlParts = parse_url($identifier);
         $required = ['host', 'path', 'scheme'];
         foreach ($required as $item) {
-            if (!isset($urlParts[$item]) || strlen($urlParts[$item]) <= 0) {
+            if (!isset($urlParts[$item]) || mb_strlen($urlParts[$item]) <= 0) {
                 return false;
             }
         }

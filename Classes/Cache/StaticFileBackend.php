@@ -108,11 +108,11 @@ class StaticFileBackend extends AbstractBackend
     public function get($entryIdentifier)
     {
         if (!$this->has($entryIdentifier)) {
-            return null;
+            return;
         }
         $result = parent::get($entryIdentifier);
         if (!is_string($result)) {
-            return null;
+            return;
         }
 
         return unserialize($result);
@@ -162,7 +162,7 @@ class StaticFileBackend extends AbstractBackend
      */
     public function flush()
     {
-        if ((bool) $this->configuration->get('clearCacheForAllDomains') === false) {
+        if (false === (bool) $this->configuration->get('clearCacheForAllDomains')) {
             $this->flushByTag('sfc_domain_' . str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
 
             return;

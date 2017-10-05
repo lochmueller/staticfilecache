@@ -68,7 +68,7 @@ class QueueService extends AbstractService
             'call_result' => $statusCode,
         ];
 
-        if ($statusCode !== 200) {
+        if (200 !== $statusCode) {
             // Call the flush, if the page is not accessable
             $cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
             $cache->flushByTag('sfc_pageId_' . $runEntry['page_uid']);
