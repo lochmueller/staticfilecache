@@ -4,10 +4,10 @@
 
 ---
 conf.py:
-  copyright: 2015
+  copyright: 2017
   project: 'Static File cache'
   version: 5.1
-  release: 5.1.2
+  release: 5.1.6
   highlight_language: php
   latex_documents:
   - - Index
