@@ -7,4 +7,4 @@
 /.styleci.yml export-ignore
 /.travis.yml export-ignore
 /README.md export-ignore
-/.php_cs
+/.php_cs export-ignore
