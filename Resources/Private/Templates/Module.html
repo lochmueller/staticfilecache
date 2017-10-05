@@ -2,7 +2,7 @@
 	<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:module.title"/>
 </h1>
 <p>
-	<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:module.intro"/>
+	<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:module.intro.{backendDisplayMode}"/>
 </p>
 
 <f:flashMessages/>
@@ -54,7 +54,7 @@
 <f:section name="singleEntryRow">
 	<tr>
 		<td>
-			<f:format.raw>{row.title}</f:format.raw>
+			<f:format.raw>{row.title}</f:format.raw> <i>[{row.uid}]</i>
 		</td>
 		<td><a href="{row.identifier}">{row.identifier}</a>
 			<f:if condition="{row.info.explanation -> f:count()}">

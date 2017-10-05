@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Module;
 
 use SFC\Staticfilecache\Service\CacheService;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -27,6 +28,12 @@ class CacheModule extends AbstractFunctionModule
     {
         $this->handleActions();
         $pageId = (int) $this->pObj->id;
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $backendDisplayMode = $configurationService->get('backendDisplayMode');
+        $validModes = ['current', 'childs', 'both'];
+        if (!in_array($backendDisplayMode, $validModes)) {
+            $backendDisplayMode = 'current';
+        }
 
         /** @var StandaloneView $renderer */
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
@@ -34,8 +41,9 @@ class CacheModule extends AbstractFunctionModule
         $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($moduleTemplate));
         $renderer->assignMultiple([
             'requestUri' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-            'rows' => $this->getCachePagesEntries($pageId),
+            'rows' => $this->getCachePagesEntries($pageId, $backendDisplayMode),
             'pageId' => $pageId,
+            'backendDisplayMode' => $backendDisplayMode,
         ]);
 
         return $renderer->render();
@@ -45,10 +53,11 @@ class CacheModule extends AbstractFunctionModule
      * Get cache pages entries.
      *
      * @param int $pageId
+     * @param string $backendDisplayMode
      *
      * @return array
      */
-    protected function getCachePagesEntries(int $pageId): array
+    protected function getCachePagesEntries(int $pageId, $backendDisplayMode): array
     {
         $rows = [];
         $cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
@@ -56,9 +65,24 @@ class CacheModule extends AbstractFunctionModule
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable('pages');
+
+        $where = [];
+        switch($backendDisplayMode) {
+            case 'current':
+                $where[] = $queryBuilder->expr()->eq('uid', $pageId);
+                break;
+            case 'childs':
+                $where[] = $queryBuilder->expr()->eq('pid', $pageId);
+                break;
+            case 'both':
+                $where[] = $queryBuilder->expr()->eq('uid', $pageId);
+                $where[] = $queryBuilder->expr()->eq('pid', $pageId);
+                break;
+        }
+
         $dbRows = $queryBuilder->select('*')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId)))
+            ->orWhere(...$where)
             ->execute()
             ->fetchAll();
 

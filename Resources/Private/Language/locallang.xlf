@@ -10,8 +10,14 @@
 		<trans-unit id="module.title">
 			<source>Static File Cache</source>
 		</trans-unit>
-		<trans-unit id="module.intro">
-			<source>This module display the cache entries and errors of all child pages.</source>
+		<trans-unit id="module.intro.current">
+			<source>This module display the cache entries and errors of the current page.</source>
+		</trans-unit>
+		<trans-unit id="module.intro.childs">
+			<source>This module display the cache entries and errors of all direct child pages.</source>
+		</trans-unit>
+		<trans-unit id="module.intro.both">
+			<source>This module display the cache entries and errors of the current and all direct child pages.</source>
 		</trans-unit>
 		<trans-unit id="staticfilecache.tx_staticfilecache_cache">
 			<source>Cache page as static file</source>
