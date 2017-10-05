@@ -67,7 +67,7 @@ class CacheModule extends AbstractFunctionModule
         $queryBuilder = $connectionPool->getQueryBuilderForTable('pages');
 
         $where = [];
-        switch($backendDisplayMode) {
+        switch ($backendDisplayMode) {
             case 'current':
                 $where[] = $queryBuilder->expr()->eq('uid', $pageId);
                 break;
