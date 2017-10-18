@@ -17,9 +17,55 @@
 		</trans-unit>
 		<trans-unit id="staticfilecache.tx_staticfilecache_cache_force">
 			<source>Force the static cache generation (!!!)</source>
-			<target>Erwzingt die statische Generierung (!!!)</target>
+			<target>Erzwingt die statische Generierung (!!!)</target>
 		</trans-unit>
-
+		<trans-unit id="module.intro.current">
+			<source>This module displays the cache entries and errors of the current page.</source>
+			<target>Dieses Modul zeigt die Cache-Einträge und Fehler der aktuellen Seite.</target>
+		</trans-unit>
+		<trans-unit id="module.intro.childs">
+			<source>This module displays the cache entries and errors of all direct child pages.</source>
+			<target>Dieses Modul zeigt die Cache-Einträge und Fehler aller direkten Unterseiten.</target>
+		</trans-unit>
+		<trans-unit id="module.intro.both">
+			<source>This module displays the cache entries and errors of the current and all direct child pages.</source>
+			<target>Dieses Modul zeigt die Cache-Einträge und Fehler der aktuellen und aller direkten Unterseiten.</target>
+		</trans-unit>
+		<trans-unit id="moduleFunction.tx_staticfilecache_infomodule">
+			<source>Static file cache</source>
+			<target>Statischer Datei Cache</target>
+		</trans-unit>
+		<trans-unit id="staticfilecache_task_removeExpiredPages.name">
+			<source>Remove expired pages</source>
+			<target>Abgelaufene Seiten entfernen</target>
+		</trans-unit>
+		<trans-unit id="staticfilecache_task_removeExpiredPages.description">
+			<source>All expired pages will be removed from the cache.</source>
+			<target>Alle abgelaufenen Seiten werden aus dem Cache entfernt.</target>
+		</trans-unit>
+		<trans-unit id="removeAllExpired">
+			<source>Remove all expired pages</source>
+			<target>Alle abgelaufenen Seiten entfernen</target>
+		</trans-unit>
+		<trans-unit id="refresh">
+			<source>Refresh</source>
+			<target>Aktualisieren</target>
+		</trans-unit>
+		<trans-unit id="page">
+			<source>Page</source>
+			<target>Seite</target>
+		</trans-unit>
+		<trans-unit id="identifier">
+			<source>Bezeichner</source>
+		</trans-unit>
+		<trans-unit id="created">
+			<source>Created</source>
+			<target>Erstellt</target>
+		</trans-unit>
+		<trans-unit id="expires">
+			<source>Expires</source>
+			<source>Verfällt</source>
+		</trans-unit>
 		</body>
 	</file>
 </xliff>
