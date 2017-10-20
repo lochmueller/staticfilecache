@@ -7,6 +7,7 @@ return PhpCsFixer\Config::create()
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->in(__DIR__.'/Classes')
+            ->in(__DIR__.'/Tests/Unit')
     )
     ->setRules(array(
         '@PSR2' => true,

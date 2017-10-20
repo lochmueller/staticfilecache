@@ -52,7 +52,7 @@ class CacheModule extends AbstractFunctionModule
     /**
      * Get cache pages entries.
      *
-     * @param int $pageId
+     * @param int    $pageId
      * @param string $backendDisplayMode
      *
      * @return array
