@@ -4,6 +4,7 @@ declare(strict_types=1);
 /**
  * Test the URI frontend.
  */
+
 namespace SFC\Staticfilecache\Tests\Unit\Cache;
 
 use SFC\Staticfilecache\Cache\UriFrontend;
@@ -12,14 +13,14 @@ use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 /**
  * Test the URI frontend.
  */
-class UriFrontendTest extends \PHPUnit_Framework_TestCase
+class UriFrontendTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test
      */
     public function checkValidPath()
     {
-        $this->assertSame(true, $this->getCacheFrontend()
+        $this->assertTrue($this->getCacheFrontend()
             ->isValidEntryIdentifier('http://www.domain.tld/path.html'));
     }
 
@@ -28,7 +29,7 @@ class UriFrontendTest extends \PHPUnit_Framework_TestCase
      */
     public function checkInValidPath()
     {
-        $this->assertSame(false, $this->getCacheFrontend()
+        $this->assertFalse($this->getCacheFrontend()
             ->isValidEntryIdentifier('/path.html'));
     }
 
