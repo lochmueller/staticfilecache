@@ -39,7 +39,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    # Check if the requested file exists in the cache, otherwise default to index.html that
    # set in an environment variable that is used later on
    RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI} !-f
-   RewriteRule .* - [E=SFC_FILE:/index.html]
+   RewriteRule .* - [E=SFC_FILE:index.html]
 
    ### Begin: Static File Cache (main) ####
 
