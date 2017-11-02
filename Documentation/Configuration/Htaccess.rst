@@ -41,6 +41,10 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI} !-f
    RewriteRule .* - [E=SFC_FILE:/index.html]
 
+   # Note: We cannot check realurl "appendMissingSlash" or other BE related settings here - in front of the delivery.
+   # Perhaps you have to check the "SFC_FILE" value and set it to your related configution e.g. "index.html" (without leading slash).
+   # More information at: https://github.com/lochmueller/staticfilecache/pull/28
+
    ### Begin: Static File Cache (main) ####
 
    # We only redirect URI's without query strings
