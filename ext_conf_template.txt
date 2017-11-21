@@ -30,3 +30,6 @@ boostMode = 0
 
 # cat=basic; type=options[Current=current,Childs=childs,Both=both]; label=Backend display options:The backend module should display cache entries of the current page, only the direct children or both?
 backendDisplayMode = current
+
+# cat=basic; type=boolean; label=Disable static file cache in development: When checked, the static file cache won't be generated if in development application context.
+disableInDevelopment = 0
