@@ -6,6 +6,8 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
+$_EXTCONF = unserialize($_EXTCONF);
+
 // Register with "crawler" extension:
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['crawler']['procInstructions']['tx_staticfilecache_clearstaticfile'] = 'clear static cache file';
 
@@ -57,3 +59,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfile
         'all'
     ]
 ];
+
+// Disable staticfilecache in development if extension configuration 'disableInDevelopment' is set
+if ($_EXTCONF['disableInDevelopment'] && \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext()->isDevelopment()) {
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache']['backend'] = \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
+}
