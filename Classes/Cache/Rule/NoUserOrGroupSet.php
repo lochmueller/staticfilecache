@@ -23,8 +23,19 @@ class NoUserOrGroupSet extends AbstractRule
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
-        if ($frontendController->isUserOrGroupSet()) {
+        if ($this->isUserOrGroupSet($frontendController)) {
             $explanation[__CLASS__] = 'User or group are set';
         }
+    }
+
+    /**
+     * Fix this bug: https://forge.typo3.org/issues/83212
+     * @see TypoScriptFrontendController::isUserOrGroupSet
+     *
+     * @return bool TRUE if either a login user is found (array fe_user->user and valid id) OR if the gr_list is set to something else than '0,-1' (could be done even without a user being logged in!)
+     */
+    public function isUserOrGroupSet(TypoScriptFrontendController $frontendController)
+    {
+        return (is_array($frontendController->fe_user->user) && isset($frontendController->fe_user->user['uid'])) || $frontendController->gr_list !== '0,-1';
     }
 }
