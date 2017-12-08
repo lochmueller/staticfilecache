@@ -23,8 +23,19 @@ class StaticCacheable extends AbstractRule
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
-        if (!$frontendController->isStaticCacheble()) {
+        if (!$this->isStaticCacheble($frontendController)) {
             $explanation[__CLASS__] = 'The page is not static chachable via TypoScriptFrontend';
         }
+    }
+
+    /**
+     * Fix this bug: https://forge.typo3.org/issues/83212
+     * @see TypoScriptFrontendController::isStaticCacheble
+     *
+     * @return bool TRUE if caching of current page is enabled (->isUserOrGroupSet() returns false even if no frontend user is logged in!)
+     */
+    public function isStaticCacheble(TypoScriptFrontendController $frontendController)
+    {
+        return !$frontendController->no_cache;
     }
 }
