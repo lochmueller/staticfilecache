@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache;
 
+use Mso\IdnaConvert\IdnaConvert;
 use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
@@ -45,6 +46,13 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
     protected $signalDispatcher;
 
     /**
+     * Punycode / IDNA converter that is used to encode the URIs to ASCII.
+     *
+     * @var IdnaConvert
+     */
+    protected $idnaConverter;
+
+    /**
      * Get the current object.
      *
      * @return StaticFileCache
@@ -62,6 +70,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
         $this->cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
         $this->signalDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+        $this->idnaConverter = GeneralUtility::makeInstance(IdnaConvert::class);
     }
 
     /**
@@ -176,7 +185,8 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             $uri = $this->recreateUriPath($uri);
         }
 
-        return ($isHttp ? 'http://' : 'https://') . mb_strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . ltrim($uri, '/');
+        $uri = ($isHttp ? 'http://' : 'https://') . mb_strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . ltrim($uri, '/');
+        return $this->idnaConverter->encode($uri);
     }
 
     /**
