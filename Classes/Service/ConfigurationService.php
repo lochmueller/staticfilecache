@@ -57,6 +57,20 @@ class ConfigurationService extends AbstractService
     }
 
     /**
+     * Get backend display mode
+     * 
+     * @return string
+     */
+    public function getBackendDisplayMode() : string {
+        $backendDisplayMode = $this->get('backendDisplayMode');
+        $validModes = ['current', 'childs', 'both'];
+        if (!in_array($backendDisplayMode, $validModes)) {
+            $backendDisplayMode = 'current';
+        }
+        return $backendDisplayMode;
+    }
+
+    /**
      * Get the configuration as bool.
      *
      * @param string $key

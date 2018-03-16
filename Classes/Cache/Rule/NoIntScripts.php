@@ -25,24 +25,33 @@ class NoIntScripts extends AbstractRule
     {
         if ($frontendController->isINTincScript()) {
             foreach ($frontendController->config['INTincScript'] as $key => $value) {
-                $info = [];
-                if (isset($value['type'])) {
-                    $info[] = 'type: ' . $value['type'];
-                }
-                if (isset($value['conf']['userFunc'])) {
-                    $info[] = 'userFunc: ' . $value['conf']['userFunc'];
-                }
-                if (isset($value['conf']['includeLibs'])) {
-                    $info[] = 'includeLibs: ' . $value['conf']['includeLibs'];
-                }
-                if (isset($value['conf']['extensionName'])) {
-                    $info[] = 'extensionName: ' . $value['conf']['extensionName'];
-                }
-                if (isset($value['conf']['pluginName'])) {
-                    $info[] = 'pluginName: ' . $value['conf']['pluginName'];
-                }
-                $explanation[__CLASS__ . ':' . $key] = 'The page has a INTincScript: ' . implode(', ', $info);
+                $explanation[__CLASS__ . ':' . $key] = 'The page has a INTincScript: ' . implode(', ', $this->getInformation($value));
             }
         }
+    }
+
+    /**
+     * Get the debug information
+     *
+     * @param array $configuration
+     * @return array
+     */
+    protected function getInformation($configuration) : array {
+        $info = [];
+        if (isset($value['type'])) {
+            $info[] = 'type: ' . $value['type'];
+        }
+        $check = [
+            'userFunc',
+            'includeLibs',
+            'extensionName',
+            'pluginName',
+        ];
+        foreach ($check as $value) {
+            if (isset($value['conf'][$value])) {
+                $info[] = $value . ': ' . $value['conf'][$value];
+            }
+        }
+        return $info;
     }
 }

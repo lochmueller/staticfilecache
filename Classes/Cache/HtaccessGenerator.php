@@ -20,21 +20,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class HtaccessGenerator
 {
     /**
-     * Configuration.
-     *
-     * @var ConfigurationService
-     */
-    protected $configuration;
-
-    /**
-     * Constructs this generator.
-     */
-    public function __construct()
-    {
-        $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-    }
-
-    /**
      * Write htaccess file.
      *
      * @param string $originalFileName
@@ -42,15 +27,16 @@ class HtaccessGenerator
      */
     public function write(string $originalFileName, int $lifetime)
     {
-        $sendCCHeader = $this->configuration->isBool('sendCacheControlHeader');
-        $redirectAfter = $this->configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout');
-        $sendTypo3Headers = $this->configuration->isBool('sendTypo3Headers');
+        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+        $sendCCHeader = $configuration->isBool('sendCacheControlHeader');
+        $redirectAfter = $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout');
+        $sendTypo3Headers = $configuration->isBool('sendTypo3Headers');
         if (!$sendCCHeader && !$redirectAfter && !$sendTypo3Headers) {
             return;
         }
 
         $fileName = PathUtility::pathinfo($originalFileName, PATHINFO_DIRNAME) . '/.htaccess';
-        $accessTimeout = $this->configuration->get('htaccessTimeout');
+        $accessTimeout = $configuration->get('htaccessTimeout');
         $lifetime = $accessTimeout ? $accessTimeout : $lifetime;
 
         /** @var StandaloneView $renderer */
