@@ -31,12 +31,14 @@ class NoIntScripts extends AbstractRule
     }
 
     /**
-     * Get the debug information
+     * Get the debug information.
      *
      * @param array $configuration
+     *
      * @return array
      */
-    protected function getInformation($configuration) : array {
+    protected function getInformation($configuration): array
+    {
         $info = [];
         if (isset($value['type'])) {
             $info[] = 'type: ' . $value['type'];
@@ -52,6 +54,7 @@ class NoIntScripts extends AbstractRule
                 $info[] = $value . ': ' . $value['conf'][$value];
             }
         }
+
         return $info;
     }
 }

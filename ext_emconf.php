@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'Static File Cache Team',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.0-9.0.0',
+            'typo3' => '8.7.0-9.1.99',
             'php' => '7.0.0-0.0.0',
         ],
     ],

@@ -46,7 +46,7 @@ class CacheModule extends AbstractFunctionModule
     /**
      * Get cache pages entries.
      *
-     * @param int    $pageId
+     * @param int $pageId
      *
      * @return array
      */
@@ -77,11 +77,12 @@ class CacheModule extends AbstractFunctionModule
     }
 
     /**
-     * Get the DB rows
+     * Get the DB rows.
      *
      * @return array
      */
-    protected function getDatabaseRows():array{
+    protected function getDatabaseRows(): array
+    {
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable('pages');
@@ -108,12 +109,14 @@ class CacheModule extends AbstractFunctionModule
     }
 
     /**
-     * Get display mode
-     * 
+     * Get display mode.
+     *
      * @return string
      */
-    protected function getDisplayMode() : string {
+    protected function getDisplayMode(): string
+    {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+
         return $configurationService->getBackendDisplayMode();
     }
 
