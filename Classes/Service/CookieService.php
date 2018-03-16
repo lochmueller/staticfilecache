@@ -28,11 +28,11 @@ class CookieService extends AbstractService
     {
         $cookieDomain = $this->getCookieDomain();
         if ($cookieDomain) {
-            setcookie(self::FE_COOKIE_NAME, 'fe_typo_user_logged_in', $lifetime, '/', $cookieDomain);
+            \setcookie(self::FE_COOKIE_NAME, 'fe_typo_user_logged_in', $lifetime, '/', $cookieDomain);
 
             return;
         }
-        setcookie(self::FE_COOKIE_NAME, 'fe_typo_user_logged_in', $lifetime, '/');
+        \setcookie(self::FE_COOKIE_NAME, 'fe_typo_user_logged_in', $lifetime, '/');
     }
 
     /**
@@ -55,7 +55,7 @@ class CookieService extends AbstractService
         if ($cookieDomain) {
             if ('/' === $cookieDomain[0]) {
                 $match = [];
-                $matchCnt = preg_match($cookieDomain, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
+                $matchCnt = \preg_match($cookieDomain, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
                 if (false === $matchCnt) {
                     $message = 'The regular expression for the cookie domain (' . $cookieDomain . ') contains errors.';
                     $message .= 'The session is not shared across sub-domains.';

@@ -37,6 +37,6 @@ class NoUserOrGroupSet extends AbstractRule
      */
     public function isUserOrGroupSet(TypoScriptFrontendController $frontendController)
     {
-        return (is_array($frontendController->fe_user->user) && isset($frontendController->fe_user->user['uid'])) || '0,-1' !== $frontendController->gr_list;
+        return (\is_array($frontendController->fe_user->user) && isset($frontendController->fe_user->user['uid'])) || '0,-1' !== $frontendController->gr_list;
     }
 }

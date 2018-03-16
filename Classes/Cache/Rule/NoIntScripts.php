@@ -25,7 +25,7 @@ class NoIntScripts extends AbstractRule
     {
         if ($frontendController->isINTincScript()) {
             foreach ($frontendController->config['INTincScript'] as $key => $value) {
-                $explanation[__CLASS__ . ':' . $key] = 'The page has a INTincScript: ' . implode(', ', $this->getInformation($value));
+                $explanation[__CLASS__ . ':' . $key] = 'The page has a INTincScript: ' . \implode(', ', $this->getInformation($value));
             }
         }
     }

@@ -27,9 +27,9 @@ class Crawler extends AbstractHook
         if (!ExtensionManagementUtility::isLoaded('crawler')) {
             return;
         }
-        if ($parentObject->applicationData['tx_crawler']['running'] && in_array(
+        if ($parentObject->applicationData['tx_crawler']['running'] && \in_array(
             'tx_staticfilecache_clearstaticfile',
-            $parentObject->applicationData['tx_crawler']['parameters']['procInstructions']
+            $parentObject->applicationData['tx_crawler']['parameters']['procInstructions'], true
         )
         ) {
             $this->clearCache($parentObject);
@@ -44,7 +44,7 @@ class Crawler extends AbstractHook
     protected function clearCache(TypoScriptFrontendController $parentObject)
     {
         $pageId = $parentObject->id;
-        if (!is_numeric($pageId)) {
+        if (!\is_numeric($pageId)) {
             $parentObject->applicationData['tx_crawler']['log'][] = 'EXT:staticfilecache skipped';
 
             return;

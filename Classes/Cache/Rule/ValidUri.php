@@ -24,13 +24,13 @@ class ValidUri extends AbstractRule
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
-        if (false !== mb_strpos($uri, '?')) {
+        if (false !== \mb_strpos($uri, '?')) {
             $explanation[__CLASS__] = 'The URI contain a "?" that is not allowed for static file cache';
             $skipProcessing = true;
-        } elseif (false !== mb_strpos($uri, 'index.php')) {
+        } elseif (false !== \mb_strpos($uri, 'index.php')) {
             $explanation[__CLASS__] = 'The URI contain a "index.php" that is not allowed for static file cache';
             $skipProcessing = true;
-        } elseif (false !== mb_strpos(parse_url($uri, PHP_URL_PATH), '//')) {
+        } elseif (false !== \mb_strpos(\parse_url($uri, PHP_URL_PATH), '//')) {
             $explanation[__CLASS__] = 'Illegal link configuration. The URI should not contain a "//" ' .
                 'because a folder name without name is not possible';
             $skipProcessing = true;

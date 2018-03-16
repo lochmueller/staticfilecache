@@ -52,7 +52,7 @@ class CacheCommandController extends AbstractCommandController
     public function flushCacheCommand($forceBoostModeFlush = false)
     {
         if ($forceBoostModeFlush) {
-            define('SFC_QUEUE_WORKER', true);
+            \define('SFC_QUEUE_WORKER', true);
         }
         GeneralUtility::makeInstance(CacheService::class)->getCache()->flush();
     }

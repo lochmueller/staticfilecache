@@ -25,7 +25,7 @@ class DateTimeUtility
         if (0 !== $time) {
             return $time;
         }
-        $time = time();
+        $time = \time();
         if (isset($GLOBALS['EXEC_TIME']) && MathUtility::canBeInterpretedAsInteger($GLOBALS['EXEC_TIME'])) {
             $time = (int) $GLOBALS['EXEC_TIME'];
         }

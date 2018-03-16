@@ -46,20 +46,20 @@ class StaticFileBackend extends AbstractBackend
             'created' => DateTimeUtility::getCurrentTime(),
             'expires' => (DateTimeUtility::getCurrentTime() + $this->getRealLifetime($lifetime)),
         ];
-        if (in_array('explanation', $tags)) {
+        if (\in_array('explanation', $tags, true)) {
             $databaseData['explanation'] = $data;
-            parent::set($entryIdentifier, serialize($databaseData), $tags, $lifetime);
+            parent::set($entryIdentifier, \serialize($databaseData), $tags, $lifetime);
 
             return;
         }
 
         // call set in front of the generation, because the set method
         // of the DB backend also call remove
-        parent::set($entryIdentifier, serialize($databaseData), $tags, $lifetime);
+        parent::set($entryIdentifier, \serialize($databaseData), $tags, $lifetime);
 
         $fileName = $this->getCacheFilename($entryIdentifier);
         $cacheDir = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
-        if (!is_dir($cacheDir)) {
+        if (!\is_dir($cacheDir)) {
             GeneralUtility::mkdir_deep($cacheDir);
         }
 
@@ -70,33 +70,13 @@ class StaticFileBackend extends AbstractBackend
 
         // gz
         if ($this->configuration->isBool('enableStaticFileCompression')) {
-            $contentGzip = gzencode($data, $this->getCompressionLevel());
+            $contentGzip = \gzencode($data, $this->getCompressionLevel());
             if ($contentGzip) {
                 GeneralUtility::writeFile($fileName . '.gz', $contentGzip);
             }
         }
 
         GeneralUtility::makeInstance(HtaccessService::class)->write($fileName, $this->getRealLifetime($lifetime));
-    }
-
-    /**
-     * Get the cache folder for the given entry.
-     *
-     * @param $entryIdentifier
-     *
-     * @return string
-     */
-    protected function getCacheFilename(string $entryIdentifier): string
-    {
-        $urlParts = parse_url($entryIdentifier);
-        $path = $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . trim($urlParts['path'], '/');
-        $cacheFilename = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY . $path);
-        $fileExtension = PathUtility::pathinfo(PathUtility::basename($cacheFilename), PATHINFO_EXTENSION);
-        if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
-            $cacheFilename = rtrim($cacheFilename, '/') . '/index.html';
-        }
-
-        return $cacheFilename;
     }
 
     /**
@@ -112,11 +92,11 @@ class StaticFileBackend extends AbstractBackend
             return;
         }
         $result = parent::get($entryIdentifier);
-        if (!is_string($result)) {
+        if (!\is_string($result)) {
             return;
         }
 
-        return unserialize($result);
+        return \unserialize($result);
     }
 
     /**
@@ -128,7 +108,7 @@ class StaticFileBackend extends AbstractBackend
      */
     public function has($entryIdentifier)
     {
-        return is_file($this->getCacheFilename($entryIdentifier)) || parent::has($entryIdentifier);
+        return \is_file($this->getCacheFilename($entryIdentifier)) || parent::has($entryIdentifier);
     }
 
     /**
@@ -164,7 +144,7 @@ class StaticFileBackend extends AbstractBackend
     public function flush()
     {
         if (false === (bool) $this->configuration->get('clearCacheForAllDomains')) {
-            $this->flushByTag('sfc_domain_' . str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
+            $this->flushByTag('sfc_domain_' . \str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
 
             return;
         }
@@ -180,9 +160,9 @@ class StaticFileBackend extends AbstractBackend
         }
 
         $absoluteCacheDir = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY);
-        if (is_dir($absoluteCacheDir)) {
-            $tempAbsoluteCacheDir = rtrim($absoluteCacheDir, '/') . '_' . GeneralUtility::milliseconds() . '/';
-            rename($absoluteCacheDir, $tempAbsoluteCacheDir);
+        if (\is_dir($absoluteCacheDir)) {
+            $tempAbsoluteCacheDir = \rtrim($absoluteCacheDir, '/') . '_' . GeneralUtility::milliseconds() . '/';
+            \rename($absoluteCacheDir, $tempAbsoluteCacheDir);
         }
         parent::flush();
         if (isset($tempAbsoluteCacheDir)) {
@@ -235,6 +215,26 @@ class StaticFileBackend extends AbstractBackend
     }
 
     /**
+     * Get the cache folder for the given entry.
+     *
+     * @param $entryIdentifier
+     *
+     * @return string
+     */
+    protected function getCacheFilename(string $entryIdentifier): string
+    {
+        $urlParts = \parse_url($entryIdentifier);
+        $path = $urlParts['scheme'] . '/' . $urlParts['host'] . '/' . \trim($urlParts['path'], '/');
+        $cacheFilename = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY . $path);
+        $fileExtension = PathUtility::pathinfo(PathUtility::basename($cacheFilename), PATHINFO_EXTENSION);
+        if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
+            $cacheFilename = \rtrim($cacheFilename, '/') . '/index.html';
+        }
+
+        return $cacheFilename;
+    }
+
+    /**
      * Remove the static files of the given tag entries or add it to the queue.
      *
      * @param $tags
@@ -243,7 +243,7 @@ class StaticFileBackend extends AbstractBackend
     {
         $identifiers = [];
         foreach ($tags as $tag) {
-            $identifiers = array_merge($identifiers, $this->findIdentifiersByTagIncludingExpired($tag));
+            $identifiers = \array_merge($identifiers, $this->findIdentifiersByTagIncludingExpired($tag));
         }
 
         if ($this->isBoostMode()) {
@@ -291,8 +291,8 @@ class StaticFileBackend extends AbstractBackend
             PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess',
         ];
         foreach ($files as $file) {
-            if (is_file($file)) {
-                unlink($file);
+            if (\is_file($file)) {
+                \unlink($file);
             }
         }
     }
@@ -314,7 +314,7 @@ class StaticFileBackend extends AbstractBackend
      */
     protected function isBoostMode(): bool
     {
-        return (bool) $this->configuration->get('boostMode') && !defined('SFC_QUEUE_WORKER');
+        return (bool) $this->configuration->get('boostMode') && !\defined('SFC_QUEUE_WORKER');
     }
 
     /**

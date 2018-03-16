@@ -24,8 +24,8 @@ class ValidDoktype extends AbstractRule
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
         $ignoreTypes = [3];
-        if (in_array($frontendController->page['doktype'], $ignoreTypes)) {
-            $explanation[__CLASS__] = 'The Page doktype is one of the following not allowed numbers: ' . implode(
+        if (\in_array((int) $frontendController->page['doktype'], $ignoreTypes, true)) {
+            $explanation[__CLASS__] = 'The Page doktype is one of the following not allowed numbers: ' . \implode(
                 ', ',
                 $ignoreTypes
             );

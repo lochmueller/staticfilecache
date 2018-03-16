@@ -62,7 +62,7 @@ class HtaccessService extends AbstractService
     protected function getTemplateName(): string
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $templateName = trim((string) $configuration->get('htaccessTemplateName'));
+        $templateName = \trim((string) $configuration->get('htaccessTemplateName'));
         if ('' === $templateName) {
             return 'EXT:staticfilecache/Resources/Private/Templates/Htaccess.html';
         }
@@ -82,12 +82,12 @@ class HtaccessService extends AbstractService
             return $headers;
         }
         // Set headers, if any
-        if (is_array($GLOBALS['TSFE']->config['config']['additionalHeaders.'])) {
-            ksort($GLOBALS['TSFE']->config['config']['additionalHeaders.']);
+        if (\is_array($GLOBALS['TSFE']->config['config']['additionalHeaders.'])) {
+            \ksort($GLOBALS['TSFE']->config['config']['additionalHeaders.']);
             foreach ($GLOBALS['TSFE']->config['config']['additionalHeaders.'] as $options) {
-                $complete = trim($options['header']);
-                $parts = explode(':', $complete, 2);
-                $headers[trim($parts[0])] = trim($parts[1]);
+                $complete = \trim($options['header']);
+                $parts = \explode(':', $complete, 2);
+                $headers[\trim($parts[0])] = \trim($parts[1]);
             }
         }
 

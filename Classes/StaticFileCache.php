@@ -53,16 +53,6 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
     protected $idnaConverter;
 
     /**
-     * Get the current object.
-     *
-     * @return StaticFileCache
-     */
-    public static function getInstance()
-    {
-        return GeneralUtility::makeInstance(self::class);
-    }
-
-    /**
      * Constructs this object.
      */
     public function __construct()
@@ -71,6 +61,16 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
         $this->signalDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
         $this->idnaConverter = GeneralUtility::makeInstance(IdnaConvert::class);
+    }
+
+    /**
+     * Get the current object.
+     *
+     * @return StaticFileCache
+     */
+    public static function getInstance()
+    {
+        return GeneralUtility::makeInstance(self::class);
     }
 
     /**
@@ -106,18 +106,18 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             // Don't continue if there is already an existing valid cache entry and we've got an invalid now.
             // Prevents overriding if a logged in user is checking the page in a second call
             // see https://forge.typo3.org/issues/67526
-            if (count($explanation) && $this->hasValidCacheEntry($uri)) {
+            if (\count($explanation) && $this->hasValidCacheEntry($uri)) {
                 return;
             }
 
             // The page tag pageId_NN is included in $pObj->pageCacheTags
             $cacheTags = ObjectAccess::getProperty($pObj, 'pageCacheTags', true);
             $cacheTags[] = 'sfc_pageId_' . $pObj->page['uid'];
-            $cacheTags[] = 'sfc_domain_' . str_replace('.', '_', parse_url($uri, PHP_URL_HOST));
+            $cacheTags[] = 'sfc_domain_' . \str_replace('.', '_', \parse_url($uri, PHP_URL_HOST));
 
             // This is supposed to have "&& !$pObj->beUserLogin" in there as well
             // This fsck's up the ctrl-shift-reload hack, so I pulled it out.
-            if (0 === count($explanation)) {
+            if (0 === \count($explanation)) {
                 // If page has a endtime before the current timeOutTime, use it instead:
                 if ($pObj->page['endtime'] > 0 && $pObj->page['endtime'] < $timeOutTime) {
                     $timeOutTime = $pObj->page['endtime'];
@@ -127,11 +127,11 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
 
                 $content = $pObj->content;
                 if ($this->configuration->get('showGenerationSignature')) {
-                    $content .= "\n<!-- cached statically on: " . strftime(
+                    $content .= "\n<!-- cached statically on: " . \strftime(
                         $this->configuration->get('strftime'),
                         DateTimeUtility::getCurrentTime()
                     ) . ' -->';
-                    $content .= "\n<!-- expires on: " . strftime(
+                    $content .= "\n<!-- expires on: " . \strftime(
                         $this->configuration->get('strftime'),
                         $timeOutTime
                     ) . ' -->';
@@ -179,13 +179,13 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
     protected function getUri()
     {
         // Find host-name / IP, always in lowercase:
-        $isHttp = (0 === mb_strpos(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), 'http://'));
+        $isHttp = (0 === \mb_strpos(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), 'http://'));
         $uri = GeneralUtility::getIndpEnv('REQUEST_URI');
         if ($this->configuration->isBool('recreateURI')) {
             $uri = $this->recreateUriPath($uri);
         }
 
-        $uri = ($isHttp ? 'http://' : 'https://') . mb_strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . ltrim($uri, '/');
+        $uri = ($isHttp ? 'http://' : 'https://') . \mb_strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . \ltrim($uri, '/');
 
         return $this->idnaConverter->encode($uri);
     }
@@ -216,9 +216,8 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             ->setCreateAbsoluteUri(true)
             ->build();
 
-        $parts = parse_url($url);
-        unset($parts['scheme']);
-        unset($parts['host']);
+        $parts = \parse_url($url);
+        unset($parts['scheme'], $parts['host']);
 
         return HttpUtility::buildUrl($parts);
     }
@@ -235,7 +234,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
         $entry = $this->cache->get($uri);
 
         return null !== $entry &&
-            0 === count($entry['explanation']) &&
+            0 === \count($entry['explanation']) &&
             $entry['expires'] >= DateTimeUtility::getCurrentTime();
     }
 

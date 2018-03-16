@@ -48,7 +48,7 @@ class NoFakeFrontend extends AbstractRule
     protected function getCallPaths(): array
     {
         $paths = [];
-        $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        $backTrace = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         foreach ($backTrace as $value) {
             if (isset($value['file'])) {
                 $paths[] = $value['file'];
