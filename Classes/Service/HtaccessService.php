@@ -1,11 +1,11 @@
 <?php
 
 /**
- * HtaccessGenerator.
+ * HtaccessService.
  */
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache\Cache;
+namespace SFC\Staticfilecache\Service;
 
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
@@ -15,9 +15,9 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * HtaccessGenerator.
+ * HtaccessService.
  */
-class HtaccessGenerator
+class HtaccessService extends AbstractService
 {
     /**
      * Write htaccess file.

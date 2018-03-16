@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\Service\QueueService;
+use SFC\Staticfilecache\Service\HtaccessService;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -75,7 +76,7 @@ class StaticFileBackend extends AbstractBackend
             }
         }
 
-        GeneralUtility::makeInstance(HtaccessGenerator::class)->write($fileName, $this->getRealLifetime($lifetime));
+        GeneralUtility::makeInstance(HtaccessService::class)->write($fileName, $this->getRealLifetime($lifetime));
     }
 
     /**
