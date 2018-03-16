@@ -35,8 +35,8 @@ script:
   composer phpunit || true
 - |
   composer phpmd || true
-- |
-  composer phpcs || true
+#- |
+#  composer phpcs || true
 
 after_script:
 - |
