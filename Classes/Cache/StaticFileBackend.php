@@ -6,8 +6,8 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
-use SFC\Staticfilecache\Service\QueueService;
 use SFC\Staticfilecache\Service\HtaccessService;
+use SFC\Staticfilecache\Service\QueueService;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

@@ -33,3 +33,6 @@ backendDisplayMode = current
 
 # cat=basic; type=boolean; label=Disable static file cache in development: When checked, the static file cache won't be generated if in development application context.
 disableInDevelopment = 0
+
+# cat=basic; type=string; label=Htaccess Template name: The template path for the htaccess file generation
+htaccessTemplateName = EXT:staticfilecache/Resources/Private/Templates/Htaccess.html

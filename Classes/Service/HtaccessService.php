@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
 
-use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -40,9 +39,8 @@ class HtaccessService extends AbstractService
         $lifetime = $accessTimeout ? $accessTimeout : $lifetime;
 
         /** @var StandaloneView $renderer */
-        $templateName = 'EXT:staticfilecache/Resources/Private/Templates/Htaccess.html';
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
-        $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateName));
+        $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->getTemplateName()));
         $renderer->assignMultiple([
             'mode' => $accessTimeout ? 'A' : 'M',
             'lifetime' => $lifetime,
@@ -54,6 +52,22 @@ class HtaccessService extends AbstractService
         ]);
 
         GeneralUtility::writeFile($fileName, $renderer->render());
+    }
+
+    /**
+     * Get the template name.
+     *
+     * @return string
+     */
+    protected function getTemplateName(): string
+    {
+        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+        $templateName = trim((string) $configuration->get('htaccessTemplateName'));
+        if ('' === $templateName) {
+            return 'EXT:staticfilecache/Resources/Private/Templates/Htaccess.html';
+        }
+
+        return $templateName;
     }
 
     /**
