@@ -31,17 +31,12 @@ before_script:
 - export TYPO3_PATH_WEB="$PWD/.Build/Web"
 
 script:
-#- |
-#  echo; echo "Running unit tests";
-#  if [[ "$COVERAGE" == "1" ]]; then
-#    .Build/bin/phpunit -c Tests/UnitTests.xml --coverage-clover=.Build/unittest-coverage.clover
-#  else
-#    .Build/bin/phpunit -c Tests/UnitTests.xml
-#  fi;
 - |
-  echo; echo "Executing PHP mess detector"; .Build/bin/phpmd Classes/ text cleancode,codesize,controversial,design,naming || true
+  composer phpunit || true
 - |
-  echo; echo "Executing PHP code sniffer"; .Build/bin/phpcs --runtime-set ignore_warnings_on_exit true --standard=PSR2 Classes/
+  composer phpmd || true
+- |
+  composer phpcs || true
 
 after_script:
 - |

@@ -77,6 +77,9 @@
     "php-cs-fixer": [
       "php-cs-fixer fix --config .php_cs"
     ],
+    "phpcs": [
+      "phpcs --runtime-set ignore_warnings_on_exit true --standard=PSR2 Classes/"
+    ],
     "phpunit": [
       "phpunit -c Tests/UnitTests.xml"
     ]
