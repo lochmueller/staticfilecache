@@ -164,7 +164,7 @@ class QueueService extends AbstractService
         $cookie->setName('staticfilecache');
         $cookie->setValue('1');
         $cookie->setPath('/');
-        $cookie->setExpires(DateTimeUtility::getCurrentTime() + 30);
+        $cookie->setExpires(DateTimeUtility::getCurrentTime() + 3600);
         $cookie->setDomain($domain);
         $jar->setCookie($cookie);
         $options = [
