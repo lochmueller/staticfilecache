@@ -35,7 +35,7 @@ class CacheModule extends AbstractFunctionModule
         $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($moduleTemplate));
         $renderer->assignMultiple([
             'requestUri' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-            'rows' => $this->getCachePagesEntries($pageId),
+            'rows' => $this->getCachePagesEntries(),
             'pageId' => $pageId,
             'backendDisplayMode' => $this->getDisplayMode(),
         ]);
@@ -46,11 +46,9 @@ class CacheModule extends AbstractFunctionModule
     /**
      * Get cache pages entries.
      *
-     * @param int $pageId
-     *
      * @return array
      */
-    protected function getCachePagesEntries(int $pageId): array
+    protected function getCachePagesEntries(): array
     {
         $rows = [];
         $cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
@@ -83,6 +81,7 @@ class CacheModule extends AbstractFunctionModule
      */
     protected function getDatabaseRows(): array
     {
+        $pageId = (int) $this->pObj->id;
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable('pages');
