@@ -23,7 +23,7 @@ class InitFrontendUser extends AbstractHook
      * in frontend users from mod_rewrite. So we need to set our own cookie (when
      * a user actually logs in).
      *
-     * Checking code taken from class.t3lib_userauth.php
+     * Checking code taken from \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
      *
      * @param object $parameters
      * @param object $parentObject
