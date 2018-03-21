@@ -65,3 +65,15 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfile
 if ($_EXTCONF['disableInDevelopment'] && \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext()->isDevelopment()) {
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache']['backend'] = \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
 }
+
+$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+$iconRegistry->registerIcon(
+    'brand-amazon',
+    \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
+    ['name' => 'amazon']
+);
+$iconRegistry->registerIcon(
+    'brand-paypal',
+    \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
+    ['name' => 'paypal']
+);
