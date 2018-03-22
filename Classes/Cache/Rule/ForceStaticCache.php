@@ -49,6 +49,11 @@ class ForceStaticCache extends AbstractRule
                 // force the generation
                 $skipProcessing = false;
 
+                if(!is_array($frontendController->config['INTincScript'])) {
+                    // Avoid exceptions in recursivelyReplaceIntPlaceholdersInContent
+                    $frontendController->config['INTincScript'] = [];
+                }
+
                 // render the plugins in the output
                 $frontendController->INTincScript();
             }
