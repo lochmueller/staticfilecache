@@ -77,3 +77,8 @@ $iconRegistry->registerIcon(
     \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
     ['name' => 'paypal']
 );
+$iconRegistry->registerIcon(
+    'documentation-book',
+    \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
+    ['name' => 'book']
+);

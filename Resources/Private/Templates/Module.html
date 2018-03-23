@@ -1,6 +1,9 @@
 <h1>
 	<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:module.title"/>
 </h1>
+
+<h2>Cache View</h2>
+
 <p>
 	<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:module.intro.{backendDisplayMode}"/>
 </p>
@@ -36,8 +39,6 @@
 		</f:else>
 	</f:if>
 </table>
-
-
 <p>
 	<a class="btn btn-danger" href="{requestUri}&ACTION[removeExpiredPages]=1"
 		 onclick="return confirm('Are you sure?');">
@@ -50,14 +51,21 @@
 	</a>
 </p>
 
-<p>&nbsp;</p>
-<h4>Support development of TYPO3 performance tools like EXT:staticfilecache:</h4>
+<h2>Configuration</h2>
+<p>
+	<a class="btn btn-info" href="https://github.com/lochmueller/staticfilecache/blob/master/README.md" target="_blank">
+		<core:icon identifier="documentation-book"/>
+		Documentation
+	</a>
+</p>
 
-<a href="https://www.amazon.de/hz/wishlist/ls/SWHV1AQPUTH9" target="_blank" class="btn btn-default">
+<h2>Support</h2>
+
+<a href="https://www.amazon.de/hz/wishlist/ls/SWHV1AQPUTH9" target="_blank" class="btn btn-success">
 	<core:icon identifier="brand-amazon"/>
 	Amazon
 </a>
-<a href="https://www.paypal.me/lochmueller/100" class="btn btn-default">
+<a href="https://www.paypal.me/lochmueller/100" class="btn btn-success">
 	<core:icon identifier="brand-paypal"/>
 	PayPal
 </a>
