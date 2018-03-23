@@ -187,7 +187,12 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
 
         $uri = ($isHttp ? 'http://' : 'https://') . \mb_strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . \ltrim($uri, '/');
 
-        return $this->idnaConverter->encode($uri);
+        try {
+            return $this->idnaConverter->encode($uri);
+        } catch (\InvalidArgumentException $ex) {
+            // The URI is already in puny code
+            return $uri;
+        }
     }
 
     /**
