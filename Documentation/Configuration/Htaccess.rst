@@ -23,13 +23,18 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteCond %{HTTP_HOST} ^([^:]+)(:[0-9]+)?$
    RewriteRule .* - [E=SFC_HOST:%1]
 
-   # Get scheme/protocol
+   # Get scheme
    RewriteCond %{SERVER_PORT} ^443$ [OR]
    RewriteCond %{HTTP:X-Forwarded-Proto} https
    RewriteRule .* - [E=SFC_PROTOCOL:https]
    RewriteCond %{SERVER_PORT} !^443$
    RewriteCond %{HTTP:X-Forwarded-Proto} !https
    RewriteRule .* - [E=SFC_PROTOCOL:http]
+
+   # Get port (not used at the moment)
+   RewriteRule .* - [E=SFC_PORT:80]
+   RewriteCond %{SERVER_PORT} ^[0-9]*$ [OR]
+   RewriteRule .* - [E=SFC_PORT:%{SERVER_PORT}]
 
    # Set gzip extension into an environment variable if the visitors browser can handle gzipped content.
    RewriteCond %{HTTP:Accept-Encoding} gzip [NC]
