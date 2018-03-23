@@ -221,8 +221,11 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             ->setCreateAbsoluteUri(true)
             ->build();
 
-        $parts = \parse_url($url);
-        unset($parts['scheme'], $parts['host']);
+        $parts = (array)\parse_url($url);
+        $unset = ['scheme', 'user', 'pass', 'host', 'port'];
+        foreach ($unset as $u) {
+            unset($parts[$u]);
+        }
 
         return HttpUtility::buildUrl($parts);
     }
