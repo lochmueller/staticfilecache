@@ -58,7 +58,7 @@ class StaticFileBackend extends AbstractBackend
         parent::set($entryIdentifier, \serialize($databaseData), $tags, $lifetime);
 
         $fileName = $this->getCacheFilename($entryIdentifier);
-        $cacheDir = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
+        $cacheDir = (string)PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
         if (!\is_dir($cacheDir)) {
             GeneralUtility::mkdir_deep($cacheDir);
         }
@@ -234,7 +234,7 @@ class StaticFileBackend extends AbstractBackend
 
         $path = implode('/', $parts) . '/' . \trim($urlParts['path'], '/');
         $cacheFilename = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY . $path);
-        $fileExtension = PathUtility::pathinfo(PathUtility::basename($cacheFilename), PATHINFO_EXTENSION);
+        $fileExtension = (string)PathUtility::pathinfo(PathUtility::basename($cacheFilename), PATHINFO_EXTENSION);
         if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
             $cacheFilename = \rtrim($cacheFilename, '/') . '/index.html';
         }

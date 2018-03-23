@@ -115,7 +115,11 @@ class QueueService extends AbstractService
     protected function runSingleRequest(array $runEntry)
     {
         try {
-            $client = $this->getCallableClient(\parse_url($runEntry['cache_url'], PHP_URL_HOST));
+            $host = \parse_url($runEntry['cache_url'], PHP_URL_HOST);
+            if ($host === false) {
+                throw new \Exception('No host in cache_url', 1263782);
+            }
+            $client = $this->getCallableClient($host);
             $response = $client->get($runEntry['cache_url']);
             $statusCode = $response->getStatusCode();
         } catch (\Exception $ex) {
