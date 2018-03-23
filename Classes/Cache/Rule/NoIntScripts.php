@@ -24,8 +24,8 @@ class NoIntScripts extends AbstractRule
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
         if ($frontendController->isINTincScript()) {
-            foreach ($frontendController->config['INTincScript'] as $key => $value) {
-                $explanation[__CLASS__ . ':' . $key] = 'The page has a INTincScript: ' . \implode(', ', $this->getInformation($value));
+            foreach ((array)$frontendController->config['INTincScript'] as $key => $configuration) {
+                $explanation[__CLASS__ . ':' . $key] = 'The page has a INTincScript: ' . \implode(', ', $this->getInformation($configuration));
             }
         }
     }
@@ -40,8 +40,8 @@ class NoIntScripts extends AbstractRule
     protected function getInformation($configuration): array
     {
         $info = [];
-        if (isset($value['type'])) {
-            $info[] = 'type: ' . $value['type'];
+        if (isset($configuration['type'])) {
+            $info[] = 'type: ' . $configuration['type'];
         }
         $check = [
             'userFunc',
@@ -50,8 +50,8 @@ class NoIntScripts extends AbstractRule
             'pluginName',
         ];
         foreach ($check as $value) {
-            if (isset($value['conf'][$value])) {
-                $info[] = $value . ': ' . $value['conf'][$value];
+            if (isset($configuration['conf'][$value])) {
+                $info[] = $value . ': ' . $configuration['conf'][$value];
             }
         }
 
