@@ -30,7 +30,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \
 
 $ruleClasses = [
 // Ensure functionality until https://forge.typo3.org/issues/83212 is fixed
-//    \SFC\Staticfilecache\Cache\Rule\StaticCacheable::class,
+// \SFC\Staticfilecache\Cache\Rule\StaticCacheable::class,
     \SFC\Staticfilecache\Cache\Rule\ValidUri::class,
     \SFC\Staticfilecache\Cache\Rule\ValidDoktype::class,
     \SFC\Staticfilecache\Cache\Rule\NoWorkspacePreview::class,
