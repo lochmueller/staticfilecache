@@ -131,3 +131,5 @@ There might be some files you never want to pull from cache even if they are ind
 .. code-block:: bash
 
    RewriteCond %{REQUEST_FILENAME} !^.*\.xml$
+
+Keep in mind: If you are using the gzip feature of StaticFileCache you have to take care, that the output is not encoded twice. If the result of the page are cryptic chars like "�‹��í[krÛH’þ-Eô�ª¹±-¹[ À—�É${dùÙkÙ�[îé..." remove the "text/html \" in the mod_deflate section of the default TYPO3 .htaccess rules.
