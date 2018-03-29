@@ -54,10 +54,10 @@ foreach ($ruleClasses as $class) {
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache'] = [
     'frontend' => \SFC\Staticfilecache\Cache\UriFrontend::class,
-    'backend'  => \SFC\Staticfilecache\Cache\StaticFileBackend::class,
-    'groups'   => [
+    'backend' => \SFC\Staticfilecache\Cache\StaticFileBackend::class,
+    'groups' => [
         'pages',
-        'all'
+        'all',
     ]
 ];
 
@@ -82,3 +82,12 @@ $iconRegistry->registerIcon(
     \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
     ['name' => 'book']
 );
+$iconRegistry->registerIcon(
+    'brand-patreon',
+    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+    [
+        'source' => 'EXT:staticfilecache/Resources/Public/Icons/Patreon.svg'
+    ]
+);
+
+
