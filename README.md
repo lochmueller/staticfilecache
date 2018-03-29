@@ -6,6 +6,12 @@ You have to install the extension in composer mode. If your TYPO3 installation i
 
 Note: EXT:staticfilecache is a fork of EXT:nc_staticfilecache (EXT:fl_staticfilecach before) and has a lots of improvements.
 
+# Support the developmet of the extension
+
+- [Patreon](https://www.patreon.com/lochmueller)
+- [Amazon](https://www.amazon.de/hz/wishlist/ls/SWHV1AQPUTH9)
+- [PayPal](https://www.paypal.me/lochmueller/100)
+
 # Important documentations
 
 ## Introduction
