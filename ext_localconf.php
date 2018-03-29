@@ -89,5 +89,3 @@ $iconRegistry->registerIcon(
         'source' => 'EXT:staticfilecache/Resources/Public/Icons/Patreon.svg'
     ]
 );
-
-
