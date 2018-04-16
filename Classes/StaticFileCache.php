@@ -126,7 +126,6 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             // This is supposed to have "&& !$pObj->beUserLogin" in there as well
             // This fsck's up the ctrl-shift-reload hack, so I pulled it out.
             if (0 === \count($explanation)) {
-
                 $content = $pObj->content;
                 if ($this->configuration->get('showGenerationSignature')) {
                     $content .= "\n<!-- cached statically on: " . \strftime(
