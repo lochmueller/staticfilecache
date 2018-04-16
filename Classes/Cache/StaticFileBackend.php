@@ -42,20 +42,21 @@ class StaticFileBackend extends AbstractBackend
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
+        $realLifetime = $this->getRealLifetime($lifetime);
         $databaseData = [
             'created' => DateTimeUtility::getCurrentTime(),
-            'expires' => (DateTimeUtility::getCurrentTime() + $this->getRealLifetime($lifetime)),
+            'expires' => (DateTimeUtility::getCurrentTime() + $realLifetime),
         ];
         if (\in_array('explanation', $tags, true)) {
             $databaseData['explanation'] = $data;
-            parent::set($entryIdentifier, \serialize($databaseData), $tags, $lifetime);
+            parent::set($entryIdentifier, \serialize($databaseData), $tags, $realLifetime);
 
             return;
         }
 
         // call set in front of the generation, because the set method
         // of the DB backend also call remove
-        parent::set($entryIdentifier, \serialize($databaseData), $tags, $lifetime);
+        parent::set($entryIdentifier, \serialize($databaseData), $tags, $realLifetime);
 
         $fileName = $this->getCacheFilename($entryIdentifier);
         $cacheDir = (string)PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
@@ -76,7 +77,7 @@ class StaticFileBackend extends AbstractBackend
             }
         }
 
-        GeneralUtility::makeInstance(HtaccessService::class)->write($fileName, $this->getRealLifetime($lifetime));
+        GeneralUtility::makeInstance(HtaccessService::class)->write($fileName, $realLifetime);
     }
 
     /**

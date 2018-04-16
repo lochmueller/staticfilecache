@@ -76,8 +76,10 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
     /**
      * Check if the SFC should create the cache.
      *
-     * @param TypoScriptFrontendController $pObj        : The parent object
-     * @param string                       $timeOutTime : The timestamp when the page times out
+     * @param TypoScriptFrontendController $pObj        The parent object
+     * @param int                          $timeOutTime The timestamp when the page times out
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      */
     public function insertPageInCache(TypoScriptFrontendController &$pObj, &$timeOutTime)
     {
@@ -103,6 +105,12 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
         $explanation = $ruleArguments['explanation'];
 
         if (!$ruleArguments['skipProcessing']) {
+            // If page has a endtime before the current timeOutTime, use it instead:
+            if ($pObj->page['endtime'] > 0 && $pObj->page['endtime'] < $timeOutTime) {
+                $timeOutTime = $pObj->page['endtime'];
+            }
+            $timeOutSeconds = $timeOutTime - DateTimeUtility::getCurrentTime();
+
             // Don't continue if there is already an existing valid cache entry and we've got an invalid now.
             // Prevents overriding if a logged in user is checking the page in a second call
             // see https://forge.typo3.org/issues/67526
@@ -118,12 +126,6 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             // This is supposed to have "&& !$pObj->beUserLogin" in there as well
             // This fsck's up the ctrl-shift-reload hack, so I pulled it out.
             if (0 === \count($explanation)) {
-                // If page has a endtime before the current timeOutTime, use it instead:
-                if ($pObj->page['endtime'] > 0 && $pObj->page['endtime'] < $timeOutTime) {
-                    $timeOutTime = $pObj->page['endtime'];
-                }
-
-                $timeOutSeconds = $timeOutTime - DateTimeUtility::getCurrentTime();
 
                 $content = $pObj->content;
                 if ($this->configuration->get('showGenerationSignature')) {
