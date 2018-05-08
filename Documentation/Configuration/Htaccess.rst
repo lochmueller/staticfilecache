@@ -58,9 +58,9 @@ This is the base .htaccess configuration. Please take a look for the default var
    # It only makes sense to do the other checks if a static file actually exists.
    RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_GZIP} -f
 
-   # NO frontend user is logged in. Logged in frontend users may see different
+   # NO frontend or backend user is logged in. Logged in users may see different
    # information than anonymous users. But the anonymous version is cached. So
-   # don't show the anonymous version to logged in frontend users.
+   # don't show the anonymous version to logged in users.
    RewriteCond %{HTTP_COOKIE} !staticfilecache [NC]
 
    # Uncomment the following line if you use MnoGoSearch
@@ -68,11 +68,6 @@ This is the base .htaccess configuration. Please take a look for the default var
 
    # We only redirect GET requests
    RewriteCond %{REQUEST_METHOD} GET
-
-   # NO backend user is logged in. Please note that the be_typo_user cookie expires at the end of the browser session.
-   # If you have logged out of the TYPO3 backend and are expecting to see cached pages but don't.
-   # Please close this browser session first or remove the cookie manually or use another browser to hit your frontend.
-   RewriteCond %{HTTP_COOKIE} !be_typo_user [NC]
 
    # Rewrite the request to the static file.
    RewriteRule .* typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_GZIP} [L]
