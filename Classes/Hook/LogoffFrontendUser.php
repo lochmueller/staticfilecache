@@ -26,7 +26,7 @@ class LogoffFrontendUser extends AbstractHook
     {
         if (('FE' == $parentObject->loginType || 'BE' == $parentObject->loginType) && $parentObject->newSessionID == true) {
             GeneralUtility::makeInstance(CookieService::class)->setCookie(time() + 3600);
-        } else{
+        } else {
             GeneralUtility::makeInstance(CookieService::class)->setCookie(time() - 3600);
         }
     }
