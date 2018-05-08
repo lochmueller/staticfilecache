@@ -28,11 +28,11 @@ class CookieService extends AbstractService
     {
         $cookieDomain = $this->getCookieDomain();
         if ($cookieDomain) {
-            \setcookie(self::FE_COOKIE_NAME, 'fe_typo_user_logged_in', $lifetime, '/', $cookieDomain);
+            \setcookie(self::FE_COOKIE_NAME, 'typo_user_logged_in', $lifetime, '/', $cookieDomain);
 
             return;
         }
-        \setcookie(self::FE_COOKIE_NAME, 'fe_typo_user_logged_in', $lifetime, '/');
+        \setcookie(self::FE_COOKIE_NAME, 'typo_user_logged_in', $lifetime, '/');
     }
 
     /**
