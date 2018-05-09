@@ -23,33 +23,9 @@ class NoBackendUser extends AbstractRule
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
-        if ($frontendController->isBackendUserLoggedIn() || $this->hasActiveBackendCookies()) {
+        if ($frontendController->isBackendUserLoggedIn()) {
             $skipProcessing = true;
-            $explanation[__CLASS__] = 'Active BE Login or active BE login session (TSFE:beUserLogin)';
+            $explanation[__CLASS__] = 'Active BE Login (TSFE:beUserLogin)';
         }
-    }
-
-    /**
-     * Has active backend cookies.
-     *
-     * The Server rewrite rules can only check the existence of an cookie and not the valid
-     * auth process behind. This is the reason, why we call a user with a BE cookie "active"
-     * even if the users cookie is actually a invalid/old one.
-     *
-     * @return bool
-     */
-    protected function hasActiveBackendCookies(): bool
-    {
-        $cookieNames = [
-            'be_typo_user',
-            $GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName'],
-        ];
-        foreach ($cookieNames as $cookieName) {
-            if (isset($_COOKIE[$cookieName])) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
