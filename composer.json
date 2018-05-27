@@ -63,10 +63,7 @@
 	"extra": {
 		"typo3/cms": {
 			"cms-package-dir": "{$vendor-dir}/typo3/cms",
-			"web-dir": ".Build/Web",
-			"Package": {
-				"partOfMinimalUsableSystem": true
-			}
+			"web-dir": ".Build/Web"
 		}
 	},
 	"scripts": {
