@@ -2,7 +2,6 @@
 /**
  * AbstractCacheHook.
  */
-
 namespace SFC\Staticfilecache\Hook\Cache;
 
 use SFC\Staticfilecache\Hook\AbstractHook;
@@ -24,5 +23,4 @@ abstract class AbstractCacheHook extends AbstractHook
     {
         return GeneralUtility::makeInstance(StaticFileCache::class);
     }
-
 }
