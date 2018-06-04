@@ -76,12 +76,12 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
     /**
      * Check if the SFC should create the cache.
      *
-     * @param TypoScriptFrontendController $pObj        The parent object
-     * @param int                          $timeOutTime The timestamp when the page times out
+     * @param TypoScriptFrontendController $pObj The parent object
+     * @param int $timeOutTime The timestamp when the page times out
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      */
-    public function insertPageInCache(TypoScriptFrontendController &$pObj, &$timeOutTime)
+    public function insertPageInCache(TypoScriptFrontendController $pObj, $timeOutTime = null)
     {
         $isStaticCached = false;
         $uri = $this->getUri();
@@ -105,6 +105,9 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
         $explanation = $ruleArguments['explanation'];
 
         if (!$ruleArguments['skipProcessing']) {
+            if ($timeOutTime === null) {
+                $timeOutTime = $pObj->get_cache_timeout();
+            }
             // If page has a endtime before the current timeOutTime, use it instead:
             if ($pObj->page['endtime'] > 0 && $pObj->page['endtime'] < $timeOutTime) {
                 $timeOutTime = $pObj->page['endtime'];
@@ -129,13 +132,13 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
                 $content = $pObj->content;
                 if ($this->configuration->get('showGenerationSignature')) {
                     $content .= "\n<!-- cached statically on: " . \strftime(
-                        $this->configuration->get('strftime'),
-                        DateTimeUtility::getCurrentTime()
-                    ) . ' -->';
+                            $this->configuration->get('strftime'),
+                            DateTimeUtility::getCurrentTime()
+                        ) . ' -->';
                     $content .= "\n<!-- expires on: " . \strftime(
-                        $this->configuration->get('strftime'),
-                        $timeOutTime
-                    ) . ' -->';
+                            $this->configuration->get('strftime'),
+                            $timeOutTime
+                        ) . ' -->';
                 }
 
                 // Signal: Process content before writing to static cached file
@@ -251,7 +254,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
      * Call Dispatcher.
      *
      * @param string $signalName
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return mixed
      */

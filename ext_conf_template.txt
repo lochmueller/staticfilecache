@@ -36,3 +36,6 @@ disableInDevelopment = 0
 
 # cat=basic; type=string; label=Htaccess Template name: The template path for the htaccess file generation
 htaccessTemplateName = EXT:staticfilecache/Resources/Private/Templates/Htaccess.html
+
+# cat=basic; type=options[InsertPageIncache=InsertPageIncache,ContentPostProcOutput=ContentPostProcOutput,Eofe=Eofe]; label="InsertPageIncache" is the default. ContentPostProcOutput is later and EOFE is the latest. Please try to use the default hook.
+saveCacheHook = InsertPageIncache

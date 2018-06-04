@@ -17,8 +17,18 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoC
 // Log a cache miss if no_cache is true
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][$_EXTKEY] = \SFC\Staticfilecache\Hook\LogNoCache::class . '->log';
 
-// Create cache (Note: "cache" has to be in lower case)
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'][$_EXTKEY] = \SFC\Staticfilecache\StaticFileCache::class;
+// Add the right cache hook
+switch ($_EXTCONF['saveCacheHook']) {
+    case 'ContentPostProcOutput':
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][$_EXTKEY] = \SFC\Staticfilecache\Hook\Cache\ContentPostProcOutput::class . '->insert';
+        break;
+    case 'Eofe':
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'][$_EXTKEY] = \SFC\Staticfilecache\Hook\Cache\Eofe::class . '->insert';
+        break;
+    default:
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'][$_EXTKEY] = \SFC\Staticfilecache\Hook\Cache\InsertPageIncache::class;
+        break;
+}
 
 // Set cookie when User logs in
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser'][$_EXTKEY] = \SFC\Staticfilecache\Hook\InitFrontendUser::class . '->setFeUserCookie';
