@@ -245,7 +245,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
     {
         $entry = $this->cache->get($uri);
 
-        return null !== $entry &&
+        return false !== $entry &&
             0 === \count($entry['explanation']) &&
             $entry['expires'] >= DateTimeUtility::getCurrentTime();
     }

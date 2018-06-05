@@ -90,11 +90,11 @@ class StaticFileBackend extends AbstractBackend
     public function get($entryIdentifier)
     {
         if (!$this->has($entryIdentifier)) {
-            return;
+            return false;
         }
         $result = parent::get($entryIdentifier);
         if (!\is_string($result)) {
-            return;
+            return false;
         }
 
         return \unserialize($result);
