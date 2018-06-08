@@ -111,6 +111,8 @@ class QueueService extends AbstractService
      * Run a single request with guzzle.
      *
      * @param array $runEntry
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     protected function runSingleRequest(array $runEntry)
     {

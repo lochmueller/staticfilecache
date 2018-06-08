@@ -33,6 +33,8 @@ class NoUserOrGroupSet extends AbstractRule
      *
      * @see TypoScriptFrontendController::isUserOrGroupSet
      *
+     * @param TypoScriptFrontendController $frontendController
+     *
      * @return bool TRUE if either a login user is found (array fe_user->user and valid id) OR if the gr_list is set to something else than '0,-1' (could be done even without a user being logged in!)
      */
     public function isUserOrGroupSet(TypoScriptFrontendController $frontendController)

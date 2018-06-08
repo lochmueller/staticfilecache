@@ -4,6 +4,7 @@ declare(strict_types=1);
 /**
  * AbstractCacheHook.
  */
+
 namespace SFC\Staticfilecache\Hook\Cache;
 
 use SFC\Staticfilecache\Hook\AbstractHook;

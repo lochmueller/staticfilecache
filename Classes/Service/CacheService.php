@@ -19,8 +19,6 @@ class CacheService extends AbstractService
     /**
      * Get the static file cache.
      *
-     * @throws NoSuchCacheException
-     *
      * @return FrontendInterface
      */
     public function getCache(): FrontendInterface
@@ -36,6 +34,8 @@ class CacheService extends AbstractService
      * Clear cache by page ID.
      *
      * @param int $pageId
+     *
+     * @throws NoSuchCacheException
      */
     public function clearByPageId(int $pageId)
     {

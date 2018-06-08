@@ -48,6 +48,8 @@ class CacheCommandController extends AbstractCommandController
      * If the boost mode is active, all pages are recrawlt.
      *
      * @param bool $forceBoostModeFlush
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     public function flushCacheCommand($forceBoostModeFlush = false)
     {

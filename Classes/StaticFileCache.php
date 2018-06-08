@@ -78,8 +78,6 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
      *
      * @param TypoScriptFrontendController $pObj        The parent object
      * @param int                          $timeOutTime The timestamp when the page times out
-     *
-     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      */
     public function insertPageInCache(TypoScriptFrontendController $pObj, $timeOutTime = null)
     {

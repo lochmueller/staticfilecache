@@ -175,6 +175,8 @@ class StaticFileBackend extends AbstractBackend
      * Removes all entries tagged by any of the specified tags.
      *
      * @param string[] $tags
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception
      */
     public function flushByTags(array $tags)
     {

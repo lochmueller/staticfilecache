@@ -21,6 +21,8 @@ class Crawler extends AbstractHook
      *
      * @param array                        $parameters   Parameters delivered by TypoScriptFrontend
      * @param TypoScriptFrontendController $parentObject The calling parent object (TypoScriptFrontend)
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     public function clearStaticFile(array $parameters, TypoScriptFrontendController $parentObject)
     {
@@ -40,6 +42,8 @@ class Crawler extends AbstractHook
      * Execute the clear cache.
      *
      * @param TypoScriptFrontendController $parentObject
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     protected function clearCache(TypoScriptFrontendController $parentObject)
     {

@@ -1,16 +1,30 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * Configuration.
  */
+
 namespace SFC\Staticfilecache;
 
+use SFC\Staticfilecache\Cache\Rule\Enable;
+use SFC\Staticfilecache\Cache\Rule\ForceStaticCache;
+use SFC\Staticfilecache\Cache\Rule\LoginDeniedConfiguration;
+use SFC\Staticfilecache\Cache\Rule\NoBackendUser;
+use SFC\Staticfilecache\Cache\Rule\NoFakeFrontend;
 use SFC\Staticfilecache\Cache\Rule\NoIntScripts;
+use SFC\Staticfilecache\Cache\Rule\NoNoCache;
 use SFC\Staticfilecache\Cache\Rule\NoUserOrGroupSet;
 use SFC\Staticfilecache\Cache\Rule\NoWorkspacePreview;
+use SFC\Staticfilecache\Cache\Rule\PageCacheable;
 use SFC\Staticfilecache\Cache\Rule\ValidDoktype;
+use SFC\Staticfilecache\Cache\Rule\ValidRequestMethod;
 use SFC\Staticfilecache\Cache\Rule\ValidUri;
+use SFC\Staticfilecache\Cache\StaticFileBackend;
+use SFC\Staticfilecache\Cache\UriFrontend;
+use SFC\Staticfilecache\Command\CacheCommandController;
+use SFC\Staticfilecache\Command\PublishCommandController;
 use SFC\Staticfilecache\Hook\Cache\ContentPostProcOutput;
 use SFC\Staticfilecache\Hook\Cache\Eofe;
 use SFC\Staticfilecache\Hook\Cache\InsertPageIncache;
@@ -19,6 +33,10 @@ use SFC\Staticfilecache\Hook\InitFrontendUser;
 use SFC\Staticfilecache\Hook\LogNoCache;
 use SFC\Staticfilecache\Hook\LogoffFrontendUser;
 use SFC\Staticfilecache\Module\CacheModule;
+use TYPO3\CMS\Core\Cache\Backend\NullBackend;
+use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
+use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
@@ -75,11 +93,14 @@ class Configuration
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing']['staticfilecache'] = LogoffFrontendUser::class . '->logoff';
     }
 
+    /**
+     * Register command controller.
+     */
     public static function registerCommandController()
     {
         // register command controller
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \SFC\Staticfilecache\Command\CacheCommandController::class;
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \SFC\Staticfilecache\Command\PublishCommandController::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = CacheCommandController::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = PublishCommandController::class;
     }
 
     /**
@@ -95,14 +116,14 @@ class Configuration
             NoWorkspacePreview::class,
             NoUserOrGroupSet::class,
             NoIntScripts::class,
-            \SFC\Staticfilecache\Cache\Rule\LoginDeniedConfiguration::class,
-            \SFC\Staticfilecache\Cache\Rule\PageCacheable::class,
-            \SFC\Staticfilecache\Cache\Rule\NoNoCache::class,
-            \SFC\Staticfilecache\Cache\Rule\NoBackendUser::class,
-            \SFC\Staticfilecache\Cache\Rule\Enable::class,
-            \SFC\Staticfilecache\Cache\Rule\ValidRequestMethod::class,
-            \SFC\Staticfilecache\Cache\Rule\ForceStaticCache::class,
-            \SFC\Staticfilecache\Cache\Rule\NoFakeFrontend::class,
+            LoginDeniedConfiguration::class,
+            PageCacheable::class,
+            NoNoCache::class,
+            NoBackendUser::class,
+            Enable::class,
+            ValidRequestMethod::class,
+            ForceStaticCache::class,
+            NoFakeFrontend::class,
         ];
 
         /** @var Dispatcher $signalSlotDispatcher */
@@ -120,8 +141,8 @@ class Configuration
         $configuration = \unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']);
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache'] = [
-            'frontend' => \SFC\Staticfilecache\Cache\UriFrontend::class,
-            'backend' => \SFC\Staticfilecache\Cache\StaticFileBackend::class,
+            'frontend' => UriFrontend::class,
+            'backend' => StaticFileBackend::class,
             'groups' => [
                 'pages',
                 'all',
@@ -130,31 +151,34 @@ class Configuration
 
         // Disable staticfilecache in development if extension configuration 'disableInDevelopment' is set
         if ($configuration['disableInDevelopment'] && GeneralUtility::getApplicationContext()->isDevelopment()) {
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache']['backend'] = \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache']['backend'] = NullBackend::class;
         }
     }
 
+    /**
+     * Register icons.
+     */
     public static function registerIcons()
     {
-        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         $iconRegistry->registerIcon(
             'brand-amazon',
-            \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
+            FontawesomeIconProvider::class,
             ['name' => 'amazon']
         );
         $iconRegistry->registerIcon(
             'brand-paypal',
-            \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
+            FontawesomeIconProvider::class,
             ['name' => 'paypal']
         );
         $iconRegistry->registerIcon(
             'documentation-book',
-            \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
+            FontawesomeIconProvider::class,
             ['name' => 'book']
         );
         $iconRegistry->registerIcon(
             'brand-patreon',
-            \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+            SvgIconProvider::class,
             [
                 'source' => 'EXT:staticfilecache/Resources/Public/Icons/Patreon.svg',
             ]
