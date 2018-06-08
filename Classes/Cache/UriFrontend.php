@@ -7,12 +7,12 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Cache;
 
 use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
-use TYPO3\CMS\Core\Cache\Frontend\StringFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 
 /**
  * Cache frontend for static file cache.
  */
-class UriFrontend extends StringFrontend
+class UriFrontend extends VariableFrontend
 {
     /**
      * Check if the identifier is a valid URI incl. host and path.
