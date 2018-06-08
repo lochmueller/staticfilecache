@@ -96,7 +96,7 @@
 					<core:icon identifier="status-status-permission-denied"/>
 				</f:then>
 				<f:else>
-					<f:format.date format="d-m-Y H:i">@{row.info.created}</f:format.date>
+					<f:render section="date" arguments="{timestamp: row.info.created}" />
 				</f:else>
 			</f:if>
 		</td>
@@ -106,7 +106,7 @@
 					<core:icon identifier="status-status-permission-denied"/>
 				</f:then>
 				<f:else>
-					<f:format.date format="d-m-Y H:i">@{row.info.expires}</f:format.date>
+					<f:render section="date" arguments="{timestamp: row.info.expires}" />
 				</f:else>
 			</f:if>
 		</td>
@@ -125,5 +125,16 @@
 				</td>
 			</tr>
 		</f:then>
+	</f:if>
+</f:section>
+
+<f:section name="date">
+	<f:if condition="{timestamp}">
+		<f:then>
+			<f:format.date format="d-m-Y H:i">@{timestamp}</f:format.date>
+		</f:then>
+		<f:else>
+			-?-
+		</f:else>
 	</f:if>
 </f:section>

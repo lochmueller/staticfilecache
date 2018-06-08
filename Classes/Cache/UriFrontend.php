@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
-use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
+use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 
 /**
@@ -37,33 +37,6 @@ class UriFrontend extends VariableFrontend
         return true;
     }
 
-    /**
-     * Saves the value of a PHP variable in the cache.
-     *
-     * @param string $entryIdentifier An identifier used for this cache entry
-     * @param string $string          The variable to cache
-     * @param array  $tags            Tags to associate with this cache entry
-     * @param int    $lifetime        Lifetime of this cache entry in seconds. NULL=default; 0=unlimited
-     *
-     * @throws \InvalidArgumentException if the identifier or tag is not valid
-     *
-     * @api
-     */
-    public function set($entryIdentifier, $string, array $tags = [], $lifetime = null)
-    {
-        if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-            throw new \InvalidArgumentException(
-                '"' . $entryIdentifier . '" is not a valid cache entry identifier.',
-                1233057566
-            );
-        }
-        foreach ($tags as $tag) {
-            if (!$this->isValidTag($tag)) {
-                throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233057512);
-            }
-        }
-        $this->backend->set($entryIdentifier, $string, $tags, $lifetime);
-    }
 
     /**
      * Finds and returns all cache entries which are tagged by the specified tag.
@@ -71,21 +44,23 @@ class UriFrontend extends VariableFrontend
      * @param string $tag The tag to search for
      *
      * @return array An array with the content of all matching entries. An empty array if no entries matched
+     * @throws \InvalidArgumentException if the tag is not valid
+     * @api
      */
     public function getByTag($tag)
     {
         if (!$this->isValidTag($tag)) {
-            throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233057772);
+            throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233058312);
         }
-        if (!($this->backend instanceof TaggableBackendInterface)) {
-            return [];
-        }
+        $entries = [];
         $identifiers = $this->backend->findIdentifiersByTag($tag);
-        $return = [];
         foreach ($identifiers as $identifier) {
-            $return[$identifier] = $this->get($identifier);
+            $rawResult = $this->backend->get($identifier);
+            if ($rawResult !== false) {
+                $entries[$identifier] = $this->backend instanceof TransientBackendInterface ? $rawResult : unserialize($rawResult);
+            }
         }
-
-        return $return;
+        return $entries;
     }
+
 }

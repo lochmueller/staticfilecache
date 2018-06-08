@@ -9,6 +9,7 @@ namespace SFC\Staticfilecache\Cache;
 use SFC\Staticfilecache\Service\HtaccessService;
 use SFC\Staticfilecache\Service\QueueService;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
+use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -20,7 +21,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * - CacheFileName
  * - CacheFileName.gz
  */
-class StaticFileBackend extends AbstractBackend
+class StaticFileBackend extends AbstractBackend implements TransientBackendInterface
 {
     /**
      * Cache directory.
@@ -96,7 +97,6 @@ class StaticFileBackend extends AbstractBackend
         if (!\is_string($result)) {
             return false;
         }
-
         return \unserialize($result);
     }
 
