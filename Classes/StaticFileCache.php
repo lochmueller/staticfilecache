@@ -131,14 +131,8 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             if (0 === \count($explanation)) {
                 $content = $pObj->content;
                 if ($this->configuration->get('showGenerationSignature')) {
-                    $content .= "\n<!-- cached statically on: " . \strftime(
-                            $this->configuration->get('strftime'),
-                            DateTimeUtility::getCurrentTime()
-                        ) . ' -->';
-                    $content .= "\n<!-- expires on: " . \strftime(
-                            $this->configuration->get('strftime'),
-                            $timeOutTime
-                        ) . ' -->';
+                    $content .= "\n<!-- cached statically on: " . $this->formatTimestamp(DateTimeUtility::getCurrentTime()) . ' -->';
+                    $content .= "\n<!-- expires on: " . $this->formatTimestamp($timeOutTime) . ' -->';
                 }
 
                 // Signal: Process content before writing to static cached file
@@ -173,6 +167,18 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             'isStaticCached' => $isStaticCached,
         ];
         $this->dispatch('postProcess', $postProcessArguments);
+    }
+
+    /**
+     * Format the given timestamp.
+     *
+     * @param int $timestamp
+     *
+     * @return string
+     */
+    protected function formatTimestamp($timestamp)
+    {
+        return \strftime($this->configuration->get('strftime'), $timestamp);
     }
 
     /**
