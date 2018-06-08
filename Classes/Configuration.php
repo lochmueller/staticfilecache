@@ -18,6 +18,7 @@ use SFC\Staticfilecache\Cache\Rule\NoNoCache;
 use SFC\Staticfilecache\Cache\Rule\NoUserOrGroupSet;
 use SFC\Staticfilecache\Cache\Rule\NoWorkspacePreview;
 use SFC\Staticfilecache\Cache\Rule\PageCacheable;
+use SFC\Staticfilecache\Cache\Rule\StaticCacheable;
 use SFC\Staticfilecache\Cache\Rule\ValidDoktype;
 use SFC\Staticfilecache\Cache\Rule\ValidRequestMethod;
 use SFC\Staticfilecache\Cache\Rule\ValidUri;
@@ -109,8 +110,7 @@ class Configuration
     public static function registerSlots()
     {
         $ruleClasses = [
-            // Ensure functionality until https://forge.typo3.org/issues/83212 is fixed
-            // \SFC\Staticfilecache\Cache\Rule\StaticCacheable::class,
+            StaticCacheable::class,
             ValidUri::class,
             ValidDoktype::class,
             NoWorkspacePreview::class,

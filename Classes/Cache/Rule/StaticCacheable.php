@@ -16,6 +16,9 @@ class StaticCacheable extends AbstractRule
     /**
      * Check if the page is static cachable.
      *
+     * Please keep this topic in mind: https://forge.typo3.org/issues/83212
+     * EXT:form honeypot uses anonymous FE user, so the caching is disabled
+     *
      * @param TypoScriptFrontendController $frontendController
      * @param string                       $uri
      * @param array                        $explanation
