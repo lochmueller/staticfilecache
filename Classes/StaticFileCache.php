@@ -76,8 +76,8 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
     /**
      * Check if the SFC should create the cache.
      *
-     * @param TypoScriptFrontendController $pObj The parent object
-     * @param int $timeOutTime The timestamp when the page times out
+     * @param TypoScriptFrontendController $pObj        The parent object
+     * @param int                          $timeOutTime The timestamp when the page times out
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      */
@@ -105,7 +105,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
         $explanation = $ruleArguments['explanation'];
 
         if (!$ruleArguments['skipProcessing']) {
-            if ($timeOutTime === null) {
+            if (null === $timeOutTime) {
                 $timeOutTime = $pObj->get_cache_timeout();
             }
             // If page has a endtime before the current timeOutTime, use it instead:
@@ -225,7 +225,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             ->setCreateAbsoluteUri(true)
             ->build();
 
-        $parts = (array)\parse_url($url);
+        $parts = (array) \parse_url($url);
         $unset = ['scheme', 'user', 'pass', 'host', 'port'];
         foreach ($unset as $u) {
             unset($parts[$u]);
@@ -254,7 +254,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
      * Call Dispatcher.
      *
      * @param string $signalName
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return mixed
      */

@@ -14,10 +14,10 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class ContentPostProcOutput extends AbstractCacheHook
 {
-
     /**
-     * @param array $params
+     * @param array                        $params
      * @param TypoScriptFrontendController $tsfe
+     *
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      */
     public function insert($params, TypoScriptFrontendController $tsfe)

@@ -25,7 +25,7 @@ class InitFrontendUser extends AbstractHook
      *
      * Checking code taken from \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
      *
-     * @param array $parameters
+     * @param array  $parameters
      * @param object $parentObject
      */
     public function setFeUserCookie(&$parameters, $parentObject)

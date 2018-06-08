@@ -116,7 +116,7 @@ class QueueService extends AbstractService
     {
         try {
             $host = \parse_url($runEntry['cache_url'], PHP_URL_HOST);
-            if ($host === false) {
+            if (false === $host) {
                 throw new \Exception('No host in cache_url', 1263782);
             }
             $client = $this->getCallableClient($host);

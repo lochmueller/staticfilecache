@@ -1,6 +1,8 @@
 <?php
+
+declare(strict_types=1);
 /**
- * Configuration
+ * Configuration.
  */
 
 namespace SFC\Staticfilecache;
@@ -22,17 +24,15 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
-
 /**
- * Configuration
+ * Configuration.
  */
 class Configuration
 {
-
     /**
-     * Add Web>Info module:
+     * Add Web>Info module:.
      */
-    static public function registerBackendModule()
+    public static function registerBackendModule()
     {
         ExtensionManagementUtility::insertModuleFunction(
             'web_info',
@@ -43,11 +43,11 @@ class Configuration
     }
 
     /**
-     * Register hooks
+     * Register hooks.
      */
-    static public function registerHooks()
+    public static function registerHooks()
     {
-        $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']);
+        $configuration = \unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']);
 
         // Register with "crawler" extension:
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['crawler']['procInstructions']['tx_staticfilecache_clearstaticfile'] = 'clear static cache file';
@@ -76,7 +76,7 @@ class Configuration
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing']['staticfilecache'] = LogoffFrontendUser::class . '->logoff';
     }
 
-    static public function registerCommandController()
+    public static function registerCommandController()
     {
         // register command controller
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = \SFC\Staticfilecache\Command\CacheCommandController::class;
@@ -84,9 +84,9 @@ class Configuration
     }
 
     /**
-     * Register slots
+     * Register slots.
      */
-    static public function registerSlots()
+    public static function registerSlots()
     {
         $ruleClasses = [
             // Ensure functionality until https://forge.typo3.org/issues/83212 is fixed
@@ -103,7 +103,7 @@ class Configuration
             \SFC\Staticfilecache\Cache\Rule\Enable::class,
             \SFC\Staticfilecache\Cache\Rule\ValidRequestMethod::class,
             \SFC\Staticfilecache\Cache\Rule\ForceStaticCache::class,
-            \SFC\Staticfilecache\Cache\Rule\NoFakeFrontend::class
+            \SFC\Staticfilecache\Cache\Rule\NoFakeFrontend::class,
         ];
 
         /** @var Dispatcher $signalSlotDispatcher */
@@ -114,11 +114,11 @@ class Configuration
     }
 
     /**
-     * Register caching framework
+     * Register caching framework.
      */
-    static public function registerCachingFramework()
+    public static function registerCachingFramework()
     {
-        $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']);
+        $configuration = \unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']);
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache'] = [
             'frontend' => \SFC\Staticfilecache\Cache\UriFrontend::class,
@@ -126,7 +126,7 @@ class Configuration
             'groups' => [
                 'pages',
                 'all',
-            ]
+            ],
         ];
 
         // Disable staticfilecache in development if extension configuration 'disableInDevelopment' is set
@@ -135,7 +135,7 @@ class Configuration
         }
     }
 
-    static public function registerIcons()
+    public static function registerIcons()
     {
         $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
         $iconRegistry->registerIcon(
@@ -157,10 +157,8 @@ class Configuration
             'brand-patreon',
             \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
             [
-                'source' => 'EXT:staticfilecache/Resources/Public/Icons/Patreon.svg'
+                'source' => 'EXT:staticfilecache/Resources/Public/Icons/Patreon.svg',
             ]
         );
-
     }
-
 }

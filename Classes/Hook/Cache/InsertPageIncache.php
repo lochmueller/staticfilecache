@@ -17,8 +17,9 @@ class InsertPageIncache extends AbstractCacheHook
     /**
      * Check if the SFC should create the cache.
      *
-     * @param TypoScriptFrontendController $tsfe The parent object
-     * @param int $timeOutTime The timestamp when the page times out
+     * @param TypoScriptFrontendController $tsfe        The parent object
+     * @param int                          $timeOutTime The timestamp when the page times out
+     *
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      */
     public function insertPageInCache(TypoScriptFrontendController $tsfe, $timeOutTime)

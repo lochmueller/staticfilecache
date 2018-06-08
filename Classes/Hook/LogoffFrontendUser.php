@@ -24,10 +24,10 @@ class LogoffFrontendUser extends AbstractHook
      */
     public function logoff($parameters, AbstractUserAuthentication $parentObject)
     {
-        if (('FE' == $parentObject->loginType || 'BE' == $parentObject->loginType) && $parentObject->newSessionID == true) {
-            GeneralUtility::makeInstance(CookieService::class)->setCookie(time() + 3600);
+        if (('FE' === $parentObject->loginType || 'BE' === $parentObject->loginType) && true === $parentObject->newSessionID) {
+            GeneralUtility::makeInstance(CookieService::class)->setCookie(\time() + 3600);
         } else {
-            GeneralUtility::makeInstance(CookieService::class)->setCookie(time() - 3600);
+            GeneralUtility::makeInstance(CookieService::class)->setCookie(\time() - 3600);
         }
     }
 }
