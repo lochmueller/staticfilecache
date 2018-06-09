@@ -43,8 +43,8 @@ class UriFrontend extends VariableFrontend
      *
      * @param string $tag The tag to search for
      *
-     * @return array An array with the content of all matching entries. An empty array if no entries matched
      * @throws \InvalidArgumentException if the tag is not valid
+     * @return array An array with the content of all matching entries. An empty array if no entries matched
      * @api
      */
     public function getByTag($tag)
@@ -62,5 +62,4 @@ class UriFrontend extends VariableFrontend
         }
         return $entries;
     }
-
 }
