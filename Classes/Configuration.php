@@ -5,7 +5,6 @@ declare(strict_types=1);
 /**
  * Configuration.
  */
-
 namespace SFC\Staticfilecache;
 
 use SFC\Staticfilecache\Cache\Rule\Enable;
