@@ -190,8 +190,9 @@ class Configuration
      *
      * @return array
      */
-    public static function getConfiguration() : array {
-        if(!isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) || !is_string($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache'])) {
+    public static function getConfiguration() : array
+    {
+        if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) || !is_string($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache'])) {
             return [];
         }
         return (array)\unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']);
