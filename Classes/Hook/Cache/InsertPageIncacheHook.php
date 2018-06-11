@@ -1,7 +1,7 @@
 <?php
 
 /**
- * InsertPageIncache.
+ * InsertPageIncacheHook.
  */
 declare(strict_types=1);
 
@@ -10,9 +10,9 @@ namespace SFC\Staticfilecache\Hook\Cache;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * InsertPageIncache.
+ * InsertPageIncacheHook.
  */
-class InsertPageIncache extends AbstractCacheHook
+class InsertPageIncacheHook extends AbstractCacheHook
 {
     /**
      * Check if the SFC should create the cache.

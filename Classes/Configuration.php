@@ -27,7 +27,7 @@ use SFC\Staticfilecache\Command\CacheCommandController;
 use SFC\Staticfilecache\Command\PublishCommandController;
 use SFC\Staticfilecache\Hook\Cache\ContentPostProcOutput;
 use SFC\Staticfilecache\Hook\Cache\Eofe;
-use SFC\Staticfilecache\Hook\Cache\InsertPageIncache;
+use SFC\Staticfilecache\Hook\Cache\InsertPageIncacheHook;
 use SFC\Staticfilecache\Hook\Crawler;
 use SFC\Staticfilecache\Hook\InitFrontendUser;
 use SFC\Staticfilecache\Hook\LogNoCache;
@@ -85,7 +85,7 @@ class Configuration
                 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']['staticfilecache'] = Eofe::class . '->insert';
                 break;
             default:
-                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache']['staticfilecache'] = InsertPageIncache::class;
+                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache']['staticfilecache'] = InsertPageIncacheHook::class;
                 break;
         }
 
