@@ -15,6 +15,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class Eofe extends AbstractCacheHook
 {
     /**
+     * Insert cache entry
+     *
      * @param array                        $params
      * @param TypoScriptFrontendController $tsfe
      *

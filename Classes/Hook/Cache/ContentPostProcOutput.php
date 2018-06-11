@@ -15,6 +15,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class ContentPostProcOutput extends AbstractCacheHook
 {
     /**
+     * Insert cache entry
+     *
      * @param array                        $params
      * @param TypoScriptFrontendController $tsfe
      *

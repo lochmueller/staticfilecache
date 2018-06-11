@@ -1,10 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Configuration.
  */
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache;
 
 use SFC\Staticfilecache\Cache\Rule\Enable;

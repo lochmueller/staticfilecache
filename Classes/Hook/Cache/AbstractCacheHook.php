@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types=1);
 /**
  * AbstractCacheHook.
  */
+declare(strict_types=1);
+
 namespace SFC\Staticfilecache\Hook\Cache;
 
 use SFC\Staticfilecache\Hook\AbstractHook;

@@ -15,7 +15,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class InsertPageIncacheHook extends AbstractCacheHook
 {
     /**
-     * Check if the SFC should create the cache.
+     * Insert cache entry
      *
      * @param TypoScriptFrontendController $tsfe        The parent object
      * @param int                          $timeOutTime The timestamp when the page times out
