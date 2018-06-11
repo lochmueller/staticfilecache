@@ -64,7 +64,7 @@ class Configuration
      */
     public static function registerHooks()
     {
-        $configuration = \unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']);
+        $configuration = self::getConfiguration();
 
         // Register with "crawler" extension:
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['crawler']['procInstructions']['tx_staticfilecache_clearstaticfile'] = 'clear static cache file';
@@ -76,7 +76,8 @@ class Configuration
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all']['staticfilecache'] = LogNoCache::class . '->log';
 
         // Add the right cache hook
-        switch ($configuration['saveCacheHook']) {
+        $saveCacheHook = isset($configuration['saveCacheHook']) ? $configuration['saveCacheHook'] : '';
+        switch ($saveCacheHook) {
             case 'ContentPostProcOutput':
                 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output']['staticfilecache'] = ContentPostProcOutput::class . '->insert';
                 break;
@@ -137,7 +138,7 @@ class Configuration
      */
     public static function registerCachingFramework()
     {
-        $configuration = \unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']);
+        $configuration = self::getConfiguration();
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache'] = [
             'frontend' => UriFrontend::class,
@@ -149,7 +150,7 @@ class Configuration
         ];
 
         // Disable staticfilecache in development if extension configuration 'disableInDevelopment' is set
-        if ($configuration['disableInDevelopment'] && GeneralUtility::getApplicationContext()->isDevelopment()) {
+        if (isset($configuration['disableInDevelopment']) && $configuration['disableInDevelopment'] && GeneralUtility::getApplicationContext()->isDevelopment()) {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache']['backend'] = NullBackend::class;
         }
     }
@@ -182,5 +183,17 @@ class Configuration
                 'source' => 'EXT:staticfilecache/Resources/Public/Icons/Patreon.svg',
             ]
         );
+    }
+
+    /**
+     * Get the current extension configuration
+     *
+     * @return array
+     */
+    public static function getConfiguration() : array {
+        if(!isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) || !is_string($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache'])) {
+            return [];
+        }
+        return (array)\unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']);
     }
 }
