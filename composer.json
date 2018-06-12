@@ -34,7 +34,7 @@
 	],
 	"require": {
 		"php": ">=7.0.0",
-		"typo3/cms-core": "~8.7.0||~9.2.0||dev-master"
+		"typo3/cms-core": "~8.7.0||~9.3.0||dev-master"
 	},
 	"replace": {
 		"staticfilecache": "self.version",
