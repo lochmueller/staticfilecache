@@ -3,7 +3,7 @@
 /**
  * Configuration.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache;
 
@@ -76,7 +76,7 @@ class Configuration
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all']['staticfilecache'] = LogNoCache::class . '->log';
 
         // Add the right cache hook
-        $saveCacheHook = isset($configuration['saveCacheHook']) ? $configuration['saveCacheHook'] : '';
+        $saveCacheHook = $configuration['saveCacheHook'] ?? '';
         switch ($saveCacheHook) {
             case 'ContentPostProcOutput':
                 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output']['staticfilecache'] = ContentPostProcOutput::class . '->insert';
@@ -186,15 +186,16 @@ class Configuration
     }
 
     /**
-     * Get the current extension configuration
+     * Get the current extension configuration.
      *
      * @return array
      */
-    public static function getConfiguration() : array
+    public static function getConfiguration(): array
     {
-        if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) || !is_string($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache'])) {
+        if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) || !\is_string($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache'])) {
             return [];
         }
+
         return (array)\unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']);
     }
 }

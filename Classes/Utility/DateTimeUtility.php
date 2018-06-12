@@ -2,7 +2,7 @@
 /**
  * DateTimeUtility.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Utility;
 
@@ -27,7 +27,7 @@ class DateTimeUtility
         }
         $time = \time();
         if (isset($GLOBALS['EXEC_TIME']) && MathUtility::canBeInterpretedAsInteger($GLOBALS['EXEC_TIME'])) {
-            $time = (int) $GLOBALS['EXEC_TIME'];
+            $time = (int)$GLOBALS['EXEC_TIME'];
         }
 
         return $time;

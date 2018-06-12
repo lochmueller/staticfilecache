@@ -2,7 +2,7 @@
 /**
  * Handle extension and TS configuration.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
@@ -41,7 +41,7 @@ class ConfigurationService extends AbstractService
      *
      * @param string $key
      *
-     * @return null|mixed
+     * @return mixed|null
      */
     public function get(string $key)
     {
@@ -80,6 +80,6 @@ class ConfigurationService extends AbstractService
      */
     public function isBool(string $key)
     {
-        return (bool) $this->get($key);
+        return (bool)$this->get($key);
     }
 }

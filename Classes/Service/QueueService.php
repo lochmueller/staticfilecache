@@ -2,7 +2,7 @@
 /**
  * Queue service.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
@@ -147,7 +147,7 @@ class QueueService extends AbstractService
         $connection->update(
             self::QUEUE_TABLE,
             $data,
-            ['uid' => (int) $runEntry['uid']]
+            ['uid' => (int)$runEntry['uid']]
         );
     }
 

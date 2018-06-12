@@ -2,7 +2,7 @@
 /**
  * No _INT scripts.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 
@@ -24,7 +24,7 @@ class NoIntScripts extends AbstractRule
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
         if ($frontendController->isINTincScript()) {
-            foreach ((array) $frontendController->config['INTincScript'] as $key => $configuration) {
+            foreach ((array)$frontendController->config['INTincScript'] as $key => $configuration) {
                 $explanation[__CLASS__ . ':' . $key] = 'The page has a INTincScript: ' . \implode(', ', $this->getInformation($configuration));
             }
         }

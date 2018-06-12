@@ -2,7 +2,7 @@
 /**
  * Check if the doktype is valid.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 
@@ -24,7 +24,7 @@ class ValidDoktype extends AbstractRule
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
         $ignoreTypes = [3];
-        if (\in_array((int) $frontendController->page['doktype'], $ignoreTypes, true)) {
+        if (\in_array((int)$frontendController->page['doktype'], $ignoreTypes, true)) {
             $explanation[__CLASS__] = 'The Page doktype is one of the following not allowed numbers: ' . \implode(
                 ', ',
                 $ignoreTypes

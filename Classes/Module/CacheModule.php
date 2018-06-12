@@ -2,7 +2,7 @@
 /**
  * Static file cache info module.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Module;
 
@@ -27,7 +27,7 @@ class CacheModule extends AbstractFunctionModule
     public function main()
     {
         $this->handleActions();
-        $pageId = (int) $this->pObj->id;
+        $pageId = (int)$this->pObj->id;
 
         /** @var StandaloneView $renderer */
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
@@ -87,7 +87,7 @@ class CacheModule extends AbstractFunctionModule
      */
     protected function getDatabaseRows(): array
     {
-        $pageId = (int) $this->pObj->id;
+        $pageId = (int)$this->pObj->id;
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable('pages');
@@ -132,7 +132,7 @@ class CacheModule extends AbstractFunctionModule
     {
         $action = GeneralUtility::_GP('ACTION');
 
-        if (isset($action['removeExpiredPages']) && (bool) $action['removeExpiredPages']) {
+        if (isset($action['removeExpiredPages']) && (bool)$action['removeExpiredPages']) {
             GeneralUtility::makeInstance(CacheService::class)->getCache()->collectGarbage();
         }
     }

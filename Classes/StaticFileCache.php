@@ -2,7 +2,7 @@
 /**
  * Static File Cache.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache;
 
@@ -229,7 +229,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             ->setCreateAbsoluteUri(true)
             ->build();
 
-        $parts = (array) \parse_url($url);
+        $parts = (array)\parse_url($url);
         $unset = ['scheme', 'user', 'pass', 'host', 'port'];
         foreach ($unset as $u) {
             unset($parts[$u]);

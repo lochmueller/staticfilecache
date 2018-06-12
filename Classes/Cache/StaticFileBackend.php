@@ -2,7 +2,7 @@
 /**
  * Cache backend for static file cache.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache;
 
@@ -60,7 +60,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
         parent::set($entryIdentifier, \serialize($databaseData), $tags, $realLifetime);
 
         $fileName = $this->getCacheFilename($entryIdentifier);
-        $cacheDir = (string) PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
+        $cacheDir = (string)PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
         if (!\is_dir($cacheDir)) {
             GeneralUtility::mkdir_deep($cacheDir);
         }
@@ -97,6 +97,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
         if (!\is_string($result)) {
             return false;
         }
+
         return \unserialize($result);
     }
 
@@ -144,7 +145,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
      */
     public function flush()
     {
-        if (false === (bool) $this->configuration->get('clearCacheForAllDomains')) {
+        if (false === (bool)$this->configuration->get('clearCacheForAllDomains')) {
             $this->flushByTag('sfc_domain_' . \str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
 
             return;
@@ -237,7 +238,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
 
         $path = \implode('/', $parts) . '/' . \trim($urlParts['path'], '/');
         $cacheFilename = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY . $path);
-        $fileExtension = (string) PathUtility::pathinfo(PathUtility::basename($cacheFilename), PATHINFO_EXTENSION);
+        $fileExtension = (string)PathUtility::pathinfo(PathUtility::basename($cacheFilename), PATHINFO_EXTENSION);
         if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
             $cacheFilename = \rtrim($cacheFilename, '/') . '/index.html';
         }
@@ -325,7 +326,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
      */
     protected function isBoostMode(): bool
     {
-        return (bool) $this->configuration->get('boostMode') && !\defined('SFC_QUEUE_WORKER');
+        return (bool)$this->configuration->get('boostMode') && !\defined('SFC_QUEUE_WORKER');
     }
 
     /**

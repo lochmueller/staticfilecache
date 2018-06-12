@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 /**
  * Test the Fake Frontend Rule.
  */
+
 namespace SFC\Staticfilecache\Tests\Unit\Cache\Rule;
 
 /**

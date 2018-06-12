@@ -2,7 +2,7 @@
 /**
  * Force the cache for special pages.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 
@@ -71,7 +71,7 @@ class ForceStaticCache extends AbstractRule
     protected function isForceCacheUri(TypoScriptFrontendController $frontendController, string $uri): bool
     {
         $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $forceStatic = (bool) $frontendController->page['tx_staticfilecache_cache_force'];
+        $forceStatic = (bool)$frontendController->page['tx_staticfilecache_cache_force'];
         $params = [
             'forceStatic' => $forceStatic,
             'frontendController' => $frontendController,
@@ -79,6 +79,6 @@ class ForceStaticCache extends AbstractRule
         ];
         $params = $signalSlotDispatcher->dispatch(__CLASS__, 'isForceCacheUri', $params);
 
-        return (bool) $params['forceStatic'];
+        return (bool)$params['forceStatic'];
     }
 }

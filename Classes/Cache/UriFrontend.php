@@ -2,7 +2,7 @@
 /**
  * Cache frontend for static file cache.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache;
 
@@ -37,14 +37,15 @@ class UriFrontend extends VariableFrontend
         return true;
     }
 
-
     /**
      * Finds and returns all cache entries which are tagged by the specified tag.
      *
      * @param string $tag The tag to search for
      *
      * @throws \InvalidArgumentException if the tag is not valid
+     *
      * @return array An array with the content of all matching entries. An empty array if no entries matched
+     *
      * @api
      */
     public function getByTag($tag)
@@ -56,10 +57,11 @@ class UriFrontend extends VariableFrontend
         $identifiers = $this->backend->findIdentifiersByTag($tag);
         foreach ($identifiers as $identifier) {
             $rawResult = $this->backend->get($identifier);
-            if ($rawResult !== false) {
-                $entries[$identifier] = $this->backend instanceof TransientBackendInterface ? $rawResult : unserialize($rawResult);
+            if (false !== $rawResult) {
+                $entries[$identifier] = $this->backend instanceof TransientBackendInterface ? $rawResult : \unserialize($rawResult);
             }
         }
+
         return $entries;
     }
 }

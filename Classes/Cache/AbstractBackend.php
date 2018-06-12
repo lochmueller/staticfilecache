@@ -2,7 +2,7 @@
 /**
  * General Cache functions for Static File Cache.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache;
 
@@ -49,7 +49,7 @@ class AbstractBackend extends Typo3DatabaseBackend
     {
         $level = self::DEFAULT_COMPRESSION_LEVEL;
         if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {
-            $level = (int) $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'];
+            $level = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'];
         }
         if (!MathUtility::isIntegerInRange($level, 1, 9)) {
             $level = self::DEFAULT_COMPRESSION_LEVEL;
@@ -74,6 +74,6 @@ class AbstractBackend extends Typo3DatabaseBackend
             $lifetime = $this->maximumLifetime;
         }
 
-        return (int) $lifetime;
+        return (int)$lifetime;
     }
 }

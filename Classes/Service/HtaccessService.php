@@ -3,7 +3,7 @@
 /**
  * HtaccessService.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
@@ -62,7 +62,7 @@ class HtaccessService extends AbstractService
     protected function getTemplateName(): string
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $templateName = \trim((string) $configuration->get('htaccessTemplateName'));
+        $templateName = \trim((string)$configuration->get('htaccessTemplateName'));
         if ('' === $templateName) {
             return 'EXT:staticfilecache/Resources/Private/Templates/Htaccess.html';
         }

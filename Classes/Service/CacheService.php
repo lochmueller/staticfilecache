@@ -2,7 +2,7 @@
 /**
  * Cache Service.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
@@ -40,7 +40,7 @@ class CacheService extends AbstractService
     public function clearByPageId(int $pageId)
     {
         $cache = $this->getCache();
-        $cacheEntries = \array_keys($cache->getByTag('pageId_' . (int) $pageId));
+        $cacheEntries = \array_keys($cache->getByTag('pageId_' . (int)$pageId));
         foreach ($cacheEntries as $cacheEntry) {
             $cache->remove($cacheEntry);
         }

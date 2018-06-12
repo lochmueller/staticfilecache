@@ -3,7 +3,7 @@
 /**
  * ContentPostProcOutput.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Hook\Cache;
 
@@ -15,7 +15,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class ContentPostProcOutput extends AbstractCacheHook
 {
     /**
-     * Insert cache entry
+     * Insert cache entry.
      *
      * @param array                        $params
      * @param TypoScriptFrontendController $tsfe
