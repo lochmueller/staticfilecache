@@ -70,7 +70,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteCond %{REQUEST_METHOD} GET
 
    # Rewrite the request to the static file.
-   RewriteRule .* typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_GZIP} [L]
+   RewriteRule .* %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_GZIP} [L]
 
    # Do not allow direct call the cache entries
    RewriteCond %{ENV:SFC_URI} ^/typo3temp/tx_staticfilecache/.*
