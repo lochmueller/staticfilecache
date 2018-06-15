@@ -36,15 +36,17 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteCond %{SERVER_PORT} ^[0-9]*$ [OR]
    RewriteRule .* - [E=SFC_PORT:%{SERVER_PORT}]
 
-   # Set gzip extension into an environment variable if the visitors browser can handle gzipped content.
-   RewriteCond %{HTTP:Accept-Encoding} gzip [NC]
-   RewriteRule .* - [E=SFC_GZIP:.gz]
-   #RewriteRule .* - [E=SFC_GZIP:] # Add this line, to disable the gzip redirect
-
    # Check if the requested file exists in the cache, otherwise default to index.html that
    # set in an environment variable that is used later on
    RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI} !-f
    RewriteRule .* - [E=SFC_FILE:/index.html]
+
+   # Set gzip extension into an environment variable if the visitors browser can handle gzipped content and the gz-file exists
+   RewriteRule .* - [E=SFC_GZIP:]
+   RewriteCond %{HTTP:Accept-Encoding} gzip [NC]
+   RewriteRule .* - [E=SFC_GZIP:.gz]
+   RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_GZIP} !-f
+   RewriteRule .* - [E=SFC_GZIP:]
 
    # Note: We cannot check realurl "appendMissingSlash" or other BE related settings here - in front of the delivery.
    # Perhaps you have to check the "SFC_FILE" value and set it to your related configution e.g. "index.html" (without leading slash).
