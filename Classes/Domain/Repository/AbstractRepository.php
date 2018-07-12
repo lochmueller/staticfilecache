@@ -32,5 +32,4 @@ abstract class AbstractRepository
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->getTableName());
         return $connection->createQueryBuilder();
     }
-
 }
