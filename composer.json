@@ -68,7 +68,7 @@
 	},
 	"scripts": {
 		"phpmetrics": [
-			"phpmetrics --report-html=.Build/Report Classes/"
+			"phpmetrics --report-html=.Build/Report . --exclude=.Build"
 		],
 		"phpmd": [
 			"phpmd Classes/ text cleancode,codesize,controversial,design,naming,unusedcode"

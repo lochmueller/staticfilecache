@@ -9,6 +9,7 @@ namespace SFC\Staticfilecache\Service;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
+use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,15 +35,7 @@ class QueueService extends AbstractService
 
         $limit = $limitItems > 0 ? $limitItems : 999;
 
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable(self::QUEUE_TABLE);
-        $rows = $queryBuilder->select('*')
-            ->from(self::QUEUE_TABLE)
-            ->where($queryBuilder->expr()->eq('call_date', $queryBuilder->createNamedParameter(0)))
-            ->setMaxResults($limit)
-            ->execute()
-            ->fetchAll();
+        $rows = GeneralUtility::makeInstance(QueueRepository::class)->findForWorker($limit);
 
         foreach ($rows as $runEntry) {
             $this->runSingleRequest($runEntry);

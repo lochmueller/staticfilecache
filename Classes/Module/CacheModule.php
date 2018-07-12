@@ -2,7 +2,7 @@
 /**
  * Static file cache info module.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Module;
 
@@ -27,7 +27,7 @@ class CacheModule extends AbstractFunctionModule
     public function main()
     {
         $this->handleActions();
-        $pageId = (int) $this->pObj->id;
+        $pageId = (int)$this->pObj->id;
 
         /** @var StandaloneView $renderer */
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
@@ -59,7 +59,7 @@ class CacheModule extends AbstractFunctionModule
             return $rows;
         }
 
-        $dbRows = GeneralUtility::makeInstance(PageRepository::class)->findForBackend((int) $this->pObj->id, $this->getDisplayMode());
+        $dbRows = GeneralUtility::makeInstance(PageRepository::class)->findForBackend((int)$this->pObj->id, $this->getDisplayMode());
 
         foreach ($dbRows as $row) {
             $cacheEntries = $cache->getByTag('sfc_pageId_' . $row['uid']);
@@ -88,6 +88,7 @@ class CacheModule extends AbstractFunctionModule
     protected function getDisplayMode(): string
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+
         return $configurationService->getBackendDisplayMode();
     }
 
@@ -98,7 +99,7 @@ class CacheModule extends AbstractFunctionModule
     {
         $action = GeneralUtility::_GP('ACTION');
 
-        if (isset($action['removeExpiredPages']) && (bool) $action['removeExpiredPages']) {
+        if (isset($action['removeExpiredPages']) && (bool)$action['removeExpiredPages']) {
             GeneralUtility::makeInstance(CacheService::class)->getCache()->collectGarbage();
         }
     }

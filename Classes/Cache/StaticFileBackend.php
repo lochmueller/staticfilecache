@@ -217,6 +217,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
             foreach ($expiredIdentifiers as $identifier) {
                 $queue->addIdentifier($identifier);
             }
+
             return;
         }
         parent::collectGarbage();

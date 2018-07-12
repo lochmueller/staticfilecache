@@ -3,7 +3,7 @@
 /**
  * CacheRepository.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Domain\Repository;
 
@@ -61,7 +61,7 @@ class CacheRepository extends AbstractRepository
     }
 
     /**
-     * Get the table name
+     * Get the table name.
      *
      * @return string
      */

@@ -3,7 +3,7 @@
 /**
  * PageRepository.
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Domain\Repository;
 
@@ -12,12 +12,12 @@ namespace SFC\Staticfilecache\Domain\Repository;
  */
 class PageRepository extends AbstractRepository
 {
-
     /**
-     * Get for backend output
+     * Get for backend output.
      *
-     * @param int $pageId
+     * @param int    $pageId
      * @param string $displayMode
+     *
      * @return array
      */
     public function findForBackend($pageId, $displayMode): array
@@ -38,7 +38,7 @@ class PageRepository extends AbstractRepository
                 break;
         }
 
-        return (array) $queryBuilder->select('*')
+        return (array)$queryBuilder->select('*')
             ->from('pages')
             ->orWhere(...$where)
             ->execute()
@@ -46,7 +46,7 @@ class PageRepository extends AbstractRepository
     }
 
     /**
-     * Get the table name
+     * Get the table name.
      *
      * @return string
      */
