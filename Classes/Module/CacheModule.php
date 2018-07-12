@@ -2,10 +2,11 @@
 /**
  * Static file cache info module.
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Module;
 
+use SFC\Staticfilecache\Domain\Repository\PageRepository;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
@@ -27,7 +28,7 @@ class CacheModule extends AbstractFunctionModule
     public function main()
     {
         $this->handleActions();
-        $pageId = (int)$this->pObj->id;
+        $pageId = (int) $this->pObj->id;
 
         /** @var StandaloneView $renderer */
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
@@ -59,7 +60,7 @@ class CacheModule extends AbstractFunctionModule
             return $rows;
         }
 
-        $dbRows = $this->getDatabaseRows();
+        $dbRows = GeneralUtility::makeInstance(PageRepository::class)->findForBackend((int) $this->pObj->id, $this->getDisplayMode());
 
         foreach ($dbRows as $row) {
             $cacheEntries = $cache->getByTag('sfc_pageId_' . $row['uid']);
@@ -81,39 +82,6 @@ class CacheModule extends AbstractFunctionModule
     }
 
     /**
-     * Get the DB rows.
-     *
-     * @return array
-     */
-    protected function getDatabaseRows(): array
-    {
-        $pageId = (int)$this->pObj->id;
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('pages');
-
-        $where = [];
-        switch ($this->getDisplayMode()) {
-            case 'current':
-                $where[] = $queryBuilder->expr()->eq('uid', $pageId);
-                break;
-            case 'childs':
-                $where[] = $queryBuilder->expr()->eq('pid', $pageId);
-                break;
-            case 'both':
-                $where[] = $queryBuilder->expr()->eq('uid', $pageId);
-                $where[] = $queryBuilder->expr()->eq('pid', $pageId);
-                break;
-        }
-
-        return $queryBuilder->select('*')
-            ->from('pages')
-            ->orWhere(...$where)
-            ->execute()
-            ->fetchAll();
-    }
-
-    /**
      * Get display mode.
      *
      * @return string
@@ -121,7 +89,6 @@ class CacheModule extends AbstractFunctionModule
     protected function getDisplayMode(): string
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-
         return $configurationService->getBackendDisplayMode();
     }
 
@@ -132,7 +99,7 @@ class CacheModule extends AbstractFunctionModule
     {
         $action = GeneralUtility::_GP('ACTION');
 
-        if (isset($action['removeExpiredPages']) && (bool)$action['removeExpiredPages']) {
+        if (isset($action['removeExpiredPages']) && (bool) $action['removeExpiredPages']) {
             GeneralUtility::makeInstance(CacheService::class)->getCache()->collectGarbage();
         }
     }
