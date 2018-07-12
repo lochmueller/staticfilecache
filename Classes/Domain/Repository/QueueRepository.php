@@ -19,7 +19,7 @@ class QueueRepository extends AbstractRepository
      *
      * @return array
      */
-    public function findForWorker($limit = 999)
+    public function findOpen($limit = 999): array
     {
         $queryBuilder = $this->createQuery();
 
@@ -27,6 +27,44 @@ class QueueRepository extends AbstractRepository
             ->from($this->getTableName())
             ->where($queryBuilder->expr()->eq('call_date', $queryBuilder->createNamedParameter(0)))
             ->setMaxResults($limit)
+            ->execute()
+            ->fetchAll();
+    }
+
+    /**
+     * Find open by identnfier.
+     *
+     * @param string $identifier
+     *
+     * @return int
+     */
+    public function countOpenByIdentifier($identifier)
+    {
+        $queryBuilder = $this->createQuery();
+        $where = $queryBuilder->expr()->andX(
+            $queryBuilder->expr()->eq('cache_url', $queryBuilder->createNamedParameter($identifier)),
+            $queryBuilder->expr()->eq('call_date', $queryBuilder->createNamedParameter(0))
+        );
+
+        return (int)$queryBuilder->select('uid')
+            ->from($this->getTableName())
+            ->where($where)
+            ->execute()
+            ->rowCount();
+    }
+
+    /**
+     * Find old entries.
+     *
+     * @return array
+     */
+    public function findOld(): array
+    {
+        $queryBuilder = $this->createQuery();
+
+        return (array)$queryBuilder->select('uid')
+            ->from($this->getTableName())
+            ->where($queryBuilder->expr()->gt('call_date', $queryBuilder->createNamedParameter(0)))
             ->execute()
             ->fetchAll();
     }

@@ -11,7 +11,6 @@ use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -20,9 +19,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class QueueService extends AbstractService
 {
     /**
-     * Queue table.
+     * Queue repository.
+     *
+     * @var QueueRepository
      */
-    const QUEUE_TABLE = 'tx_staticfilecache_queue';
+    protected $queueRepository;
+
+    /**
+     * QueueService constructor.
+     */
+    public function __construct()
+    {
+        $this->queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
+    }
 
     /**
      * Run the queue.
@@ -34,8 +43,7 @@ class QueueService extends AbstractService
         \define('SFC_QUEUE_WORKER', true);
 
         $limit = $limitItems > 0 ? $limitItems : 999;
-
-        $rows = GeneralUtility::makeInstance(QueueRepository::class)->findForWorker($limit);
+        $rows = $this->queueRepository->findOpen($limit);
 
         foreach ($rows as $runEntry) {
             $this->runSingleRequest($runEntry);
@@ -47,19 +55,9 @@ class QueueService extends AbstractService
      */
     public function cleanup()
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-
-        $queryBuilder = $connectionPool->getQueryBuilderForTable(self::QUEUE_TABLE);
-        $rows = $queryBuilder->select('uid')
-            ->from(self::QUEUE_TABLE)
-            ->where($queryBuilder->expr()->gt('call_date', $queryBuilder->createNamedParameter(0)))
-            ->execute()
-            ->fetchAll();
-
-        $connection = $connectionPool->getConnectionForTable(self::QUEUE_TABLE);
+        $rows = $this->queueRepository->findOld();
         foreach ($rows as $row) {
-            $connection->delete(self::QUEUE_TABLE, ['uid' => $row['uid']]);
+            $this->queueRepository->delete(['uid' => $row['uid']]);
         }
     }
 
@@ -70,20 +68,8 @@ class QueueService extends AbstractService
      */
     public function addIdentifier(string $identifier)
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable(self::QUEUE_TABLE);
-        $where = $queryBuilder->expr()->andX(
-            $queryBuilder->expr()->eq('cache_url', $queryBuilder->createNamedParameter($identifier)),
-            $queryBuilder->expr()->eq('call_date', $queryBuilder->createNamedParameter(0))
-        );
-        $rows = $queryBuilder->select('uid')
-            ->from(self::QUEUE_TABLE)
-            ->where($where)
-            ->execute()
-            ->fetchAll();
-
-        if (!empty($rows)) {
+        $count = $this->queueRepository->countOpenByIdentifier($identifier);
+        if ($count > 0) {
             return;
         }
 
@@ -93,11 +79,8 @@ class QueueService extends AbstractService
             'invalid_date' => \time(),
             'call_result' => '',
         ];
-        $connection = $connectionPool->getConnectionForTable(self::QUEUE_TABLE);
-        $connection->insert(
-            self::QUEUE_TABLE,
-            $data
-        );
+
+        $this->queueRepository->insert($data);
     }
 
     /**
@@ -134,14 +117,7 @@ class QueueService extends AbstractService
             }
         }
 
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $connection = $connectionPool->getConnectionForTable(self::QUEUE_TABLE);
-        $connection->update(
-            self::QUEUE_TABLE,
-            $data,
-            ['uid' => (int)$runEntry['uid']]
-        );
+        $this->queueRepository->update($data, ['uid' => (int)$runEntry['uid']]);
     }
 
     /**

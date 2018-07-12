@@ -16,6 +16,41 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractRepository
 {
     /**
+     * Delete records.
+     *
+     * @param array $identifiers
+     */
+    public function delete(array $identifiers)
+    {
+        $this->getConnection()->delete($this->getTableName(), $identifiers);
+    }
+
+    /**
+     * Insert record.
+     *
+     * @param array $data
+     */
+    public function insert(array $data)
+    {
+        $this->getConnection()->insert($this->getTableName(), $data);
+    }
+
+    /**
+     * Update records.
+     *
+     * @param array $data
+     * @param array $identifiers
+     */
+    public function update(array $data, array $identifiers)
+    {
+        $this->getConnection()->update(
+            $this->getTableName(),
+            $data,
+            $identifiers
+        );
+    }
+
+    /**
      * Get the table name.
      *
      * @return string
@@ -29,8 +64,16 @@ abstract class AbstractRepository
      */
     protected function createQuery()
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->getTableName());
+        return $this->getConnection()->createQueryBuilder();
+    }
 
-        return $connection->createQueryBuilder();
+    /**
+     * Get connection.
+     *
+     * @return \TYPO3\CMS\Core\Database\Connection
+     */
+    protected function getConnection()
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->getTableName());
     }
 }
