@@ -6,11 +6,11 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use SFC\Staticfilecache\Domain\Repository\CacheRepository;
 use SFC\Staticfilecache\Service\HtaccessService;
 use SFC\Staticfilecache\Service\QueueService;
 use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -152,7 +152,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
         }
 
         if ($this->isBoostMode()) {
-            $identifiers = $this->getAllIdentifiers();
+            $identifiers = GeneralUtility::makeInstance(CacheRepository::class)->findAllIdentifiers();
             $queue = $this->getQueue();
             foreach ($identifiers as $identifier) {
                 $queue->addIdentifier($identifier);
@@ -211,7 +211,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
      */
     public function collectGarbage()
     {
-        $expiredIdentifiers = $this->getExpiredIdentifiers();
+        $expiredIdentifiers = GeneralUtility::makeInstance(CacheRepository::class)->findExpiredIdentifiers();
         if ($this->isBoostMode()) {
             $queue = $this->getQueue();
             foreach ($expiredIdentifiers as $identifier) {
@@ -334,55 +334,5 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
     protected function isBoostMode(): bool
     {
         return (bool)$this->configuration->get('boostMode') && !\defined('SFC_QUEUE_WORKER');
-    }
-
-    /**
-     * Get the expired cache identifiers.
-     *
-     * @return array
-     */
-    protected function getExpiredIdentifiers(): array
-    {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
-        $queryBuilder = $connection->createQueryBuilder();
-        $rows = $queryBuilder->select('identifier')
-            ->from($this->cacheTable)
-            ->where($queryBuilder->expr()->lt(
-                'expires',
-                $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
-            ))
-            ->groupBy('identifier')
-            ->execute()
-            ->fetchAll();
-
-        $cacheIdentifiers = [];
-        foreach ($rows as $row) {
-            $cacheIdentifiers[] = $row['identifier'];
-        }
-
-        return $cacheIdentifiers;
-    }
-
-    /**
-     * Get all the cache identifiers.
-     *
-     * @return array
-     */
-    protected function getAllIdentifiers(): array
-    {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
-        $queryBuilder = $connection->createQueryBuilder();
-        $rows = $queryBuilder->select('identifier')
-            ->from($this->cacheTable)
-            ->groupBy('identifier')
-            ->execute()
-            ->fetchAll();
-
-        $cacheIdentifiers = [];
-        foreach ($rows as $row) {
-            $cacheIdentifiers[] = $row['identifier'];
-        }
-
-        return $cacheIdentifiers;
     }
 }
