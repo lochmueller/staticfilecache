@@ -4,7 +4,6 @@ declare(strict_types = 1);
 /**
  * Test the URI frontend.
  */
-
 namespace SFC\Staticfilecache\Tests\Unit\Cache;
 
 use SFC\Staticfilecache\Cache\UriFrontend;
