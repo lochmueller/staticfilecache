@@ -152,7 +152,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
         }
 
         if ($this->isBoostMode()) {
-            $identifiers = $this->getExpiredIdentifiers();
+            $identifiers = $this->getAllIdentifiers();
             $queue = $this->getQueue();
             foreach ($identifiers as $identifier) {
                 $queue->addIdentifier($identifier);
@@ -212,6 +212,13 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
     public function collectGarbage()
     {
         $expiredIdentifiers = $this->getExpiredIdentifiers();
+        if ($this->isBoostMode()) {
+            $queue = $this->getQueue();
+            foreach ($expiredIdentifiers as $identifier) {
+                $queue->addIdentifier($identifier);
+            }
+            return;
+        }
         parent::collectGarbage();
         foreach ($expiredIdentifiers as $identifier) {
             $this->removeStaticFiles($identifier);
@@ -330,7 +337,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
     }
 
     /**
-     * Get the cache identifiers.
+     * Get the expired cache identifiers.
      *
      * @return array
      */
@@ -344,6 +351,29 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
                 'expires',
                 $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
             ))
+            ->groupBy('identifier')
+            ->execute()
+            ->fetchAll();
+
+        $cacheIdentifiers = [];
+        foreach ($rows as $row) {
+            $cacheIdentifiers[] = $row['identifier'];
+        }
+
+        return $cacheIdentifiers;
+    }
+
+    /**
+     * Get all the cache identifiers.
+     *
+     * @return array
+     */
+    protected function getAllIdentifiers(): array
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
+        $queryBuilder = $connection->createQueryBuilder();
+        $rows = $queryBuilder->select('identifier')
+            ->from($this->cacheTable)
             ->groupBy('identifier')
             ->execute()
             ->fetchAll();
