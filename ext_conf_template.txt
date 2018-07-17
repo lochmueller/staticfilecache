@@ -1,14 +1,7 @@
 # cat=basic; type=boolean; label=Clear cache for all domains in tree: When the TYPO3 tree hosts more than one domain, each domain has it's own cache branch. When clearing the cache, only the cache for the domain you are logged on to will be cleared. If you would like the cache for all domains to be cleared when clearing the frontend cache, then check this box.
 clearCacheForAllDomains = 1
 
-# cat=basic; type=boolean; label=Send Cache-Control header: If your Apache installation has 'mod_expires' loaded, you can use it to send Cache-Control headers. For each statically cached page a .htaccess file will be created with a mod_expires rule. This rule will make Apache send a cache header when delivering the cached page to the visitor.
-sendCacheControlHeader = 1
 
-# cat=basic; type=boolean; label=Send Cache-Control header redirect after cache timeout: Add a mod_rewrite statement to the generated htaccess files, that redirect the user to the index.php, if the Cache is invalid.
-sendCacheControlHeaderRedirectAfterCacheTimeout = 0
-
-# cat=basic; type=boolean; label=Send TYPO3 Headers: Send the config.additionalHeaders header via .htacess files
-sendTypo3Headers = 0
 
 # cat=basic; type=boolean; label=Enable static file compression: When checked, a gzipped version of the static file is written to the cache directory as well as a plain version (used for fallback, not all browsers and proxies support gzip). This will speed up file transfer time. Apache can also compress files using mod_deflate, but does so on each request. Enabling this option makes sure it is done only once. Take care to also choose the proper .htaccess configuration when enabling this option.
 enableStaticFileCompression = 1
@@ -39,3 +32,20 @@ htaccessTemplateName = EXT:staticfilecache/Resources/Private/Templates/Htaccess.
 
 # cat=basic; type=options[InsertPageIncache=InsertPageIncache,ContentPostProcOutput=ContentPostProcOutput,Eofe=Eofe]; label="InsertPageIncache" is the default. ContentPostProcOutput is later and EOFE is the latest. Please try to use the default hook.
 saveCacheHook = InsertPageIncache
+
+# cat=Headers; type=boolean; label=Send Cache-Control header: If your Apache installation has 'mod_expires' loaded, you can use it to send Cache-Control headers. For each statically cached page a .htaccess file will be created with a mod_expires rule. This rule will make Apache send a cache header when delivering the cached page to the visitor.
+sendCacheControlHeader = 1
+
+# cat=Headers; type=boolean; label=Send Cache-Control header redirect after cache timeout: Add a mod_rewrite statement to the generated htaccess files, that redirect the user to the index.php, if the Cache is invalid.
+sendCacheControlHeaderRedirectAfterCacheTimeout = 0
+
+# cat=Headers; type=boolean; label=Send TYPO3 Headers: Send the config.additionalHeaders header via .htacess files
+sendTypo3Headers = 0
+
+# cat=Headers; type=boolean; label=Enable Cache Tags: Output the TSFE cache Tags for the current site in the rendering and for the cache entry
+cacheTagsEnable = 0
+
+# cat=Headers; type=string; label=Cache Tag name: The name of the header for the cache tags
+cacheTagsHeaderName = X-Cache-Tags
+
+

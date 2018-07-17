@@ -21,9 +21,14 @@
 </IfModule>
 </f:if>
 <f:if condition="{sendTypo3Headers}"><f:if condition="{typo3headers -> f:count()}">
-<ifModule mod_headers.c>
-	<f:for each="{typo3headers}" key="name" as="value">
-	Header set {name} "{value}"
-	</f:for>
-</ifModule>
+	<ifModule mod_headers.c>
+		<f:for each="{typo3headers}" key="name" as="value">
+			Header set {name} "{value}"
+		</f:for>
+	</ifModule>
 </f:if></f:if>
+<f:if condition="{tags}">
+	<ifModule mod_headers.c>
+		Header set {tagHeaderName} "{tags}"
+	</ifModule>
+</f:if>

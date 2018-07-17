@@ -30,7 +30,11 @@ class HtaccessService extends AbstractService
         $sendCCHeader = $configuration->isBool('sendCacheControlHeader');
         $redirectAfter = $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout');
         $sendTypo3Headers = $configuration->isBool('sendTypo3Headers');
-        if (!$sendCCHeader && !$redirectAfter && !$sendTypo3Headers) {
+
+        $tagService = GeneralUtility::makeInstance(TagService::class);
+        $tags = $tagService->getTags();
+
+        if (!$sendCCHeader && !$redirectAfter && !$sendTypo3Headers && empty($tags)) {
             return;
         }
 
@@ -49,6 +53,8 @@ class HtaccessService extends AbstractService
             'sendCacheControlHeader' => $sendCCHeader,
             'sendCacheControlHeaderRedirectAfterCacheTimeout' => $redirectAfter,
             'sendTypo3Headers' => $sendTypo3Headers,
+            'tags' => \implode(',', $tags),
+            'tagHeaderName' => $tagService->getHeaderName(),
         ]);
 
         GeneralUtility::writeFile($fileName, $renderer->render());
