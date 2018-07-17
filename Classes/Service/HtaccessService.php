@@ -26,37 +26,44 @@ class HtaccessService extends AbstractService
     public function write(string $originalFileName, int $lifetime)
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $sendCCHeader = $configuration->isBool('sendCacheControlHeader');
-        $redirectAfter = $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout');
-        $sendTypo3Headers = $configuration->isBool('sendTypo3Headers');
-
         $tagService = GeneralUtility::makeInstance(TagService::class);
-        $tags = $tagService->getTags();
-
-        if (!$sendCCHeader && !$redirectAfter && !$sendTypo3Headers && empty($tags)) {
-            return;
-        }
 
         $fileName = PathUtility::pathinfo($originalFileName, PATHINFO_DIRNAME) . '/.htaccess';
         $accessTimeout = $configuration->get('htaccessTimeout');
         $lifetime = $accessTimeout ? $accessTimeout : $lifetime;
 
-        /** @var StandaloneView $renderer */
-        $renderer = GeneralUtility::makeInstance(StandaloneView::class);
-        $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->getTemplateName()));
-        $renderer->assignMultiple([
+        $variables = [
             'mode' => $accessTimeout ? 'A' : 'M',
             'lifetime' => $lifetime,
             'expires' => (new DateTimeService())->getCurrentTime() + $lifetime,
             'typo3headers' => $this->getTypoHeaders(),
-            'sendCacheControlHeader' => $sendCCHeader,
-            'sendCacheControlHeaderRedirectAfterCacheTimeout' => $redirectAfter,
-            'sendTypo3Headers' => $sendTypo3Headers,
-            'tags' => \implode(',', $tags),
+            'sendCacheControlHeader' => $configuration->isBool('sendCacheControlHeader'),
+            'sendCacheControlHeaderRedirectAfterCacheTimeout' => $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout'),
+            'sendTypo3Headers' => $configuration->isBool('sendTypo3Headers'),
+            'tags' => \implode(',', $tagService->getTags()),
             'tagHeaderName' => $tagService->getHeaderName(),
-        ]);
+        ];
 
-        GeneralUtility::writeFile($fileName, $renderer->render());
+        $this->renderTemplateToFile($this->getTemplateName(), $variables, $fileName);
+    }
+
+    /**
+     * Render template to file.
+     *
+     * @param string $templateName
+     * @param array  $variables
+     * @param string $fileName
+     */
+    protected function renderTemplateToFile(string $templateName, array $variables, string $fileName)
+    {
+        /** @var StandaloneView $renderer */
+        $renderer = GeneralUtility::makeInstance(StandaloneView::class);
+        $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateName));
+        $renderer->assignMultiple($variables);
+        $content = \trim((string)$renderer->render());
+        if ('' !== $content) {
+            GeneralUtility::writeFile($fileName, $content);
+        }
     }
 
     /**
