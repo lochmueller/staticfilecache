@@ -1,17 +1,15 @@
 <?php
-/**
- * DateTimeUtility.
- */
-declare(strict_types = 1);
 
-namespace SFC\Staticfilecache\Utility;
+
+namespace SFC\Staticfilecache\Service;
 
 use TYPO3\CMS\Core\Utility\MathUtility;
 
+
 /**
- * DateTimeUtility.
+ * DateTimeService
  */
-class DateTimeUtility
+class DateTimeService extends AbstractService
 {
     /**
      * Get current time (respect EXEC_TIME)
@@ -19,7 +17,7 @@ class DateTimeUtility
      *
      * @return int
      */
-    public static function getCurrentTime()
+    public function getCurrentTime()
     {
         static $time = 0;
         if (0 !== $time) {
@@ -27,7 +25,7 @@ class DateTimeUtility
         }
         $time = \time();
         if (isset($GLOBALS['EXEC_TIME']) && MathUtility::canBeInterpretedAsInteger($GLOBALS['EXEC_TIME'])) {
-            $time = (int)$GLOBALS['EXEC_TIME'];
+            $time = (int) $GLOBALS['EXEC_TIME'];
         }
 
         return $time;

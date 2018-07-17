@@ -7,9 +7,9 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\Domain\Repository\CacheRepository;
+use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\HtaccessService;
 use SFC\Staticfilecache\Service\QueueService;
-use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -44,9 +44,10 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
     {
         $realLifetime = $this->getRealLifetime($lifetime);
+        $time = (new DateTimeService())->getCurrentTime();
         $databaseData = [
-            'created' => DateTimeUtility::getCurrentTime(),
-            'expires' => (DateTimeUtility::getCurrentTime() + $realLifetime),
+            'created' => $time,
+            'expires' => ($time + $realLifetime),
         ];
         if (\in_array('explanation', $tags, true)) {
             $databaseData['explanation'] = $data;

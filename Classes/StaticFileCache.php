@@ -10,7 +10,7 @@ use Mso\IdnaConvert\IdnaConvert;
 use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
-use SFC\Staticfilecache\Utility\DateTimeUtility;
+use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -110,7 +110,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             if ($pObj->page['endtime'] > 0 && $pObj->page['endtime'] < $timeOutTime) {
                 $timeOutTime = $pObj->page['endtime'];
             }
-            $timeOutSeconds = $timeOutTime - DateTimeUtility::getCurrentTime();
+            $timeOutSeconds = $timeOutTime - (new DateTimeService())->getCurrentTime();
 
             // Don't continue if there is already an existing valid cache entry and we've got an invalid now.
             // Prevents overriding if a logged in user is checking the page in a second call
@@ -129,7 +129,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             if (0 === \count($explanation)) {
                 $content = $pObj->content;
                 if ($this->configuration->get('showGenerationSignature')) {
-                    $content .= "\n<!-- cached statically on: " . $this->formatTimestamp(DateTimeUtility::getCurrentTime()) . ' -->';
+                    $content .= "\n<!-- cached statically on: " . $this->formatTimestamp((new DateTimeService())->getCurrentTime()) . ' -->';
                     $content .= "\n<!-- expires on: " . $this->formatTimestamp($timeOutTime) . ' -->';
                 }
 
@@ -251,7 +251,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
 
         return false !== $entry &&
             0 === \count($entry['explanation']) &&
-            $entry['expires'] >= DateTimeUtility::getCurrentTime();
+            $entry['expires'] >= (new DateTimeService())->getCurrentTime();
     }
 
     /**

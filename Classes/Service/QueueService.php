@@ -10,7 +10,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
-use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -139,7 +138,7 @@ class QueueService extends AbstractService
         $cookie->setName('staticfilecache');
         $cookie->setValue('1');
         $cookie->setPath('/');
-        $cookie->setExpires(DateTimeUtility::getCurrentTime() + 3600);
+        $cookie->setExpires((new DateTimeService())->getCurrentTime() + 3600);
         $cookie->setDomain($domain);
         $jar->setCookie($cookie);
         $options = [

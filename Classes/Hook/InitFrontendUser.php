@@ -7,7 +7,7 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Hook;
 
 use SFC\Staticfilecache\Service\CookieService;
-use SFC\Staticfilecache\Utility\DateTimeUtility;
+use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -45,7 +45,7 @@ class InitFrontendUser extends AbstractHook
         } elseif (($started || isset($_COOKIE[CookieService::FE_COOKIE_NAME])) && $parentObject->fe_user->lifetime > 0) {
             // If it is NOT a session-cookie, we need to refresh it.
             // isRefreshTimeBasedCookie()
-            $cookieService->setCookie(DateTimeUtility::getCurrentTime() + $parentObject->fe_user->lifetime);
+            $cookieService->setCookie((new DateTimeService())->getCurrentTime() + $parentObject->fe_user->lifetime);
         }
     }
 }

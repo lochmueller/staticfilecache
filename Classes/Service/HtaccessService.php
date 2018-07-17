@@ -7,7 +7,6 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
-use SFC\Staticfilecache\Utility\DateTimeUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -48,7 +47,7 @@ class HtaccessService extends AbstractService
         $renderer->assignMultiple([
             'mode' => $accessTimeout ? 'A' : 'M',
             'lifetime' => $lifetime,
-            'expires' => DateTimeUtility::getCurrentTime() + $lifetime,
+            'expires' => (new DateTimeService())->getCurrentTime() + $lifetime,
             'typo3headers' => $this->getTypoHeaders(),
             'sendCacheControlHeader' => $sendCCHeader,
             'sendCacheControlHeaderRedirectAfterCacheTimeout' => $redirectAfter,
