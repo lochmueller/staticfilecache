@@ -54,7 +54,8 @@
 		"phpmetrics/phpmetrics": "^2.4"
 	},
 	"suggest": {
-		"aoepeople/crawler": "~6.1"
+		"aoepeople/crawler": "For crawling the site and warmup the cache",
+		"friendsofsymfony/http-cache": "For HTTP proxy cache services like Varnish"
 	},
 	"config": {
 		"vendor-dir": ".Build/vendor",

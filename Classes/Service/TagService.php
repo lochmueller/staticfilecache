@@ -34,11 +34,12 @@ class TagService extends AbstractService
         if (!($tsfe instanceof TypoScriptFrontendController)) {
             return [];
         }
-        return array_unique((array) ObjectAccess::getProperty($tsfe, 'pageCacheTags', true));
+
+        return \array_unique((array)ObjectAccess::getProperty($tsfe, 'pageCacheTags', true));
     }
 
     /**
-     * Send the cache headers
+     * Send the cache headers.
      */
     public function send()
     {
@@ -49,7 +50,7 @@ class TagService extends AbstractService
 
         $tags = $this->getTags();
         if (!empty($tags)) {
-            header($this->getHeaderName() . ': ' . implode(',', $tags));
+            \header($this->getHeaderName() . ': ' . \implode(',', $tags));
         }
     }
 
