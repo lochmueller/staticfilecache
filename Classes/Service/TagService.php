@@ -9,6 +9,8 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Service;
 
 use SFC\Staticfilecache\Configuration;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * TagService.
@@ -27,9 +29,28 @@ class TagService extends AbstractService
             return [];
         }
 
-        // get tags @todo
+        /** @var TypoScriptFrontendController $tsfe */
+        $tsfe = $GLOBALS['TSFE'];
+        if (!($tsfe instanceof TypoScriptFrontendController)) {
+            return [];
+        }
+        return array_unique((array) ObjectAccess::getProperty($tsfe, 'pageCacheTags', true));
+    }
 
-        return [];
+    /**
+     * Send the cache headers
+     */
+    public function send()
+    {
+        $config = $this->getConfiguration();
+        if (!$config['cacheTagsEnable']) {
+            return;
+        }
+
+        $tags = $this->getTags();
+        if (!empty($tags)) {
+            header($this->getHeaderName() . ': ' . implode(',', $tags));
+        }
     }
 
     /**

@@ -11,12 +11,14 @@ use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
+use SFC\Staticfilecache\Service\TagService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -119,8 +121,10 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
                 return;
             }
 
+            $tagService = GeneralUtility::makeInstance(TagService::class);
+
             // The page tag pageId_NN is included in $pObj->pageCacheTags
-            $cacheTags = ObjectAccess::getProperty($pObj, 'pageCacheTags', true);
+            $cacheTags = $tagService->getTags();
             $cacheTags[] = 'sfc_pageId_' . $pObj->page['uid'];
             $cacheTags[] = 'sfc_domain_' . \str_replace('.', '_', \parse_url($uri, PHP_URL_HOST));
 
@@ -148,6 +152,9 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
                 $timeOutSeconds = $contentArguments['timeOutSeconds'];
                 $uri = $contentArguments['uri'];
                 $isStaticCached = true;
+
+                $tagService->send();
+
             } else {
                 $cacheTags[] = 'explanation';
                 $content = $explanation;
