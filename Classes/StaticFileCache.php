@@ -18,7 +18,6 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -154,7 +153,6 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
                 $isStaticCached = true;
 
                 $tagService->send();
-
             } else {
                 $cacheTags[] = 'explanation';
                 $content = $explanation;
