@@ -67,19 +67,19 @@
 		}
 	},
 	"scripts": {
-		"phpmetrics": [
+		"sfc:phpmetrics": [
 			"phpmetrics --report-html=.Build/Report . --exclude=.Build"
 		],
-		"phpmd": [
+		"sfc:phpmd": [
 			"phpmd Classes/ text cleancode,codesize,controversial,design,naming,unusedcode"
 		],
-		"php-cs-fixer": [
+		"sfc:php-cs-fixer": [
 			"php-cs-fixer fix --config .php_cs"
 		],
-		"phpcs": [
+		"sfc:phpcs": [
 			"phpcs --runtime-set ignore_warnings_on_exit true --standard=PSR2 Classes/"
 		],
-		"phpunit": [
+		"sfc:phpunit": [
 			"phpunit -c Tests/UnitTests.xml"
 		]
 	}
