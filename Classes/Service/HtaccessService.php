@@ -31,7 +31,7 @@ class HtaccessService extends AbstractService
         $fileName = PathUtility::pathinfo($originalFileName, PATHINFO_DIRNAME) . '/.htaccess';
         $accessTimeout = $configuration->get('htaccessTimeout');
         $lifetime = $accessTimeout ? $accessTimeout : $lifetime;
-        
+
         $tags = $tagService->isEnable() ? $tagService->getTags() : [];
 
         $variables = [
