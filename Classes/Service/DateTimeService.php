@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
 use TYPO3\CMS\Core\Utility\MathUtility;
 
-
 /**
- * DateTimeService
+ * DateTimeService.
  */
 class DateTimeService extends AbstractService
 {
@@ -25,7 +25,7 @@ class DateTimeService extends AbstractService
         }
         $time = \time();
         if (isset($GLOBALS['EXEC_TIME']) && MathUtility::canBeInterpretedAsInteger($GLOBALS['EXEC_TIME'])) {
-            $time = (int) $GLOBALS['EXEC_TIME'];
+            $time = (int)$GLOBALS['EXEC_TIME'];
         }
 
         return $time;

@@ -6,9 +6,6 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Cookie\SetCookie;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -91,17 +88,9 @@ class QueueService extends AbstractService
      */
     protected function runSingleRequest(array $runEntry)
     {
-        try {
-            $host = \parse_url($runEntry['cache_url'], PHP_URL_HOST);
-            if (false === $host) {
-                throw new \Exception('No host in cache_url', 1263782);
-            }
-            $client = $this->getCallableClient($host);
-            $response = $client->get($runEntry['cache_url']);
-            $statusCode = $response->getStatusCode();
-        } catch (\Exception $ex) {
-            $statusCode = 900;
-        }
+        $clientService = GeneralUtility::makeInstance(ClientService::class);
+        $statusCode = $clientService->runSingleRequest($runEntry['cache_url']);
+
         $data = [
             'call_date' => \time(),
             'call_result' => $statusCode,
@@ -117,40 +106,5 @@ class QueueService extends AbstractService
         }
 
         $this->queueRepository->update($data, ['uid' => (int)$runEntry['uid']]);
-    }
-
-    /**
-     * Get a cllable client.
-     *
-     * @param string $domain
-     *
-     * @throws \Exception
-     *
-     * @return Client
-     */
-    protected function getCallableClient(string $domain): Client
-    {
-        if (!\class_exists(Client::class) || !\class_exists(CookieJar::class)) {
-            throw new \Exception('You need guzzle to handle the Queue Management', 1236728342);
-        }
-        $jar = GeneralUtility::makeInstance(CookieJar::class);
-        $cookie = GeneralUtility::makeInstance(SetCookie::class);
-        $cookie->setName('staticfilecache');
-        $cookie->setValue('1');
-        $cookie->setPath('/');
-        $cookie->setExpires((new DateTimeService())->getCurrentTime() + 3600);
-        $cookie->setDomain($domain);
-        $jar->setCookie($cookie);
-        $options = [
-            'cookies' => $jar,
-            'allow_redirects' => [
-                'max' => false,
-            ],
-            'headers' => [
-                'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:54.0) Gecko/20100101 Firefox/54.0',
-            ],
-        ];
-
-        return GeneralUtility::makeInstance(Client::class, $options);
     }
 }
