@@ -38,7 +38,8 @@ class TagService extends AbstractService
      *
      * @return bool
      */
-    public function isEnable(): bool {
+    public function isEnable(): bool
+    {
         $config = $this->getConfiguration();
         return (bool)$config['cacheTagsEnable'];
     }
