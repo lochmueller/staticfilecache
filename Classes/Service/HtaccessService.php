@@ -31,6 +31,8 @@ class HtaccessService extends AbstractService
         $fileName = PathUtility::pathinfo($originalFileName, PATHINFO_DIRNAME) . '/.htaccess';
         $accessTimeout = $configuration->get('htaccessTimeout');
         $lifetime = $accessTimeout ? $accessTimeout : $lifetime;
+        
+        $tags = $tagService->isEnable() ? $tagService->getTags() : [];
 
         $variables = [
             'mode' => $accessTimeout ? 'A' : 'M',
@@ -40,7 +42,7 @@ class HtaccessService extends AbstractService
             'sendCacheControlHeader' => $configuration->isBool('sendCacheControlHeader'),
             'sendCacheControlHeaderRedirectAfterCacheTimeout' => $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout'),
             'sendTypo3Headers' => $configuration->isBool('sendTypo3Headers'),
-            'tags' => \implode(',', $tagService->getTags()),
+            'tags' => \implode(',', $tags),
             'tagHeaderName' => $tagService->getHeaderName(),
         ];
 

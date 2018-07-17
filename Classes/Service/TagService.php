@@ -24,11 +24,6 @@ class TagService extends AbstractService
      */
     public function getTags(): array
     {
-        $config = $this->getConfiguration();
-        if (!$config['cacheTagsEnable']) {
-            return [];
-        }
-
         /** @var TypoScriptFrontendController $tsfe */
         $tsfe = $GLOBALS['TSFE'];
         if (!($tsfe instanceof TypoScriptFrontendController)) {
@@ -36,6 +31,16 @@ class TagService extends AbstractService
         }
 
         return \array_unique((array)ObjectAccess::getProperty($tsfe, 'pageCacheTags', true));
+    }
+
+    /**
+     * Check if it is enable
+     *
+     * @return bool
+     */
+    public function isEnable(): bool {
+        $config = $this->getConfiguration();
+        return (bool)$config['cacheTagsEnable'];
     }
 
     /**
