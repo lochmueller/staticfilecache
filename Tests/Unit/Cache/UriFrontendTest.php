@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types = 1);
 /**
  * Test the URI frontend.
  */
+
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Tests\Unit\Cache;
 
