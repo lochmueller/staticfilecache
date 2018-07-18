@@ -65,7 +65,7 @@ class CacheRepository extends AbstractRepository
      *
      * @return string
      */
-    protected function getTableName()
+    protected function getTableName(): string
     {
         return 'cf_staticfilecache';
     }

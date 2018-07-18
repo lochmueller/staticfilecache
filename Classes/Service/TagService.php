@@ -34,13 +34,14 @@ class TagService extends AbstractService
     }
 
     /**
-     * Check if it is enable
+     * Check if it is enable.
      *
      * @return bool
      */
     public function isEnable(): bool
     {
         $config = $this->getConfiguration();
+
         return (bool)$config['cacheTagsEnable'];
     }
 

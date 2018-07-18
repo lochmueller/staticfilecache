@@ -50,7 +50,7 @@ class PageRepository extends AbstractRepository
      *
      * @return string
      */
-    protected function getTableName()
+    protected function getTableName(): string
     {
         return 'pages';
     }

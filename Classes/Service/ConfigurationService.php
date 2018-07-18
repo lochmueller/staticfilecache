@@ -41,15 +41,15 @@ class ConfigurationService extends AbstractService
      *
      * @param string $key
      *
-     * @return mixed|null
+     * @return string|null
      */
     public function get(string $key)
     {
         $result = null;
         if (isset($this->configuration[$key])) {
-            $result = $this->configuration[$key];
+            $result = (string)$this->configuration[$key];
         } elseif (isset($GLOBALS['TSFE']->config['config']['tx_staticfilecache.'][$key])) {
-            $result = $GLOBALS['TSFE']->config['config']['tx_staticfilecache.'][$key];
+            $result = (string)$GLOBALS['TSFE']->config['config']['tx_staticfilecache.'][$key];
         }
 
         return $result;
@@ -78,7 +78,7 @@ class ConfigurationService extends AbstractService
      *
      * @return bool
      */
-    public function isBool(string $key)
+    public function isBool(string $key): bool
     {
         return (bool)$this->get($key);
     }

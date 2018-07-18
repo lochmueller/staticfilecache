@@ -17,7 +17,7 @@ class DateTimeService extends AbstractService
      *
      * @return int
      */
-    public function getCurrentTime()
+    public function getCurrentTime(): int
     {
         static $time = 0;
         if (0 !== $time) {

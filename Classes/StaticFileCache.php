@@ -80,7 +80,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
      * @param TypoScriptFrontendController $pObj        The parent object
      * @param int                          $timeOutTime The timestamp when the page times out
      */
-    public function insertPageInCache(TypoScriptFrontendController $pObj, $timeOutTime = null)
+    public function insertPageInCache(TypoScriptFrontendController $pObj, int $timeOutTime = 0)
     {
         $isStaticCached = false;
         $uri = $this->getUri();
@@ -104,7 +104,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
         $explanation = $ruleArguments['explanation'];
 
         if (!$ruleArguments['skipProcessing']) {
-            if (null === $timeOutTime) {
+            if (0 === $timeOutTime) {
                 $timeOutTime = $pObj->get_cache_timeout();
             }
             // If page has a endtime before the current timeOutTime, use it instead:
@@ -179,7 +179,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
      *
      * @return string
      */
-    protected function formatTimestamp($timestamp)
+    protected function formatTimestamp($timestamp): string
     {
         return \strftime($this->configuration->get('strftime'), $timestamp);
     }
@@ -189,7 +189,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
      *
      * @return string
      */
-    protected function getUri()
+    protected function getUri(): string
     {
         // Find host-name / IP, always in lowercase:
         $isHttp = (0 === \mb_strpos(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), 'http://'));
@@ -219,7 +219,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
      *
      * @return string The recreated URI of the current request
      */
-    protected function recreateUriPath($uri)
+    protected function recreateUriPath($uri): string
     {
         $objectManager = new ObjectManager();
         /** @var UriBuilder $uriBuilder */
@@ -250,7 +250,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
      *
      * @return bool is available and valid
      */
-    protected function hasValidCacheEntry($uri)
+    protected function hasValidCacheEntry($uri): bool
     {
         $entry = $this->cache->get($uri);
 

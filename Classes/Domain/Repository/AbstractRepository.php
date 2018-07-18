@@ -55,7 +55,7 @@ abstract class AbstractRepository
      *
      * @return string
      */
-    abstract protected function getTableName();
+    abstract protected function getTableName(): string;
 
     /**
      * Create query.

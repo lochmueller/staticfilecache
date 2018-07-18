@@ -38,7 +38,7 @@ class QueueRepository extends AbstractRepository
      *
      * @return int
      */
-    public function countOpenByIdentifier($identifier)
+    public function countOpenByIdentifier($identifier): int
     {
         $queryBuilder = $this->createQuery();
         $where = $queryBuilder->expr()->andX(
@@ -74,7 +74,7 @@ class QueueRepository extends AbstractRepository
      *
      * @return string
      */
-    protected function getTableName()
+    protected function getTableName(): string
     {
         return 'tx_staticfilecache_queue';
     }

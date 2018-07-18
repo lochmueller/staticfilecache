@@ -1,8 +1,6 @@
 # cat=basic; type=boolean; label=Clear cache for all domains in tree: When the TYPO3 tree hosts more than one domain, each domain has it's own cache branch. When clearing the cache, only the cache for the domain you are logged on to will be cleared. If you would like the cache for all domains to be cleared when clearing the frontend cache, then check this box.
 clearCacheForAllDomains = 1
 
-
-
 # cat=basic; type=boolean; label=Enable static file compression: When checked, a gzipped version of the static file is written to the cache directory as well as a plain version (used for fallback, not all browsers and proxies support gzip). This will speed up file transfer time. Apache can also compress files using mod_deflate, but does so on each request. Enabling this option makes sure it is done only once. Take care to also choose the proper .htaccess configuration when enabling this option.
 enableStaticFileCompression = 1
 

@@ -24,6 +24,6 @@ class InsertPageIncacheHook extends AbstractCacheHook
      */
     public function insertPageInCache(TypoScriptFrontendController $tsfe, $timeOutTime)
     {
-        $this->getStaticFileCache()->insertPageInCache($tsfe, $timeOutTime);
+        $this->getStaticFileCache()->insertPageInCache($tsfe, (int)$timeOutTime);
     }
 }

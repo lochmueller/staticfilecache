@@ -35,7 +35,7 @@ class ClientService
             $client = $this->getCallableClient($host);
             $response = $client->get($url);
 
-            return $response->getStatusCode();
+            return (int)$response->getStatusCode();
         } catch (\Exception $ex) {
         }
 

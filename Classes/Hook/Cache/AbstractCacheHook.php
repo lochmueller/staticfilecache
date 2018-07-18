@@ -19,9 +19,9 @@ abstract class AbstractCacheHook extends AbstractHook
     /**
      * Get static file cache object.
      *
-     * @return StaticFileCache|object
+     * @return StaticFileCache
      */
-    protected function getStaticFileCache()
+    protected function getStaticFileCache(): StaticFileCache
     {
         return GeneralUtility::makeInstance(StaticFileCache::class);
     }

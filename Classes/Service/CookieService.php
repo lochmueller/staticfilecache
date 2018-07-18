@@ -24,7 +24,7 @@ class CookieService extends AbstractService
      *
      * @param $lifetime
      */
-    public function setCookie($lifetime)
+    public function setCookie(int $lifetime)
     {
         $cookieDomain = $this->getCookieDomain();
         if ($cookieDomain) {
@@ -39,7 +39,7 @@ class CookieService extends AbstractService
      * Gets the domain to be used on setting cookies.
      * The information is taken from the value in $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'].
      *
-     * @return string The domain to be used on setting cookies
+     * @return string The domain to be used on setting cookies or empty value
      *
      * @see AbstractUserAuthentication::getCookieDomain
      */
