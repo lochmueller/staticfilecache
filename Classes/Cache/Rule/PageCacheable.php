@@ -1,6 +1,6 @@
 <?php
 /**
- * Check if the current page is static cachable in Page property context.
+ * Check if the current page is static cacheable in Page property context.
  */
 declare(strict_types = 1);
 
