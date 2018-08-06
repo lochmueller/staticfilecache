@@ -40,7 +40,7 @@ class CacheService extends AbstractService
     public function clearByPageId(int $pageId)
     {
         $cache = $this->getCache();
-        $cacheEntries = \array_keys($cache->getByTag('pageId_' . (int)$pageId));
+        $cacheEntries = \array_keys($cache->getByTag('pageId_' . $pageId));
         foreach ($cacheEntries as $cacheEntry) {
             $cache->remove($cacheEntry);
         }

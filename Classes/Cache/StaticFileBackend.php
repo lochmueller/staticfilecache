@@ -290,7 +290,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
      */
     protected function findIdentifiersByTagIncludingExpired($tag): array
     {
-        $base = $GLOBALS['EXEC_TIME'];
+        $base = (new DateTimeService())->getCurrentTime();
         $GLOBALS['EXEC_TIME'] = 0;
         $identifiers = $this->findIdentifiersByTag($tag);
         $GLOBALS['EXEC_TIME'] = $base;

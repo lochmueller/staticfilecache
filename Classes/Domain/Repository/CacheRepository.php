@@ -7,6 +7,8 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Domain\Repository;
 
+use SFC\Staticfilecache\Service\DateTimeService;
+
 /**
  * CacheRepository.
  */
@@ -24,7 +26,7 @@ class CacheRepository extends AbstractRepository
             ->from($this->getTableName())
             ->where($queryBuilder->expr()->lt(
                 'expires',
-                $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter((new DateTimeService())->getCurrentTime(), \PDO::PARAM_INT)
             ))
             ->groupBy('identifier')
             ->execute()
