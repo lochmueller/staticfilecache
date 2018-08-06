@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Static file cache info module.
  */
+
 declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Module;

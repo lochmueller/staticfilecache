@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Log no cache.
  */
+
 declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Hook;

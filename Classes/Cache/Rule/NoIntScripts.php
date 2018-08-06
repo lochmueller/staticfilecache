@@ -1,7 +1,9 @@
 <?php
+
 /**
  * No _INT scripts.
  */
+
 declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache\Rule;

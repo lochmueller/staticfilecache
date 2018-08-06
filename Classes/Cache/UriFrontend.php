@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Cache frontend for static file cache.
  */
+
 declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache;
