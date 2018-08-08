@@ -18,7 +18,7 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 /**
  * UriService.
  */
-class UriService
+class UriService extends AbstractService
 {
     /**
      * get the URI for the current cache ident.

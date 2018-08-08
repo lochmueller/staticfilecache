@@ -140,20 +140,16 @@ class Configuration
     public static function registerCachingFramework()
     {
         $configuration = self::getConfiguration();
+        $useNullBackend = isset($configuration['disableInDevelopment']) && $configuration['disableInDevelopment'] && GeneralUtility::getApplicationContext()->isDevelopment();
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache'] = [
             'frontend' => UriFrontend::class,
-            'backend' => StaticFileBackend::class,
+            'backend' => $useNullBackend ? NullBackend::class : StaticFileBackend::class,
             'groups' => [
                 'pages',
                 'all',
             ],
         ];
-
-        // Disable staticfilecache in development if extension configuration 'disableInDevelopment' is set
-        if (isset($configuration['disableInDevelopment']) && $configuration['disableInDevelopment'] && GeneralUtility::getApplicationContext()->isDevelopment()) {
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache']['backend'] = NullBackend::class;
-        }
     }
 
     /**
