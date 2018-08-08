@@ -12,12 +12,12 @@ use SFC\Staticfilecache\Cache\Rule\ValidUri;
 
 /**
  * Test the valid URI Rule.
+ *
+ * @internal
+ * @coversNothing
  */
 class ValidUriTest extends AbstractRuleTest
 {
-    /**
-     * @test
-     */
     public function testInvalidUri()
     {
         $tsfe = $this->getTsfe();
@@ -36,9 +36,6 @@ class ValidUriTest extends AbstractRuleTest
         }
     }
 
-    /**
-     * @test
-     */
     public function testValidUri()
     {
         $tsfe = $this->getTsfe();

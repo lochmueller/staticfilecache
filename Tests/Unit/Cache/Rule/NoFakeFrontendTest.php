@@ -12,13 +12,13 @@ use SFC\Staticfilecache\Cache\Rule\NoFakeFrontend;
 
 /**
  * Test the Fake Frontend Rule.
+ *
+ * @internal
+ * @coversNothing
  */
 class NoFakeFrontendTest extends AbstractRuleTest
 {
-    /**
-     * @test
-     */
-    public function checkNoFakeFrontendController()
+    public function testCheckNoFakeFrontendController()
     {
         $tsfe = $this->getTsfe();
         $uri = '';

@@ -13,22 +13,19 @@ use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 
 /**
  * Test the URI frontend.
+ *
+ * @internal
+ * @coversNothing
  */
 class UriFrontendTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @test
-     */
-    public function checkValidPath()
+    public function testCheckValidPath()
     {
         $this->assertTrue($this->getCacheFrontend()
             ->isValidEntryIdentifier('http://www.domain.tld/path.html'));
     }
 
-    /**
-     * @test
-     */
-    public function checkInValidPath()
+    public function testCheckInValidPath()
     {
         $this->assertFalse($this->getCacheFrontend()
             ->isValidEntryIdentifier('/path.html'));
