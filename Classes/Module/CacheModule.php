@@ -24,6 +24,8 @@ class CacheModule extends AbstractFunctionModule
     /**
      * MAIN function for static publishing information.
      *
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     *
      * @return string output HTML for the module
      */
     public function main()
@@ -56,7 +58,7 @@ class CacheModule extends AbstractFunctionModule
     {
         $rows = [];
         try {
-            $cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
+            $cache = GeneralUtility::makeInstance(CacheService::class)->get();
         } catch (\Exception $ex) {
             return $rows;
         }
@@ -96,13 +98,15 @@ class CacheModule extends AbstractFunctionModule
 
     /**
      * Handles incoming actions (e.g. removing all expired pages).
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     protected function handleActions()
     {
         $action = GeneralUtility::_GP('ACTION');
 
         if (isset($action['removeExpiredPages']) && (bool)$action['removeExpiredPages']) {
-            GeneralUtility::makeInstance(CacheService::class)->getCache()->collectGarbage();
+            GeneralUtility::makeInstance(CacheService::class)->get()->collectGarbage();
         }
     }
 }

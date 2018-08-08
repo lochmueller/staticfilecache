@@ -60,7 +60,19 @@ class QueueService extends AbstractService
     }
 
     /**
-     * Add identifiert to Queue.
+     * Add identifiers to Queue.
+     *
+     * @param array $identifiers
+     */
+    public function addIdentifiers(array $identifiers)
+    {
+        foreach ($identifiers as $identifier) {
+            $this->addIdentifier($identifier);
+        }
+    }
+
+    /**
+     * Add identifier to Queue.
      *
      * @param string $identifier
      */
@@ -100,7 +112,7 @@ class QueueService extends AbstractService
 
         if (200 !== $statusCode) {
             // Call the flush, if the page is not accessable
-            $cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
+            $cache = GeneralUtility::makeInstance(CacheService::class)->get();
             $cache->flushByTag('sfc_pageId_' . $runEntry['page_uid']);
             if ($cache->has($runEntry['cache_url'])) {
                 $cache->remove($runEntry['cache_url']);

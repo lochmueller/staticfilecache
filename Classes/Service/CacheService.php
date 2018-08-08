@@ -21,9 +21,11 @@ class CacheService extends AbstractService
     /**
      * Get the static file cache.
      *
+     * @throws NoSuchCacheException
+     *
      * @return FrontendInterface
      */
-    public function getCache(): FrontendInterface
+    public function get(): FrontendInterface
     {
         /** @var CacheManager $cacheManager */
         $objectManager = new ObjectManager();
@@ -41,7 +43,7 @@ class CacheService extends AbstractService
      */
     public function clearByPageId(int $pageId)
     {
-        $cache = $this->getCache();
+        $cache = $this->get();
         $cacheEntries = \array_keys($cache->getByTag('pageId_' . $pageId));
         foreach ($cacheEntries as $cacheEntry) {
             $cache->remove($cacheEntry);

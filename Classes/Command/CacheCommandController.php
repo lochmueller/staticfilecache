@@ -19,10 +19,12 @@ class CacheCommandController extends AbstractCommandController
 {
     /**
      * Remove the expired pages.
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     public function removeExpiredPagesCommand()
     {
-        GeneralUtility::makeInstance(CacheService::class)->getCache()->collectGarbage();
+        GeneralUtility::makeInstance(CacheService::class)->get()->collectGarbage();
     }
 
     /**
@@ -58,6 +60,6 @@ class CacheCommandController extends AbstractCommandController
         if ($forceBoostModeFlush) {
             \define('SFC_QUEUE_WORKER', true);
         }
-        GeneralUtility::makeInstance(CacheService::class)->getCache()->flush();
+        GeneralUtility::makeInstance(CacheService::class)->get()->flush();
     }
 }

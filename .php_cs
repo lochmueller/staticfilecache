@@ -67,6 +67,7 @@ return PhpCsFixer\Config::create()
         'function_typehint_space' => true,
         'hash_to_slash_comment' => true,
         'no_alias_functions' => true,
+        'yoda_style' => true,
         'lowercase_cast' => true,
         'no_leading_namespace_whitespace' => true,
         'native_function_casing' => true,

@@ -8,17 +8,13 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache;
 
-use Mso\IdnaConvert\IdnaConvert;
 use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\TagService;
+use SFC\Staticfilecache\Service\UriService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -49,21 +45,13 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
     protected $signalDispatcher;
 
     /**
-     * Punycode / IDNA converter that is used to encode the URIs to ASCII.
-     *
-     * @var IdnaConvert
-     */
-    protected $idnaConverter;
-
-    /**
      * Constructs this object.
      */
     public function __construct()
     {
-        $this->cache = GeneralUtility::makeInstance(CacheService::class)->getCache();
+        $this->cache = GeneralUtility::makeInstance(CacheService::class)->get();
         $this->signalDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $this->idnaConverter = GeneralUtility::makeInstance(IdnaConvert::class);
     }
 
     /**
@@ -85,7 +73,8 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
     public function insertPageInCache(TypoScriptFrontendController $pObj, int $timeOutTime = 0)
     {
         $isStaticCached = false;
-        $uri = $this->getUri();
+
+        $uri = GeneralUtility::makeInstance(UriService::class)->getUri();
 
         // Signal: Initialize variables before starting the processing.
         $preProcessArguments = [
@@ -184,65 +173,6 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
     protected function formatTimestamp($timestamp): string
     {
         return \strftime($this->configuration->get('strftime'), $timestamp);
-    }
-
-    /**
-     * get the URI for the current cache ident.
-     *
-     * @return string
-     */
-    protected function getUri(): string
-    {
-        // Find host-name / IP, always in lowercase:
-        $isHttp = (0 === \mb_strpos(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), 'http://'));
-        $uri = GeneralUtility::getIndpEnv('REQUEST_URI');
-        if ($this->configuration->isBool('recreateURI')) {
-            $uri = $this->recreateUriPath($uri);
-        }
-
-        $uri = ($isHttp ? 'http://' : 'https://') . \mb_strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . \ltrim($uri, '/');
-
-        try {
-            return $this->idnaConverter->encode($uri);
-        } catch (\InvalidArgumentException $ex) {
-            // The URI is already in puny code
-            return $uri;
-        }
-    }
-
-    /**
-     * Recreates the URI of the current request.
-     *
-     * Especially in simulateStaticDocument context, the different URIs lead to the same result
-     * and static file caching would store the wrong URI that was used in the first request to
-     * the website (e.g. "TheGoodURI.13.0.html" is as well accepted as "TheFakeURI.13.0.html")
-     *
-     * @param string $uri
-     *
-     * @return string The recreated URI of the current request
-     */
-    protected function recreateUriPath($uri): string
-    {
-        $objectManager = new ObjectManager();
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $objectManager->get(UriBuilder::class);
-        if (null === ObjectAccess::getProperty($uriBuilder, 'contentObject', true)) {
-            // there are situations without a valid contentObject in the URI builder
-            // prevent this situation by return the original request URI
-            return $uri;
-        }
-        $url = $uriBuilder->reset()
-            ->setAddQueryString(true)
-            ->setCreateAbsoluteUri(true)
-            ->build();
-
-        $parts = (array)\parse_url($url);
-        $unset = ['scheme', 'user', 'pass', 'host', 'port'];
-        foreach ($unset as $u) {
-            unset($parts[$u]);
-        }
-
-        return HttpUtility::buildUrl($parts);
     }
 
     /**

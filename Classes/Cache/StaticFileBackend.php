@@ -156,10 +156,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
 
         if ($this->isBoostMode()) {
             $identifiers = GeneralUtility::makeInstance(CacheRepository::class)->findAllIdentifiers();
-            $queue = $this->getQueue();
-            foreach ($identifiers as $identifier) {
-                $queue->addIdentifier($identifier);
-            }
+            $this->getQueue()->addIdentifiers($identifiers);
 
             return;
         }
@@ -216,10 +213,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
     {
         $expiredIdentifiers = GeneralUtility::makeInstance(CacheRepository::class)->findExpiredIdentifiers();
         if ($this->isBoostMode()) {
-            $queue = $this->getQueue();
-            foreach ($expiredIdentifiers as $identifier) {
-                $queue->addIdentifier($identifier);
-            }
+            $this->getQueue()->addIdentifiers($expiredIdentifiers);
 
             return;
         }
@@ -270,10 +264,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
         }
 
         if ($this->isBoostMode()) {
-            $queue = $this->getQueue();
-            foreach ($identifiers as $identifier) {
-                $queue->addIdentifier($identifier);
-            }
+            $queue = $this->getQueue()->addIdentifiers($identifiers);
 
             return;
         }
