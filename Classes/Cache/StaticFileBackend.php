@@ -264,7 +264,7 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
         }
 
         if ($this->isBoostMode()) {
-            $queue = $this->getQueue()->addIdentifiers($identifiers);
+            $this->getQueue()->addIdentifiers($identifiers);
 
             return;
         }

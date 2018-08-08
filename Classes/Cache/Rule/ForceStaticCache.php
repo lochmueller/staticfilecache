@@ -79,7 +79,11 @@ class ForceStaticCache extends AbstractRule
             'frontendController' => $frontendController,
             'uri' => $uri,
         ];
-        $params = $signalSlotDispatcher->dispatch(__CLASS__, 'isForceCacheUri', $params);
+        try {
+            $params = $signalSlotDispatcher->dispatch(__CLASS__, 'isForceCacheUri', $params);
+        } catch (\Exception $exception) {
+            // @todo logging
+        }
 
         return (bool)$params['forceStatic'];
     }

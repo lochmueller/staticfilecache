@@ -34,6 +34,8 @@
 	],
 	"require": {
 		"php": ">=7.0.0",
+		"ext-pdo": "*",
+		"ext-zlib": "*",
 		"typo3/cms-core": "~8.7.0||~9.3.0||dev-master"
 	},
 	"replace": {

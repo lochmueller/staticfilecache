@@ -20,8 +20,6 @@ class Eofe extends AbstractCacheHook
      *
      * @param array                        $params
      * @param TypoScriptFrontendController $tsfe
-     *
-     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      */
     public function insert($params, TypoScriptFrontendController $tsfe)
     {

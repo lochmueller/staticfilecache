@@ -29,6 +29,10 @@ class PublishService extends AbstractService
         $objectManager = new ObjectManager();
         /** @var Dispatcher $dispatcher */
         $dispatcher = $objectManager->get(Dispatcher::class);
-        $dispatcher->dispatch(__CLASS__, __METHOD__, $arguments);
+        try {
+            $dispatcher->dispatch(__CLASS__, __METHOD__, $arguments);
+        } catch (\Exception $exception) {
+            // @todo logging
+        }
     }
 }

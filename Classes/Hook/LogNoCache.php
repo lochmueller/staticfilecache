@@ -20,8 +20,6 @@ class LogNoCache extends AbstractHook
      *
      * @param array  $parameters
      * @param object $parentObject
-     *
-     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
      */
     public function log(&$parameters, $parentObject)
     {

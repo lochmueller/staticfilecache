@@ -50,8 +50,7 @@ class TagService extends AbstractService
      */
     public function send()
     {
-        $config = $this->getConfiguration();
-        if (!$config['cacheTagsEnable']) {
+        if (!$this->isEnable()) {
             return;
         }
 

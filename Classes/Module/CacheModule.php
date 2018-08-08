@@ -50,8 +50,6 @@ class CacheModule extends AbstractFunctionModule
     /**
      * Get cache pages entries.
      *
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     *
      * @return array
      */
     protected function getCachePagesEntries(): array
@@ -60,6 +58,7 @@ class CacheModule extends AbstractFunctionModule
         try {
             $cache = GeneralUtility::makeInstance(CacheService::class)->get();
         } catch (\Exception $ex) {
+            // @todo logging
             return $rows;
         }
 

@@ -201,6 +201,11 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
      */
     protected function dispatch(string $signalName, array $arguments)
     {
-        return $this->signalDispatcher->dispatch(__CLASS__, $signalName, $arguments);
+        try {
+            return $this->signalDispatcher->dispatch(__CLASS__, $signalName, $arguments);
+        } catch (\Exception $exception) {
+            // @todo logging
+            return $arguments;
+        }
     }
 }

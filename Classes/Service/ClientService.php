@@ -37,6 +37,7 @@ class ClientService
 
             return (int)$response->getStatusCode();
         } catch (\Exception $ex) {
+            // @todo logging
         }
 
         return 900;
