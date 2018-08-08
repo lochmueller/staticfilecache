@@ -14,6 +14,7 @@ use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\TagService;
 use SFC\Staticfilecache\Service\UriService;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -204,7 +205,9 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
         try {
             return $this->signalDispatcher->dispatch(__CLASS__, $signalName, $arguments);
         } catch (\Exception $exception) {
-            // @todo logging
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+            $logger->error('Problems by calling signal: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
+
             return $arguments;
         }
     }

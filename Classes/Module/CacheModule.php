@@ -13,6 +13,7 @@ use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -57,8 +58,10 @@ class CacheModule extends AbstractFunctionModule
         $rows = [];
         try {
             $cache = GeneralUtility::makeInstance(CacheService::class)->get();
-        } catch (\Exception $ex) {
-            // @todo logging
+        } catch (\Exception $exception) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+            $logger->error('Problems by fetching the cache: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
+
             return $rows;
         }
 

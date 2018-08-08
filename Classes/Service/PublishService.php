@@ -9,6 +9,8 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Service;
 
 use SFC\Staticfilecache\Cache\StaticFileBackend;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
@@ -32,7 +34,8 @@ class PublishService extends AbstractService
         try {
             $dispatcher->dispatch(__CLASS__, __METHOD__, $arguments);
         } catch (\Exception $exception) {
-            // @todo logging
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+            $logger->error('Problems in publis signal: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
         }
     }
 }

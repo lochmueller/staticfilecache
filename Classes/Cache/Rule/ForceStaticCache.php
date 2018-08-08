@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -82,7 +83,8 @@ class ForceStaticCache extends AbstractRule
         try {
             $params = $signalSlotDispatcher->dispatch(__CLASS__, 'isForceCacheUri', $params);
         } catch (\Exception $exception) {
-            // @todo logging
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+            $logger->error('Problems by calling signal: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
         }
 
         return (bool)$params['forceStatic'];

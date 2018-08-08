@@ -42,8 +42,8 @@ class UriService extends AbstractService
             $idnaConverter = GeneralUtility::makeInstance(IdnaConvert::class);
 
             return $idnaConverter->encode($uri);
-        } catch (\InvalidArgumentException $ex) {
-            // The URI is already in puny code
+        } catch (\InvalidArgumentException $exception) {
+            // The URI is already in puny code (no logging needed)
             return $uri;
         }
     }

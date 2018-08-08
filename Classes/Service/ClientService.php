@@ -11,6 +11,7 @@ namespace SFC\Staticfilecache\Service;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -36,8 +37,9 @@ class ClientService
             $response = $client->get($url);
 
             return (int)$response->getStatusCode();
-        } catch (\Exception $ex) {
-            // @todo logging
+        } catch (\Exception $exception) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+            $logger->error('Problems in single request running: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
         }
 
         return 900;
