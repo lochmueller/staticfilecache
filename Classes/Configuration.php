@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache;
 
+use SFC\Staticfilecache\Cache\Rule\DomainCacheable;
 use SFC\Staticfilecache\Cache\Rule\Enable;
 use SFC\Staticfilecache\Cache\Rule\ForceStaticCache;
 use SFC\Staticfilecache\Cache\Rule\LoginDeniedConfiguration;
@@ -119,6 +120,7 @@ class Configuration
             NoIntScripts::class,
             LoginDeniedConfiguration::class,
             PageCacheable::class,
+            DomainCacheable::class,
             NoNoCache::class,
             NoBackendUser::class,
             Enable::class,
