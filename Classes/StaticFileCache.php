@@ -93,7 +93,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             'skipProcessing' => false,
         ];
         $ruleArguments = $this->dispatch('cacheRule', $ruleArguments);
-        $explanation = $ruleArguments['explanation'];
+        $explanation = (array)$ruleArguments['explanation'];
 
         if (!$ruleArguments['skipProcessing']) {
             if (0 === $timeOutTime) {
@@ -108,7 +108,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             // Don't continue if there is already an existing valid cache entry and we've got an invalid now.
             // Prevents overriding if a logged in user is checking the page in a second call
             // see https://forge.typo3.org/issues/67526
-            if (\count($explanation) && $this->hasValidCacheEntry($uri)) {
+            if (!\empty($explanation) && $this->hasValidCacheEntry($uri)) {
                 return;
             }
 
@@ -121,7 +121,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
 
             // This is supposed to have "&& !$pObj->beUserLogin" in there as well
             // This fsck's up the ctrl-shift-reload hack, so I pulled it out.
-            if (0 === \count($explanation)) {
+            if (\empty($explanation)) {
                 $content = $pObj->content;
                 if ($this->configuration->get('showGenerationSignature')) {
                     $content .= "\n<!-- cached statically on: " . $this->formatTimestamp((new DateTimeService())->getCurrentTime()) . ' -->';
@@ -188,7 +188,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
         $entry = $this->cache->get($uri);
 
         return false !== $entry &&
-            0 === \count($entry['explanation']) &&
+            \empty($entry['explanation']) &&
             $entry['expires'] >= (new DateTimeService())->getCurrentTime();
     }
 
