@@ -46,4 +46,11 @@ cacheTagsEnable = 0
 # cat=Headers; type=string; label=Cache Tag name: The name of the header for the cache tags
 cacheTagsHeaderName = X-Cache-Tags
 
+# cat=Headers; type=boolean; label=Enable HTTP/2 Push: Enable sending HTTP/2 push headers (experimental)
+sendHttp2PushEnable = 0
 
+# cat=Headers; type=string; label=File extensions for HTTP/2 push: Different file extension for HTTP/2 push. Please take care, that there is a Handler for parsing the file Extensions
+sendHttp2PushFileExtensions = css,js
+
+# cat=Headers; type=string; label=File limit for HTTP/2 push: The limit of files that are added as HTTP/2 push
+sendHttp2PushFileLimit = 10

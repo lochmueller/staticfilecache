@@ -47,6 +47,8 @@ class HtaccessService extends AbstractService
             'tagHeaderName' => $tagService->getHeaderName(),
         ];
 
+        // @todo add HttpPushService headers
+
         $this->renderTemplateToFile($this->getTemplateName(), $variables, $fileName);
     }
 
