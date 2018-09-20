@@ -35,6 +35,8 @@ class QueueService extends AbstractService
      * Run the queue.
      *
      * @param int $limitItems
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     public function run(int $limitItems = 0)
     {

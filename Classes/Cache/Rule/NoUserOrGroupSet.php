@@ -8,6 +8,10 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -41,6 +45,20 @@ class NoUserOrGroupSet extends AbstractRule
      */
     public function isUserOrGroupSet(TypoScriptFrontendController $frontendController)
     {
-        return (\is_array($frontendController->fe_user->user) && isset($frontendController->fe_user->user['uid'])) || '0,-1' !== $frontendController->gr_list;
+        $version9orHigher = VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >= VersionNumberUtility::convertVersionNumberToInteger('9.0');
+        if (!$version9orHigher) {
+            return (\is_array($frontendController->fe_user->user) && isset($frontendController->fe_user->user['uid'])) || '0,-1' !== $frontendController->gr_list;
+        }
+
+        $context = GeneralUtility::makeInstance(Context::class);
+
+        try {
+            $userIsLoggedIn = (bool)$context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
+            $groupIds = (array)$context->getPropertyFromAspect('frontend.user', 'groupIds');
+        } catch (AspectNotFoundException $e) {
+            return false;
+        }
+
+        return $userIsLoggedIn || [0, -1] !== $groupIds;
     }
 }

@@ -10,7 +10,7 @@ namespace SFC\Staticfilecache\Service;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
@@ -23,9 +23,9 @@ class CacheService extends AbstractService
      *
      * @throws NoSuchCacheException
      *
-     * @return FrontendInterface
+     * @return VariableFrontend
      */
-    public function get(): FrontendInterface
+    public function get(): VariableFrontend
     {
         /** @var CacheManager $cacheManager */
         $objectManager = new ObjectManager();
