@@ -4,7 +4,6 @@ declare(strict_types = 1);
 /**
  * HttpPushService.
  */
-
 namespace SFC\Staticfilecache\Service;
 
 use SFC\Staticfilecache\Service\HttpPush\AbstractHttpPush;
