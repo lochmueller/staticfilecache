@@ -1,6 +1,8 @@
 <?php
+
+declare(strict_types = 1);
 /**
- * HttpPushService
+ * HttpPushService.
  */
 
 namespace SFC\Staticfilecache\Service;
@@ -10,15 +12,15 @@ use SFC\Staticfilecache\Service\HttpPush\StyleHttpPush;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * HttpPushService
+ * HttpPushService.
  */
 class HttpPushService extends AbstractService
 {
-
     /**
-     * Get http push headers
+     * Get http push headers.
      *
      * @param string $content
+     *
      * @return array
      */
     public function getHttpPushHeaders(string $content): array
@@ -40,24 +42,22 @@ class HttpPushService extends AbstractService
                 }
             }
 
-            $headers = array_slice($headers, 0, $limit);
+            $headers = \array_slice($headers, 0, $limit);
         }
 
         return $headers;
     }
 
     /**
-     * Get HTTP push handlers
+     * Get HTTP push handlers.
      *
      * @return array
      */
     protected function getHttpPushHandler(): array
     {
-
         // @todo create script, image and font Handler
         return [
             GeneralUtility::makeInstance(StyleHttpPush::class),
         ];
     }
-
 }
