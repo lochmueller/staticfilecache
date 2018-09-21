@@ -1,12 +1,16 @@
 <?php
 
-declare(strict_types = 1);
 /**
  * HttpPushService.
  */
+
+declare(strict_types = 1);
+
 namespace SFC\Staticfilecache\Service;
 
 use SFC\Staticfilecache\Service\HttpPush\AbstractHttpPush;
+use SFC\Staticfilecache\Service\HttpPush\ImageHttpPush;
+use SFC\Staticfilecache\Service\HttpPush\ScriptHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\StyleHttpPush;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -54,9 +58,10 @@ class HttpPushService extends AbstractService
      */
     protected function getHttpPushHandler(): array
     {
-        // @todo create script, image and font Handler
         return [
             GeneralUtility::makeInstance(StyleHttpPush::class),
+            GeneralUtility::makeInstance(ScriptHttpPush::class),
+            GeneralUtility::makeInstance(ImageHttpPush::class),
         ];
     }
 }

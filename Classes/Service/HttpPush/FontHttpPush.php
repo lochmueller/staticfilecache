@@ -1,7 +1,7 @@
 <?php
 
 /**
- * StyleHttpPush.
+ * FontHttpPush.
  */
 
 declare(strict_types=1);
@@ -9,9 +9,9 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Service\HttpPush;
 
 /**
- * StyleHttpPush.
+ * FontHttpPush.
  */
-class StyleHttpPush extends AbstractHttpPush
+class FontHttpPush extends AbstractHttpPush
 {
     /**
      * Check if the class can handle the file extension.
@@ -22,7 +22,7 @@ class StyleHttpPush extends AbstractHttpPush
      */
     public function canHandleExtension(string $fileExtension): bool
     {
-        return 'css' === $fileExtension;
+        return 'woff' === $fileExtension;
     }
 
     /**
@@ -34,8 +34,8 @@ class StyleHttpPush extends AbstractHttpPush
      */
     public function getHeaders(string $content): array
     {
-        preg_match_all('/(?<=["\'])[^="\']*\.css\.*\d*\.*(?:gzi?p?)*(?=["\'])/', $content, $cssFiles);
-        $paths = $this->streamlineFilePaths((array)$cssFiles[0]);
-        return $this->mapPathsWithType($paths, 'style');
+        preg_match_all('/(?<=["\'])[^="\']*\.woff\.*\d*\.*(?:gzi?p?)*(?=["\'])/', $content, $fontFiles);
+        $paths = $this->streamlineFilePaths((array)$fontFiles[0]);
+        return $this->mapPathsWithType($paths, 'font');
     }
 }
