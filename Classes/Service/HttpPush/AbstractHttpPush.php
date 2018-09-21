@@ -44,13 +44,20 @@ abstract class AbstractHttpPush
      */
     protected function streamlineFilePaths(array $paths): array
     {
-        $paths = array_map(function ($path) {
-            return GeneralUtility::locationHeaderUrl($path);
+        $paths = array_map(function ($url) {
+            if(!GeneralUtility::isValidUrl($url) && $url[0] !== ':') {
+                $url = GeneralUtility::locationHeaderUrl($url);
+            }
+            return $url;
         }, $paths);
 
         $paths = array_filter($paths, function ($path) {
-            return GeneralUtility::isOnCurrentHost($path);
+            return GeneralUtility::isOnCurrentHost($path) && $path[0] !== ':';
         });
+
+        $paths = array_map(function ($url) {
+            return '/' . ltrim(str_replace(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), '', $url), '/');
+        }, $paths);
 
         return $paths;
     }
