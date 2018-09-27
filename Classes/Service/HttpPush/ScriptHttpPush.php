@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service\HttpPush;
 
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-
 /**
  * ScriptHttpPush.
  */

@@ -13,7 +13,6 @@ use SFC\Staticfilecache\Service\HttpPush\ImageHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\ScriptHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\StyleHttpPush;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * HttpPushService.

@@ -4,7 +4,6 @@ declare(strict_types=1);
 /**
  * AbstractHttpPush.
  */
-
 namespace SFC\Staticfilecache\Service\HttpPush;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -45,7 +44,7 @@ abstract class AbstractHttpPush
     protected function streamlineFilePaths(array $paths): array
     {
         $paths = array_map(function ($url) {
-            if(!GeneralUtility::isValidUrl($url) && $url[0] !== ':') {
+            if (!GeneralUtility::isValidUrl($url) && $url[0] !== ':') {
                 $url = GeneralUtility::locationHeaderUrl($url);
             }
             return $url;
