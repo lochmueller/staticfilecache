@@ -41,7 +41,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI} !-f
    RewriteRule .* - [E=SFC_FILE:index.html]
 
-   # Note: https://github.com/lochmueller/staticfilecache/pull/90 (Please check the realurl configuration related to "appendMissingSlash". Perhaps your need a additional "/" in the rule above)
+   # Note: https://github.com/lochmueller/staticfilecache/pull/90 (Please check the realurl configuration related to "appendMissingSlash". Perhaps you need an additional "/" in the rule above)
    # RewriteRule .* - [E=SFC_FILE:/index.html]
 
    # Set gzip extension into an environment variable if the visitors browser can handle gzipped content and the gz-file exists
