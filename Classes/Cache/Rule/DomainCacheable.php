@@ -30,7 +30,7 @@ class DomainCacheable extends AbstractRule
         $domainString = \parse_url($uri, PHP_URL_HOST);
         $domainRepository = GeneralUtility::makeInstance(DomainRepository::class);
         $domain = $domainRepository->findOneByDomainName($domainString);
-        if (!empty($domain)) {
+        if (is_array($domain) && array_key_exists('tx_staticfilecache_cache', $domain)) {
             $cachableDomain = (bool)$domain['tx_staticfilecache_cache'];
             if (!$cachableDomain) {
                 $explanation[__CLASS__] = 'static cache disabled on domain: ' . $domainString;
