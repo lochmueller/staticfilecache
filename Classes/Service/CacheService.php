@@ -27,11 +27,18 @@ class CacheService extends AbstractService
      */
     public function get(): VariableFrontend
     {
-        /** @var CacheManager $cacheManager */
-        $objectManager = new ObjectManager();
-        $cacheManager = $objectManager->get(CacheManager::class);
+        return $this->getManager()->getCache('staticfilecache');
+    }
 
-        return $cacheManager->getCache('staticfilecache');
+    /**
+     * Get the cache manager.
+     *
+     * @return CacheManager
+     */
+    public function getManager(): CacheManager
+    {
+        $objectManager = new ObjectManager();
+        return $objectManager->get(CacheManager::class);
     }
 
     /**

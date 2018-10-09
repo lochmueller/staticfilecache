@@ -54,12 +54,16 @@ class CacheCommandController extends AbstractCommandController
      * @param bool $forceBoostModeFlush
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException
      */
     public function flushCacheCommand($forceBoostModeFlush = false)
     {
         if ($forceBoostModeFlush) {
             \define('SFC_QUEUE_WORKER', true);
         }
-        GeneralUtility::makeInstance(CacheService::class)->get()->flush();
+        /** @var CacheService $cacheService */
+        $cacheService = GeneralUtility::makeInstance(CacheService::class);
+        $cacheService->get()->flush();
+        $cacheService->getManager()->flushCachesInGroup('pages');
     }
 }
