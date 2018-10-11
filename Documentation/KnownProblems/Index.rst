@@ -39,3 +39,10 @@ There are situations, where the page is created with a new URL, but TYPO3 could 
 In this configuration example you get two pages like http://www.domain.org/ and http://www.domain.org/en/ but TYPO3 call the hook only once.
 
 More details and a workarround of this problem: https://github.com/lochmueller/staticfilecache/issues/7#issuecomment-317096513
+
+Caching Framework with none-DB-backends
+---------------------------------------
+
+There are some problems with the caching framework with "non-DB-backends", because the CLI mode set the backends to FileBackend. So it is not possible to run commands as "flush", because the flush command only delete the "CLI file backend cache" and not the e.g. Redis/APCU-Cache.
+
+Please keep this in mind. If you use StaticFileCache you do not need to use a Redis oder APCU cache backend for Pages and Pagesections.
