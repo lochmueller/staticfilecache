@@ -62,7 +62,7 @@ class HttpPushService extends AbstractService
         return [
             GeneralUtility::makeInstance(StyleHttpPush::class),
             GeneralUtility::makeInstance(ScriptHttpPush::class),
-            GeneralUtility::makeInstance(ImageHttpPush::class), ,
+            GeneralUtility::makeInstance(ImageHttpPush::class),
             GeneralUtility::makeInstance(FontHttpPush::class),
         ];
     }
