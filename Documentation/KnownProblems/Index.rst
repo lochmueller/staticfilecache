@@ -46,3 +46,8 @@ Caching Framework with none-DB-backends
 There are some problems with the caching framework with "non-DB-backends", because the CLI mode set the backends to FileBackend. So it is not possible to run commands as "flush", because the flush command only delete the "CLI file backend cache" and not the e.g. Redis/APCU-Cache.
 
 Please keep this in mind. If you use StaticFileCache you do not need to use a Redis oder APCU cache backend for Pages and Pagesections.
+
+Clear all caches for editors
+----------------------------
+
+The possibiliy to clear all caches is not very usefull for regular editor, because they do not understand what exactly means "clear all caches". So it is recommended to use the PageTSConfig option "options.clearCache.pages" to prevent a system wide clear cache mechanism for editors. Ask the editor "why" they use the "clear all cache" and use cache tags, cache groups and clear cache hooks to create the right situation without clearing all caches.
