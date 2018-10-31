@@ -10,18 +10,15 @@ namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * General Cache functions for Static File Cache.
  */
 class AbstractBackend extends Typo3DatabaseBackend
 {
-    /**
-     * The default compression level.
-     */
-    const DEFAULT_COMPRESSION_LEVEL = 3;
 
     /**
      * Configuration.
@@ -29,6 +26,18 @@ class AbstractBackend extends Typo3DatabaseBackend
      * @var ConfigurationService
      */
     protected $configuration;
+
+    /**
+     *
+     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     */
+    protected $signalSlotDispatcher;
+
+    /**
+     *
+     * @var string
+     */
+    protected $signalClass = '';
 
     /**
      * Constructs this backend.
@@ -40,24 +49,8 @@ class AbstractBackend extends Typo3DatabaseBackend
     {
         parent::__construct($context, $options);
         $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-    }
-
-    /**
-     * Get compression level.
-     *
-     * @return int
-     */
-    protected function getCompressionLevel(): int
-    {
-        $level = self::DEFAULT_COMPRESSION_LEVEL;
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {
-            $level = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'];
-        }
-        if (!MathUtility::isIntegerInRange($level, 1, 9)) {
-            $level = self::DEFAULT_COMPRESSION_LEVEL;
-        }
-
-        return $level;
+        $this->signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+        $this->signalClass = get_class($this);
     }
 
     /**
@@ -77,5 +70,26 @@ class AbstractBackend extends Typo3DatabaseBackend
         }
 
         return (int)$lifetime;
+    }
+
+
+    /**
+     * Call Dispatcher.
+     *
+     * @param string $signalName
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
+    protected function dispatch(string $signalName, array $arguments)
+    {
+        try {
+            return $this->signalSlotDispatcher->dispatch($this->signalClass, $signalName, $arguments);
+        } catch (\Exception $exception) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger($this->signalClass);
+            $logger->error('Problems by calling signal: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
+
+            return $arguments;
+        }
     }
 }
