@@ -25,6 +25,7 @@ use SFC\Staticfilecache\Cache\Rule\ValidRequestMethod;
 use SFC\Staticfilecache\Cache\Rule\ValidUri;
 use SFC\Staticfilecache\Cache\StaticFileBackend;
 use SFC\Staticfilecache\Cache\UriFrontend;
+use SFC\Staticfilecache\Cache\Compression\GzipCompression;
 use SFC\Staticfilecache\Command\CacheCommandController;
 use SFC\Staticfilecache\Command\PublishCommandController;
 use SFC\Staticfilecache\Hook\Cache\ContentPostProcOutput;
@@ -134,6 +135,8 @@ class Configuration
         foreach ($ruleClasses as $class) {
             $signalSlotDispatcher->connect(StaticFileCache::class, 'cacheRule', $class, 'check');
         }
+
+        $signalSlotDispatcher->connect(StaticFileBackend::class, 'compress', GzipCompression::class, 'check');
     }
 
     /**

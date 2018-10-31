@@ -75,10 +75,11 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
 
         // gz
         if ($this->configuration->isBool('enableStaticFileCompression')) {
-            $contentGzip = \gzencode($data, $this->getCompressionLevel());
-            if ($contentGzip) {
-                GeneralUtility::writeFile($fileName . '.gz', $contentGzip);
-            }
+            $dispatchArguments = [
+                'fileName' => $fileName,
+                'data' => $data,
+            ];
+            $this->dispatch('compress', $dispatchArguments);
         }
 
         GeneralUtility::makeInstance(HtaccessService::class)->write($fileName, $realLifetime);
@@ -299,11 +300,17 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
     protected function removeStaticFiles(string $entryIdentifier)
     {
         $fileName = $this->getCacheFilename($entryIdentifier);
-        $files = [
-            $fileName,
-            $fileName . '.gz',
-            PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess',
+        $dispatchArguments = [
+            'entryIdentifier' => $entryIdentifier,
+            'fileName' => $fileName,
+            'files' => [
+                $fileName,
+                $fileName . '.gz',
+                PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess',
+            ],
         ];
+        $dispatched = $this->dispatch('removeStaticFiles', $dispatchArguments);
+        $files = $dispatched['files'];
         foreach ($files as $file) {
             if (\is_file($file)) {
                 \unlink($file);
