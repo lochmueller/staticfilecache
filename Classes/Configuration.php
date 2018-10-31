@@ -136,7 +136,7 @@ class Configuration
             $signalSlotDispatcher->connect(StaticFileCache::class, 'cacheRule', $class, 'check');
         }
 
-        $signalSlotDispatcher->connect(StaticFileBackend::class, 'compress', GzipCompression::class, 'check');
+        $signalSlotDispatcher->connect(StaticFileBackend::class, 'compress', GzipCompression::class, 'compress');
     }
 
     /**
