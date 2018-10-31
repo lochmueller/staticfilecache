@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache;
 
+use SFC\Staticfilecache\Cache\Compression\GzipCompression;
 use SFC\Staticfilecache\Cache\Rule\DomainCacheable;
 use SFC\Staticfilecache\Cache\Rule\Enable;
 use SFC\Staticfilecache\Cache\Rule\ForceStaticCache;
@@ -25,7 +26,6 @@ use SFC\Staticfilecache\Cache\Rule\ValidRequestMethod;
 use SFC\Staticfilecache\Cache\Rule\ValidUri;
 use SFC\Staticfilecache\Cache\StaticFileBackend;
 use SFC\Staticfilecache\Cache\UriFrontend;
-use SFC\Staticfilecache\Cache\Compression\GzipCompression;
 use SFC\Staticfilecache\Command\CacheCommandController;
 use SFC\Staticfilecache\Command\PublishCommandController;
 use SFC\Staticfilecache\Hook\Cache\ContentPostProcOutput;
