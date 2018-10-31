@@ -5,8 +5,8 @@
 declare(strict_types = 1);
 namespace SFC\Staticfilecache\Cache\Compression;
 
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Abstract Rule.
@@ -24,7 +24,7 @@ class GzipCompression
         $gzipFileName = $fileName . '.gz';
 
         // If file already exists, we assume, that it was already written by another Slot
-        if(!file_exists($gzipFileName)) {
+        if (!file_exists($gzipFileName)) {
             $contentGzip = \gzencode($data, $this->getCompressionLevel());
             if ($contentGzip) {
                 GeneralUtility::writeFile($gzipFileName, $contentGzip);
