@@ -35,17 +35,23 @@ class QueueService extends AbstractService
      * Run the queue.
      *
      * @param int $limitItems
+     * @param int $stopProcessingAfter
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
-    public function run(int $limitItems = 0)
+    public function run(int $limitItems = 0, int $stopProcessingAfter = 0)
     {
         \define('SFC_QUEUE_WORKER', true);
 
+        $startTime = time();
         $limit = $limitItems > 0 ? $limitItems : 999;
         $rows = $this->queueRepository->findOpen($limit);
 
         foreach ($rows as $runEntry) {
+            if ($stopProcessingAfter > 0 && time() >= $startTime + $stopProcessingAfter) {
+                break;
+            }
+
             $this->runSingleRequest($runEntry);
         }
     }
