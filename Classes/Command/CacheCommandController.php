@@ -31,11 +31,12 @@ class CacheCommandController extends AbstractCommandController
      * Run the cache boost queue.
      *
      * @param int $limitItems Limit the items that are crawled. 0 => all
+     * @param int $stopProcessingAfter Stop crawling new items after N seconds since scheduler task started. 0 => infinite
      */
-    public function runCacheBoostQueueCommand($limitItems = 0)
+    public function runCacheBoostQueueCommand($limitItems = 0, $stopProcessingAfter = 0)
     {
         $queue = GeneralUtility::makeInstance(QueueService::class);
-        $queue->run($limitItems);
+        $queue->run($limitItems, $stopProcessingAfter);
     }
 
     /**
