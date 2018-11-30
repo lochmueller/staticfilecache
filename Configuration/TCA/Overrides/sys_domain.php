@@ -6,7 +6,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 $tmp = [
     'tx_staticfilecache_cache' => [
-        'exclude' => 0,
+        'exclude' => 1,
         'label' => 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:staticfilecache.tx_staticfilecache_cache',
         'config' => [
             'type' => 'check',
