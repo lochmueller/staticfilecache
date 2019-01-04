@@ -34,6 +34,9 @@
 		<trans-unit id="staticfilecache_task_removeExpiredPages.description">
 			<source>All expired pages will be removed from the cache.</source>
 		</trans-unit>
+		<trans-unit id="entriesEmpty">
+			<source>No entries on this level of the page tree.</source>
+		</trans-unit>
 		<trans-unit id="removeAllExpired">
 			<source>Remove all expired pages</source>
 		</trans-unit>
