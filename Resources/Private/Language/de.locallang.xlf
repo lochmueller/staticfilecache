@@ -56,7 +56,8 @@
 			<target>Seite</target>
 		</trans-unit>
 		<trans-unit id="identifier">
-			<source>Bezeichner</source>
+			<source>Identifier</source>
+			<target>Bezeichner</target>
 		</trans-unit>
 		<trans-unit id="created">
 			<source>Created</source>
@@ -64,7 +65,7 @@
 		</trans-unit>
 		<trans-unit id="expires">
 			<source>Expires</source>
-			<source>Verfällt</source>
+			<target>Verfällt</target>
 		</trans-unit>
 		</body>
 	</file>
