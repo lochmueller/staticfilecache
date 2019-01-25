@@ -34,7 +34,7 @@ class FontHttpPush extends AbstractHttpPush
      */
     public function getHeaders(string $content): array
     {
-        preg_match_all('/(?<=["\'])[^="\']*\.woff\.*\d*\.*(?:gzi?p?)*(?=["\'])/', $content, $fontFiles);
+        preg_match_all('/(?<=["\'])[^="\']*\.woff2?\.*\d*\.*(?:gzi?p?)*(?=["\'])/', $content, $fontFiles);
         $paths = $this->streamlineFilePaths((array)$fontFiles[0]);
         return $this->mapPathsWithType($paths, 'font');
     }
