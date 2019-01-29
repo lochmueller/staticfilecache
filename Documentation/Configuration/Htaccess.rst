@@ -86,7 +86,7 @@ This is the base .htaccess configuration. Please take a look for the default var
 
    # Set proper content type and encoding for gzipped html.
    <FilesMatch "\.gz">
-	 		SetEnv no-gzip 1
+      SetEnv no-gzip 1
       <IfModule mod_headers.c>
          Header set Content-Encoding gzip
       </IfModule>
