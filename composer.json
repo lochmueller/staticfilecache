@@ -36,7 +36,7 @@
 		"php": ">=7.0.0",
 		"ext-pdo": "*",
 		"ext-zlib": "*",
-		"typo3/cms-core": "~8.7.0||~9.4.0||~9.5.0||dev-master"
+		"typo3/cms-core": "~8.7.0||~9.5.0||dev-master"
 	},
 	"replace": {
 		"staticfilecache": "self.version",
