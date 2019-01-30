@@ -19,7 +19,6 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
  */
 class AbstractBackend extends Typo3DatabaseBackend
 {
-
     /**
      * Configuration.
      *
@@ -28,13 +27,11 @@ class AbstractBackend extends Typo3DatabaseBackend
     protected $configuration;
 
     /**
-     *
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      */
     protected $signalSlotDispatcher;
 
     /**
-     *
      * @var string
      */
     protected $signalClass = '';
@@ -50,7 +47,7 @@ class AbstractBackend extends Typo3DatabaseBackend
         parent::__construct($context, $options);
         $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
         $this->signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $this->signalClass = get_class($this);
+        $this->signalClass = \get_class($this);
     }
 
     /**
@@ -71,7 +68,6 @@ class AbstractBackend extends Typo3DatabaseBackend
 
         return (int)$lifetime;
     }
-
 
     /**
      * Call Dispatcher.

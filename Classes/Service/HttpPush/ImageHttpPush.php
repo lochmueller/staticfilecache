@@ -4,7 +4,7 @@
  * ImageHttpPush.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service\HttpPush;
 
@@ -13,9 +13,8 @@ namespace SFC\Staticfilecache\Service\HttpPush;
  */
 class ImageHttpPush extends AbstractHttpPush
 {
-
     /**
-     * Image extensions
+     * Image extensions.
      *
      * @var array
      */
@@ -30,7 +29,7 @@ class ImageHttpPush extends AbstractHttpPush
      */
     public function canHandleExtension(string $fileExtension): bool
     {
-        return \in_array($fileExtension, $this->imageExtensions);
+        return \in_array($fileExtension, $this->imageExtensions, true);
     }
 
     /**
@@ -42,8 +41,9 @@ class ImageHttpPush extends AbstractHttpPush
      */
     public function getHeaders(string $content): array
     {
-        preg_match_all('/(?<=["\'])[^="\']*\.(' . implode('|', $this->imageExtensions) . ')\.*\d*\.*(?=["\'])/', $content, $imagesFiles);
+        \preg_match_all('/(?<=["\'])[^="\']*\.(' . \implode('|', $this->imageExtensions) . ')\.*\d*\.*(?=["\'])/', $content, $imagesFiles);
         $paths = $this->streamlineFilePaths((array)$imagesFiles[0]);
+
         return $this->mapPathsWithType($paths, 'image');
     }
 }

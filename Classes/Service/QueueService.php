@@ -43,12 +43,12 @@ class QueueService extends AbstractService
     {
         \define('SFC_QUEUE_WORKER', true);
 
-        $startTime = time();
+        $startTime = \time();
         $limit = $limitItems > 0 ? $limitItems : 999;
         $rows = $this->queueRepository->findOpen($limit);
 
         foreach ($rows as $runEntry) {
-            if ($stopProcessingAfter > 0 && time() >= $startTime + $stopProcessingAfter) {
+            if ($stopProcessingAfter > 0 && \time() >= $startTime + $stopProcessingAfter) {
                 break;
             }
 

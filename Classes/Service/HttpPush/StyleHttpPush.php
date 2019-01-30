@@ -4,7 +4,7 @@
  * StyleHttpPush.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service\HttpPush;
 
@@ -34,8 +34,9 @@ class StyleHttpPush extends AbstractHttpPush
      */
     public function getHeaders(string $content): array
     {
-        preg_match_all('/(?<=["\'])[^="\']*\.css(\.gzi?p?)?(\?\d*)?(?=["\'])/', $content, $cssFiles);
+        \preg_match_all('/(?<=["\'])[^="\']*\.css(\.gzi?p?)?(\?\d*)?(?=["\'])/', $content, $cssFiles);
         $paths = $this->streamlineFilePaths((array)$cssFiles[0]);
+
         return $this->mapPathsWithType($paths, 'style');
     }
 }

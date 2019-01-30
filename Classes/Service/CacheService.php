@@ -38,6 +38,7 @@ class CacheService extends AbstractService
     public function getManager(): CacheManager
     {
         $objectManager = new ObjectManager();
+
         return $objectManager->get(CacheManager::class);
     }
 
