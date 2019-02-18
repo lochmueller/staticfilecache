@@ -38,3 +38,11 @@
 			Header add Link "<{header.path}>; rel=preload; as={header.type}"
 	</f:for>
 </f:if>
+
+<f:if condition="{sendStaticFileCacheHeader}">
+	<ifModule mod_headers.c>
+		Header set "X-Cache" "StaticFileCache"
+	</ifModule>
+</f:if>
+
+

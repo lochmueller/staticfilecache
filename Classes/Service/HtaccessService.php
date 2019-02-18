@@ -45,6 +45,7 @@ class HtaccessService extends AbstractService
             'sendTypo3Headers' => $configuration->isBool('sendTypo3Headers'),
             'tags' => \implode(',', $tags),
             'tagHeaderName' => $tagService->getHeaderName(),
+            'sendStaticFileCacheHeader' => $configuration->isBool('sendStaticFileCacheHeader'),
             'httpPushHeaders' => GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders(GeneralUtility::getUrl($originalFileName)),
         ];
 

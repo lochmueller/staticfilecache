@@ -54,3 +54,6 @@ sendHttp2PushFileExtensions = css,js
 
 # cat=HTTP/2 Push; type=string; label=File limit for HTTP/2 push: The limit of files that are added as HTTP/2 push
 sendHttp2PushFileLimit = 10
+
+# cat=Headers; type=boolean; label=Send StaticFileCache header: If enabled: The .htaccess configuration send a "X-Cache: StaticFileCache" header, if the page is delivered via cache/.htaccess. You can use this option for debugging in e.g. json fiels (also html files)
+sendStaticFileCacheHeader = 0
