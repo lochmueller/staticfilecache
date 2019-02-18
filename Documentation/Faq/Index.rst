@@ -1,6 +1,11 @@
 FAQ
 ---
 
+*Q: What means 'The page is not static cacheable via TypoScriptFrontend'*
+A: This is NOT a error of StaticFileCache. The TSFE of your instance is set to "no_cache" in the frontend rendering process.
+This could be any plugin, content element, TypoScript configuration or cHash calculation problem. I suggest do check the TSFE->set_no_cache function and enable the TYPO3 syslog to get the real reason, why the page is not cached.
+Please do not create GitHub issues related to this message and search here on Github or check the Slack channel for many answers.
+
 *Q: Tell me about caching*
 A: Here's a nice writeup on caching I found:
 http://www.port80software.com/products/cacheright/cachingandcachecontrol
@@ -14,3 +19,5 @@ If none of the conditions are met, mod_rewrite will fall through to the next rul
 
 *Q: Ok, so I logged out of the backend, but I still don't get to see the statically cached pages, what's up?*
 A: Hum ... although you have logged out of the backend, your be_typo_user is still in the browser. The cookie is set by default to expire at the end of the browser session. You need to either restart your browser or go to your browsers cookie management tool and drop the cookie manually.
+
+
