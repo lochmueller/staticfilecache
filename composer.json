@@ -56,7 +56,7 @@
 		"phpmetrics/phpmetrics": "^2.4"
 	},
 	"suggest": {
-		"aoepeople/crawler": "For crawling the site and warmup the cache",
+		"lochmueller/seocli": "Scan websites against SEO criteria and/or trigger the indexing process and cache warming in deployment scripts",
 		"friendsofsymfony/http-cache": "For HTTP proxy cache services like Varnish"
 	},
 	"config": {
