@@ -4,6 +4,7 @@ declare(strict_types = 1);
 /**
  * AbstractHttpPush.
  */
+
 namespace SFC\Staticfilecache\Service\HttpPush;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
