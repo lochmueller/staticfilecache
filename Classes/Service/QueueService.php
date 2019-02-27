@@ -8,11 +8,16 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
+use SFC\Staticfilecache\Command\BoostQueueCleanupCommand;
+use SFC\Staticfilecache\Command\BoostQueueRunCommand;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Queue service.
+ *
+ * @see BoostQueueRunCommand
+ * @see BoostQueueCleanupCommand
  */
 class QueueService extends AbstractService
 {
@@ -29,42 +34,6 @@ class QueueService extends AbstractService
     public function __construct()
     {
         $this->queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
-    }
-
-    /**
-     * Run the queue.
-     *
-     * @param int $limitItems
-     * @param int $stopProcessingAfter
-     *
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     */
-    public function run(int $limitItems = 0, int $stopProcessingAfter = 0)
-    {
-        \define('SFC_QUEUE_WORKER', true);
-
-        $startTime = \time();
-        $limit = $limitItems > 0 ? $limitItems : 999;
-        $rows = $this->queueRepository->findOpen($limit);
-
-        foreach ($rows as $runEntry) {
-            if ($stopProcessingAfter > 0 && \time() >= $startTime + $stopProcessingAfter) {
-                break;
-            }
-
-            $this->runSingleRequest($runEntry);
-        }
-    }
-
-    /**
-     * Cleanup the cache queue.
-     */
-    public function cleanup()
-    {
-        $rows = $this->queueRepository->findOld();
-        foreach ($rows as $row) {
-            $this->queueRepository->delete(['uid' => $row['uid']]);
-        }
     }
 
     /**
@@ -108,8 +77,12 @@ class QueueService extends AbstractService
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
-    protected function runSingleRequest(array $runEntry)
+    public function runSingleRequest(array $runEntry)
     {
+        if (!\defined('SFC_QUEUE_WORKER')) {
+            \define('SFC_QUEUE_WORKER', true);
+        }
+
         $clientService = GeneralUtility::makeInstance(ClientService::class);
         $statusCode = $clientService->runSingleRequest($runEntry['cache_url']);
 

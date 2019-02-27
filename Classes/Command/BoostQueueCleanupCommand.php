@@ -7,10 +7,11 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Command;
 
-use SFC\Staticfilecache\Service\QueueService;
+use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -42,8 +43,17 @@ class BoostQueueCleanupCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $queue = GeneralUtility::makeInstance(QueueService::class);
-        $queue->cleanup();
+        $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
+        $io = new SymfonyStyle($input, $output);
+        $rows = $queueRepository->findOld();
+        $io->progressStart(\count($rows));
+        foreach ($rows as $row) {
+            $queueRepository->delete(['uid' => $row['uid']]);
+            $io->progressAdvance();
+        }
+        $io->progressFinish();
+
+        $io->success(\count($rows) . ' items are removed.');
 
         return 0;
     }

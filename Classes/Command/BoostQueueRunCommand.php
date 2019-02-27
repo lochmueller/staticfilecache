@@ -7,11 +7,13 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Command;
 
+use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use SFC\Staticfilecache\Service\QueueService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -46,8 +48,29 @@ class BoostQueueRunCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $queue = GeneralUtility::makeInstance(QueueService::class);
-        $queue->run((int)$input->getArgument('limit-items'), (int)$input->getArgument('stop-processing-after'));
+        $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
+        $queueService = GeneralUtility::makeInstance(QueueService::class);
+        $io = new SymfonyStyle($input, $output);
+
+        $startTime = \time();
+        $stopProcessingAfter = (int)$input->getArgument('stop-processing-after');
+        $limit = (int)$input->getArgument('limit-items');
+        $limit = $limit > 0 ? $limit : 5000;
+        $rows = $queueRepository->findOpen($limit);
+
+        $io->progressStart(\count($rows));
+        foreach ($rows as $runEntry) {
+            if ($stopProcessingAfter > 0 && \time() >= $startTime + $stopProcessingAfter) {
+                $io->note('Skip after "stopProcessingAfter" time.');
+                break;
+            }
+
+            $queueService->runSingleRequest($runEntry);
+            $io->progressAdvance();
+        }
+        $io->progressFinish();
+
+        $io->success(\count($rows) . ' items are done (perhaps not all are processed).');
 
         return 0;
     }
