@@ -1,9 +1,9 @@
 <?php
 
-declare(strict_types = 1);
 /**
  * FlushCacheCommand.
  */
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Command;
 

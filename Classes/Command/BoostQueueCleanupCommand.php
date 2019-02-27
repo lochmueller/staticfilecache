@@ -1,9 +1,9 @@
 <?php
 
-declare(strict_types = 1);
 /**
  * BoostQueueCleanupCommand.
  */
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Command;
 
