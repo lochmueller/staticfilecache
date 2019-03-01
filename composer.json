@@ -76,6 +76,9 @@
 		"sfc:phpmd": [
 			"phpmd Classes/ text cleancode,codesize,controversial,design,naming,unusedcode"
 		],
+		"sfc:phpdoc": [
+			"docker run --rm -v $(pwd):/data phpdoc/phpdoc -d Classes -t var/phpdoc"
+		],
 		"sfc:php-cs-fixer": [
 			"php-cs-fixer fix --config .php_cs"
 		],

@@ -27,11 +27,15 @@ class AbstractBackend extends Typo3DatabaseBackend
     protected $configuration;
 
     /**
+     * Signal Slot dispatcher.
+     *
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      */
     protected $signalSlotDispatcher;
 
     /**
+     * Signal class.
+     *
      * @var string
      */
     protected $signalClass = '';

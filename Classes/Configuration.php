@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache;
 
 use SFC\Staticfilecache\Cache\Compression\GzipCompression;
+use SFC\Staticfilecache\Cache\RemoteFileBackend;
 use SFC\Staticfilecache\Cache\Rule\DomainCacheable;
 use SFC\Staticfilecache\Cache\Rule\Enable;
 use SFC\Staticfilecache\Cache\Rule\ForceStaticCache;
@@ -141,6 +142,17 @@ class Configuration
             'groups' => [
                 'pages',
                 'all',
+            ],
+        ];
+
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['remote_file'] = [
+            'frontend' => UriFrontend::class,
+            'backend' => RemoteFileBackend::class,
+            'groups' => [
+                'all',
+            ],
+            'options' => [
+                'defaultLifetime' => 3600,
             ],
         ];
     }

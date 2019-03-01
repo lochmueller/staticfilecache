@@ -19,7 +19,13 @@ class GzipCompression
      */
     const DEFAULT_COMPRESSION_LEVEL = 3;
 
-    public function compress($fileName, $data)
+    /**
+     * Compress.
+     *
+     * @param string $fileName
+     * @param mixed  $data
+     */
+    public function compress(string $fileName, $data)
     {
         $gzipFileName = $fileName . '.gz';
 

@@ -35,6 +35,9 @@ class RemoveExpiredPagesCommand extends Command
      * execute() method, you set the code to execute by passing
      * a Closure to the setCode() method.
      *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      *
      * @return int|null null or 0 if everything went fine, or an error code
