@@ -28,17 +28,17 @@ class RemoteFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
     /**
      * File extension for tag files.
      */
-    const FILE_EXTENSION_TAG = 'cache.tags';
+    const FILE_EXTENSION_TAG = '.cache.tags';
 
     /**
      * File extension for lifetime files.
      */
-    const FILE_EXTENSION_LIFETIME = 'cache.lifetime';
+    const FILE_EXTENSION_LIFETIME = '.cache.lifetime';
 
     /**
      * File extension for lifetime files.
      */
-    const FILE_EXTENSION_IDENTIFIER = 'cache.ident';
+    const FILE_EXTENSION_IDENTIFIER = '.cache.ident';
 
     /**
      * Is freezed?
@@ -68,11 +68,13 @@ class RemoteFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
         $this->remove($entryIdentifier);
         $fileName = $this->getFileName($entryIdentifier);
 
-        // Fetch content
-        // @todo (check Data)
-        $content = GeneralUtility::getUrl($entryIdentifier);
-        if (false === $content) {
-            throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('Could not fetch URL: ' . $entryIdentifier, 56757677);
+        if (\is_string($data) && '' !== $data) {
+            $content = $data;
+        } else {
+            $content = GeneralUtility::getUrl($entryIdentifier);
+            if (false === $content) {
+                throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('Could not fetch URL: ' . $entryIdentifier, 56757677);
+            }
         }
 
         // Check cache dir
@@ -81,13 +83,14 @@ class RemoteFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
             GeneralUtility::mkdir_deep(PathUtility::dirname($absoluteCacheDir . $fileName));
         }
 
+        // create files
         if (false === GeneralUtility::writeFile($absoluteCacheDir . $fileName, $content, true)) {
             throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('Could not write local cache file', 7324892);
         }
 
-        GeneralUtility::writeFile($absoluteCacheDir . $fileName . '.' . self::FILE_EXTENSION_TAG, '|' . \implode('|', $tags) . '|');
-        GeneralUtility::writeFile($absoluteCacheDir . $fileName . '.' . self::FILE_EXTENSION_LIFETIME, $this->calculateExpiryTime($lifetime)->getTimestamp());
-        GeneralUtility::writeFile($absoluteCacheDir . $fileName . '.' . self::FILE_EXTENSION_IDENTIFIER, $entryIdentifier);
+        GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_TAG, '|' . \implode('|', $tags) . '|');
+        GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_LIFETIME, $this->calculateExpiryTime($lifetime)->getTimestamp());
+        GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_IDENTIFIER, $entryIdentifier);
     }
 
     /**
@@ -127,7 +130,7 @@ class RemoteFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
         if ($this->freeze) {
             return true;
         }
-        $validUntil = (int)\file_get_contents($folder . $fileName . '.' . self::FILE_EXTENSION_LIFETIME);
+        $validUntil = (int)\file_get_contents($folder . $fileName . self::FILE_EXTENSION_LIFETIME);
 
         return $validUntil > \time();
     }
@@ -186,8 +189,8 @@ class RemoteFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
             throw new \Exception('Backend is frozen!', 123789);
         }
 
-        // testen @todo
-        $lifetimeFiles = \glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*.' . self::FILE_EXTENSION_LIFETIME);
+        $lifetimeFiles = \glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*/*/*' . self::FILE_EXTENSION_LIFETIME);
+
         $identifiers = [];
 
         foreach ($lifetimeFiles as $lifetimeFile) {
@@ -233,7 +236,7 @@ class RemoteFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
      */
     public function findIdentifiersByTag($tag)
     {
-        $tagsFiles = \glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*.' . self::FILE_EXTENSION_TAG);
+        $tagsFiles = \glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*/*/*' . self::FILE_EXTENSION_TAG);
         $identifiers = [];
         foreach ($tagsFiles as $tagsFile) {
             if (false !== \mb_strpos(\file_get_contents($tagsFile), '|' . $tag . '|')) {
