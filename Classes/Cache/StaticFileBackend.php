@@ -58,6 +58,8 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
             return;
         }
 
+        $this->logger->debug('SFC Set', [$entryIdentifier, $tags, $lifetime]);
+
         // call set in front of the generation, because the set method
         // of the DB backend also call remove
         parent::set($entryIdentifier, \serialize($databaseData), $tags, $realLifetime);
@@ -132,6 +134,8 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
             return false;
         }
 
+        $this->logger->debug('SFC Remove', [$entryIdentifier]);
+
         if ($this->isBoostMode()) {
             $this->getQueue()
                 ->addIdentifier($entryIdentifier);
@@ -154,6 +158,8 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
 
             return;
         }
+
+        $this->logger->debug('SFC Flush');
 
         if ($this->isBoostMode()) {
             $identifiers = GeneralUtility::makeInstance(CacheRepository::class)->findAllIdentifiers();
@@ -188,6 +194,8 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
             return;
         }
 
+        $this->logger->debug('SFC flushByTags', [$tags]);
+
         $this->removeStaticFilesByTags($tags);
         if (!$this->isBoostMode()) {
             parent::flushByTags($tags);
@@ -202,9 +210,6 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
     public function flushByTag($tag)
     {
         $this->removeStaticFilesByTags([$tag]);
-        if (!$this->isBoostMode()) {
-            parent::flushByTag($tag);
-        }
     }
 
     /**

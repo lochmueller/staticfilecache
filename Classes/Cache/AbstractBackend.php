@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use Psr\Log\LoggerAwareTrait;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -19,6 +20,8 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
  */
 class AbstractBackend extends Typo3DatabaseBackend
 {
+    use LoggerAwareTrait;
+
     /**
      * Configuration.
      *
@@ -52,6 +55,7 @@ class AbstractBackend extends Typo3DatabaseBackend
         $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
         $this->signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $this->signalClass = \get_class($this);
+        $this->setLogger(GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__));
     }
 
     /**
