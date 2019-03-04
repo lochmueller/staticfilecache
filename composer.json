@@ -39,6 +39,7 @@
 		"typo3/cms-core": "~8.7.0||~9.5.0||dev-master"
 	},
 	"replace": {
+		"staticfilecache": "self.version",
 		"typo3-ter/staticfilecache": "self.version"
 	},
 	"homepage": "https://github.com/lochmueller/staticfilecache",
