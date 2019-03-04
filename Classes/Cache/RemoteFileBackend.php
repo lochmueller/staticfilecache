@@ -289,9 +289,9 @@ class RemoteFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
         if (isset($urlParts['path'])) {
             $pathInfo = \pathinfo($urlParts['path']);
             if (isset($pathInfo['basename'])) {
-                $parts[] = $pathInfo['basename'];
+                $parts[] = \urldecode($pathInfo['basename']);
             } elseif (isset($pathInfo['filename'])) {
-                $parts[] = $pathInfo['filename'];
+                $parts[] = \urldecode($pathInfo['filename']);
             }
         }
 
