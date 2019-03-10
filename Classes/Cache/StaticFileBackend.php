@@ -301,7 +301,6 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
      */
     protected function removeStaticFiles(string $entryIdentifier): bool
     {
-        $success = true;
         $fileName = $this->getCacheFilename($entryIdentifier);
         $dispatchArguments = [
             'entryIdentifier' => $entryIdentifier,
@@ -321,12 +320,12 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
         foreach ($files as $file) {
             if (\is_file($file)) {
                 if (false === \unlink($file)) {
-                    $success = false;
+                    return false;
                 }
             }
         }
 
-        return $success;
+        return true;
     }
 
     /**
