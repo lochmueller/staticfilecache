@@ -66,9 +66,8 @@ class HtaccessService extends AbstractService
         $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateName));
         $renderer->assignMultiple($variables);
         $content = \trim((string)$renderer->render());
-        if ('' !== $content) {
-            GeneralUtility::writeFile($fileName, $content);
-        }
+        // Note: Create even empty htaccess files (do not check!!!), so the delete is in sync
+        GeneralUtility::writeFile($fileName, $content);
     }
 
     /**

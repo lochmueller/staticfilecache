@@ -143,13 +143,17 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
             return true;
         }
 
-        $this->removeStaticFiles($entryIdentifier);
+        if ($this->removeStaticFiles($entryIdentifier)) {
+            return parent::remove($entryIdentifier);
+        }
 
-        return parent::remove($entryIdentifier);
+        return false;
     }
 
     /**
      * Removes all cache entries of this cache.
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception
      */
     public function flush()
     {
@@ -196,20 +200,34 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
 
         $this->logger->debug('SFC flushByTags', [$tags]);
 
-        $this->removeStaticFilesByTags($tags);
-        if (!$this->isBoostMode()) {
-            parent::flushByTags($tags);
+        $identifiers = [];
+        foreach ($tags as $tag) {
+            $identifiers = \array_merge($identifiers, $this->findIdentifiersByTagIncludingExpired($tag));
         }
+
+        if ($this->isBoostMode()) {
+            $this->getQueue()->addIdentifiers($identifiers);
+
+            return;
+        }
+
+        foreach ($identifiers as $identifier) {
+            $this->removeStaticFiles($identifier);
+        }
+
+        parent::flushByTags($tags);
     }
 
     /**
      * Removes all cache entries of this cache which are tagged by the specified tag.
      *
      * @param string $tag The tag the entries must have
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception
      */
     public function flushByTag($tag)
     {
-        $this->removeStaticFilesByTags([$tag]);
+        $this->flushByTags([$tag]);
     }
 
     /**
@@ -258,29 +276,6 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
     }
 
     /**
-     * Remove the static files of the given tag entries or add it to the queue.
-     *
-     * @param $tags
-     */
-    protected function removeStaticFilesByTags($tags)
-    {
-        $identifiers = [];
-        foreach ($tags as $tag) {
-            $identifiers = \array_merge($identifiers, $this->findIdentifiersByTagIncludingExpired($tag));
-        }
-
-        if ($this->isBoostMode()) {
-            $this->getQueue()->addIdentifiers($identifiers);
-
-            return;
-        }
-
-        foreach ($identifiers as $identifier) {
-            $this->removeStaticFiles($identifier);
-        }
-    }
-
-    /**
      * Call findIdentifiersByTag but ignore the expires check.
      *
      * @param string $tag
@@ -301,26 +296,37 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
      * Remove the static files of the given identifier.
      *
      * @param string $entryIdentifier
+     *
+     * @return bool success if the files are deleted
      */
-    protected function removeStaticFiles(string $entryIdentifier)
+    protected function removeStaticFiles(string $entryIdentifier): bool
     {
+        $success = true;
         $fileName = $this->getCacheFilename($entryIdentifier);
         $dispatchArguments = [
             'entryIdentifier' => $entryIdentifier,
             'fileName' => $fileName,
             'files' => [
                 $fileName,
-                $fileName . '.gz',
                 PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess',
             ],
         ];
+
+        if ($this->configuration->isBool('enableStaticFileCompression')) {
+            $dispatchArguments['files'][] = $fileName . '.gz';
+        }
+
         $dispatched = $this->dispatch('removeStaticFiles', $dispatchArguments);
         $files = $dispatched['files'];
         foreach ($files as $file) {
             if (\is_file($file)) {
-                \unlink($file);
+                if (false === \unlink($file)) {
+                    $success = false;
+                }
             }
         }
+
+        return $success;
     }
 
     /**
