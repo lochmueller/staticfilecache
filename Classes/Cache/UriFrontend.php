@@ -49,8 +49,6 @@ class UriFrontend extends VariableFrontend
      * @return array An array with the content of all matching entries. An empty array if no entries matched
      *
      * @api
-     *
-     * @todo migrate in TYPO3 v10 to PSR-6 pools
      */
     public function getByTag($tag)
     {
