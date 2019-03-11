@@ -10,6 +10,7 @@ namespace SFC\Staticfilecache\Cache;
 
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Cache frontend for static file cache.
@@ -25,7 +26,7 @@ class UriFrontend extends VariableFrontend
      */
     public function isValidEntryIdentifier($identifier)
     {
-        if (false === \filter_var($identifier, FILTER_VALIDATE_URL)) {
+        if (false === GeneralUtility::isValidUrl($identifier)) {
             return false;
         }
         $urlParts = \parse_url($identifier);

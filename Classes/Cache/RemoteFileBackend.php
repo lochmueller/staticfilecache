@@ -10,6 +10,7 @@ namespace SFC\Staticfilecache\Cache;
 use TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
+use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -55,8 +56,8 @@ class RemoteFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
      * @param array  $tags            Tags to associate with this cache entry. If the backend does not support tags, this option can be ignored.
      * @param int    $lifetime        Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      *
-     * @throws \TYPO3\CMS\Core\Cache\Exception                      if no cache frontend has been set
-     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the data is not a string
+     * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set
+     * @throws InvalidDataException            if the data is not a string
      *
      * @api
      */
@@ -73,7 +74,7 @@ class RemoteFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
         } else {
             $content = GeneralUtility::getUrl($entryIdentifier);
             if (false === $content) {
-                throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('Could not fetch URL: ' . $entryIdentifier, 56757677);
+                throw new InvalidDataException('Could not fetch URL: ' . $entryIdentifier, 56757677);
             }
         }
 
@@ -85,7 +86,7 @@ class RemoteFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 
         // create files
         if (false === GeneralUtility::writeFile($absoluteCacheDir . $fileName, $content, true)) {
-            throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('Could not write local cache file', 7324892);
+            throw new InvalidDataException('Could not write local cache file', 7324892);
         }
 
         GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_TAG, '|' . \implode('|', $tags) . '|');
@@ -287,7 +288,7 @@ class RemoteFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 
         $urlParts = \parse_url($entryIdentifier);
         if (isset($urlParts['path'])) {
-            $pathInfo = \pathinfo($urlParts['path']);
+            $pathInfo = PathUtility::pathinfo($urlParts['path']);
             if (isset($pathInfo['basename'])) {
                 $parts[] = \urldecode($pathInfo['basename']);
             } elseif (isset($pathInfo['filename'])) {

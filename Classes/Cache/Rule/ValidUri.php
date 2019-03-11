@@ -17,7 +17,7 @@ class ValidUri extends AbstractRule
 {
     /**
      * Check if the URI is valid
-     * Note: A FILTER_VALIDATE_URL check is already done in the URI frontend.
+     * Note: A "valid URL" check is already done in the URI frontend.
      *
      * @param TypoScriptFrontendController $frontendController
      * @param string                       $uri
