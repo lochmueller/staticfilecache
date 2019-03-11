@@ -75,7 +75,6 @@ class StaticFileBackend extends AbstractBackend implements TransientBackendInter
         // normal
         GeneralUtility::writeFile($fileName, $data);
 
-        // gz
         if ($this->configuration->isBool('enableStaticFileCompression')) {
             $dispatchArguments = [
                 'fileName' => $fileName,

@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * ClientService.
  */
-class ClientService
+class ClientService extends AbstractService
 {
     /**
      * Run a single request with guzzle and return status code.

@@ -9,7 +9,6 @@ namespace SFC\Staticfilecache\Command;
 
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use SFC\Staticfilecache\Service\QueueService;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,7 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * BoostQueueRunCommand.
  */
-class BoostQueueRunCommand extends Command
+class BoostQueueRunCommand extends AbstractCommand
 {
     /**
      * Configures the current command.
