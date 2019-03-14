@@ -1,0 +1,61 @@
+<f:layout name="Backend"/>
+
+<f:section name="Content">
+
+	<h1>
+		<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:module.title"/>
+	</h1>
+
+	<h2>Cache View <small>(Page ID {pageId})</small></h2>
+
+	<p>
+		<f:translate
+			key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:module.intro.{backendDisplayMode}"/>
+	</p>
+
+	<f:flashMessages/>
+
+	<table class="table table-striped">
+		<tr>
+			<th class="col-sm-3">
+				<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:page"/>
+			</th>
+			<th class="col-sm-7">
+				<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:identifier"/>
+			</th>
+			<th class="col-sm-1">
+				<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:created"/>
+			</th>
+			<th class="col-sm-1">
+				<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:expires"/>
+			</th>
+		</tr>
+
+		<f:if condition="{rows}">
+			<f:then>
+				<f:for each="{rows}" as="row">
+					<f:render partial="Backend/ListEntry" arguments="{row:row}"/>
+				</f:for>
+			</f:then>
+			<f:else>
+				<tr>
+					<td colspan="4">{f:translate(key:
+						'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:entriesEmpty')}
+					</td>
+				</tr>
+			</f:else>
+		</f:if>
+	</table>
+	<p>
+		<f:link.action action="removeExpiredPages" class="btn btn-danger" onclick="return confirm('Are you sure?');">
+			<core:icon identifier="actions-delete"/>
+			{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:removeAllExpired')}
+		</f:link.action>
+		<f:link.action action="list" class="btn btn-default">
+			<core:icon identifier="actions-system-refresh"/>
+			{f:translate(key: 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:refresh')}
+		</f:link.action>
+	</p>
+
+	<f:render partial="Backend/Support"/>
+</f:section>

@@ -6,46 +6,48 @@
 
 declare(strict_types = 1);
 
-namespace SFC\Staticfilecache\Module;
+namespace SFC\Staticfilecache\Controller;
 
 use SFC\Staticfilecache\Domain\Repository\PageRepository;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
-use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
- * Static file cache info module.
+ * Static file cache backend module.
  */
-class CacheModule extends AbstractFunctionModule
+class BackendController extends ActionController
 {
     /**
      * MAIN function for static publishing information.
-     *
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     *
-     * @return string output HTML for the module
      */
-    public function main()
+    public function listAction()
     {
-        $this->handleActions();
-        $pageId = (int)$this->pObj->id;
-
-        /** @var StandaloneView $renderer */
-        $renderer = GeneralUtility::makeInstance(StandaloneView::class);
-        $moduleTemplate = 'EXT:staticfilecache/Resources/Private/Templates/Module.html';
-        $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($moduleTemplate));
-        $renderer->assignMultiple([
-            'requestUri' => GeneralUtility::getIndpEnv('REQUEST_URI'),
+        $this->view->assignMultiple([
             'rows' => $this->getCachePagesEntries(),
-            'pageId' => $pageId,
+            'pageId' => $this->getCurrentUid(),
             'backendDisplayMode' => $this->getDisplayMode(),
         ]);
+    }
 
-        return $renderer->render();
+    /**
+     * Handles incoming actions (e.g. removing all expired pages).
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+     */
+    public function removeExpiredPagesAction()
+    {
+        GeneralUtility::makeInstance(CacheService::class)->get()->collectGarbage();
+        $flashMessage = new FlashMessage('Garbe collection is done', 'Garbe collection', FlashMessage::OK, true);
+        $flashMessagesQueue = $this->controllerContext->getFlashMessageQueue();
+        $flashMessagesQueue->addMessage($flashMessage);
+        $this->redirect('list');
     }
 
     /**
@@ -65,7 +67,7 @@ class CacheModule extends AbstractFunctionModule
             return $rows;
         }
 
-        $dbRows = GeneralUtility::makeInstance(PageRepository::class)->findForBackend((int)$this->pObj->id, $this->getDisplayMode());
+        $dbRows = GeneralUtility::makeInstance(PageRepository::class)->findForBackend($this->getCurrentUid(), $this->getDisplayMode());
 
         foreach ($dbRows as $row) {
             $cacheEntries = $cache->getByTag('sfc_pageId_' . $row['uid']);
@@ -99,16 +101,12 @@ class CacheModule extends AbstractFunctionModule
     }
 
     /**
-     * Handles incoming actions (e.g. removing all expired pages).
+     * Get the current UID.
      *
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     * @return int
      */
-    protected function handleActions()
+    protected function getCurrentUid(): int
     {
-        $action = GeneralUtility::_GP('ACTION');
-
-        if (isset($action['removeExpiredPages']) && (bool)$action['removeExpiredPages']) {
-            GeneralUtility::makeInstance(CacheService::class)->get()->collectGarbage();
-        }
+        return (int)GeneralUtility::_GET('id');
     }
 }

@@ -35,14 +35,13 @@ use SFC\Staticfilecache\Hook\InitFrontendUser;
 use SFC\Staticfilecache\Hook\LogNoCache;
 use SFC\Staticfilecache\Hook\LogoffFrontendUser;
 use SFC\Staticfilecache\Hook\UninstallProcess;
-use SFC\Staticfilecache\Module\CacheModule;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
@@ -55,11 +54,19 @@ class Configuration
      */
     public static function registerBackendModule()
     {
-        ExtensionManagementUtility::insertModuleFunction(
-            'web_info',
-            CacheModule::class,
-            null,
-            'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:module.title'
+        ExtensionUtility::registerModule(
+            'SFC.Staticfilecache',
+            'web',
+            'staticfilecache',
+            '',
+            [
+                'Backend' => 'list,removeExpiredPages',
+            ],
+            [
+                'access' => 'user,group',
+                'icon' => 'EXT:staticfilecache/Resources/Public/Icons/Extension.png',
+                'labels' => 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang_mod.xlf',
+            ]
         );
     }
 

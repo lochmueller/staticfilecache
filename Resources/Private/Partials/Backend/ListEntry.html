@@ -1,0 +1,65 @@
+
+<tr>
+	<td>
+		<f:format.raw>{row.title}</f:format.raw> <i>[{row.uid}]</i>
+	</td>
+	<td><a href="{row.identifier}">{row.identifier}</a>
+		<f:if condition="{row.info.explanation -> f:count()}">
+			<f:then>
+				<core:icon identifier="status-status-permission-denied"/>
+			</f:then>
+			<f:else>
+				<core:icon identifier="status-status-permission-granted"/>
+			</f:else>
+		</f:if>
+	</td>
+	<td>
+		<f:if condition="{row.info.explanation -> f:count()}">
+			<f:then>
+				<core:icon identifier="status-status-permission-denied"/>
+			</f:then>
+			<f:else>
+				<f:render section="date" arguments="{timestamp: row.info.created}" />
+			</f:else>
+		</f:if>
+	</td>
+	<td>
+		<f:if condition="{row.info.explanation -> f:count()}">
+			<f:then>
+				<core:icon identifier="status-status-permission-denied"/>
+			</f:then>
+			<f:else>
+				<f:render section="date" arguments="{timestamp: row.info.expires}" />
+			</f:else>
+		</f:if>
+	</td>
+</tr>
+<f:if condition="{row.info.explanation -> f:count()}">
+	<f:then>
+		<tr>
+			<td colspan="4" class="danger">
+				<ul>
+					<f:for each="{row.info.explanation}" as="explanation">
+						<li>
+							{explanation}
+						</li>
+					</f:for>
+				</ul>
+			</td>
+		</tr>
+	</f:then>
+</f:if>
+
+
+
+<f:section name="date">
+	<f:if condition="{timestamp}">
+		<f:then>
+			<f:format.date format="d-m-Y H:i">@{timestamp}</f:format.date>
+		</f:then>
+		<f:else>
+			-?-
+		</f:else>
+	</f:if>
+</f:section>
+

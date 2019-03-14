@@ -1,0 +1,31 @@
+<f:be.container includeCssFiles="{0: '{f:uri.resource(path:\'Css/BackendModule.css\')}'}">
+	<div class="typo3-fullDoc">
+		<div id="typo3-docheader">
+			<div class="typo3-docheader-functions">
+				<div class="left">
+					<f:render section="Menu" optional="true" />
+				</div>
+				<div class="right">
+					<f:be.pagePath />
+					<f:be.pageInfo />
+					<f:be.buttons.csh />
+				</div>
+			</div>
+			<div class="typo3-docheader-buttons">
+				<div class="left">
+					<f:render section="IconButtons" optional="true" />
+				</div>
+				<div class="right">
+					<f:be.buttons.shortcut />
+				</div>
+			</div>
+		</div>
+
+		<div id="typo3-docbody">
+			<div id="typo3-inner-docbody">
+				<f:flashMessages />
+				<f:render section="Content" />
+			</div>
+		</div>
+	</div>
+</f:be.container>
