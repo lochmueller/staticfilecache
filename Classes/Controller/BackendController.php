@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Static file cache info module.
+ * StaticFileCache backend module.
  */
 
 declare(strict_types = 1);
@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
- * Static file cache backend module.
+ * StaticFileCache backend module.
  */
 class BackendController extends ActionController
 {

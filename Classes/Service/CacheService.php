@@ -19,7 +19,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 class CacheService extends AbstractService
 {
     /**
-     * Get the static file cache.
+     * Get the StaticFileCache.
      *
      * @throws NoSuchCacheException
      *

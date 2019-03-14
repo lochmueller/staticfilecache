@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cache backend for static file cache.
+ * Cache backend for StaticFileCache.
  */
 
 declare(strict_types = 1);
@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Cache backend for static file cache.
+ * Cache backend for StaticFileCache.
  *
  * This cache handle the file representation of the cache and handle
  * - CacheFileName

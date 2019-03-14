@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractCacheHook extends AbstractHook
 {
     /**
-     * Get static file cache object.
+     * Get StaticFileCache object.
      *
      * @return StaticFileCache
      */

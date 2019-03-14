@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cache frontend for static file cache.
+ * Cache frontend for StaticFileCache.
  */
 
 declare(strict_types = 1);
@@ -13,7 +13,7 @@ use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Cache frontend for static file cache.
+ * Cache frontend for StaticFileCache.
  */
 class UriFrontend extends VariableFrontend
 {
