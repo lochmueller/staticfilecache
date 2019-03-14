@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * - CacheFileName
  * - CacheFileName.gz
  */
-class StaticFileBackend extends AbstractBackend implements TransientBackendInterface
+class StaticFileBackend extends StaticDatabaseBackend implements TransientBackendInterface
 {
     /**
      * Cache directory.

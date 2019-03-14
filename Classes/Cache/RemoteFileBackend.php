@@ -7,6 +7,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
 use TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
@@ -19,7 +20,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 /**
  * RemoteFileBackend.
  */
-class RemoteFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements TaggableBackendInterface, FreezableBackendInterface, TransientBackendInterface
+class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterface, FreezableBackendInterface, TransientBackendInterface
 {
     /**
      * Relative folder name.

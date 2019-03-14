@@ -18,7 +18,7 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 /**
  * General Cache functions for Static File Cache.
  */
-class AbstractBackend extends Typo3DatabaseBackend
+abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
 {
     use LoggerAwareTrait;
 
