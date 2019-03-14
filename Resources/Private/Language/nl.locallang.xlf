@@ -8,8 +8,8 @@
 		<body>
 
 		<trans-unit id="module.title" approved="yes">
-			<source>Static File Cache</source>
-			<target>Statische html cache</target>
+			<source>StaticFileCache</source>
+			<target>StaticFileCache</target>
 		</trans-unit>
 		<trans-unit id="staticfilecache.tx_staticfilecache_cache" approved="yes">
 			<source>Cache page as static file</source>

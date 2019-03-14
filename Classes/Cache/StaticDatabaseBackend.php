@@ -1,7 +1,7 @@
 <?php
 
 /**
- * General Cache functions for Static File Cache.
+ * General Cache functions for StaticFileCache.
  */
 
 declare(strict_types = 1);
@@ -16,7 +16,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
- * General Cache functions for Static File Cache.
+ * General Cache functions for StaticFileCache.
  */
 abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
 {

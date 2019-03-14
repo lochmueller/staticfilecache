@@ -5,15 +5,15 @@
 ---
 conf.py:
   copyright: 2018
-  project: 'Static File cache'
+  project: 'StaticFileCache'
   version: 6.0
   release: 6.0.1
   highlight_language: php
   latex_documents:
   - - Index
     - staticfilecache.tex
-    - 'Static File cache'
-    - Static File Cache Team
+    - 'StaticFileCache'
+    - StaticFileCache Team
     - manual
   latex_elements:
     papersize: a4paper

@@ -5,7 +5,7 @@ This is the base .htaccess configuration. Please take a look for the default var
 
 .. code-block:: bash
 
-   ### Begin: Static File Cache (preparation) ####
+   ### Begin: StaticFileCache (preparation) ####
 
    # Document root configuration
    RewriteRule .* - [E=SFC_ROOT:%{DOCUMENT_ROOT}]
@@ -55,7 +55,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    # Perhaps you have to check the "SFC_FILE" value and set it to your related configution e.g. "index.html" (without leading slash).
    # More information at: https://github.com/lochmueller/staticfilecache/pull/28
 
-   ### Begin: Static File Cache (main) ####
+   ### Begin: StaticFileCache (main) ####
 
    # We only redirect URI's without query strings
    RewriteCond %{QUERY_STRING} ^$
@@ -82,7 +82,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteCond %{ENV:REDIRECT_STATUS} ^$
    RewriteRule .* - [F,L]
 
-   ### Begin: Static File Cache (options) ####
+   ### Begin: StaticFileCache (options) ####
 
    # Set proper content type and encoding for gzipped html.
    <FilesMatch "\.gz">
@@ -107,10 +107,10 @@ This is the base .htaccess configuration. Please take a look for the default var
       # AddType "text/xml" .gz
    </FilesMatch>
 
-   ### End: Static File Cache ###
+   ### End: StaticFileCache ###
 
 
-If you use the oldschool .htaccess rewrite rules that come with the TYPO3 dummy, then the relevant static file cache configuration should be inserted in the .htaccess file just before these lines:
+If you use the oldschool .htaccess rewrite rules that come with the TYPO3 dummy, then the relevant StaticFileCache configuration should be inserted in the .htaccess file just before these lines:
 
 .. code-block:: bash
 

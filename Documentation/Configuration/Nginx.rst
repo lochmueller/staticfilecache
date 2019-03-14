@@ -41,7 +41,7 @@ By the following configuration:
 
    location @sfc {
        # Perform an internal redirect to TYPO3 if any of the required
-       # conditions for static file cache don't match
+       # conditions for StaticFileCache don't match
        error_page 405 = @t3frontend;
 
        # Query String needs to be empty

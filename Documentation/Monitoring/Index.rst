@@ -4,7 +4,7 @@ Monitoring
 .. |monitoring|      image:: ../Images/monitoring.png
 .. :align: left
 
-The state of the indexing table can be monitored using the 'web' -> 'info' module. Choose 'Static file cache' from the dropdown list.
+The state of the indexing table can be monitored using the 'StaticFileCache' module.
 
 A list will appear which you can use to monitor the state of the indexing process. It will tell you if a file has been cached statically, if so when it was cached and when it is set to expire. If you have any other ideas, let me know.
 

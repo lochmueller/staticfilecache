@@ -8,8 +8,8 @@
 		<body>
 
 		<trans-unit id="module.title" xml:space="preserve" approved="yes">
-			<source>Static File Cache</source>
-			<target>Statisk fil-cache</target>
+			<source>StaticFileCache</source>
+			<target>StaticFileCache</target>
 		</trans-unit>
 		<trans-unit id="staticfilecache.tx_staticfilecache_cache" xml:space="preserve" approved="yes">
 			<source>Cache page as static file</source>
@@ -32,8 +32,8 @@
 			<target>Dette modul viser cache-indhold og -fejl for den akuelle side og alle dens undersider.</target>
 		</trans-unit>
 		<trans-unit id="moduleFunction.tx_staticfilecache_infomodule" xml:space="preserve" approved="yes">
-			<source>Static file cache</source>
-			<target>Statisk fil-cache</target>
+			<source>StaticFileCache</source>
+			<target>StaticFileCache</target>
 		</trans-unit>
 		<trans-unit id="staticfilecache_task_removeExpiredPages.name" xml:space="preserve" approved="yes">
 			<source>Remove expired pages</source>

@@ -166,7 +166,7 @@ https://github.com/lochmueller/staticfilecache/commits/master
 - Move ChangeLog to new ReSt documentation
 - Move Readme to new ReSt documentation
 - Fix #58178 Handling of non-ASCII URIs
-- Fix #65700 Static File Cache module not working correctly on latest TYPO3 7.1
+- Fix #65700 StaticFileCache module not working correctly on latest TYPO3 7.1
 - Increase compatibility to 6.2.x - 7.1.x
 - Fix #64769 Enable HTTPS caching impossible
 - Release of v3.0.0 to TER

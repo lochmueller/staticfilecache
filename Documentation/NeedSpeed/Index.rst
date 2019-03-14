@@ -261,6 +261,6 @@ Here is an example of my own server running Nginx and APC. It's a lightweight XE
      99%   4270
     100%   5254 (longest request)
 
-That's a slight improvement. But altogehter Nginx can take on much more of a beating than Apache. The CPU rises to a load of 0.4 when taking this beating without static file cache and it idles at 0.0 when static file cache is enabled.
+That's a slight improvement. But altogehter Nginx can take on much more of a beating than Apache. The CPU rises to a load of 0.4 when taking this beating without StaticFileCache and it idles at 0.0 when static file cache is enabled.
 
 Soo ... bring on those success reports!

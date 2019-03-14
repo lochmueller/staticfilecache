@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Static File Cache',
+    'title' => 'StaticFileCache',
     'description' => 'Transparent static file cache solution using mod_rewrite and mod_expires. Increase performance for static pages by a factor of 230!!',
     'category' => 'fe',
     'version' => '7.0.1',

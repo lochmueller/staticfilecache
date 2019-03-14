@@ -15,4 +15,15 @@ use Symfony\Component\Console\Command\Command;
  */
 abstract class AbstractCommand extends Command
 {
+    /**
+     * Set generic prefix for the description.
+     *
+     * @param string $description
+     *
+     * @return Command
+     */
+    public function setDescription($description)
+    {
+        return parent::setDescription('StaticFileCache task: ' . $description);
+    }
 }

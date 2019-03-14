@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Static File Cache.
+ * StaticFileCache.
  */
 
 declare(strict_types = 1);
@@ -20,7 +20,7 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * Static File Cache.
+ * StaticFileCache.
  */
 class StaticFileCache implements StaticFileCacheSingletonInterface
 {

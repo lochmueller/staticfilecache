@@ -13,7 +13,7 @@ If your apache has mod_expires loaded, you can use it to make staticfilecache se
 
 *Enable static file compression*
 
-It is now possible to write a gzipped version of the static file to disk. It will be written in addition to the non-gzipped version. If the visitors browser supports gzip, the gzipped static file will be offered along with the proper headers. Apache can also gzip html content on every request, but static file cache gzips the content only once and then caches is. This will free up some precious CPU cycles and time.
+It is now possible to write a gzipped version of the static file to disk. It will be written in addition to the non-gzipped version. If the visitors browser supports gzip, the gzipped static file will be offered along with the proper headers. Apache can also gzip html content on every request, but StaticFileCache gzips the content only once and then caches is. This will free up some precious CPU cycles and time.
 
 *Show generation timestamp signature*
 

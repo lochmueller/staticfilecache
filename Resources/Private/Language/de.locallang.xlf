@@ -8,8 +8,8 @@
 		<body>
 
 		<trans-unit id="module.title" approved="yes">
-			<source>Static File Cache</source>
-			<target>Statischer Datei Cache</target>
+			<source>StaticFileCache</source>
+			<target>StaticFileCache</target>
 		</trans-unit>
 		<trans-unit id="staticfilecache.tx_staticfilecache_cache" approved="yes">
 			<source>Cache page as static file</source>
@@ -32,8 +32,8 @@
 			<target>Dieses Modul zeigt die Cache-Einträge und Fehler der aktuellen und aller direkten Unterseiten.</target>
 		</trans-unit>
 		<trans-unit id="moduleFunction.tx_staticfilecache_infomodule">
-			<source>Static file cache</source>
-			<target>Statischer Datei Cache</target>
+			<source>StaticFileCache</source>
+			<target>StaticFileCache</target>
 		</trans-unit>
 		<trans-unit id="staticfilecache_task_removeExpiredPages.name">
 			<source>Remove expired pages</source>

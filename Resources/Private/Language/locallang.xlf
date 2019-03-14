@@ -8,7 +8,7 @@
 		<body>
 
 		<trans-unit id="module.title">
-			<source>Static File Cache</source>
+			<source>StaticFileCache</source>
 		</trans-unit>
 		<trans-unit id="module.intro.current">
 			<source>This module displays the cache entries and errors of the current page.</source>
@@ -26,7 +26,7 @@
 			<source>Force the static cache generation (!!!)</source>
 		</trans-unit>
 		<trans-unit id="moduleFunction.tx_staticfilecache_infomodule">
-			<source>Static file cache</source>
+			<source>StaticFileCache</source>
 		</trans-unit>
 		<trans-unit id="staticfilecache_task_removeExpiredPages.name">
 			<source>Remove expired pages</source>

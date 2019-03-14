@@ -1,6 +1,6 @@
-========================================
-Static File Cache: Speed up TYPO3 CMS FE
-========================================
+======================================
+StaticFileCache: Speed up TYPO3 CMS FE
+======================================
 
 :Rendered:
       |today|
@@ -12,7 +12,7 @@ Static File Cache: Speed up TYPO3 CMS FE
       forEditors, forAdmins, forBeginners, forIntermediates
 
 :Author:
-      Static File Cache Team
+      StaticFileCache Team
 
 :Email:
       none@nonenonenone.de
