@@ -123,7 +123,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             // This fsck's up the ctrl-shift-reload hack, so I pulled it out.
             if (empty($explanation)) {
                 $content = $pObj->content;
-                if ($this->configuration->get('showGenerationSignature')) {
+                if ($this->configuration->isBool('showGenerationSignature')) {
                     $content .= "\n<!-- cached statically on: " . $this->formatTimestamp((new DateTimeService())->getCurrentTime()) . ' -->';
                     $content .= "\n<!-- expires on: " . $this->formatTimestamp($timeOutTime) . ' -->';
                 }

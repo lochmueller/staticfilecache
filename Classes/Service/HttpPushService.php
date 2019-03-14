@@ -32,7 +32,7 @@ class HttpPushService extends AbstractService
         $headers = [];
         /** @var ConfigurationService $configurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        if ($configurationService->get('sendHttp2PushEnable')) {
+        if ($configurationService->isBool('sendHttp2PushEnable')) {
             $limit = (int)$configurationService->get('sendHttp2PushFileLimit');
             $extensions = GeneralUtility::trimExplode(',', (string)$configurationService->get('sendHttp2PushFileExtensions'), true);
             $handlers = $this->getHttpPushHandler();
