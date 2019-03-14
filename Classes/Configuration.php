@@ -64,7 +64,7 @@ class Configuration
             ],
             [
                 'access' => 'user,group',
-                'icon' => 'EXT:staticfilecache/Resources/Public/Icons/Extension.png',
+                'icon' => 'EXT:staticfilecache/Resources/Public/Icons/Extension.svg',
                 'labels' => 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang_mod.xlf',
             ]
         );
