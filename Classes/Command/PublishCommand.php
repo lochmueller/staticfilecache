@@ -24,7 +24,7 @@ class PublishCommand extends AbstractCommand
     protected function configure()
     {
         parent::configure();
-        $this->setDescription('Run the PublishService incl. the Slots to publish the current StaticFileCache.');
+        $this->setDescription('Run the PublishService incl. the Slots to publish the current StaticFileCache. This command is an empty signal. Feel free to use the signal to publish e.g. the StaticFileCache to other resources.');
     }
 
     /**

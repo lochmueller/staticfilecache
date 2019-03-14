@@ -223,6 +223,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      * @param string $tag The tag the entries must have
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception
+     * @todo switch logic like in the AbstractBackend
      */
     public function flushByTag($tag)
     {
