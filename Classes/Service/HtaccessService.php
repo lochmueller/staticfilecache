@@ -11,7 +11,6 @@ namespace SFC\Staticfilecache\Service;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * HtaccessService.
@@ -39,7 +38,7 @@ class HtaccessService extends AbstractService
             'mode' => $accessTimeout ? 'A' : 'M',
             'lifetime' => $lifetime,
             'expires' => (new DateTimeService())->getCurrentTime() + $lifetime,
-            'typo3headers' => $this->getTypoHeaders(),
+            'typo3headers' => GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getAdditionalHeaders(),
             'sendCacheControlHeader' => $configuration->isBool('sendCacheControlHeader'),
             'sendCacheControlHeaderRedirectAfterCacheTimeout' => $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout'),
             'sendTypo3Headers' => $configuration->isBool('sendTypo3Headers'),
@@ -84,29 +83,5 @@ class HtaccessService extends AbstractService
         }
 
         return $templateName;
-    }
-
-    /**
-     * Get TYPO3 headers.
-     *
-     * @return array
-     */
-    protected function getTypoHeaders(): array
-    {
-        $headers = [];
-        if (!($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
-            return $headers;
-        }
-        // Set headers, if any
-        if (\is_array($GLOBALS['TSFE']->config['config']['additionalHeaders.'])) {
-            \ksort($GLOBALS['TSFE']->config['config']['additionalHeaders.']);
-            foreach ($GLOBALS['TSFE']->config['config']['additionalHeaders.'] as $options) {
-                $complete = \trim($options['header']);
-                $parts = \explode(':', $complete, 2);
-                $headers[\trim($parts[0])] = \trim($parts[1]);
-            }
-        }
-
-        return $headers;
     }
 }

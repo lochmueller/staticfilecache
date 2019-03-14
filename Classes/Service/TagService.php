@@ -9,8 +9,7 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Service;
 
 use SFC\Staticfilecache\Configuration;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * TagService.
@@ -24,13 +23,7 @@ class TagService extends AbstractService
      */
     public function getTags(): array
     {
-        /** @var TypoScriptFrontendController $tsfe */
-        $tsfe = $GLOBALS['TSFE'];
-        if (!($tsfe instanceof TypoScriptFrontendController)) {
-            return [];
-        }
-
-        return \array_unique((array)ObjectAccess::getProperty($tsfe, 'pageCacheTags', true));
+        return GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getTags();
     }
 
     /**
