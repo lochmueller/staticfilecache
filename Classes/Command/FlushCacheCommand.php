@@ -23,6 +23,7 @@ class FlushCacheCommand extends AbstractCommand
      */
     protected function configure()
     {
+        parent::configure();
         $this->setDescription('Flush the cache. If the boost mode is active, all pages are recrawlt.');
         $this->addArgument('force-boost-mode-flush', InputArgument::OPTIONAL, 'Force a boost mode flush', false);
     }

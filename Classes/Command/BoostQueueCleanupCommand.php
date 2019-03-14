@@ -23,6 +23,7 @@ class BoostQueueCleanupCommand extends AbstractCommand
      */
     protected function configure()
     {
+        parent::configure();
         $this->setDescription('Cleanup the cache boost queue entries.');
     }
 

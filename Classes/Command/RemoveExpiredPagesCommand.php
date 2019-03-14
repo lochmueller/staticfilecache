@@ -23,6 +23,7 @@ class RemoveExpiredPagesCommand extends AbstractCommand
      */
     protected function configure()
     {
+        parent::configure();
         $this->setDescription('Remove all expired StaticFileCache pages.');
     }
 

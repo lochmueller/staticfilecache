@@ -25,6 +25,7 @@ class BoostQueueRunCommand extends AbstractCommand
      */
     protected function configure()
     {
+        parent::configure();
         $this->setDescription('Run (work on) the cache boost queue.');
 
         $this->addArgument('limit-items', InputArgument::OPTIONAL, 'Limit the items that are crawled. 0 => all', 0);
