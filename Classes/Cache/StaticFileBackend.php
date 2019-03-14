@@ -223,11 +223,24 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      * @param string $tag The tag the entries must have
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception
-     * @todo switch logic like in the AbstractBackend
      */
     public function flushByTag($tag)
     {
-        $this->flushByTags([$tag]);
+        $this->throwExceptionIfFrontendDoesNotExist();
+
+        $this->logger->debug('SFC flushByTags', [$tag]);
+        $identifiers = $this->findIdentifiersByTagIncludingExpired($tag);
+
+        if ($this->isBoostMode()) {
+            $this->getQueue()->addIdentifiers($identifiers);
+
+            return;
+        }
+
+        foreach ($identifiers as $identifier) {
+            $this->removeStaticFiles($identifier);
+        }
+        parent::flushByTag($tag);
     }
 
     /**
