@@ -34,6 +34,7 @@ use SFC\Staticfilecache\Hook\Crawler;
 use SFC\Staticfilecache\Hook\InitFrontendUser;
 use SFC\Staticfilecache\Hook\LogNoCache;
 use SFC\Staticfilecache\Hook\LogoffFrontendUser;
+use SFC\Staticfilecache\Hook\UninstallProcess;
 use SFC\Staticfilecache\Module\CacheModule;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
@@ -42,6 +43,7 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
  * Configuration.
@@ -126,6 +128,8 @@ class Configuration
         }
 
         $signalSlotDispatcher->connect(StaticFileBackend::class, 'compress', GzipCompression::class, 'compress');
+
+        $signalSlotDispatcher->connect(InstallUtility::class, 'afterExtensionUninstall', UninstallProcess::class, 'afterExtensionUninstall');
     }
 
     /**
