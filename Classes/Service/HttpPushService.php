@@ -41,7 +41,7 @@ class HttpPushService extends AbstractService
                 foreach ($handlers as $handler) {
                     /** @var AbstractHttpPush $handler */
                     if ($handler->canHandleExtension($extension)) {
-                        $headers += $handler->getHeaders($content);
+                        $headers = array_merge($headers, $handler->getHeaders($content));
                     }
                 }
             }
