@@ -12,6 +12,7 @@ use SFC\Staticfilecache\Domain\Repository\CacheRepository;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\HtaccessService;
 use SFC\Staticfilecache\Service\QueueService;
+use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -172,14 +173,11 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         }
 
         $absoluteCacheDir = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY);
-        if (\is_dir($absoluteCacheDir)) {
-            $tempAbsoluteCacheDir = \rtrim($absoluteCacheDir, '/') . '_' . GeneralUtility::milliseconds() . '/';
-            \rename($absoluteCacheDir, $tempAbsoluteCacheDir);
-        }
+        $removeService = GeneralUtility::makeInstance(RemoveService::class);
+        $removeService->softRemoveDir($absoluteCacheDir . 'https/');
+        $removeService->softRemoveDir($absoluteCacheDir . 'http/');
         parent::flush();
-        if (isset($tempAbsoluteCacheDir)) {
-            GeneralUtility::rmdir($tempAbsoluteCacheDir, true);
-        }
+        $removeService->removeDirs();
     }
 
     /**
@@ -330,11 +328,10 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
         $dispatched = $this->dispatch('removeStaticFiles', $dispatchArguments);
         $files = $dispatched['files'];
+        $removeService = GeneralUtility::makeInstance(RemoveService::class);
         foreach ($files as $file) {
-            if (\is_file($file)) {
-                if (false === \unlink($file)) {
-                    return false;
-                }
+            if (false === $removeService->removeFile($file)) {
+                return false;
             }
         }
 

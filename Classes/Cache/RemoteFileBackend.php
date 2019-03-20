@@ -7,6 +7,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
 use TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
@@ -160,11 +161,13 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         if (!\is_file($folder . $fileName)) {
             return false;
         }
+
         // Remove files
-        \unlink($folder . $fileName);
-        \unlink($folder . $fileName . self::FILE_EXTENSION_TAG);
-        \unlink($folder . $fileName . self::FILE_EXTENSION_LIFETIME);
-        \unlink($folder . $fileName . self::FILE_EXTENSION_IDENTIFIER);
+        $removeService = GeneralUtility::makeInstance(RemoveService::class);
+        $removeService->removeFile($folder . $fileName);
+        $removeService->removeFile($folder . $fileName . self::FILE_EXTENSION_TAG);
+        $removeService->removeFile($folder . $fileName . self::FILE_EXTENSION_LIFETIME);
+        $removeService->removeFile($folder . $fileName . self::FILE_EXTENSION_IDENTIFIER);
 
         return true;
     }
@@ -176,7 +179,8 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      */
     public function flush()
     {
-        GeneralUtility::rmdir(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER), true);
+        $removeService = GeneralUtility::makeInstance(RemoveService::class);
+        $removeService->softRemoveDir(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER))->removeDirs();
         $this->freeze = false;
     }
 
