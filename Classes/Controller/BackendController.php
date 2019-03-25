@@ -13,7 +13,6 @@ use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -37,15 +36,15 @@ class BackendController extends ActionController
     /**
      *
      */
-    public function boostAction(){
-
+    public function boostAction()
+    {
     }
 
     /**
      *
      */
-    public function supportAction(){
-
+    public function supportAction()
+    {
     }
 
     /**
