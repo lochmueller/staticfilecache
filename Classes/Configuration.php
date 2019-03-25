@@ -60,7 +60,7 @@ class Configuration
             'staticfilecache',
             '',
             [
-                'Backend' => 'list,removeExpiredPages',
+                'Backend' => 'list,boost,support',
             ],
             [
                 'access' => 'user,group',

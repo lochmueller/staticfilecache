@@ -35,19 +35,17 @@ class BackendController extends ActionController
     }
 
     /**
-     * Handles incoming actions (e.g. removing all expired pages).
      *
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
-    public function removeExpiredPagesAction()
-    {
-        GeneralUtility::makeInstance(CacheService::class)->get()->collectGarbage();
-        $flashMessage = new FlashMessage('Garbe collection is done', 'Garbe collection', FlashMessage::OK, true);
-        $flashMessagesQueue = $this->controllerContext->getFlashMessageQueue();
-        $flashMessagesQueue->addMessage($flashMessage);
-        $this->redirect('list');
+    public function boostAction(){
+
+    }
+
+    /**
+     *
+     */
+    public function supportAction(){
+
     }
 
     /**
