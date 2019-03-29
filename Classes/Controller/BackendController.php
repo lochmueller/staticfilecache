@@ -9,10 +9,13 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Controller;
 
 use SFC\Staticfilecache\Domain\Repository\PageRepository;
+use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
+use SFC\Staticfilecache\Service\QueueService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -34,15 +37,33 @@ class BackendController extends ActionController
     }
 
     /**
+     * Boost action.
      *
+     * @param bool $run
      */
-    public function boostAction()
+    public function boostAction($run = false)
     {
+        $configurationService = $this->objectManager->get(ConfigurationService::class);
+        $queueRepository = $this->objectManager->get(QueueRepository::class);
+        if ($run) {
+            $items = $queueRepository->findOpen(10);
+            $queueService = GeneralUtility::makeInstance(QueueService::class);
+            try {
+                foreach ($items as $item) {
+                    $queueService->runSingleRequest($item);
+                }
+            } catch (\Exception $ex) {
+            }
+
+            $this->addFlashMessage('Run ' . \count($items) . ' entries', 'Runner', FlashMessage::OK, true);
+        }
+        $this->view->assignMultiple([
+            'enable' => (bool)$configurationService->get('boostMode'),
+            'open' => \count($queueRepository->findOpen(99999999)),
+            'old' => \count($queueRepository->findOld()),
+        ]);
     }
 
-    /**
-     *
-     */
     public function supportAction()
     {
     }

@@ -6,11 +6,27 @@
 		Boostmode
 	</h1>
 
-	<p>More details shortly...</p>
+	<f:if condition="{enable}">
+		<f:then>
+			<p>
+				Nice... you use the boost mode. <strong>BAM!</strong>.<br/>
+				Please take care that the scheduler/cron task that work on the queue is running.
+			</p>
+			<div class="alert alert-notice" role="alert">There are <strong>{open}</strong> items that ways for processing and <strong>{old}</strong> old items.</div>
+
+			<f:link.action action="boost" class="btn btn-default" arguments="{run: 1}">
+				<core:icon identifier="actions-system-refresh"/>
+				Run 10 items manually
+			</f:link.action>
+		</f:then>
+		<f:else>
+			<div class="alert alert-warning" role="alert">Boost mode is disabled!</div>
+		</f:else>
+	</f:if>
 </f:section>
 
 <f:section name="Menu">
-	<f:render partial="Backend/Menu" />
+	<f:render partial="Backend/Menu"/>
 </f:section>
 
 
