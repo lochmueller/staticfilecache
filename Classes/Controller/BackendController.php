@@ -64,6 +64,9 @@ class BackendController extends ActionController
         ]);
     }
 
+    /**
+     * Support action.
+     */
     public function supportAction()
     {
     }

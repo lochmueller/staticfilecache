@@ -56,6 +56,8 @@ class TypoScriptFrontendService
     }
 
     /**
+     * Get the TSFE.
+     *
      * @return TypoScriptFrontendController
      */
     protected function getTsfe()

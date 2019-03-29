@@ -1,0 +1,66 @@
+<?php
+/**
+ * GzipGenerator.
+ */
+
+declare(strict_types = 1);
+
+namespace SFC\Staticfilecache\Generator;
+
+use SFC\Staticfilecache\Service\RemoveService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+
+/**
+ * GzipGenerator.
+ */
+class GzipGenerator extends AbstractGenerator
+{
+    /**
+     * The default compression level.
+     */
+    const DEFAULT_COMPRESSION_LEVEL = 3;
+
+    /**
+     * Generate file.
+     *
+     * @param string $entryIdentifier
+     * @param string $fileName
+     * @param string $data
+     */
+    public function generate(string $entryIdentifier, string $fileName, string $data)
+    {
+        $contentGzip = \gzencode($data, $this->getCompressionLevel());
+        if ($contentGzip) {
+            GeneralUtility::writeFile($fileName . '.gz', $contentGzip);
+        }
+    }
+
+    /**
+     * Remove file.
+     *
+     * @param string $entryIdentifier
+     * @param string $fileName
+     */
+    public function remove(string $entryIdentifier, string $fileName)
+    {
+        $removeService = GeneralUtility::makeInstance(RemoveService::class);
+        $removeService->removeFile($fileName . '.gz');
+    }
+
+    /**
+     * Get frontend compression level.
+     * The value is between 1 (low) and 9 (high).
+     *
+     * @return int
+     */
+    protected function getCompressionLevel(): int
+    {
+        $level = self::DEFAULT_COMPRESSION_LEVEL;
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {
+            $level = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'];
+        }
+
+        return MathUtility::forceIntegerInRange($level, 1, 9, self::DEFAULT_COMPRESSION_LEVEL);
+    }
+}

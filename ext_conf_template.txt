@@ -1,9 +1,6 @@
 # cat=basic; type=boolean; label=Clear cache for all domains in tree: When the TYPO3 tree hosts more than one domain, each domain has it's own cache branch. When clearing the cache, only the cache for the domain you are logged on to will be cleared. If you would like the cache for all domains to be cleared when clearing the frontend cache, then check this box.
 clearCacheForAllDomains = 1
 
-# cat=basic; type=boolean; label=Enable static file compression: When checked, a gzipped version of the static file is written to the cache directory as well as a plain version (used for fallback, not all browsers and proxies support gzip). This will speed up file transfer time. Apache can also compress files using mod_deflate, but does so on each request. Enabling this option makes sure it is done only once. Take care to also choose the proper .htaccess configuration when enabling this option.
-enableStaticFileCompression = 1
-
 # cat=basic; type=boolean; label=Show generation timestamp signature: This appends a comment at the end of the static html file. This can be useful for debugging purposes (look at the source and see if the comment is present).
 showGenerationSignature = 1
 
@@ -30,6 +27,12 @@ htaccessTemplateName = EXT:staticfilecache/Resources/Private/Templates/Htaccess.
 
 # cat=basic; type=options[InsertPageIncache=InsertPageIncache,ContentPostProcOutput=ContentPostProcOutput,Eofe=Eofe]; label="InsertPageIncache" is the default. ContentPostProcOutput is later and EOFE is the latest. Please try to use the default hook.
 saveCacheHook = InsertPageIncache
+
+# cat=generator; type=boolean; label=Enable GZIP compression generator: When checked, a gzipped version of the static file is written to the cache directory. Take care to also choose the proper .htaccess configuration when enabling this option.
+enableGzipGenerator = 1
+
+# cat=generator; type=boolean; label=Disable Plain generator: When checked, the normal file will not write to the cache anymore.
+disablePlainGenerator = 0
 
 # cat=Headers; type=boolean; label=Send Cache-Control header: If your Apache installation has 'mod_expires' loaded, you can use it to send Cache-Control headers. For each statically cached page a .htaccess file will be created with a mod_expires rule. This rule will make Apache send a cache header when delivering the cached page to the visitor.
 sendCacheControlHeader = 1

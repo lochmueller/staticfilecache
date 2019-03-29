@@ -22,8 +22,9 @@ class HtaccessService extends AbstractService
      *
      * @param string $originalFileName
      * @param int    $lifetime
+     * @param string $originalContent
      */
-    public function write(string $originalFileName, int $lifetime)
+    public function write(string $originalFileName, int $lifetime, string $originalContent)
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
         $tagService = GeneralUtility::makeInstance(TagService::class);
@@ -45,7 +46,7 @@ class HtaccessService extends AbstractService
             'tags' => \implode(',', $tags),
             'tagHeaderName' => $tagService->getHeaderName(),
             'sendStaticFileCacheHeader' => $configuration->isBool('sendStaticFileCacheHeader'),
-            'httpPushHeaders' => GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders(GeneralUtility::getUrl($originalFileName)),
+            'httpPushHeaders' => GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders($originalContent),
         ];
 
         $this->renderTemplateToFile($this->getTemplateName(), $variables, $fileName);

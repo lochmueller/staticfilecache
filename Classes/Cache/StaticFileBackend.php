@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\Domain\Repository\CacheRepository;
+use SFC\Staticfilecache\Generator\MetaGenerator;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\HtaccessService;
 use SFC\Staticfilecache\Service\QueueService;
@@ -73,18 +74,8 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
         $this->removeStaticFiles($entryIdentifier);
 
-        // normal
-        GeneralUtility::writeFile($fileName, $data);
-
-        if ($this->configuration->isBool('enableStaticFileCompression')) {
-            $dispatchArguments = [
-                'fileName' => $fileName,
-                'data' => $data,
-            ];
-            $this->dispatch('compress', $dispatchArguments);
-        }
-
-        GeneralUtility::makeInstance(HtaccessService::class)->write($fileName, $realLifetime);
+        GeneralUtility::makeInstance(MetaGenerator::class)->generate($entryIdentifier, $fileName, $data);
+        GeneralUtility::makeInstance(HtaccessService::class)->write($fileName, $realLifetime, $data);
     }
 
     /**
@@ -317,14 +308,11 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
             'entryIdentifier' => $entryIdentifier,
             'fileName' => $fileName,
             'files' => [
-                $fileName,
                 PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess',
             ],
         ];
 
-        if ($this->configuration->isBool('enableStaticFileCompression')) {
-            $dispatchArguments['files'][] = $fileName . '.gz';
-        }
+        GeneralUtility::makeInstance(MetaGenerator::class)->remove($entryIdentifier, $fileName);
 
         $dispatched = $this->dispatch('removeStaticFiles', $dispatchArguments);
         $files = $dispatched['files'];
