@@ -7,10 +7,12 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Generator;
 
+use SFC\Staticfilecache\StaticFileCacheSingletonInterface;
+
 /**
  * AbstractGenerator.
  */
-abstract class AbstractGenerator
+abstract class AbstractGenerator implements StaticFileCacheSingletonInterface
 {
     /**
      * Generate file.
