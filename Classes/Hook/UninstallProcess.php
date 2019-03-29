@@ -15,7 +15,7 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 /**
  * UninstallProcess.
  */
-class UninstallProcess
+class UninstallProcess extends AbstractHook
 {
     /**
      * Check if staticfile cache is deactived and drop the current cache.

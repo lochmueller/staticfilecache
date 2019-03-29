@@ -13,7 +13,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * TypoScriptFrontendService.
  */
-class TypoScriptFrontendService
+class TypoScriptFrontendService extends AbstractService
 {
     /**
      * Get the tags and respect the configuration.
