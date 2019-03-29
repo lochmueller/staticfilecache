@@ -262,10 +262,8 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         $parts = [
             $urlParts['scheme'],
             $urlParts['host'],
+            isset($urlParts['port']) ? (int)$urlParts['port'] : ('https' === $urlParts['scheme'] ? 443 : 80),
         ];
-
-        // Add by configuration?
-        // $parts[] = isset($urlParts['port']) ? (int)$urlParts['port'] : 80;
 
         $path = \implode('/', $parts) . '/' . \trim($urlParts['path'], '/');
         $cacheFilename = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY . $path);

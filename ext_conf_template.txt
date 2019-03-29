@@ -28,7 +28,7 @@ htaccessTemplateName = EXT:staticfilecache/Resources/Private/Templates/Htaccess.
 # cat=basic; type=options[InsertPageIncache=InsertPageIncache,ContentPostProcOutput=ContentPostProcOutput,Eofe=Eofe]; label="InsertPageIncache" is the default. ContentPostProcOutput is later and EOFE is the latest. Please try to use the default hook.
 saveCacheHook = InsertPageIncache
 
-# cat=generator; type=boolean; label=Disable Plain generator: When checked, the normal file will not write to the cache anymore.
+# cat=generator; type=boolean; label=Enable Plain generator: When checked, the normal (default) file will write to the cache.
 enableGeneratorPlain = 1
 
 # cat=generator; type=boolean; label=Enable GZIP compression generator: When checked, a gzipped version of the static file is written to the cache directory. Take care to also choose the proper .htaccess configuration when enabling this option.
@@ -47,7 +47,7 @@ sendCacheControlHeaderRedirectAfterCacheTimeout = 0
 sendTypo3Headers = 0
 
 # cat=Headers; type=boolean; label=Send StaticFileCache header: If enabled: The .htaccess configuration send a "X-Cache: StaticFileCache" header, if the page is delivered via cache/.htaccess. You can use this option for debugging in e.g. json fiels (also html files)
-sendStaticFileCacheHeader = 0
+sendStaticFileCacheHeader = 1
 
 # cat=Cache Tags; type=boolean; label=Enable Cache Tags: Output the TSFE cache Tags for the current site in the rendering and for the cache entry
 cacheTagsEnable = 0

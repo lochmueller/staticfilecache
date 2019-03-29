@@ -24,38 +24,45 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteRule .* - [E=SFC_HOST:%1]
 
    # Get scheme
+   RewriteRule .* - [E=SFC_PROTOCOL:http]
    RewriteCond %{SERVER_PORT} ^443$ [OR]
    RewriteCond %{HTTP:X-Forwarded-Proto} https
    RewriteRule .* - [E=SFC_PROTOCOL:https]
-   RewriteCond %{SERVER_PORT} !^443$
-   RewriteCond %{HTTP:X-Forwarded-Proto} !https
-   RewriteRule .* - [E=SFC_PROTOCOL:http]
 
-   # Get port (not used at the moment)
+   # Get port
    RewriteRule .* - [E=SFC_PORT:80]
-   RewriteCond %{SERVER_PORT} ^[0-9]*$ [OR]
+   RewriteCond %{ENV:SFC_PROTOCOL} ^https$ [NC]
+   RewriteRule .* - [E=SFC_PORT:443]
+   RewriteCond %{SERVER_PORT} ^[0-9]*$
    RewriteRule .* - [E=SFC_PORT:%{SERVER_PORT}]
+
+    # Full path for redirect
+   RewriteRule .* - [E=SFC_FULLPATH:typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}/%{ENV:SFC_PORT}%{ENV:SFC_URI}]
 
    # Check if the requested file exists in the cache, otherwise default to index.html that
    # set in an environment variable that is used later on
-   RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI} !-f
-   RewriteRule .* - [E=SFC_FILE:index.html]
-
-   # Note: https://github.com/lochmueller/staticfilecache/pull/90 (Please check the realurl configuration related to "appendMissingSlash". Perhaps you need an additional "/" in the rule above)
-   # RewriteRule .* - [E=SFC_FILE:/index.html]
-
-   # Set gzip extension into an environment variable if the visitors browser can handle gzipped content and the gz-file exists
-   RewriteRule .* - [E=SFC_EXT:]
-   RewriteCond %{HTTP:Accept-Encoding} gzip [NC]
-   RewriteRule .* - [E=SFC_EXT:.gz]
-   RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_EXT} !-f
-   RewriteRule .* - [E=SFC_EXT:]
-
-   # @todo check "br" as Accept-Encoding to add brotli support
-
+   # Note: With old RealURL structure perhaps you have to remove the "/" https://github.com/lochmueller/staticfilecache/pull/90
    # Note: We cannot check realurl "appendMissingSlash" or other BE related settings here - in front of the delivery.
    # Perhaps you have to check the "SFC_FILE" value and set it to your related configution e.g. "index.html" (without leading slash).
    # More information at: https://github.com/lochmueller/staticfilecache/pull/28
+   RewriteCond %{ENV:SFC_ROOT}/%{ENV:SFC_FULLPATH} !-f
+   RewriteRule .* - [E=SFC_FULLPATH:%{ENV:SFC_FULLPATH}/index.html]
+
+   # Extension (Order: br, gzip, default)
+   RewriteRule .* - [E=SFC_EXT:]
+   RewriteCond %{HTTP:Accept-Encoding} br [NC]
+   RewriteRule .* - [E=SFC_EXT:.br]
+   RewriteCond %{ENV:SFC_ROOT}/%{ENV:SFC_FULLPATH}%{ENV:SFC_EXT} !-f
+   RewriteRule .* - [E=SFC_EXT:]
+   RewriteCond %{ENV:SFC_EXT} ^$
+   RewriteCond %{HTTP:Accept-Encoding} gzip [NC]
+   RewriteRule .* - [E=SFC_EXT:.gz]
+   RewriteCond %{ENV:SFC_EXT} ^\.gz$
+   RewriteCond %{ENV:SFC_ROOT}/%{ENV:SFC_FULLPATH}%{ENV:SFC_EXT} !-f
+   RewriteRule .* - [E=SFC_EXT:]
+
+   # Write Extension to SFC_FULLPATH
+   RewriteRule .* - [E=SFC_FULLPATH:%{ENV:SFC_FULLPATH}%{ENV:SFC_EXT}]
 
    ### Begin: StaticFileCache (main) ####
 
@@ -63,21 +70,18 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteCond %{QUERY_STRING} ^$
 
    # It only makes sense to do the other checks if a static file actually exists.
-   RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_EXT} -f
+   RewriteCond %{ENV:SFC_ROOT}/%{ENV:SFC_FULLPATH} -f
 
    # NO frontend or backend user is logged in. Logged in users may see different
    # information than anonymous users. But the anonymous version is cached. So
    # don't show the anonymous version to logged in users.
    RewriteCond %{HTTP_COOKIE} !staticfilecache [NC]
 
-   # Uncomment the following line if you use MnoGoSearch
-   #RewriteCond %{HTTP:X-TYPO3-mnogosearch} ^$
-
    # We only redirect GET requests
    RewriteCond %{REQUEST_METHOD} GET
 
    # Rewrite the request to the static file.
-   RewriteRule .* %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_EXT} [L]
+   RewriteRule .* %{ENV:SFC_ROOT}/%{ENV:SFC_FULLPATH} [L]
 
    # Do not allow direct call the cache entries
    RewriteCond %{ENV:SFC_URI} ^/typo3temp/tx_staticfilecache/.*
