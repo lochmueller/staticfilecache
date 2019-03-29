@@ -70,13 +70,13 @@ class MetaGenerator extends AbstractGenerator
         $generators = [];
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
 
-        if (!$configurationService->isBool('disablePlainGenerator')) {
+        if ($configurationService->isBool('enableGeneratorPlain')) {
             $generators[] = PlainGenerator::class;
         }
-        if ($configurationService->isBool('enableGzipGenerator')) {
+        if ($configurationService->isBool('enableGeneratorGzip')) {
             $generators[] = GzipGenerator::class;
         }
-        if ($configurationService->isBool('enableBrotliGenerator')) {
+        if ($configurationService->isBool('enableGeneratorBrotli')) {
             $generators[] = BrotliGenerator::class;
         }
 
