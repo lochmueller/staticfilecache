@@ -34,6 +34,9 @@ enableGzipGenerator = 1
 # cat=generator; type=boolean; label=Disable Plain generator: When checked, the normal file will not write to the cache anymore.
 disablePlainGenerator = 0
 
+# cat=generator; type=boolean; label=Enable Brotli generator: When checked, the brotli version of the static file is written to the cache directory.
+enableBrotliGenerator = 0
+
 # cat=Headers; type=boolean; label=Send Cache-Control header: If your Apache installation has 'mod_expires' loaded, you can use it to send Cache-Control headers. For each statically cached page a .htaccess file will be created with a mod_expires rule. This rule will make Apache send a cache header when delivering the cached page to the visitor.
 sendCacheControlHeader = 1
 

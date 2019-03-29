@@ -76,6 +76,9 @@ class MetaGenerator extends AbstractGenerator
         if ($configurationService->isBool('enableGzipGenerator')) {
             $generators[] = GzipGenerator::class;
         }
+        if ($configurationService->isBool('enableBrotliGenerator')) {
+            $generators[] = BrotliGenerator::class;
+        }
 
         $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $params = [

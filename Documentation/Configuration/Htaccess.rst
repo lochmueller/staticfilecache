@@ -45,11 +45,13 @@ This is the base .htaccess configuration. Please take a look for the default var
    # RewriteRule .* - [E=SFC_FILE:/index.html]
 
    # Set gzip extension into an environment variable if the visitors browser can handle gzipped content and the gz-file exists
-   RewriteRule .* - [E=SFC_GZIP:]
+   RewriteRule .* - [E=SFC_EXT:]
    RewriteCond %{HTTP:Accept-Encoding} gzip [NC]
-   RewriteRule .* - [E=SFC_GZIP:.gz]
-   RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_GZIP} !-f
-   RewriteRule .* - [E=SFC_GZIP:]
+   RewriteRule .* - [E=SFC_EXT:.gz]
+   RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_EXT} !-f
+   RewriteRule .* - [E=SFC_EXT:]
+
+   # @todo check "br" as Accept-Encoding to add brotli support
 
    # Note: We cannot check realurl "appendMissingSlash" or other BE related settings here - in front of the delivery.
    # Perhaps you have to check the "SFC_FILE" value and set it to your related configution e.g. "index.html" (without leading slash).
@@ -61,7 +63,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteCond %{QUERY_STRING} ^$
 
    # It only makes sense to do the other checks if a static file actually exists.
-   RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_GZIP} -f
+   RewriteCond %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_EXT} -f
 
    # NO frontend or backend user is logged in. Logged in users may see different
    # information than anonymous users. But the anonymous version is cached. So
@@ -75,7 +77,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteCond %{REQUEST_METHOD} GET
 
    # Rewrite the request to the static file.
-   RewriteRule .* %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_GZIP} [L]
+   RewriteRule .* %{ENV:SFC_ROOT}/typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}%{ENV:SFC_URI}%{ENV:SFC_FILE}%{ENV:SFC_EXT} [L]
 
    # Do not allow direct call the cache entries
    RewriteCond %{ENV:SFC_URI} ^/typo3temp/tx_staticfilecache/.*
