@@ -20,6 +20,7 @@ use SFC\Staticfilecache\Cache\Rule\NoNoCache;
 use SFC\Staticfilecache\Cache\Rule\NoUserOrGroupSet;
 use SFC\Staticfilecache\Cache\Rule\NoWorkspacePreview;
 use SFC\Staticfilecache\Cache\Rule\PageCacheable;
+use SFC\Staticfilecache\Cache\Rule\SiteCacheable;
 use SFC\Staticfilecache\Cache\Rule\StaticCacheable;
 use SFC\Staticfilecache\Cache\Rule\ValidDoktype;
 use SFC\Staticfilecache\Cache\Rule\ValidRequestMethod;
@@ -112,6 +113,7 @@ class Configuration
         $ruleClasses = [
             StaticCacheable::class,
             ValidUri::class,
+            SiteCacheable::class,
             ValidDoktype::class,
             NoWorkspacePreview::class,
             NoUserOrGroupSet::class,
