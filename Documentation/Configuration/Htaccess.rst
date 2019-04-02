@@ -3,7 +3,7 @@ htaccess file
 
 This is the base .htaccess configuration. Please take a look for the default variables (SFC_ROOT, SFC_GZIP) and read the comments carefully.
 
-.. code-block:: bash
+.. code-block:: apache
 
    ### Begin: StaticFileCache (preparation) ####
 
@@ -91,34 +91,59 @@ This is the base .htaccess configuration. Please take a look for the default var
    ### Begin: StaticFileCache (options) ####
 
    # Set proper content type and encoding for gzipped html.
-   <FilesMatch "\.gz">
+   <FilesMatch "\.gz$">
       SetEnv no-gzip 1
+      SetEnv no-brotli 1			
       <IfModule mod_headers.c>
          Header set Content-Encoding gzip
+      </IfModule>
+   </FilesMatch>
+   <FilesMatch "\.br$">
+      SetEnv no-gzip 1
+      SetEnv no-brotli 1
+      <IfModule mod_headers.c>
+         Header set Content-Encoding br
       </IfModule>
    </FilesMatch>
 
    # if there are same problems with ForceType, please try the AddType alternative
    # Set proper content type gzipped html
-   <FilesMatch "\.html\.gz">
+   <FilesMatch "\.html\.gz$">
       ForceType text/html
       # AddType "text/html" .gz
    </FilesMatch>
-   <FilesMatch "\.xml\.gz">
+   <FilesMatch "\.xml\.gz$">
       ForceType text/xml
       # AddType "text/xml" .gz
    </FilesMatch>
-   <FilesMatch "\.rss\.gz">
+   <FilesMatch "\.rss\.gz$">
       ForceType text/xml
       # AddType "text/xml" .gz
    </FilesMatch>
+   <FilesMatch "\.html\.br$">
+      ForceType text/html
+      # AddType "text/html" .br
+   </FilesMatch>
+   <FilesMatch "\.xml\.br$">
+      ForceType text/xml
+      # AddType "text/xml" .br
+   </FilesMatch>
+   <FilesMatch "\.rss\.br$">
+      ForceType text/xml
+      # AddType "text/xml" .br
+   </FilesMatch>
+
+   # Avoid .br files being delivered with Content-Language: br headers
+   <IfModule mod_mime.c>
+      RemoveLanguage .br
+   </IfModule>
 
    ### End: StaticFileCache ###
 
 
 If you use the oldschool .htaccess rewrite rules that come with the TYPO3 dummy, then the relevant StaticFileCache configuration should be inserted in the .htaccess file just before these lines:
 
-.. code-block:: bash
+.. code-block:: apache
 
    RewriteCond %{REQUEST_FILENAME} !-f
    RewriteCond %{REQUEST_FILENAME} !-d
@@ -127,7 +152,7 @@ If you use the oldschool .htaccess rewrite rules that come with the TYPO3 dummy,
 
 If the TYPO3 Installation isn´t in your root directory (say your site lives in http://some.domain.com/t3site/), then you have to add the '/t3site' part to the configuration snippet. It must be placed right after %{DOCUMENT_ROOT}. Here is the line of the ruleset to illustrate:
 
-.. code-block:: bash
+.. code-block:: apache
 
    RewriteRule .* - [E=SFC_ROOT:%{DOCUMENT_ROOT}/t3site]
 
@@ -135,7 +160,7 @@ You are of course free to make the rules as complex as you like.
 
 There might be some files you never want to pull from cache even if they are indexed. For example you might have some custom realurl rules that make your RSS feed accessible as rss.xml. You can skip rewriting to static file with the following condition:
 
-.. code-block:: bash
+.. code-block:: apache
 
    RewriteCond %{REQUEST_FILENAME} !^.*\.xml$
 
