@@ -67,6 +67,7 @@ abstract class AbstractHttpPush extends AbstractService
 
     /**
      * Map the path with the right types.
+     * Take care that paths are not used twice.
      *
      * @param array  $paths
      * @param string $type
@@ -80,6 +81,6 @@ abstract class AbstractHttpPush extends AbstractService
                 'path' => $item,
                 'type' => $type,
             ];
-        }, $paths);
+        }, \array_unique($paths));
     }
 }
