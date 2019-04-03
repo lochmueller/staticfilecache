@@ -168,6 +168,14 @@ class Configuration
     }
 
     /**
+     * Add fluid namespaces.
+     */
+    public static function registerFluidNamespace()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['sfc'] = ['SFC\\Staticfilecache\\ViewHelpers'];
+    }
+
+    /**
      * Register icons.
      */
     public static function registerIcons()

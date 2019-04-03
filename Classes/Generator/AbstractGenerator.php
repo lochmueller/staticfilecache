@@ -17,7 +17,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractGenerator implements StaticFileCacheSingletonInterface
 {
-
     use LoggerAwareTrait;
 
     /**

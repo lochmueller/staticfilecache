@@ -49,16 +49,17 @@ class BrotliGenerator extends AbstractGenerator
     }
 
     /**
-     * Check if Brotli is available
+     * Check if Brotli is available.
      *
      * @return bool
      */
     protected function checkAvailable(): bool
     {
-        $available = function_exists('brotli_compress');
+        $available = \function_exists('brotli_compress');
         if (!$available) {
             $this->logger->error('Your server do not support Botli compression, but you enable Brotli in EXT:staticfilecache configuration');
         }
+
         return $available;
     }
 }
