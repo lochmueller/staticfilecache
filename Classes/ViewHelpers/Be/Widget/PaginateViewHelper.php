@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Override original to use our own controller.
+ */
+
 declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\ViewHelpers\Be\Widget;
@@ -13,6 +17,8 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 class PaginateViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\PaginateViewHelper
 {
     /**
+     * Init subrequest.
+     *
      * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      */
     protected function initiateSubRequest()

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Override original to add array support.
+ */
+
 declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\ViewHelpers\Be\Widget\Controller;
@@ -13,6 +17,8 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 class PaginateController extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller\PaginateController
 {
     /**
+     * Index action.
+     *
      * @param int $currentPage
      */
     public function indexAction($currentPage = 1)
@@ -40,6 +46,8 @@ class PaginateController extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controll
     }
 
     /**
+     * Copy the prepareObjectsSlice from the frontend paginate viewhelper.
+     *
      * @param int $itemsPerPage
      * @param int $offset
      *
