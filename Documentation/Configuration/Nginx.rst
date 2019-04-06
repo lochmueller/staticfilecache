@@ -62,11 +62,9 @@ By the following configuration:
            return 405;
        }
 
-         # Todo: Check port? How?
-
        charset utf-8;
-       try_files /typo3temp/tx_staticfilecache/${scheme}/${host}${uri}/index.html
-             /typo3temp/tx_staticfilecache/${scheme}/${host}${uri}
+       try_files /typo3temp/tx_staticfilecache/${scheme}/${host}/${server_port}${uri}/index.html
+             /typo3temp/tx_staticfilecache/${scheme}/${host}/${server_port}${uri}
              =405;
    }
 
