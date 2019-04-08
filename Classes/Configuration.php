@@ -95,6 +95,9 @@ class Configuration
             case 'Eofe':
                 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']['staticfilecache'] = Eofe::class . '->insert';
                 break;
+            case 'Middleware':
+                // Will be handled via Middleware
+                break;
             default:
                 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache']['staticfilecache'] = InsertPageIncacheHook::class;
                 break;
