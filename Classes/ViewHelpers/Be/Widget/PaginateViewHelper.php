@@ -36,7 +36,7 @@ class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('objects', QueryResultInterface::class, 'The QueryResult containing all objects.', true);
+        $this->registerArgument('objects', 'array', 'The QueryResult containing all objects.', true);
         $this->registerArgument('as', 'string', 'as', true);
         $this->registerArgument('configuration', 'array', 'configuration', false, ['itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true, 'maximumNumberOfLinks' => 99]);
     }
