@@ -10,12 +10,45 @@ namespace SFC\Staticfilecache\ViewHelpers\Be\Widget;
 
 use SFC\Staticfilecache\ViewHelpers\Be\Widget\Controller\PaginateController;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * Override original to use our own controller.
  */
-class PaginateViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\PaginateViewHelper
+class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
 {
+    /**
+     * @var \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller\PaginateController
+     */
+    protected $controller;
+
+    /**
+     * @param \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller\PaginateController $controller
+     */
+    public function injectPaginateController(\TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller\PaginateController $controller)
+    {
+        $this->controller = $controller;
+    }
+
+    /**
+     * Initialize arguments.
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('objects', QueryResultInterface::class, 'The QueryResult containing all objects.', true);
+        $this->registerArgument('as', 'string', 'as', true);
+        $this->registerArgument('configuration', 'array', 'configuration', false, ['itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true, 'maximumNumberOfLinks' => 99]);
+    }
+
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        return $this->initiateSubRequest();
+    }
+
     /**
      * Init subrequest.
      *
