@@ -8,7 +8,9 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Domain\Repository;
 
+use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * CacheRepository.
@@ -70,6 +72,11 @@ class CacheRepository extends AbstractRepository
      */
     protected function getTableName(): string
     {
-        return 'cf_staticfilecache';
+        $prefix = 'cf_';
+        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+        if ($configuration->isBool('renameTablesToOtherPrefix')) {
+            $prefix = 'sfc_';
+        }
+        return $prefix . 'staticfilecache';
     }
 }

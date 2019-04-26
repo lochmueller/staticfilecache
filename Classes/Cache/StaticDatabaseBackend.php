@@ -11,6 +11,7 @@ namespace SFC\Staticfilecache\Cache;
 use Psr\Log\LoggerAwareTrait;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
@@ -56,6 +57,20 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
         $this->signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $this->signalClass = \get_class($this);
         $this->setLogger(GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__));
+    }
+
+    /**
+     * Set cache frontend instance and calculate data and tags table name
+     *
+     * @param FrontendInterface $cache The frontend for this backend
+     */
+    public function setCache(FrontendInterface $cache)
+    {
+        parent::setCache($cache);
+        if ($this->configuration->isBool('renameTablesToOtherPrefix')) {
+            $this->cacheTable = 'sfc_' . $this->cacheIdentifier;
+            $this->tagsTable = 'sfc_' . $this->cacheIdentifier . '_tags';
+        }
     }
 
     /**
