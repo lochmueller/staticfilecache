@@ -36,10 +36,12 @@ use SFC\Staticfilecache\Hook\LogNoCache;
 use SFC\Staticfilecache\Hook\LogoffFrontendUser;
 use SFC\Staticfilecache\Hook\UninstallProcess;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
@@ -215,10 +217,15 @@ class Configuration
      */
     public static function getConfiguration(): array
     {
-        if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) || !\is_string($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache'])) {
-            return [];
+        static $configuration;
+        if (is_array($configuration)) {
+            return $configuration;
         }
-
-        return (array)\unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']);
+        if (VersionNumberUtility::convertVersionStringToArray(VersionNumberUtility::getCurrentTypo3Version())['version_main'] < 9) {
+            $configuration = isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) ? (array) \unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) : [];
+        } else {
+            $configuration = (array) GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
+        }
+        return $configuration;
     }
 }
