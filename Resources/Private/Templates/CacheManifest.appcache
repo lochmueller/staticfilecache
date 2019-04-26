@@ -1,0 +1,11 @@
+CACHE MANIFEST
+
+CACHE:<f:for each="{files}" as="file">
+{file}
+<f:for>
+
+NETWORK:
+/typo3/
+
+FALLBACK:
+# Define fallbacks here

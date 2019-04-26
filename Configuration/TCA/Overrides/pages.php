@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
@@ -21,6 +21,14 @@ $tmp = [
             'default' => '0',
         ],
     ],
+    'tx_staticfilecache_cache_offline' => [
+        'exclude' => 1,
+        'label' => 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:staticfilecache.tx_staticfilecache_cache_offline',
+        'config' => [
+            'type' => 'check',
+            'default' => '0',
+        ],
+    ],
 ];
 
 ExtensionManagementUtility::addTCAcolumns('pages', $tmp);
@@ -28,5 +36,5 @@ ExtensionManagementUtility::addTCAcolumns('pages', $tmp);
 ExtensionManagementUtility::addFieldsToPalette(
     'pages',
     'caching',
-    '--linebreak--,tx_staticfilecache_cache,tx_staticfilecache_cache_force'
+    '--linebreak--,' . implode(',', array_keys($tmp))
 );

@@ -25,6 +25,9 @@
 		<trans-unit id="staticfilecache.tx_staticfilecache_cache_force">
 			<source>Force the static cache generation (!!!)</source>
 		</trans-unit>
+		<trans-unit id="staticfilecache.tx_staticfilecache_cache_offline">
+			<source>Cache offline (Manifest)</source>
+		</trans-unit>
 		<trans-unit id="moduleFunction.tx_staticfilecache_infomodule">
 			<source>StaticFileCache</source>
 		</trans-unit>
