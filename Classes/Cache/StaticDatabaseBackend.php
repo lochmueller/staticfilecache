@@ -60,7 +60,7 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
     }
 
     /**
-     * Set cache frontend instance and calculate data and tags table name
+     * Set cache frontend instance and calculate data and tags table name.
      *
      * @param FrontendInterface $cache The frontend for this backend
      */

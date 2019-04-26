@@ -10,7 +10,6 @@ namespace SFC\Staticfilecache\ViewHelpers\Be\Widget;
 
 use SFC\Staticfilecache\ViewHelpers\Be\Widget\Controller\PaginateController;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * Override original to use our own controller.

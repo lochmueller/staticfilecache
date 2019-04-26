@@ -77,6 +77,7 @@ class CacheRepository extends AbstractRepository
         if ($configuration->isBool('renameTablesToOtherPrefix')) {
             $prefix = 'sfc_';
         }
+
         return $prefix . 'staticfilecache';
     }
 }

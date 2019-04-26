@@ -218,14 +218,15 @@ class Configuration
     public static function getConfiguration(): array
     {
         static $configuration;
-        if (is_array($configuration)) {
+        if (\is_array($configuration)) {
             return $configuration;
         }
         if (VersionNumberUtility::convertVersionStringToArray(VersionNumberUtility::getCurrentTypo3Version())['version_main'] < 9) {
-            $configuration = isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) ? (array) \unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) : [];
+            $configuration = isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) ? (array)\unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) : [];
         } else {
-            $configuration = (array) GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
+            $configuration = (array)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
         }
+
         return $configuration;
     }
 }
