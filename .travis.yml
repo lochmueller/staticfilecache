@@ -3,15 +3,8 @@ language: php
 php:
 - 7
 
-matrix:
-  fast_finish: true
-  include:
-    - php: 7
-      env: TYPO3_VERSION=^8.7.0 COVERAGE=1
-    - php: 7
-      env: TYPO3_VERSION=dev-master COVERAGE=0
-  allow_failures:
-    - env: TYPO3_VERSION=dev-master COVERAGE=0
+env:
+	- TYPO3_VERSION=^8.7.0 COVERAGE=1
 
 sudo: false
 cache:
@@ -32,11 +25,7 @@ before_script:
 
 script:
 - |
-  composer phpunit || true
-- |
-  composer phpmd || true
-#- |
-#  composer phpcs || true
+  composer sfc:phpunit || true
 
 after_script:
 - |
