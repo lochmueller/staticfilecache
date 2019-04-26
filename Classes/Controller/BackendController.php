@@ -26,11 +26,15 @@ class BackendController extends ActionController
 {
     /**
      * MAIN function for static publishing information.
+     *
+     * @param string $filter
      */
-    public function listAction()
+    public function listAction(string $filter = '')
     {
+        $filter = $this->setFilter($filter);
         $this->view->assignMultiple([
-            'rows' => $this->getCachePagesEntries(),
+            'rows' => $this->getCachePagesEntries($filter),
+            'filter' => $filter,
             'pageId' => $this->getCurrentUid(),
             'backendDisplayMode' => $this->getDisplayMode(),
         ]);
@@ -72,11 +76,40 @@ class BackendController extends ActionController
     }
 
     /**
+     * @param string $filter
+     *
+     * @return string
+     */
+    protected function setFilter(string $filter)
+    {
+        $user = $this->getBackendUser();
+        $validFilter = ['all', 'cached', 'notCached'];
+        if ('' === $filter) {
+            $filter = (string)$user->getSessionData('sfc_filter');
+        }
+        if (!\in_array($filter, $validFilter, true)) {
+            $filter = 'all';
+        } else {
+            $user->setAndSaveSessionData('sfc_filter', $filter);
+        }
+
+        return $filter;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    /**
      * Get cache pages entries.
      *
      * @return array
      */
-    protected function getCachePagesEntries(): array
+    protected function getCachePagesEntries(string $filter): array
     {
         $rows = [];
         try {
@@ -93,6 +126,11 @@ class BackendController extends ActionController
         foreach ($dbRows as $row) {
             $cacheEntries = $cache->getByTag('sfc_pageId_' . $row['uid']);
             foreach ($cacheEntries as $identifier => $info) {
+                $cached = 0 === \count($info['explanation']);
+                if ('all' !== $filter && (('cached' === $filter && !$cached) || ('notCached' === $filter && $cached))) {
+                    continue;
+                }
+
                 $rows[] = [
                     'uid' => $row['uid'],
                     'title' => BackendUtility::getRecordTitle(

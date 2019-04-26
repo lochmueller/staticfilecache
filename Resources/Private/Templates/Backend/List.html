@@ -17,6 +17,12 @@
 		</f:link.action>
 	</p>
 
+	<f:form action="list" class="form-inline">
+		Filter:
+		<f:form.select name="filter" options="{all: 'All', cached: 'Cached', notCached: 'Not cached'}" class="form-control" value="{filter}" />
+		<f:form.submit value="Set!" class="btn btn-primary" />
+	</f:form>
+
 	<sfc:be.widget.paginate objects="{rows}" as="paginatedRows" configuration="{itemsPerPage: 20, insertAbove: 1}">
 		<table class="table table-striped">
 			<tr>

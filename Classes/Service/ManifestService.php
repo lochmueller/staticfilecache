@@ -1,23 +1,21 @@
 <?php
+
+declare(strict_types = 1);
 /**
- * ManifestService
+ * ManifestService.
  */
 
 namespace SFC\Staticfilecache\Service;
 
-
 /**
- * ManifestService
+ * ManifestService.
  */
 class ManifestService extends AbstractService
 {
-
     //  header("Content-Type: text/cache-manifest");
 
-
-#header("Cache-Control: no-cache, must-revalidate");
-#header("Expires: ".date(DATE_RFC1123));
+//header("Cache-Control: no-cache, must-revalidate");
+//header("Expires: ".date(DATE_RFC1123));
 
 // AddType text/cache-manifest .appcache
-
 }

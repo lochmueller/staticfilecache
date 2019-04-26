@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
@@ -36,5 +36,5 @@ ExtensionManagementUtility::addTCAcolumns('pages', $tmp);
 ExtensionManagementUtility::addFieldsToPalette(
     'pages',
     'caching',
-    '--linebreak--,' . implode(',', array_keys($tmp))
+    '--linebreak--,' . \implode(',', \array_keys($tmp))
 );
