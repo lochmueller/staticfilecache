@@ -29,6 +29,18 @@ script:
 
 after_script:
 - |
+  if [ -n "$TRAVIS_TAG" ] && [ -n "$TYPO3_ORG_USERNAME" ] && [ -n "$TYPO3_ORG_PASSWORD" ]; then
+    echo -e "Preparing upload of release ${TRAVIS_TAG} to TER\n"
+    curl -sSL https://raw.githubusercontent.com/alrra/travis-after-all/1.4.4/lib/travis-after-all.js | node
+    if [ $? -eq 0 ]; then
+      # Cleanup before we upload
+      git reset --hard HEAD && git clean -fx
+      TAG_MESSAGE=`git tag -n10 -l $TRAVIS_TAG | sed 's/^[0-9.]*[ ]*//g'`
+      echo "Uploading release ${TRAVIS_TAG} to TER"
+      .Build/bin/upload . "$TYPO3_ORG_USERNAME" "$TYPO3_ORG_PASSWORD" "$TAG_MESSAGE"
+    fi;
+  fi;
+- |
   if [[ "$COVERAGE" == "1" ]]; then
     echo; echo "Uploading code coverage results";
     .Build/bin/ocular code-coverage:upload --format=php-clover .Build/unittest-coverage.clover

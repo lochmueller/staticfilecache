@@ -51,6 +51,7 @@
 		"issues": "https://github.com/lochmueller/staticfilecache/issues"
 	},
 	"require-dev": {
+		"namelesscoder/typo3-repository-client": "2.0.0",
 		"typo3/testing-framework": "^4.2",
 		"squizlabs/php_codesniffer": "^3.4",
 		"phpmd/phpmd": "^2.6",
