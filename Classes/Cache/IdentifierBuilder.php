@@ -20,8 +20,8 @@ class IdentifierBuilder implements SingletonInterface
      *
      * @param string $requestUri
      *
-     * @return string
      * @throws \Exception
+     * @return string
      */
     public function getCacheFilename(string $requestUri): string
     {
