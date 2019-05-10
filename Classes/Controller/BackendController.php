@@ -12,6 +12,7 @@ use SFC\Staticfilecache\Domain\Repository\PageRepository;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
+use SFC\Staticfilecache\Service\HtaccessConfigurationService;
 use SFC\Staticfilecache\Service\QueueService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -73,6 +74,10 @@ class BackendController extends ActionController
      */
     public function supportAction()
     {
+        $htaccessConfigurationService = GeneralUtility::makeInstance(HtaccessConfigurationService::class);
+        $this->view->assignMultiple([
+            'foundHtaccess' => $htaccessConfigurationService->foundConfigurationInHtaccess(),
+        ]);
     }
 
     /**

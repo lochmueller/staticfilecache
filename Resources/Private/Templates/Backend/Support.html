@@ -6,6 +6,17 @@
 		Support / Dokumentation
 	</h1>
 
+	<h2>Configuration Test</h2>
+
+	<f:if condition="{foundHtaccess}">
+		<f:then>
+			<div class="alert alert-info" role="alert">We found StaticFileCache information in the htaccess file. If the configuration is the most current you have to check by youself.</div>
+		</f:then>
+		<f:else>
+			<div class="alert alert-warning" role="alert">We do not found the StaticFileCache configuration in the htaccess file. Perhaps you configure the rules in the Webserver or do not use a apache. But: In most cases the configuration is missing!! (Note: We search for "SFC_FULLPATH" in this file)</div>
+		</f:else>
+	</f:if>
+
 	<h2>Support the extension development...</h2>
 	<p>
 		<a href="https://www.patreon.com/lochmueller" target="_blank" class="btn btn-success">
