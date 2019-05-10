@@ -18,10 +18,22 @@ use SFC\Staticfilecache\Service\HttpPush\StyleHttpPush;
  */
 class StyleHttpPushTest extends AbstractHttpPushTest
 {
+    /**
+     * Test get valid headers.
+     */
     public function testGetValidHeaders()
     {
         $service = new StyleHttpPush();
         $headers = $service->getHeaders($this->getExampleContent());
+
+        $exepected = [
+            [
+                'path' => '/bootstrap/4.3.9/css/bootstrap.min.css',
+                'type' => 'style',
+            ]
+        ];
+
+        $this->assertEquals($exepected, $headers, 'Wrong header result from service');
         $this->assertCount(1, $headers);
     }
 }

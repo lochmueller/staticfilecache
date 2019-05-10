@@ -34,8 +34,14 @@ class ScriptHttpPush extends AbstractHttpPush
      */
     public function getHeaders(string $content): array
     {
-        \preg_match_all('/(?<=["\'])[^="\']*\.js(\.gzi?p?)?(\?\d*)?(?=["\'])/', $content, $jsFiles);
-        $paths = $this->streamlineFilePaths((array)$jsFiles[0]);
+        \preg_match_all('/src=["\']{1}[^="\']*\.js(\.gzi?p?)?(\?\d*)?(?=["\'])/', $content, $jsFiles);
+
+        $res = array_map(function ($item) {
+            // skip: src=('|") -> 5 chars
+            return substr($item, 5);
+        }, (array)$jsFiles['0']);
+
+        $paths = $this->streamlineFilePaths($res);
 
         return $this->mapPathsWithType($paths, 'script');
     }
