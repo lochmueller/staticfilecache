@@ -20,8 +20,8 @@
 			<target>Erzwingt die statische Generierung (!!!)</target>
 		</trans-unit>
 		<trans-unit id="staticfilecache.tx_staticfilecache_cache_offline">
-			<source>Cache offline (Manifest)</source>
-			<target>Cache Offline (Manifest)</target>
+			<source>Cache offline (Manifest) - only if page is cached staticly</source>
+			<target>Cache Offline (Manifest) - nur wenn Seite auch statisch gespeichert wird</target>
 		</trans-unit>
 		<trans-unit id="module.intro.current">
 			<source>This module displays the cache entries and errors of the current page.</source>

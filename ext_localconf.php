@@ -9,3 +9,4 @@ if (!defined('TYPO3_MODE')) {
 \SFC\Staticfilecache\Configuration::registerCachingFramework();
 \SFC\Staticfilecache\Configuration::registerIcons();
 \SFC\Staticfilecache\Configuration::registerFluidNamespace();
+\SFC\Staticfilecache\Configuration::registerEid();

@@ -26,17 +26,12 @@ class UriFrontend extends VariableFrontend
      */
     public function isValidEntryIdentifier($identifier)
     {
-        if (false === GeneralUtility::isValidUrl($identifier)) {
+        $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
+        try {
+            $identifierBuilder->getCacheFilename($identifier);
+        } catch (\Exception $ex) {
             return false;
         }
-        $urlParts = \parse_url($identifier);
-        $required = ['host', 'path', 'scheme'];
-        foreach ($required as $item) {
-            if (!isset($urlParts[$item]) || \mb_strlen($urlParts[$item]) <= 0) {
-                return false;
-            }
-        }
-
         return true;
     }
 

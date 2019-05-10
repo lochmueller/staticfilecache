@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Tests\Unit\Cache;
 
 use SFC\Staticfilecache\Cache\UriFrontend;
+use SFC\Staticfilecache\Tests\Unit\AbstractTest;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 
 /**
@@ -17,14 +18,21 @@ use TYPO3\CMS\Core\Cache\Backend\NullBackend;
  * @internal
  * @coversNothing
  */
-class UriFrontendTest extends \PHPUnit\Framework\TestCase
+class UriFrontendTest extends AbstractTest
 {
+    /**
+     * Test a valid path
+     */
     public function testCheckValidPath()
     {
+        $this->markTestSkipped();
         $this->assertTrue($this->getCacheFrontend()
-            ->isValidEntryIdentifier('http://www.domain.tld/path.html'));
+            ->isValidEntryIdentifier('https://www.domain.tld/path.html'));
     }
 
+    /**
+     * Test check invalid path
+     */
     public function testCheckInValidPath()
     {
         $this->assertFalse($this->getCacheFrontend()

@@ -180,6 +180,11 @@ class Configuration
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['sfc'] = ['SFC\\Staticfilecache\\ViewHelpers'];
     }
 
+    public static function registerEid()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['sfc_manifest'] = 'EXT:staticfilecache/Resources/Private/Php/Manifest.php';
+    }
+
     /**
      * Register icons.
      */

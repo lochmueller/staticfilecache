@@ -258,21 +258,8 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     protected function getCacheFilename(string $entryIdentifier): string
     {
-        $urlParts = \parse_url($entryIdentifier);
-        $parts = [
-            $urlParts['scheme'],
-            $urlParts['host'],
-            isset($urlParts['port']) ? (int)$urlParts['port'] : ('https' === $urlParts['scheme'] ? 443 : 80),
-        ];
-
-        $path = \implode('/', $parts) . '/' . \trim($urlParts['path'], '/');
-        $cacheFilename = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY . $path);
-        $fileExtension = (string)PathUtility::pathinfo(PathUtility::basename($cacheFilename), PATHINFO_EXTENSION);
-        if (empty($fileExtension) || !GeneralUtility::inList($this->configuration->get('fileTypes'), $fileExtension)) {
-            $cacheFilename = \rtrim($cacheFilename, '/') . '/index.html';
-        }
-
-        return $cacheFilename;
+        $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
+        return $identifierBuilder->getCacheFilename($entryIdentifier);
     }
 
     /**
