@@ -20,10 +20,25 @@ class ManifestService extends AbstractService
 {
 
     /**
-     * Write the manifest file
+     * Generate the manifest file content
+     *
+     * @param string $filename
+     * @param string $data
+     * @return string
      */
-    public function writeManifestFile()
+    public function generateManifestContent(string $filename, string &$data): string
     {
+
+        //DebuggerUtility::var_dump($filename);
+        //DebuggerUtility::var_dump($data);
+        //die();
+
+        return '';
+
+        //DebuggerUtility::var_dump($fileName);
+        //DebuggerUtility::var_dump($entryIdentifier);
+        //DebuggerUtility::var_dump($data);
+        //die();
     }
 
     /**

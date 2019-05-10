@@ -1,20 +1,22 @@
 <?php
 /**
- * PlainGenerator.
+ * ManifestGenerator.
  */
 
 declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Generator;
 
+use SFC\Staticfilecache\Service\ManifestService;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * PlainGenerator.
+ * ManifestGenerator.
  */
-class PlainGenerator extends AbstractGenerator
+class ManifestGenerator extends AbstractGenerator
 {
+
     /**
      * Generate file.
      *
@@ -24,7 +26,11 @@ class PlainGenerator extends AbstractGenerator
      */
     public function generate(string $entryIdentifier, string $fileName, string &$data)
     {
-        GeneralUtility::writeFile($fileName, $data);
+        $manifestService = GeneralUtility::makeInstance(ManifestService::class);
+        $content = $manifestService->generateManifestContent($entryIdentifier, $data);
+        if ($content !== '') {
+            GeneralUtility::writeFile($fileName . '.sfc', $content);
+        }
     }
 
     /**
@@ -36,6 +42,6 @@ class PlainGenerator extends AbstractGenerator
     public function remove(string $entryIdentifier, string $fileName)
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->removeFile($fileName);
+        $removeService->removeFile($fileName . '.sfc');
     }
 }

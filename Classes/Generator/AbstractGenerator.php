@@ -34,7 +34,7 @@ abstract class AbstractGenerator implements StaticFileCacheSingletonInterface
      * @param string $fileName
      * @param string $data
      */
-    abstract public function generate(string $entryIdentifier, string $fileName, string $data);
+    abstract public function generate(string $entryIdentifier, string $fileName, string &$data);
 
     /**
      * Remove file.

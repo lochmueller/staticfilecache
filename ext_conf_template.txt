@@ -31,6 +31,9 @@ htaccessTemplateName = EXT:staticfilecache/Resources/Private/Templates/Htaccess.
 # cat=basic; type=options[InsertPageIncache=InsertPageIncache,ContentPostProcOutput=ContentPostProcOutput,Eofe=Eofe,Middleware=Middleware]; label="InsertPageIncache" is the default. ContentPostProcOutput is later and EOFE is the latest. Please try to use the default hook. BETA -	 Since TYPO3 9 also Middleware is possible.
 saveCacheHook = InsertPageIncache
 
+# cat=generator; type=boolean; label=Enable Cache Manifest generator: Just in beta at the moment
+enableGeneratorManifest = 0
+
 # cat=generator; type=boolean; label=Enable Plain generator: When checked, the normal (default) file will write to the cache.
 enableGeneratorPlain = 1
 

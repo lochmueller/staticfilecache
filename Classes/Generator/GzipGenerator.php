@@ -28,7 +28,7 @@ class GzipGenerator extends AbstractGenerator
      * @param string $fileName
      * @param string $data
      */
-    public function generate(string $entryIdentifier, string $fileName, string $data)
+    public function generate(string $entryIdentifier, string $fileName, string &$data)
     {
         $contentGzip = \gzencode($data, $this->getCompressionLevel());
         if ($contentGzip) {

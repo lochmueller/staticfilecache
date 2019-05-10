@@ -23,7 +23,7 @@ class MetaGenerator extends AbstractGenerator
      * @param string $fileName
      * @param string $data
      */
-    public function generate(string $entryIdentifier, string $fileName, string $data)
+    public function generate(string $entryIdentifier, string $fileName, string &$data)
     {
         foreach ($this->getImplementationObjects() as $implementation) {
             /* @var $implementation AbstractGenerator */
@@ -70,6 +70,9 @@ class MetaGenerator extends AbstractGenerator
         $generators = [];
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
 
+        if ($configurationService->isBool('enableGeneratorManifest')) {
+            $generators[] = ManifestGenerator::class;
+        }
         if ($configurationService->isBool('enableGeneratorPlain')) {
             $generators[] = PlainGenerator::class;
         }
