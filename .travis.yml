@@ -25,7 +25,7 @@ before_script:
 
 script:
 - |
-  composer sfc:phpunit || true
+  composer test || true
 
 after_script:
 - |

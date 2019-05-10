@@ -75,22 +75,19 @@
 		}
 	},
 	"scripts": {
-		"sfc:phpmetrics": [
+		"code:metrics": [
 			"phpmetrics --report-html=.Build/Report . --exclude=.Build"
 		],
-		"sfc:phpmd": [
+		"code:phpmd": [
 			"phpmd Classes/ text cleancode,codesize,controversial,design,naming,unusedcode"
 		],
-		"sfc:phpdoc": [
+		"code:phpdoc": [
 			"docker run --rm -v $(pwd):/data phpdoc/phpdoc -d Classes -t .Build/phpdoc"
 		],
-		"sfc:php-cs-fixer": [
-			"php-cs-fixer fix --config .php_cs"
+		"code:php-cs-fixer": [
+			"php-cs-fixer fix --config Resources/Private/Build/PhpCsFixer.php"
 		],
-		"sfc:phpcs": [
-			"phpcs --runtime-set ignore_warnings_on_exit true --standard=PSR2 Classes/"
-		],
-		"sfc:phpunit": [
+		"test": [
 			"phpunit -c Tests/UnitTests.xml"
 		]
 	}
