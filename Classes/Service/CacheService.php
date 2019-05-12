@@ -11,6 +11,7 @@ namespace SFC\Staticfilecache\Service;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
@@ -56,5 +57,19 @@ class CacheService extends AbstractService
         foreach ($cacheEntries as $cacheEntry) {
             $cache->remove($cacheEntry);
         }
+    }
+
+    /**
+     * Get relative base directory
+     *
+     * @return string
+     */
+    public function getRelativeBaseDirectory(): string
+    {
+        $overrideDirectory = trim((string)GeneralUtility::makeInstance(ConfigurationService::class)->get('overrideCacheDirectory'));
+        if ($overrideDirectory !== '') {
+            return $overrideDirectory;
+        }
+        return 'typo3temp/tx_staticfilecache/';
     }
 }

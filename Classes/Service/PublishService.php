@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
-use SFC\Staticfilecache\Cache\StaticFileBackend;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -25,7 +24,7 @@ class PublishService extends AbstractService
     public function publish()
     {
         $arguments = [
-            'cacheDirectory' => StaticFileBackend::CACHE_DIRECTORY,
+            'cacheDirectory' => GeneralUtility::makeInstance(CacheService::class)->getRelativeBaseDirectory(),
         ];
 
         $objectManager = new ObjectManager();

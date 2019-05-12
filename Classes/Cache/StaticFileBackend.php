@@ -10,6 +10,7 @@ namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\Domain\Repository\CacheRepository;
 use SFC\Staticfilecache\Generator\MetaGenerator;
+use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\HtaccessService;
 use SFC\Staticfilecache\Service\QueueService;
@@ -27,12 +28,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class StaticFileBackend extends StaticDatabaseBackend implements TransientBackendInterface
 {
-    /**
-     * Cache directory.
-     *
-     * @var string
-     */
-    const CACHE_DIRECTORY = 'typo3temp/tx_staticfilecache/';
 
     /**
      * Saves data in the cache.
@@ -163,7 +158,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
             return;
         }
 
-        $absoluteCacheDir = GeneralUtility::getFileAbsFileName(self::CACHE_DIRECTORY);
+        $absoluteCacheDir = GeneralUtility::getFileAbsFileName(GeneralUtility::makeInstance(CacheService::class)->getRelativeBaseDirectory());
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
         $removeService->softRemoveDir($absoluteCacheDir . 'https/');
         $removeService->softRemoveDir($absoluteCacheDir . 'http/');

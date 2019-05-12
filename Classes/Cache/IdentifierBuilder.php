@@ -4,6 +4,7 @@
  */
 namespace SFC\Staticfilecache\Cache;
 
+use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,7 +39,7 @@ class IdentifierBuilder implements SingletonInterface
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
 
         $path = \implode('/', $parts) . '/' . \trim($urlParts['path'], '/');
-        $cacheFilename = GeneralUtility::getFileAbsFileName(StaticFileBackend::CACHE_DIRECTORY . $path);
+        $cacheFilename = GeneralUtility::getFileAbsFileName(GeneralUtility::makeInstance(CacheService::class)->getRelativeBaseDirectory() . $path);
         $fileExtension = (string)PathUtility::pathinfo(PathUtility::basename($cacheFilename), PATHINFO_EXTENSION);
         $typesExtensions = 'sfc,' . $configurationService->get('fileTypes');
         if (empty($fileExtension) || !GeneralUtility::inList($typesExtensions, $fileExtension)) {
