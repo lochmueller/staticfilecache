@@ -131,7 +131,7 @@ class BackendController extends ActionController
         foreach ($dbRows as $row) {
             $cacheEntries = $cache->getByTag('sfc_pageId_' . $row['uid']);
             foreach ($cacheEntries as $identifier => $info) {
-                $cached = 0 === \count($info['explanation']);
+                $cached = !is_array($info['explanation']) || 0 === \count($info['explanation']);
                 if ('all' !== $filter && (('cached' === $filter && !$cached) || ('notCached' === $filter && $cached))) {
                     continue;
                 }
