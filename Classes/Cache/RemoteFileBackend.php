@@ -51,6 +51,21 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     protected $freeze = false;
 
     /**
+     * Hash length
+     *
+     * @var int
+     */
+    protected $hashLength = 3;
+
+    /**
+     * @param int $hashLength
+     */
+    public function setHashLength(int $hashLength): void
+    {
+        $this->hashLength = $hashLength;
+    }
+
+    /**
      * Saves data in the cache.
      *
      * @param string $entryIdentifier An identifier for this specific cache entry
@@ -284,36 +299,36 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      * @param string $entryIdentifier
      *
      * @return string
+     * @throws \Exception
      */
     protected function getFileName(string $entryIdentifier): string
     {
-        $parts = [
-            (string)GeneralUtility::md5int($entryIdentifier),
-        ];
-
         $urlParts = \parse_url($entryIdentifier);
         if (isset($urlParts['path'])) {
             $pathInfo = PathUtility::pathinfo($urlParts['path']);
             if (isset($pathInfo['basename'])) {
-                $parts[] = \urldecode($pathInfo['basename']);
+                $baseName = \urldecode($pathInfo['basename']);
             } elseif (isset($pathInfo['filename'])) {
-                $parts[] = \urldecode($pathInfo['filename']);
+                $baseName = \urldecode($pathInfo['filename']);
+            } else {
+                throw new \Exception('Could not fetch basename or filename of ' . $entryIdentifier, 123678);
             }
+        } else {
+            throw new \Exception('Could not fetch a valid path from identifier ' . $entryIdentifier, 23478);
         }
 
-        $objectManager = new ObjectManager();
-        $resourceFactory = $objectManager->get(ResourceFactory::class);
-        $storage = $resourceFactory->getDefaultStorage();
         try {
-            $baseName = (string)$storage->sanitizeFileName(\implode('-', $parts));
-        } catch (\exception $ex) {
-            $baseName = \implode('-', $parts);
+            $objectManager = new ObjectManager();
+            $resourceFactory = $objectManager->get(ResourceFactory::class);
+            $storage = $resourceFactory->getDefaultStorage();
+            $baseName = (string)$storage->sanitizeFileName($baseName);
+        } catch (\Exception $ex) {
+            $this->logger->warning('Could not sanitize the filename for remote_file backend', ['uri' => $entryIdentifier]);
         }
 
-        // 2 folder logic
-        $baseName = $baseName[0] . '/' . \mb_substr($baseName, 1);
-        $baseName = \mb_substr($baseName, 0, 3) . '/' . \mb_substr($baseName, 3);
-
-        return $baseName;
+        // Hash
+        $hash = (string)GeneralUtility::shortMD5($entryIdentifier, $this->hashLength);
+        $remoteStructure = \implode('/', str_split($hash));
+        return $remoteStructure . '/' . $baseName;
     }
 }

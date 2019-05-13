@@ -167,7 +167,8 @@ class Configuration
                 'all',
             ],
             'options' => [
-                'defaultLifetime' => 3600,
+                // 'defaultLifetime' => 3600,
+                // 'hashLength' => 10,
             ],
         ];
     }
