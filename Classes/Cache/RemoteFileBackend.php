@@ -298,8 +298,8 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      *
      * @param string $entryIdentifier
      *
-     * @return string
      * @throws \Exception
+     * @return string
      */
     protected function getFileName(string $entryIdentifier): string
     {
