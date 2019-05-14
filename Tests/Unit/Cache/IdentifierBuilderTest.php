@@ -1,24 +1,23 @@
 <?php
 
 /**
- * Test the URI frontend.
+ * IdentifierBuilderTest.
  */
 
 declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Tests\Unit\Cache;
 
-use SFC\Staticfilecache\Cache\UriFrontend;
+use SFC\Staticfilecache\Cache\IdentifierBuilder;
 use SFC\Staticfilecache\Tests\Unit\AbstractTest;
-use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 
 /**
- * Test the URI frontend.
+ * IdentifierBuilderTest.
  *
  * @internal
  * @coversNothing
  */
-class UriFrontendTest extends AbstractTest
+class IdentifierBuilderTest extends AbstractTest
 {
     /**
      * Test a valid path
@@ -32,7 +31,8 @@ class UriFrontendTest extends AbstractTest
         ];
 
         foreach ($validUris as $uri) {
-            $this->assertTrue($this->getCacheFrontend()->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be valid!');
+            $identBuilder = new IdentifierBuilder();
+            $this->assertTrue($identBuilder->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be valid!');
         }
     }
 
@@ -46,17 +46,8 @@ class UriFrontendTest extends AbstractTest
         ];
 
         foreach ($invalidUris as $uri) {
-            $this->assertFalse($this->getCacheFrontend()->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be invalid!');
+            $identBuilder = new IdentifierBuilder();
+            $this->assertFalse($identBuilder->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be invalid!');
         }
-    }
-
-    /**
-     * Get the subject.
-     *
-     * @return UriFrontend
-     */
-    protected function getCacheFrontend()
-    {
-        return new UriFrontend('test', new NullBackend(''));
     }
 }

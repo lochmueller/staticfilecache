@@ -60,7 +60,7 @@ class IdentifierBuilder implements StaticFileCacheSingletonInterface
      *
      * @return bool
      */
-    protected function isValidEntryIdentifier(string $requestUri): bool
+    public function isValidEntryIdentifier(string $requestUri): bool
     {
         if (false === GeneralUtility::isValidUrl($requestUri)) {
             return false;

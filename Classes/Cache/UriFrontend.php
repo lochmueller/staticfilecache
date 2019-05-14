@@ -26,13 +26,12 @@ class UriFrontend extends VariableFrontend
      */
     public function isValidEntryIdentifier($identifier)
     {
-        $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
         try {
-            $identifierBuilder->getCacheFilename($identifier);
+            $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
+            return $identifierBuilder->isValidEntryIdentifier($identifier);
         } catch (\Exception $ex) {
-            return false;
         }
-        return true;
+        return false;
     }
 
     /**

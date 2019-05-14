@@ -28,6 +28,7 @@ class ValidUriTest extends AbstractRuleTest
         $paths = [
             '/index.php',
             '/?param=value',
+            '/?type=1533906435',
             '/invalid//path',
         ];
         foreach ($paths as $path) {
@@ -45,6 +46,7 @@ class ValidUriTest extends AbstractRuleTest
         $validUriRule = new ValidUri();
         $paths = [
             '',
+            '/',
             '/home.html',
             '/home.jsp',
             '/home/deep',
