@@ -58,6 +58,8 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     protected $hashLength = 3;
 
     /**
+     * Set hash length
+     *
      * @param int $hashLength
      */
     public function setHashLength(int $hashLength): void

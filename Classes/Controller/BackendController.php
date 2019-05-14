@@ -81,6 +81,8 @@ class BackendController extends ActionController
     }
 
     /**
+     * Set filter
+     *
      * @param string $filter
      *
      * @return string
@@ -102,6 +104,8 @@ class BackendController extends ActionController
     }
 
     /**
+     * Get backend user
+     *
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
     protected function getBackendUser()
@@ -112,6 +116,7 @@ class BackendController extends ActionController
     /**
      * Get cache pages entries.
      *
+     * @param string $filter
      * @return array
      */
     protected function getCachePagesEntries(string $filter): array

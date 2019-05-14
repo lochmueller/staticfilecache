@@ -9,19 +9,25 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\ViewHelpers\Be\Widget;
 
 use SFC\Staticfilecache\ViewHelpers\Be\Widget\Controller\PaginateController;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
 
 /**
  * Override original to use our own controller.
  */
-class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
+class PaginateViewHelper extends AbstractWidgetViewHelper
 {
     /**
+     * Controller
+     *
      * @var \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller\PaginateController
      */
     protected $controller;
 
     /**
+     * Inject paginate controller
+     *
      * @param \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller\PaginateController $controller
      */
     public function injectPaginateController(\TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller\PaginateController $controller)
@@ -41,6 +47,8 @@ class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
     }
 
     /**
+     * Render
+     *
      * @return string
      */
     public function render()
@@ -51,7 +59,7 @@ class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
     /**
      * Init subrequest.
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
+     * @return ResponseInterface
      */
     protected function initiateSubRequest()
     {

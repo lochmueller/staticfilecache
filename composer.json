@@ -78,7 +78,6 @@
 		"code": [
 			"@code:rector",
 			"@code:php-cs-fixer",
-			"@code:phpmd",
 			"@code:phpdoc",
 			"@code:metrics"
 		],
