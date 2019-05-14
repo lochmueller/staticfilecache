@@ -42,7 +42,6 @@
 		"typo3/cms-core": "~8.7.0||~9.5.0||dev-master"
 	},
 	"replace": {
-		"staticfilecache": "self.version",
 		"typo3-ter/staticfilecache": "self.version"
 	},
 	"homepage": "https://github.com/lochmueller/staticfilecache",
@@ -57,7 +56,8 @@
 		"phpmd/phpmd": "^2.6",
 		"scrutinizer/ocular": "^1.5",
 		"friendsofphp/php-cs-fixer": "^2.14",
-		"phpmetrics/phpmetrics": "^2.4"
+		"phpmetrics/phpmetrics": "^2.4",
+		"rector/rector": "^0.4.12"
 	},
 	"suggest": {
 		"lochmueller/seocli": "Scan websites against SEO criteria and/or trigger the indexing process and cache warming in deployment scripts",
@@ -75,6 +75,18 @@
 		}
 	},
 	"scripts": {
+		"code": [
+			"@code:rector",
+			"@code:php-cs-fixer",
+			"@code:phpmd",
+			"@code:phpdoc",
+			"@code:metrics"
+		],
+		"code:rector": [
+			"rector process Classes/ --config=Resources/Private/Build/Rector.yaml",
+			"rector process Tests/ --config=Resources/Private/Build/Rector.yaml",
+			"rector process Configuration/TCA/ --config=Resources/Private/Build/Rector.yaml"
+		],
 		"code:metrics": [
 			"phpmetrics --report-html=.Build/Report . --exclude=.Build"
 		],

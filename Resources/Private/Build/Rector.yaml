@@ -1,0 +1,21 @@
+parameters:
+  exclude_paths:
+    - '*/Tests/*'
+    - '*/.Build/*'
+    - '*/Api/*'
+  php_version_features: '7.2'
+services:
+  Rector\Php\Rector\ConstFetch\SensitiveConstantNameRector: ~
+  Rector\Php\Rector\Property\TypedPropertyRector: ~
+  Rector\Guzzle\Rector\MethodCall\MessageAsArrayRector: ~
+  Rector\PHPUnit\Rector\Foreach_\SimplifyForeachInstanceOfRector: ~
+  Rector\PHPUnit\Rector\MethodCall\AssertEqualsParameterToSpecificMethodsTypeRector: ~
+  Rector\PHPUnit\Rector\ExceptionAnnotationRector: ~
+  Rector\DeadCode\Rector\Assign\RemoveDoubleAssignRector: ~
+  Rector\DeadCode\Rector\Array_\RemoveDuplicatedArrayKeyRector: ~
+  Rector\DeadCode\Rector\ClassMethod\RemoveOverriddenValuesRector: ~
+  Rector\DeadCode\Rector\For_\RemoveDeadIfForeachForRector: ~
+  Rector\DeadCode\Rector\Stmt\RemoveDeadStmtRector: ~
+  Rector\DeadCode\Rector\ClassConst\RemoveUnusedPrivateConstantRector: ~
+  Rector\DeadCode\Rector\FunctionLike\RemoveCodeAfterReturnRector: ~
+  Rector\DeadCode\Rector\FunctionLike\RemoveDeadReturnRector: ~
