@@ -12,7 +12,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * ClientService.
@@ -56,9 +58,6 @@ class ClientService extends AbstractService
      */
     protected function getCallableClient(string $domain): Client
     {
-        if (!\class_exists(Client::class) || !\class_exists(CookieJar::class)) {
-            throw new \Exception('You need guzzle to handle the Queue Management', 1236728342);
-        }
         $jar = GeneralUtility::makeInstance(CookieJar::class);
         $cookie = GeneralUtility::makeInstance(SetCookie::class);
         $cookie->setName('staticfilecache');
@@ -77,6 +76,20 @@ class ClientService extends AbstractService
             ],
         ];
 
-        return GeneralUtility::makeInstance(Client::class, $options);
+        // Core options
+        $httpOptions = (array)$GLOBALS['TYPO3_CONF_VARS']['HTTP'];
+        $httpOptions['verify'] = filter_var($httpOptions['verify'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? $httpOptions['verify'];
+
+        // extended
+        $params = [
+            'sfc' => $options,
+            'core' => $httpOptions,
+        ];
+        $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+        $params = $signalSlotDispatcher->dispatch(__CLASS__, __METHOD__, $params);
+        $base = $params['core'];
+        ArrayUtility::mergeRecursiveWithOverrule($base, $params['sfc']);
+
+        return GeneralUtility::makeInstance(Client::class, $base);
     }
 }
