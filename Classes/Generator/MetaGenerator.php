@@ -89,7 +89,8 @@ class MetaGenerator extends AbstractGenerator
         ];
         try {
             $params = $signalSlotDispatcher->dispatch(__CLASS__, 'getImplementations', $params);
-        } catch (\Exception $ex) {
+        } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
         }
 
         return $params['generators'];

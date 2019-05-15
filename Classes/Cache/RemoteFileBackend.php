@@ -324,8 +324,8 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
             $resourceFactory = $objectManager->get(ResourceFactory::class);
             $storage = $resourceFactory->getDefaultStorage();
             $baseName = (string)$storage->sanitizeFileName($baseName);
-        } catch (\Exception $ex) {
-            $this->logger->warning('Could not sanitize the filename for remote_file backend', ['uri' => $entryIdentifier]);
+        } catch (\Exception $exception) {
+            $this->logger->warning('Could not sanitize the filename for remote_file backend: ' . $exception->getMessage(), ['uri' => $entryIdentifier]);
         }
 
         // Hash

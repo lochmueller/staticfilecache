@@ -29,9 +29,9 @@ class UriFrontend extends VariableFrontend
         try {
             $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
             return $identifierBuilder->isValidEntryIdentifier($identifier);
-        } catch (\Exception $ex) {
+        } catch (\Exception $exception) {
+            return false;
         }
-        return false;
     }
 
     /**

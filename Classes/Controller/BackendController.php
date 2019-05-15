@@ -57,7 +57,8 @@ class BackendController extends ActionController
                 foreach ($items as $item) {
                     $queueService->runSingleRequest($item);
                 }
-            } catch (\Exception $ex) {
+            } catch (\Exception $exception) {
+                $this->addFlashMessage('Error in run: ' . $exception->getMessage(), 'Runner', FlashMessage::ERROR, true);
             }
 
             $this->addFlashMessage('Run ' . \count($items) . ' entries', 'Runner', FlashMessage::OK, true);

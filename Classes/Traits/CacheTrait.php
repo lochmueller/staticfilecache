@@ -98,9 +98,9 @@ trait CacheTrait
         try {
             /** @var AbstractFrontend $cache */
             $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache($cacheIdentifier);
-        } catch (\Exception $ex) {
+        } catch (\Exception $exception) {
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-            $logger->error($ex->getMessage(), ['entryIdentifier' => $entryIdentifier, 'cacheIdentifier' => $cacheIdentifier]);
+            $logger->error($exception->getMessage(), ['entryIdentifier' => $entryIdentifier, 'cacheIdentifier' => $cacheIdentifier]);
 
             return \call_user_func_array($callback, []);
         }
