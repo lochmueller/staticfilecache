@@ -75,7 +75,7 @@ class HttpPushService extends AbstractService
         /** @var Dispatcher $dispatcher */
         $dispatcher = $objectManager->get(Dispatcher::class);
         try {
-            $dispatcher->dispatch(__CLASS__, __METHOD__, $arguments);
+            $dispatcher->dispatch(__CLASS__, 'getHttpPushHandler', $arguments);
         } catch (\Exception $exception) {
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
             $logger->error('Problems in publis signal: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());

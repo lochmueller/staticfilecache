@@ -86,7 +86,7 @@ class ClientService extends AbstractService
             'core' => $httpOptions,
         ];
         $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $params = $signalSlotDispatcher->dispatch(__CLASS__, __METHOD__, $params);
+        $params = $signalSlotDispatcher->dispatch(__CLASS__, 'getCallableClient', $params);
         $base = $params['core'];
         ArrayUtility::mergeRecursiveWithOverrule($base, $params['sfc']);
 
