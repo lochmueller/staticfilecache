@@ -57,7 +57,7 @@ class ManifestService extends AbstractService
             // var_dump($fileName);
         } catch (\Exception $exception) {
             // $this->lo
-            #$exception->getMessage()
+            //$exception->getMessage()
         }
     }
 }
