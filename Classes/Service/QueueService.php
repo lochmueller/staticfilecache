@@ -8,11 +8,9 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
-use Psr\Log\LoggerAwareTrait;
 use SFC\Staticfilecache\Command\BoostQueueCleanupCommand;
 use SFC\Staticfilecache\Command\BoostQueueRunCommand;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -23,7 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class QueueService extends AbstractService
 {
-    use LoggerAwareTrait;
 
     /**
      * Queue repository.
@@ -38,7 +35,7 @@ class QueueService extends AbstractService
     public function __construct()
     {
         $this->queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
-        $this->setLogger(GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__));
+        parent::__construct();
     }
 
     /**

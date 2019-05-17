@@ -8,11 +8,11 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
-use SFC\Staticfilecache\StaticFileCacheSingletonInterface;
+use SFC\Staticfilecache\StaticFileCacheObject;
 
 /**
  * AbstractService.
  */
-class AbstractService implements StaticFileCacheSingletonInterface
+class AbstractService extends StaticFileCacheObject
 {
 }

@@ -8,11 +8,11 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Hook;
 
-use SFC\Staticfilecache\StaticFileCacheSingletonInterface;
+use SFC\Staticfilecache\StaticFileCacheObject;
 
 /**
  * AbstractHook.
  */
-class AbstractHook implements StaticFileCacheSingletonInterface
+class AbstractHook extends StaticFileCacheObject
 {
 }

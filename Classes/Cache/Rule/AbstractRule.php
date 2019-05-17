@@ -8,13 +8,13 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 
-use SFC\Staticfilecache\StaticFileCacheSingletonInterface;
+use SFC\Staticfilecache\StaticFileCacheObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Abstract Rule.
  */
-abstract class AbstractRule implements StaticFileCacheSingletonInterface
+abstract class AbstractRule extends StaticFileCacheObject
 {
     /**
      * Wrapper for the signal.

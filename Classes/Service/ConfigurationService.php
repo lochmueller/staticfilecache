@@ -27,6 +27,7 @@ class ConfigurationService extends AbstractService
      */
     public function __construct()
     {
+        parent::__construct();
         $extensionConfig = Configuration::getConfiguration();
         $this->configuration = \array_merge($this->configuration, $extensionConfig);
 

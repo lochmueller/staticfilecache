@@ -14,7 +14,6 @@ use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\TagService;
 use SFC\Staticfilecache\Service\UriService;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -22,7 +21,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * StaticFileCache.
  */
-class StaticFileCache implements StaticFileCacheSingletonInterface
+class StaticFileCache extends StaticFileCacheObject
 {
     /**
      * Configuration of the extension.
@@ -50,7 +49,12 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
      */
     public function __construct()
     {
-        $this->cache = GeneralUtility::makeInstance(CacheService::class)->get();
+        parent::__construct();
+        try {
+            $this->cache = GeneralUtility::makeInstance(CacheService::class)->get();
+        } catch (\Exception $exception) {
+            $this->logger->error('Problems getting the cache: ' . $exception->getMessage());
+        }
         $this->signalDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
     }
@@ -167,7 +171,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
     protected function calculateTimeout(int $timeOutTime, TypoScriptFrontendController $tsfe): int
     {
         if (!\is_array($tsfe->page)) {
-            // @todo log warning -> Strange behaviour in Middleware mode: https://github.com/lochmueller/staticfilecache/issues/150
+            $this->logger->warning('TSFE to not contains a valid page record?! Please check: https://github.com/lochmueller/staticfilecache/issues/150');
             return $timeOutTime;
         }
         if (0 === $timeOutTime) {
@@ -221,8 +225,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
         try {
             return $this->signalDispatcher->dispatch(__CLASS__, $signalName, $arguments);
         } catch (\Exception $exception) {
-            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-            $logger->error('Problems by calling signal: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
+            $this->logger->error('Problems by calling signal: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
 
             return $arguments;
         }

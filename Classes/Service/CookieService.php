@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -61,8 +60,7 @@ class CookieService extends AbstractService
                 if (false === $matchCnt) {
                     $message = 'The regular expression for the cookie domain (' . $cookieDomain . ') contains errors.';
                     $message .= 'The session is not shared across sub-domains.';
-                    $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-                    $logger->warning($message);
+                    $this->logger->warning($message);
                 } elseif ($matchCnt) {
                     $result = $match[0];
                 }

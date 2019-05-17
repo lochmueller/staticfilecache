@@ -8,14 +8,14 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Domain\Repository;
 
-use SFC\Staticfilecache\StaticFileCacheSingletonInterface;
+use SFC\Staticfilecache\StaticFileCacheObject;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * AbstractRepository.
  */
-abstract class AbstractRepository implements StaticFileCacheSingletonInterface
+abstract class AbstractRepository extends StaticFileCacheObject
 {
     /**
      * Delete records.

@@ -7,25 +7,13 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Generator;
 
-use Psr\Log\LoggerAwareTrait;
-use SFC\Staticfilecache\StaticFileCacheSingletonInterface;
-use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use SFC\Staticfilecache\StaticFileCacheObject;
 
 /**
  * AbstractGenerator.
  */
-abstract class AbstractGenerator implements StaticFileCacheSingletonInterface
+abstract class AbstractGenerator extends StaticFileCacheObject
 {
-    use LoggerAwareTrait;
-
-    /**
-     * AbstractGenerator constructor.
-     */
-    public function __construct()
-    {
-        $this->setLogger(GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__));
-    }
 
     /**
      * Generate file.
