@@ -56,21 +56,26 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         }
 
         $this->logger->debug('SFC Set', [$entryIdentifier, $tags, $lifetime]);
-
-        // call set in front of the generation, because the set method
-        // of the DB backend also call remove
-        parent::set($entryIdentifier, \serialize($databaseData), $tags, $realLifetime);
-
         $fileName = $this->getCacheFilename($entryIdentifier);
-        $cacheDir = (string)PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
-        if (!\is_dir($cacheDir)) {
-            GeneralUtility::mkdir_deep($cacheDir);
+
+        try {
+            // Create dir
+            $cacheDir = (string)PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
+            if (!\is_dir($cacheDir)) {
+                GeneralUtility::mkdir_deep($cacheDir);
+            }
+
+            // call set in front of the generation, because the set method
+            // of the DB backend also call remove (this remove do not remove the folder already created above)
+            parent::set($entryIdentifier, \serialize($databaseData), $tags, $realLifetime);
+
+            $this->removeStaticFiles($entryIdentifier);
+
+            GeneralUtility::makeInstance(MetaGenerator::class)->generate($entryIdentifier, $fileName, $data);
+            GeneralUtility::makeInstance(HtaccessService::class)->write($fileName, $realLifetime, $data);
+        } catch (\Exception $exception) {
+            $this->logger->error('Error in cache create process', ['exception' => $exception]);
         }
-
-        $this->removeStaticFiles($entryIdentifier);
-
-        GeneralUtility::makeInstance(MetaGenerator::class)->generate($entryIdentifier, $fileName, $data);
-        GeneralUtility::makeInstance(HtaccessService::class)->write($fileName, $realLifetime, $data);
     }
 
     /**
