@@ -96,14 +96,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
         $explanation = (array)$ruleArguments['explanation'];
 
         if (!$ruleArguments['skipProcessing']) {
-            if (0 === $timeOutTime) {
-                $timeOutTime = $pObj->get_cache_timeout();
-            }
-            // If page has a endtime before the current timeOutTime, use it instead:
-            if ($pObj->page['endtime'] > 0 && $pObj->page['endtime'] < $timeOutTime) {
-                $timeOutTime = $pObj->page['endtime'];
-            }
-            $timeOutSeconds = $timeOutTime - (new DateTimeService())->getCurrentTime();
+            $timeOutTime = $this->calculateTimeout($timeOutTime, $pObj);
 
             // Don't continue if there is already an existing valid cache entry and we've got an invalid now.
             // Prevents overriding if a logged in user is checking the page in a second call
@@ -133,7 +126,7 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
                     'frontendController' => $pObj,
                     'uri' => $uri,
                     'content' => $content,
-                    'timeOutSeconds' => $timeOutSeconds,
+                    'timeOutSeconds' => $timeOutTime - (new DateTimeService())->getCurrentTime(),
                 ];
                 $contentArguments = $this->dispatch(
                     'processContent',
@@ -162,6 +155,29 @@ class StaticFileCache implements StaticFileCacheSingletonInterface
             'isStaticCached' => $isStaticCached,
         ];
         $this->dispatch('postProcess', $postProcessArguments);
+    }
+
+    /**
+     * Calculate timeout
+     *
+     * @param int $timeOutTime
+     * @param TypoScriptFrontendController $tsfe
+     * @return int
+     */
+    protected function calculateTimeout(int $timeOutTime, TypoScriptFrontendController $tsfe): int
+    {
+        if (!\is_array($tsfe->page)) {
+            // @todo log warning -> Strange behaviour in Middleware mode: https://github.com/lochmueller/staticfilecache/issues/150
+            return $timeOutTime;
+        }
+        if (0 === $timeOutTime) {
+            $timeOutTime = $tsfe->get_cache_timeout();
+        }
+        // If page has a endtime before the current timeOutTime, use it instead:
+        if ($tsfe->page['endtime'] > 0 && $tsfe->page['endtime'] < $timeOutTime) {
+            $timeOutTime = $tsfe->page['endtime'];
+        }
+        return (int)$timeOutTime;
     }
 
     /**
