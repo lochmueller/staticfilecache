@@ -33,8 +33,10 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteRule .* - [E=SFC_PORT:80]
    RewriteCond %{ENV:SFC_PROTOCOL} ^https$ [NC]
    RewriteRule .* - [E=SFC_PORT:443]
-   RewriteCond %{SERVER_PORT} ^[0-9]*$
+   RewriteCond %{SERVER_PORT} ^[0-9]+$
    RewriteRule .* - [E=SFC_PORT:%{SERVER_PORT}]
+   RewriteCond %{HTTP:X-Forwarded-Port} ^[0-9]+$
+   RewriteRule .* - [E=SFC_PORT:%{HTTP:X-Forwarded-Port}]
 
     # Full path for redirect
    RewriteRule .* - [E=SFC_FULLPATH:typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}/%{ENV:SFC_PORT}%{ENV:SFC_URI}]
