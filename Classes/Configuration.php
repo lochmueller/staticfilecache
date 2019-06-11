@@ -23,6 +23,7 @@ use SFC\Staticfilecache\Cache\Rule\PageCacheable;
 use SFC\Staticfilecache\Cache\Rule\SiteCacheable;
 use SFC\Staticfilecache\Cache\Rule\StaticCacheable;
 use SFC\Staticfilecache\Cache\Rule\ValidDoktype;
+use SFC\Staticfilecache\Cache\Rule\ValidPageInformation;
 use SFC\Staticfilecache\Cache\Rule\ValidRequestMethod;
 use SFC\Staticfilecache\Cache\Rule\ValidUri;
 use SFC\Staticfilecache\Cache\StaticFileBackend;
@@ -130,6 +131,7 @@ class Configuration
             NoBackendUser::class,
             Enable::class,
             ValidRequestMethod::class,
+            ValidPageInformation::class,
             ForceStaticCache::class,
             NoFakeFrontend::class,
         ];

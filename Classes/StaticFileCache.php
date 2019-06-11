@@ -77,10 +77,6 @@ class StaticFileCache extends StaticFileCacheObject
      */
     public function insertPageInCache(TypoScriptFrontendController $pObj, int $timeOutTime = 0)
     {
-        if (!$pObj->page['uid']) {
-            return;
-        }
-
         $isStaticCached = false;
 
         $uri = GeneralUtility::makeInstance(UriService::class)->getUri();
