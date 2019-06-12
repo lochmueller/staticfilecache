@@ -27,9 +27,9 @@ class ValidPageInformation extends AbstractRule
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
-        if (!\is_array($frontendController->page) || !$pObj->page['uid']) {
+        if (!\is_array($frontendController->page) || !$frontendController->page['uid']) {
             $skipProcessing = true;
-            $explanation[__CLASS__] = 'There is no valid page in ths TSFE';
+            $explanation[__CLASS__] = 'There is no valid page in the TSFE';
         }
     }
 }
