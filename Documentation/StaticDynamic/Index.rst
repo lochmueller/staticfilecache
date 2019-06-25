@@ -16,7 +16,7 @@ Note that you will have to fill in your own values for the php executable and th
 
 Nuskool
 
-A backend user by the name of '_cli_staticfilecache' needs to exist. Create this user before scheduling the task.
+A backend user by the name of '_cli_' needs to exist. Create this user before scheduling the task.
 
 .. code-block:: bash
 
@@ -24,13 +24,13 @@ A backend user by the name of '_cli_staticfilecache' needs to exist. Create this
    #sunday is 0
 
    # [TYPO3] clear expired static files every hour
-   * * * * * /usr/bin/php /var/www/typo3/cli_dispatch.phpsh staticfilecache removeExpiredPages
+   * * * * * /usr/bin/php /var/www/typo3/sysext/core/bin/typo3 staticfilecache:cache:removeexpiredpages
 
    # [TYPO3] clear expired static files – quiet mode
    # -s','Silent operation, will only output errors and important messages.
    # --silent','Same as -s
    # -ss','Super silent, will not even output errors or important messages.
-   * * * * * /usr/bin/php /var/www/typo3/cli_dispatch.phpsh staticfilecache removeExpiredPages -s
+   * * * * * /usr/bin/php /var/www/typo3/sysext/core/bin/typo3 staticfilecache:cache:removeexpiredpages -s
 
 *How often should the cleaner be run?*
 
@@ -59,13 +59,13 @@ for a shortest page expiry time of an hour and a 5% margin you want to check 20 
 .. code-block:: bash
 
    # [TYPO3] clear expired static files every hour
-   */3 * * * * /usr/bin/php /var/www/typo3/cli_dispatch.phpsh staticfilecache removeExpiredPages -s
+   */3 * * * * /usr/bin/php /var/www/typo3/sysext/core/bin/typo3 staticfilecache:cache:removeexpiredpages -s
 
 for a shortest page expiry time of an hour and a 1% margin you want to check 100 times an hour or every 0.6 minutes:
 
 .. code-block:: bash
 
    # [TYPO3] clear expired static files every hour
-   */0.6 * * * * /usr/bin/php /var/www/typo3/cli_dispatch.phpsh staticfilecache removeExpiredPages -s
+   */0.6 * * * * /usr/bin/php /var/www/typo3/sysext/core/bin/typo3 staticfilecache:cache:removeexpiredpages -s
 
 I would advise you to stick to a lowest value of once every minute though. Unless you know what you are doing. The cleaning operation is very lightweight, but might be taxing for very large sites if run several times a minute.
