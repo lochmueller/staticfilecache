@@ -28,6 +28,7 @@ use SFC\Staticfilecache\Cache\Rule\ValidRequestMethod;
 use SFC\Staticfilecache\Cache\Rule\ValidUri;
 use SFC\Staticfilecache\Cache\StaticFileBackend;
 use SFC\Staticfilecache\Cache\UriFrontend;
+use SFC\Staticfilecache\Command\CacheCommandController;
 use SFC\Staticfilecache\Hook\Cache\ContentPostProcOutput;
 use SFC\Staticfilecache\Hook\Cache\Eofe;
 use SFC\Staticfilecache\Hook\Cache\InsertPageIncacheHook;
@@ -71,6 +72,15 @@ class Configuration
                 'labels' => 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang_mod.xlf',
             ]
         );
+    }
+
+    /**
+     * Register command controller.
+     */
+    public static function registerCommandController()
+    {
+        // register command controller
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = CacheCommandController::class;
     }
 
     /**

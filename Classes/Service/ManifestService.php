@@ -34,11 +34,6 @@ class ManifestService extends AbstractService
         //die();
 
         return '';
-
-        //DebuggerUtility::var_dump($fileName);
-        //DebuggerUtility::var_dump($entryIdentifier);
-        //DebuggerUtility::var_dump($data);
-        //die();
     }
 
     /**
