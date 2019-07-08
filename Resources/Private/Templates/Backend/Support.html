@@ -13,7 +13,7 @@
 			<div class="alert alert-info" role="alert">We found StaticFileCache information in the htaccess file. If the configuration is the most current you have to check by youself.</div>
 		</f:then>
 		<f:else>
-			<div class="alert alert-warning" role="alert">We do not found the StaticFileCache configuration in the htaccess file. Perhaps you configure the rules in the Webserver or do not use a apache. But: In most cases the configuration is missing!! (Note: We search for "SFC_FULLPATH" in this file)</div>
+			<div class="alert alert-warning" role="alert">We couldn't find the StaticFileCache configuration in the htaccess file. Perhaps you configure the rules in the Webserver or do not use an Apache webserver. But: In most cases the configuration is missing!! (Note: We search for "SFC_FULLPATH" in this file)</div>
 		</f:else>
 	</f:if>
 
