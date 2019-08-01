@@ -22,9 +22,12 @@
 		<trans-unit id="staticfilecache.tx_staticfilecache_cache">
 			<source>Cache page as static file</source>
 		</trans-unit>
-		<trans-unit id="staticfilecache.tx_staticfilecache_cache_force">
-			<source>Force the static cache generation (!!!)</source>
-		</trans-unit>
+			<trans-unit id="staticfilecache.tx_staticfilecache_cache_force">
+				<source>Force the static cache generation (!!!)</source>
+			</trans-unit>
+			<trans-unit id="staticfilecache.tx_staticfilecache_cache_priority">
+				<source>Cache priority (high => important)</source>
+			</trans-unit>
 		<trans-unit id="staticfilecache.tx_staticfilecache_cache_offline">
 			<source>Cache offline (Manifest) - only if page is cached staticly</source>
 		</trans-unit>

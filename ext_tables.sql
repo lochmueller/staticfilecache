@@ -11,7 +11,8 @@ CREATE TABLE sys_domain (
 CREATE TABLE pages (
 	tx_staticfilecache_cache tinyint(1) DEFAULT '1',
 	tx_staticfilecache_cache_force tinyint(1) DEFAULT '0',
-	tx_staticfilecache_cache_offline tinyint(1) DEFAULT '0'
+	tx_staticfilecache_cache_offline tinyint(1) DEFAULT '0',
+	tx_staticfilecache_cache_priority int(11) DEFAULT '0' NOT NULL
 );
 
 #
@@ -20,6 +21,7 @@ CREATE TABLE pages (
 CREATE TABLE tx_staticfilecache_queue (
 	uid int(11) NOT NULL auto_increment,
 	cache_url tinytext NOT NULL,
+	cache_priority int(11) DEFAULT '0' NOT NULL,
 	page_uid int(11) DEFAULT '0' NOT NULL,
 	invalid_date int(11) DEFAULT '0' NOT NULL,
 	call_date int(11) DEFAULT '0' NOT NULL,

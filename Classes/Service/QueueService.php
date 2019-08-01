@@ -69,6 +69,7 @@ class QueueService extends AbstractService
             'page_uid' => 0,
             'invalid_date' => \time(),
             'call_result' => '',
+            'cache_priority' => 0,
         ];
 
         $this->queueRepository->insert($data);

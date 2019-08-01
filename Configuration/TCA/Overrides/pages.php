@@ -29,6 +29,15 @@ $tmp = [
             'default' => '0',
         ],
     ],
+    'tx_staticfilecache_cache_priority' => [
+        'exclude' => 1,
+        'label' => 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:staticfilecache.tx_staticfilecache_cache_priority',
+        'config' => [
+            'type' => 'input',
+            'default' => '0',
+            'eval' => 'int+',
+        ],
+    ],
 ];
 
 ExtensionManagementUtility::addTCAcolumns('pages', $tmp);
