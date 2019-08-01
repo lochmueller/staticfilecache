@@ -70,7 +70,7 @@ class HttpPushService extends AbstractService
             ],
         ];
 
-        $objectManager = new ObjectManager();
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var Dispatcher $dispatcher */
         $dispatcher = $objectManager->get(Dispatcher::class);
         try {

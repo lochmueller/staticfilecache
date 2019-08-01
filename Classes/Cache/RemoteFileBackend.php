@@ -320,7 +320,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         }
 
         try {
-            $objectManager = new ObjectManager();
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
             $resourceFactory = $objectManager->get(ResourceFactory::class);
             $storage = $resourceFactory->getDefaultStorage();
             $baseName = (string)$storage->sanitizeFileName($baseName);

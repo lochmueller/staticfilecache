@@ -26,7 +26,7 @@ class PublishService extends AbstractService
             'cacheDirectory' => GeneralUtility::makeInstance(CacheService::class)->getRelativeBaseDirectory(),
         ];
 
-        $objectManager = new ObjectManager();
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var Dispatcher $dispatcher */
         $dispatcher = $objectManager->get(Dispatcher::class);
         try {

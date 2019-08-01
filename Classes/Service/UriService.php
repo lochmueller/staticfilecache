@@ -39,6 +39,13 @@ class UriService extends AbstractService
         $uri = ($isHttp ? 'http://' : 'https://') . \mb_strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . \ltrim($uri, '/');
 
         try {
+            if(!class_exists(IdnaConvert::class)) {
+                throw new \InvalidArgumentException('IDNA converter not found');
+
+                // @todo https://github.com/algo26-matthias/idna-convert
+                // @todo https://forge.typo3.org/issues/87779
+            }
+
             $idnaConverter = GeneralUtility::makeInstance(IdnaConvert::class);
 
             return $idnaConverter->encode($uri);
@@ -61,7 +68,7 @@ class UriService extends AbstractService
      */
     protected function recreateUriPath($uri): string
     {
-        $objectManager = new ObjectManager();
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = $objectManager->get(UriBuilder::class);
         if (null === ObjectAccess::getProperty($uriBuilder, 'contentObject', true)) {

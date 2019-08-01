@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\ViewHelpers\Be\Widget;
 
 use SFC\Staticfilecache\ViewHelpers\Be\Widget\Controller\PaginateController;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
@@ -63,7 +64,7 @@ class PaginateViewHelper extends AbstractWidgetViewHelper
      */
     protected function initiateSubRequest()
     {
-        $objectManager = new ObjectManager();
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->controller = $objectManager->get(PaginateController::class);
 
         return parent::initiateSubRequest();
