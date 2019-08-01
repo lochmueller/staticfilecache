@@ -6,7 +6,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'StaticFileCache',
     'description' => 'Transparent StaticFileCache solution using mod_rewrite and mod_expires. Increase performance for static pages by a factor of 230!!',
     'category' => 'fe',
-    'version' => '8.2.2',
+    'version' => '8.3.0-dev',
     'state' => 'stable',
     'modify_tables' => 'pages',
     'clearcacheonload' => true,
@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'StaticFileCache Team',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.0-9.5.99',
+            'typo3' => '8.7.0-10.0.99',
             'php' => '7.0.0-0.0.0',
         ],
     ],
