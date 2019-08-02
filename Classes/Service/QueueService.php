@@ -64,12 +64,22 @@ class QueueService extends AbstractService
 
         $this->logger->debug('SFC Queue add', [$identifier]);
 
+        $priority = 0;
+        try {
+            $cache = GeneralUtility::makeInstance(CacheService::class)->get();
+            $infos = $cache->get($identifier);
+            if (isset($infos['priority'])) {
+                $priority = (int)$infos['priority'];
+            }
+        } catch (\Exception $exception) {
+        }
+
         $data = [
             'cache_url' => $identifier,
             'page_uid' => 0,
             'invalid_date' => \time(),
             'call_result' => '',
-            'cache_priority' => 0,
+            'cache_priority' => $priority,
         ];
 
         $this->queueRepository->insert($data);

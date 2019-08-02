@@ -19,7 +19,6 @@ use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -97,7 +96,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         }
 
         if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-            $priority += (int) $GLOBALS['TSFE']->page['tx_staticfilecache_cache_priority'];
+            $priority += (int)$GLOBALS['TSFE']->page['tx_staticfilecache_cache_priority'];
         }
         return $priority;
     }

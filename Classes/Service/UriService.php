@@ -39,20 +39,16 @@ class UriService extends AbstractService
         $uri = ($isHttp ? 'http://' : 'https://') . \mb_strtolower(GeneralUtility::getIndpEnv('HTTP_HOST')) . '/' . \ltrim($uri, '/');
 
         try {
-            if(!class_exists(IdnaConvert::class)) {
-                throw new \InvalidArgumentException('IDNA converter not found');
-
-                // @todo https://github.com/algo26-matthias/idna-convert
-                // @todo https://forge.typo3.org/issues/87779
+            if (class_exists(IdnaConvert::class)) {
+                // Note: https://github.com/algo26-matthias/idna-convert
+                // Note: https://forge.typo3.org/issues/87779
+                $idnaConverter = GeneralUtility::makeInstance(IdnaConvert::class);
+                return $idnaConverter->encode($uri);
             }
-
-            $idnaConverter = GeneralUtility::makeInstance(IdnaConvert::class);
-
-            return $idnaConverter->encode($uri);
         } catch (\InvalidArgumentException $exception) {
             // The URI is already in puny code (no logging needed)
-            return $uri;
         }
+        return $uri;
     }
 
     /**
