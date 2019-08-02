@@ -28,6 +28,9 @@ renameTablesToOtherPrefix = 0
 # cat=basic; type=boolean; label=Use reverse URI length in priority: Add "1000-URILENGTH" to the priority so the home page is much more important than deaplinks
 useReverseUriLengthInPriority = 1
 
+# cat=basic; type=boolean; label=Use fallback middleware: use the fallback middleware to deliver the static file, if there is no htaccess configuration
+useFallbackMiddleware = 0
+
 # cat=basic; type=string; label=Htaccess Template name: The template path for the htaccess file generation
 htaccessTemplateName = EXT:staticfilecache/Resources/Private/Templates/Htaccess.html
 
