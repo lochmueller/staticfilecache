@@ -22,6 +22,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class StaticFileCacheFallbackMiddleware implements MiddlewareInterface
 {
     /**
+     * Process the fallback middleware
+     *
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
@@ -50,7 +52,8 @@ class StaticFileCacheFallbackMiddleware implements MiddlewareInterface
     protected function handleViaFallback(ServerRequestInterface $request)
     {
         $uri = $request->getUri();
-        $cacheDirectory = PATH_site . 'typo3temp/tx_staticfilecache/';
+
+        $cacheDirectory = GeneralUtility::getFileAbsFileName('typo3temp/tx_staticfilecache/');
         if ($uri->getQuery() !== '') {
             throw new \Exception('There should be no queries at the URI', 123678);
         }
@@ -64,17 +67,17 @@ class StaticFileCacheFallbackMiddleware implements MiddlewareInterface
             throw new \Exception('StaticFileCache Cookie is set', 12738912);
         }
 
-        $possibleStaticFile = realpath($cacheDirectory . $uri->getScheme() . DIRECTORY_SEPARATOR . $uri->getHost() . DIRECTORY_SEPARATOR . ($uri->getPort() ?: '80') . $uri->getPath() . DIRECTORY_SEPARATOR . 'index.html');
+        $path = $cacheDirectory . $uri->getScheme() . DIRECTORY_SEPARATOR . $uri->getHost() . DIRECTORY_SEPARATOR . ($uri->getPort() ?: '80') . $uri->getPath() . DIRECTORY_SEPARATOR . 'index.html';
+        $possibleStaticFile = realpath($path);
         if (false === $possibleStaticFile) {
             throw new \Exception('No possible StaticFileCache', 723894);
         }
-
         // Check if we can support compressed files
         $headers = ['Content-Type' => 'text/html; charset=utf-8'];
         foreach ($request->getHeader('accept-encoding') as $acceptEncoding) {
             if (strpos($acceptEncoding, 'gzip') !== false) {
                 $headers['Content-Encoding'] = 'gzip';
-                $possibleStaticFile .= '.gz';
+                // $possibleStaticFile .= '.gz';
                 break;
             }
         }
@@ -83,7 +86,7 @@ class StaticFileCacheFallbackMiddleware implements MiddlewareInterface
         if ($possibleStaticFile === false) {
             throw new \Exception('No possible StaticFileCache Part II', 54453459);
         }
-        if (!is_file($possibleStaticFile) && false === is_readable($possibleStaticFile)) {
+        if (!is_file($possibleStaticFile) || !is_readable($possibleStaticFile)) {
             throw new \Exception('StaticFileCache file not found', 126371823);
         }
         if (strpos($possibleStaticFile, $cacheDirectory) !== 0) {
