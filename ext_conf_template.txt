@@ -25,6 +25,9 @@ disableInDevelopment = 0
 # cat=basic; type=boolean; label=Rename cacheing tables from cf_* to sfc_*: When checked, the caching tables of the DB layer are not prefixed with cf_* anymorer. If you truncate the cf_* tables (typo3_console clear cache force) without the implementation, the cache has files but no DB representation. You could rename the tables with this options (run DB compare!!)
 renameTablesToOtherPrefix = 0
 
+# cat=basic; type=boolean; label=Use reverse URI length in priority: Add "1000-URILENGTH" to the priority so the home page is much more important than deaplinks
+useReverseUriLengthInPriority = 1
+
 # cat=basic; type=string; label=Htaccess Template name: The template path for the htaccess file generation
 htaccessTemplateName = EXT:staticfilecache/Resources/Private/Templates/Htaccess.html
 

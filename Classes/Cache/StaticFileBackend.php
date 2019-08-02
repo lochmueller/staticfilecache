@@ -11,6 +11,7 @@ namespace SFC\Staticfilecache\Cache;
 use SFC\Staticfilecache\Domain\Repository\CacheRepository;
 use SFC\Staticfilecache\Generator\MetaGenerator;
 use SFC\Staticfilecache\Service\CacheService;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\HtaccessService;
 use SFC\Staticfilecache\Service\QueueService;
@@ -18,6 +19,8 @@ use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Cache backend for StaticFileCache.
@@ -47,6 +50,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         $databaseData = [
             'created' => $time,
             'expires' => ($time + $realLifetime),
+            'priority' => $this->getPriority($entryIdentifier),
         ];
         if (\in_array('explanation', $tags, true)) {
             $databaseData['explanation'] = $data;
@@ -76,6 +80,26 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         } catch (\Exception $exception) {
             $this->logger->error('Error in cache create process', ['exception' => $exception]);
         }
+    }
+
+    /**
+     * Get prority
+     *
+     * @param string $uri
+     * @return int
+     */
+    protected function getPriority(string $uri)
+    {
+        $priority = 0;
+        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+        if ($configuration->isBool('useReverseUriLengthInPriority')) {
+            $priority += (1000 - strlen($uri));
+        }
+
+        if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+            $priority += (int) $GLOBALS['TSFE']->page['tx_staticfilecache_cache_priority'];
+        }
+        return $priority;
     }
 
     /**
