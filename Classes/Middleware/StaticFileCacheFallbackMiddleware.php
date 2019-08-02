@@ -44,8 +44,8 @@ class StaticFileCacheFallbackMiddleware implements MiddlewareInterface
      * Handle the fallback
      *
      * @param ServerRequestInterface $request
-     * @return ResponseInterface|HtmlResponse
      * @throws \Exception
+     * @return ResponseInterface|HtmlResponse
      */
     protected function handleViaFallback(ServerRequestInterface $request)
     {
