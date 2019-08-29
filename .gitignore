@@ -1,6 +1,4 @@
 /.idea/
-/.Build/*
+/.Build/
 /composer.lock
-/.idea/
-/.php_cs.cache
-/phpmd
+/var

@@ -98,7 +98,7 @@
 			"docker run --rm -v $(pwd):/data phpdoc/phpdoc -d Classes -t .Build/phpdoc"
 		],
 		"code:php-cs-fixer": [
-			"php-cs-fixer fix --config Resources/Private/Build/PhpCsFixer.php"
+			"php-cs-fixer fix --config Resources/Private/Build/PhpCsFixer.php --cache-file=.Build/phpcs.cache"
 		],
 		"test": [
 			"phpunit -c Tests/UnitTests.xml"
