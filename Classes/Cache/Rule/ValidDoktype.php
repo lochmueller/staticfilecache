@@ -31,12 +31,16 @@ class ValidDoktype extends AbstractRule
             PageRepository::DOKTYPE_SYSFOLDER,
             PageRepository::DOKTYPE_RECYCLER,
         ];
-        $currentType = (int)$frontendController->page['doktype'];
-        if (\in_array($currentType, $ignoreTypes, true)) {
-            $explanation[__CLASS__] = 'The Page doktype ' . $currentType . ' is one of the following not allowed numbers: ' . \implode(
-                ', ',
-                $ignoreTypes
-            );
+        if (isset($frontendController->page)) {
+            $currentType = (int) $frontendController->page['doktype'];
+            if (\in_array($currentType, $ignoreTypes, true)) {
+                $explanation[__CLASS__] = 'The Page doktype ' . $currentType . ' is one of the following not allowed numbers: ' . \implode(
+                        ', ',
+                        $ignoreTypes
+                    );
+                $skipProcessing = true;
+            }
+        } else {
             $skipProcessing = true;
         }
     }
