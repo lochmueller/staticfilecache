@@ -32,12 +32,12 @@ class ValidDoktype extends AbstractRule
             PageRepository::DOKTYPE_RECYCLER,
         ];
         if (isset($frontendController->page)) {
-            $currentType = (int) $frontendController->page['doktype'];
+            $currentType = (int)$frontendController->page['doktype'];
             if (\in_array($currentType, $ignoreTypes, true)) {
                 $explanation[__CLASS__] = 'The Page doktype ' . $currentType . ' is one of the following not allowed numbers: ' . \implode(
-                        ', ',
-                        $ignoreTypes
-                    );
+                    ', ',
+                    $ignoreTypes
+                );
                 $skipProcessing = true;
             }
         } else {

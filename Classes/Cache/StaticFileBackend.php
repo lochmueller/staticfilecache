@@ -281,6 +281,15 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     protected function getCacheFilename(string $entryIdentifier): string
     {
+        if ($this->isHashedIdentifier()) {
+            $data = parent::get($entryIdentifier);
+            if (!$data) {
+                return '';
+            }
+            $entry = unserialize($data);
+            return $entry['url'];
+        }
+
         $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
         return $identifierBuilder->getCacheFilename($entryIdentifier);
     }
@@ -352,5 +361,15 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     protected function isBoostMode(): bool
     {
         return (bool)$this->configuration->get('boostMode') && !\defined('SFC_QUEUE_WORKER');
+    }
+
+    /**
+     * Check if the "hashUriInCache" feature is enabled.
+     *
+     * @return bool
+     */
+    protected function isHashedIdentifier(): bool
+    {
+        return (bool)$this->configuration->isBool('hashUriInCache');
     }
 }
