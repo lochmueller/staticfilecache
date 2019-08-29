@@ -20,4 +20,5 @@ If none of the conditions are met, mod_rewrite will fall through to the next rul
 *Q: Ok, so I logged out of the backend, but I still don't get to see the statically cached pages, what's up?*
 A: Hum ... although you have logged out of the backend, your be_typo_user is still in the browser. The cookie is set by default to expire at the end of the browser session. You need to either restart your browser or go to your browsers cookie management tool and drop the cookie manually.
 
-
+*Q: I use 'helhum/typo3-secure-web' and the files are not in the public directory. Any hints?*
+A: Yes. The problem was discussed in https://github.com/lochmueller/staticfilecache/issues/180 - Easies way is, to set the caching directory via extension configuration to "../private/typo3temp/tx_staticfilecache/".
