@@ -27,13 +27,7 @@ class CookieService extends AbstractService
      */
     public function setCookie(int $lifetime)
     {
-        $cookieDomain = $this->getCookieDomain();
-        if ($cookieDomain) {
-            \setcookie(self::FE_COOKIE_NAME, 'typo_user_logged_in', $lifetime, '/', $cookieDomain);
-
-            return;
-        }
-        \setcookie(self::FE_COOKIE_NAME, 'typo_user_logged_in', $lifetime, '/');
+        \setcookie(self::FE_COOKIE_NAME, 'typo_user_logged_in', $lifetime, '/', $this->getCookieDomain(), GeneralUtility::getIndpEnv('TYPO3_SSL'));
     }
 
     /**
@@ -62,10 +56,10 @@ class CookieService extends AbstractService
                     $message .= 'The session is not shared across sub-domains.';
                     $this->logger->warning($message);
                 } elseif ($matchCnt) {
-                    $result = $match[0];
+                    $result = trim((string)$match[0]);
                 }
             } else {
-                $result = $cookieDomain;
+                $result = trim((string)$cookieDomain);
             }
         }
 
