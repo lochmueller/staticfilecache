@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -34,10 +35,10 @@ class HtaccessService extends AbstractService
         $lifetime = $accessTimeout ? $accessTimeout : $lifetime;
 
         $tags = $tagService->isEnable() ? $tagService->getTags() : [];
-
         $variables = [
             'mode' => $accessTimeout ? 'A' : 'M',
             'lifetime' => $lifetime,
+            'responseHeaders' => $this->getReponseHeaders(),
             'expires' => (new DateTimeService())->getCurrentTime() + $lifetime,
             'typo3headers' => GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getAdditionalHeaders(),
             'sendCacheControlHeader' => $configuration->isBool('sendCacheControlHeader'),
@@ -50,6 +51,30 @@ class HtaccessService extends AbstractService
         ];
 
         $this->renderTemplateToFile($this->getTemplateName(), $variables, $fileName);
+    }
+
+    /**
+     * Get reponse headers
+     *
+     * @return array
+     */
+    protected function getReponseHeaders(): array
+    {
+        $response = MiddlewareService::getResponse();
+        if (!($response instanceof ResponseInterface)) {
+            return [];
+        }
+
+        $validHeaders = ['Content-Type', 'Content-Language'];
+        $headers = $response->getHeaders();
+        $result = [];
+        foreach ($headers as $name => $values) {
+            if (in_array($name, $validHeaders)) {
+                $result[$name] =  implode('', $values);
+            }
+        }
+
+        return $result;
     }
 
     /**
