@@ -4,9 +4,6 @@ clearCacheForAllDomains = 1
 # cat=basic; type=boolean; label=Show generation timestamp signature: This appends a comment at the end of the static html file. This can be useful for debugging purposes (look at the source and see if the comment is present).
 showGenerationSignature = 1
 
-# cat=basic; type=string; label=Generated File Types:A comma separated list with generated file types of your website. This list will be created without sub folder.
-fileTypes = xml,rss
-
 # cat=basic; type=string; label=Timestamp format:The date format, formatted according to your locale.
 strftime = %d-%m-%y %H:%M
 

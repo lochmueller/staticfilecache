@@ -67,7 +67,7 @@ class StaticFileCacheFallbackMiddleware implements MiddlewareInterface
             throw new \Exception('StaticFileCache Cookie is set', 12738912);
         }
 
-        $path = $cacheDirectory . $uri->getScheme() . DIRECTORY_SEPARATOR . $uri->getHost() . DIRECTORY_SEPARATOR . ($uri->getPort() ?: '80') . $uri->getPath() . DIRECTORY_SEPARATOR . 'index.html';
+        $path = $cacheDirectory . $uri->getScheme() . DIRECTORY_SEPARATOR . $uri->getHost() . DIRECTORY_SEPARATOR . ($uri->getPort() ?: '80') . $uri->getPath() . DIRECTORY_SEPARATOR . 'index';
         $possibleStaticFile = realpath($path);
         if (false === $possibleStaticFile) {
             throw new \Exception('No possible StaticFileCache', 723894);

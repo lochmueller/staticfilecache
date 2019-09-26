@@ -29,9 +29,7 @@ class ManifestService extends AbstractService
     public function generateManifestContent(string $filename, string &$data): string
     {
 
-        //DebuggerUtility::var_dump($filename);
-        //DebuggerUtility::var_dump($data);
-        //die();
+        // @todo implement
 
         return '';
     }

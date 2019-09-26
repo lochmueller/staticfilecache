@@ -40,17 +40,9 @@ class IdentifierBuilder extends StaticFileCacheObject
             isset($urlParts['port']) ? (int)$urlParts['port'] : ('https' === $urlParts['scheme'] ? 443 : 80),
         ];
 
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-
         $path = \implode('/', $parts) . '/' . \trim($urlParts['path'], '/');
         $cacheFilename = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory() . $path;
-        $fileExtension = (string)PathUtility::pathinfo(PathUtility::basename($cacheFilename), PATHINFO_EXTENSION);
-        $typesExtensions = 'sfc,' . $configurationService->get('fileTypes');
-        if (empty($fileExtension) || !GeneralUtility::inList($typesExtensions, $fileExtension)) {
-            $cacheFilename = \rtrim($cacheFilename, '/') . '/index.html';
-        }
-
-        return $cacheFilename;
+        return \rtrim($cacheFilename, '/') . '/index';
     }
 
     /**

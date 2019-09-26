@@ -39,16 +39,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteRule .* - [E=SFC_PORT:%{HTTP:X-Forwarded-Port}]
 
     # Full path for redirect
-   RewriteRule .* - [E=SFC_FULLPATH:typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}/%{ENV:SFC_PORT}%{ENV:SFC_URI}]
-
-   # Check if the requested file exists in the cache, otherwise default to index.html that
-   # set in an environment variable that is used later on
-   # Note: With old RealURL structure perhaps you have to remove the "/" https://github.com/lochmueller/staticfilecache/pull/90
-   # Note: We cannot check realurl "appendMissingSlash" or other BE related settings here - in front of the delivery.
-   # Perhaps you have to check the "SFC_FILE" value and set it to your related configution e.g. "index.html" (without leading slash).
-   # More information at: https://github.com/lochmueller/staticfilecache/pull/28
-   RewriteCond %{ENV:SFC_ROOT}/%{ENV:SFC_FULLPATH} !-f
-   RewriteRule .* - [E=SFC_FULLPATH:%{ENV:SFC_FULLPATH}/index.html]
+   RewriteRule .* - [E=SFC_FULLPATH:typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}/%{ENV:SFC_PORT}%{ENV:SFC_URI}/index]
 
    # Extension (Order: br, gzip, default)
    RewriteRule .* - [E=SFC_EXT:]
