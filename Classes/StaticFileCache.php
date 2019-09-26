@@ -8,12 +8,13 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\TagService;
-use SFC\Staticfilecache\Service\UriService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -72,14 +73,15 @@ class StaticFileCache extends StaticFileCacheObject
     /**
      * Check if the SFC should create the cache.
      *
-     * @param TypoScriptFrontendController $pObj        The parent object
-     * @param int                          $timeOutTime The timestamp when the page times out
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      */
-    public function insertPageInCache(TypoScriptFrontendController $pObj, int $timeOutTime = 0)
+    public function insertPageInCache(ServerRequestInterface $request, ResponseInterface $response)
     {
+        $pObj = $GLOBALS['TSFE'];
         $isStaticCached = false;
 
-        $uri = GeneralUtility::makeInstance(UriService::class)->getUri();
+        $uri = (string)$request->getUri();
 
         // Signal: Initialize variables before starting the processing.
         $preProcessArguments = [
@@ -100,7 +102,7 @@ class StaticFileCache extends StaticFileCacheObject
         $explanation = (array)$ruleArguments['explanation'];
 
         if (!$ruleArguments['skipProcessing']) {
-            $timeOutTime = $this->calculateTimeout($timeOutTime, $pObj);
+            $timeOutTime = $this->calculateTimeout(0, $pObj);
 
             // Don't continue if there is already an existing valid cache entry and we've got an invalid now.
             // Prevents overriding if a logged in user is checking the page in a second call

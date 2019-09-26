@@ -37,7 +37,7 @@ class StaticFileCacheMiddleware implements MiddlewareInterface
         $response = $handler->handle($request);
 
         MiddlewareService::setResponse($response);
-        $this->getStaticFileCache()->insertPageInCache($GLOBALS['TSFE']);
+        $this->getStaticFileCache()->insertPageInCache($request, $response);
 
         return $response;
     }
