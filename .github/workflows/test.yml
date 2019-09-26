@@ -8,3 +8,6 @@ jobs:
       - uses: pxgamer/composer-action@master
         with:
           command: install --optimize-autoloader --prefer-dist
+      - uses: pxgamer/composer-action@master
+        with:
+          command: test
