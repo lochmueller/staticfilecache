@@ -50,7 +50,6 @@ class StaticFileCache extends StaticFileCacheObject
      */
     public function __construct()
     {
-        parent::__construct();
         try {
             $this->cache = GeneralUtility::makeInstance(CacheService::class)->get();
         } catch (\Exception $exception) {

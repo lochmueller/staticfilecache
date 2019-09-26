@@ -35,7 +35,6 @@ class QueueService extends AbstractService
     public function __construct()
     {
         $this->queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
-        parent::__construct();
     }
 
     /**

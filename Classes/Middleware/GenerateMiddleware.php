@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * StaticFileCacheMiddleware.
  */
-class StaticFileCacheMiddleware implements MiddlewareInterface
+class GenerateMiddleware implements MiddlewareInterface
 {
     /**
      * Process an incoming server request.
