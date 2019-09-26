@@ -7,7 +7,8 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
-use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * DateTimeService.
@@ -26,11 +27,7 @@ class DateTimeService extends AbstractService
         if (0 !== $time) {
             return $time;
         }
-        $time = \time();
-        if (isset($GLOBALS['EXEC_TIME']) && MathUtility::canBeInterpretedAsInteger($GLOBALS['EXEC_TIME'])) {
-            $time = (int)$GLOBALS['EXEC_TIME'];
-        }
-
+        $time = (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
         return $time;
     }
 }

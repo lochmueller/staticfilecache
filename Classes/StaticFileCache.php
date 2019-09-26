@@ -185,7 +185,7 @@ class StaticFileCache extends StaticFileCacheObject
      */
     protected function formatTimestamp($timestamp): string
     {
-        return \strftime($this->configuration->get('strftime'), $timestamp);
+        return \strftime('%d-%m-%y %H:%M', $timestamp);
     }
 
     /**

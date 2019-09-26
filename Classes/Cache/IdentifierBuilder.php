@@ -9,10 +9,8 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\Service\CacheService;
-use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\StaticFileCacheObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * IdentifierBuilder
