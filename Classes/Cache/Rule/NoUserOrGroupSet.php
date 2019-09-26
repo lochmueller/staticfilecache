@@ -45,11 +45,6 @@ class NoUserOrGroupSet extends AbstractRule
      */
     public function isUserOrGroupSet(TypoScriptFrontendController $frontendController)
     {
-        $version9orHigher = VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getCurrentTypo3Version()) >= VersionNumberUtility::convertVersionNumberToInteger('9.0.0');
-        if (!$version9orHigher) {
-            return (\is_array($frontendController->fe_user->user) && isset($frontendController->fe_user->user['uid'])) || '0,-1' !== $frontendController->gr_list;
-        }
-
         $context = GeneralUtility::makeInstance(Context::class);
 
         try {
