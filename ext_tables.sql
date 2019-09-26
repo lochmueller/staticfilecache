@@ -1,11 +1,4 @@
 #
-# Table structure for table 'sys_domain'
-#
-CREATE TABLE sys_domain (
-	tx_staticfilecache_cache tinyint(1) DEFAULT '1'
-);
-
-#
 # Table structure for table 'pages'
 #
 CREATE TABLE pages (
