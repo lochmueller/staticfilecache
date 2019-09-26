@@ -2,7 +2,7 @@
 
 return [
     'frontend' => [
-        'staticfilecache' => [
+        'staticfilecache/generate' => [
             'target' => \SFC\Staticfilecache\Middleware\StaticFileCacheMiddleware::class,
             'before' => [
                 'typo3/cms-frontend/tsfe',
