@@ -47,7 +47,7 @@ overrideCacheDirectory =
 enableGeneratorManifest = 0
 
 # cat=generator; type=boolean; label=Enable Plain generator: When checked, the normal (default) file will write to the cache.
-enableGeneratorPlain = 1
+enableGeneratorPlain = 0
 
 # cat=generator; type=boolean; label=Enable GZIP compression generator: When checked, a gzipped version of the static file is written to the cache directory. Take care to also choose the proper .htaccess configuration when enabling this option.
 enableGeneratorGzip = 1
