@@ -14,7 +14,6 @@ use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Cache Service.
@@ -69,7 +68,7 @@ class CacheService extends AbstractService
     public function getAbsoluteBaseDirectory(): string
     {
         $relativeDirectory = 'typo3temp/tx_staticfilecache/';
-        $overrideDirectory = trim((string) GeneralUtility::makeInstance(ConfigurationService::class)->get('overrideCacheDirectory'));
+        $overrideDirectory = trim((string)GeneralUtility::makeInstance(ConfigurationService::class)->get('overrideCacheDirectory'));
         if ($overrideDirectory !== '') {
             $relativeDirectory = rtrim($overrideDirectory, '/') . '/';
         }

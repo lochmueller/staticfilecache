@@ -12,7 +12,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use SFC\Staticfilecache\Configuration;
 use SFC\Staticfilecache\Service\MiddlewareService;
 use SFC\Staticfilecache\StaticFileCache;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
