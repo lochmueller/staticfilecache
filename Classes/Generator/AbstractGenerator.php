@@ -22,7 +22,7 @@ abstract class AbstractGenerator extends StaticFileCacheObject
      * @param string $fileName
      * @param string $data
      */
-    abstract public function generate(string $entryIdentifier, string $fileName, string &$data);
+    abstract public function generate(string $entryIdentifier, string $fileName, string &$data): void;
 
     /**
      * Remove file.
@@ -30,5 +30,5 @@ abstract class AbstractGenerator extends StaticFileCacheObject
      * @param string $entryIdentifier
      * @param string $fileName
      */
-    abstract public function remove(string $entryIdentifier, string $fileName);
+    abstract public function remove(string $entryIdentifier, string $fileName): void;
 }

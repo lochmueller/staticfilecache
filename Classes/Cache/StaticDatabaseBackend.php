@@ -98,9 +98,9 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
      * @param string $signalName
      * @param array  $arguments
      *
-     * @return mixed
+     * @return array
      */
-    protected function dispatch(string $signalName, array $arguments)
+    protected function dispatch(string $signalName, array $arguments): array
     {
         try {
             return $this->signalSlotDispatcher->dispatch($this->signalClass, $signalName, $arguments);

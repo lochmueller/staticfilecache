@@ -15,6 +15,7 @@ use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\HtaccessConfigurationService;
 use SFC\Staticfilecache\Service\QueueService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,7 +31,7 @@ class BackendController extends ActionController
      *
      * @param string $filter
      */
-    public function listAction(string $filter = '')
+    public function listAction(string $filter = ''): void
     {
         $filter = $this->setFilter($filter);
         $this->view->assignMultiple([
@@ -46,7 +47,7 @@ class BackendController extends ActionController
      *
      * @param bool $run
      */
-    public function boostAction($run = false)
+    public function boostAction($run = false): void
     {
         $configurationService = $this->objectManager->get(ConfigurationService::class);
         $queueRepository = $this->objectManager->get(QueueRepository::class);
@@ -73,7 +74,7 @@ class BackendController extends ActionController
     /**
      * Support action.
      */
-    public function supportAction()
+    public function supportAction(): void
     {
         $htaccessConfigurationService = GeneralUtility::makeInstance(HtaccessConfigurationService::class);
         $this->view->assignMultiple([
@@ -88,7 +89,7 @@ class BackendController extends ActionController
      *
      * @return string
      */
-    protected function setFilter(string $filter)
+    protected function setFilter(string $filter): string
     {
         $user = $this->getBackendUser();
         $validFilter = ['all', 'cached', 'notCached'];
@@ -107,9 +108,9 @@ class BackendController extends ActionController
     /**
      * Get backend user
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

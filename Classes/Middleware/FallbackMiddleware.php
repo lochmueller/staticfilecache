@@ -48,10 +48,10 @@ class FallbackMiddleware implements MiddlewareInterface
      * Handle the fallback
      *
      * @param ServerRequestInterface $request
-     * @return ResponseInterface|HtmlResponse
+     * @return ResponseInterface
      * @throws \Exception
      */
-    protected function handleViaFallback(ServerRequestInterface $request)
+    protected function handleViaFallback(ServerRequestInterface $request): ResponseInterface
     {
         $uri = $request->getUri();
 

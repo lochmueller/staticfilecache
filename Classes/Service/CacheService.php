@@ -51,7 +51,7 @@ class CacheService extends AbstractService
      *
      * @throws NoSuchCacheException
      */
-    public function clearByPageId(int $pageId)
+    public function clearByPageId(int $pageId): void
     {
         $cache = $this->get();
         $cacheEntries = \array_keys($cache->getByTag('pageId_' . $pageId));

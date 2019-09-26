@@ -22,7 +22,7 @@ class BrotliGenerator extends AbstractGenerator
      * @param string $fileName
      * @param string $data
      */
-    public function generate(string $entryIdentifier, string $fileName, string &$data)
+    public function generate(string $entryIdentifier, string $fileName, string &$data): void
     {
         if (!$this->checkAvailable()) {
             return;
@@ -39,7 +39,7 @@ class BrotliGenerator extends AbstractGenerator
      * @param string $entryIdentifier
      * @param string $fileName
      */
-    public function remove(string $entryIdentifier, string $fileName)
+    public function remove(string $entryIdentifier, string $fileName): void
     {
         if (!$this->checkAvailable()) {
             return;

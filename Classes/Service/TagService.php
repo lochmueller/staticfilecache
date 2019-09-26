@@ -41,7 +41,7 @@ class TagService extends AbstractService
     /**
      * Send the cache headers.
      */
-    public function send()
+    public function send(): void
     {
         if (!$this->isEnable()) {
             return;

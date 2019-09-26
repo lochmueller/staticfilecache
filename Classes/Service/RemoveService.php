@@ -45,7 +45,7 @@ class RemoveService extends AbstractService
      *
      * @return RemoveService
      */
-    public function softRemoveDir(string $absoluteDirName)
+    public function softRemoveDir(string $absoluteDirName): self
     {
         if (\is_dir($absoluteDirName)) {
             $tempAbsoluteDir = \rtrim($absoluteDirName, '/') . '_' . GeneralUtility::milliseconds() . '/';
@@ -59,7 +59,7 @@ class RemoveService extends AbstractService
     /**
      * Finally remove the dirs.
      */
-    public function removeDirs()
+    public function removeDirs(): void
     {
         foreach ($this->removeDirs as $removeDir) {
             GeneralUtility::rmdir($removeDir, true);

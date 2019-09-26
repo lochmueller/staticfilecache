@@ -42,7 +42,7 @@ class QueueService extends AbstractService
      *
      * @param array $identifiers
      */
-    public function addIdentifiers(array $identifiers)
+    public function addIdentifiers(array $identifiers): void
     {
         foreach ($identifiers as $identifier) {
             $this->addIdentifier($identifier);
@@ -54,7 +54,7 @@ class QueueService extends AbstractService
      *
      * @param string $identifier
      */
-    public function addIdentifier(string $identifier)
+    public function addIdentifier(string $identifier): void
     {
         $count = $this->queueRepository->countOpenByIdentifier($identifier);
         if ($count > 0) {
@@ -91,7 +91,7 @@ class QueueService extends AbstractService
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
-    public function runSingleRequest(array $runEntry)
+    public function runSingleRequest(array $runEntry): void
     {
         if (!\defined('SFC_QUEUE_WORKER')) {
             \define('SFC_QUEUE_WORKER', true);

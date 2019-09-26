@@ -22,7 +22,7 @@ class PlainGenerator extends AbstractGenerator
      * @param string $fileName
      * @param string $data
      */
-    public function generate(string $entryIdentifier, string $fileName, string &$data)
+    public function generate(string $entryIdentifier, string $fileName, string &$data): void
     {
         GeneralUtility::writeFile($fileName, $data);
     }
@@ -33,7 +33,7 @@ class PlainGenerator extends AbstractGenerator
      * @param string $entryIdentifier
      * @param string $fileName
      */
-    public function remove(string $entryIdentifier, string $fileName)
+    public function remove(string $entryIdentifier, string $fileName): void
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
         $removeService->removeFile($fileName);

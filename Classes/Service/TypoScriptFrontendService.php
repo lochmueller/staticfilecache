@@ -60,7 +60,7 @@ class TypoScriptFrontendService extends AbstractService
      *
      * @return TypoScriptFrontendController
      */
-    protected function getTsfe()
+    protected function getTsfe(): ?TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
     }

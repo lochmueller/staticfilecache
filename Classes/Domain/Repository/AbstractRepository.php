@@ -9,7 +9,9 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Domain\Repository;
 
 use SFC\Staticfilecache\StaticFileCacheObject;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -22,7 +24,7 @@ abstract class AbstractRepository extends StaticFileCacheObject
      *
      * @param array $identifiers
      */
-    public function delete(array $identifiers)
+    public function delete(array $identifiers): void
     {
         $this->getConnection()->delete($this->getTableName(), $identifiers);
     }
@@ -32,7 +34,7 @@ abstract class AbstractRepository extends StaticFileCacheObject
      *
      * @param array $data
      */
-    public function insert(array $data)
+    public function insert(array $data): void
     {
         $this->getConnection()->insert($this->getTableName(), $data);
     }
@@ -43,7 +45,7 @@ abstract class AbstractRepository extends StaticFileCacheObject
      * @param array $data
      * @param array $identifiers
      */
-    public function update(array $data, array $identifiers)
+    public function update(array $data, array $identifiers): void
     {
         $this->getConnection()->update(
             $this->getTableName(),
@@ -62,9 +64,9 @@ abstract class AbstractRepository extends StaticFileCacheObject
     /**
      * Create query.
      *
-     * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
+     * @return QueryBuilder
      */
-    protected function createQuery()
+    protected function createQuery(): QueryBuilder
     {
         return $this->getConnection()->createQueryBuilder();
     }
@@ -72,9 +74,9 @@ abstract class AbstractRepository extends StaticFileCacheObject
     /**
      * Get connection.
      *
-     * @return \TYPO3\CMS\Core\Database\Connection
+     * @return Connection
      */
-    protected function getConnection()
+    protected function getConnection(): Connection
     {
         return GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->getTableName());
     }

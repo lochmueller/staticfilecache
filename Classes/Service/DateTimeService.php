@@ -16,7 +16,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DateTimeService extends AbstractService
 {
     /**
-     * Get current time (respect EXEC_TIME)
+     * Get current time
      * Same time for the complete request.
      *
      * @return int
@@ -27,7 +27,11 @@ class DateTimeService extends AbstractService
         if (0 !== $time) {
             return $time;
         }
-        $time = (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
+        try {
+            $time = (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
+        } catch (\Exception $exception) {
+            $time = time();
+        }
         return $time;
     }
 }

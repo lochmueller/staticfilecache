@@ -24,7 +24,7 @@ class ManifestGenerator extends AbstractGenerator
      * @param string $fileName
      * @param string $data
      */
-    public function generate(string $entryIdentifier, string $fileName, string &$data)
+    public function generate(string $entryIdentifier, string $fileName, string &$data): void
     {
         $manifestService = GeneralUtility::makeInstance(ManifestService::class);
         $content = $manifestService->generateManifestContent($entryIdentifier, $data);
@@ -39,7 +39,7 @@ class ManifestGenerator extends AbstractGenerator
      * @param string $entryIdentifier
      * @param string $fileName
      */
-    public function remove(string $entryIdentifier, string $fileName)
+    public function remove(string $entryIdentifier, string $fileName): void
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
         $removeService->removeFile($fileName . '.sfc');
