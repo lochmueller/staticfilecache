@@ -111,7 +111,6 @@ class Configuration
             NoIntScripts::class,
             LoginDeniedConfiguration::class,
             PageCacheable::class,
-            DomainCacheable::class,
             NoNoCache::class,
             NoBackendUser::class,
             Enable::class,
