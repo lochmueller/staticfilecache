@@ -8,7 +8,6 @@ Note: EXT:staticfilecache is a fork of EXT:nc_staticfilecache (EXT:fl_staticfile
 
 # Support the developmet of the extension
 
-- [Patreon](https://www.patreon.com/lochmueller)
 - [Amazon](https://www.amazon.de/hz/wishlist/ls/SWHV1AQPUTH9)
 - [PayPal](https://www.paypal.me/lochmueller/100)
 

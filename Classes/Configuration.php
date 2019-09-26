@@ -186,13 +186,6 @@ class Configuration
             FontawesomeIconProvider::class,
             ['name' => 'book']
         );
-        $iconRegistry->registerIcon(
-            'brand-patreon',
-            SvgIconProvider::class,
-            [
-                'source' => 'EXT:staticfilecache/Resources/Public/Icons/Patreon.svg',
-            ]
-        );
     }
 
     /**

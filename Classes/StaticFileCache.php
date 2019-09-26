@@ -61,16 +61,6 @@ class StaticFileCache extends StaticFileCacheObject
     }
 
     /**
-     * Get the current object.
-     *
-     * @return StaticFileCache
-     */
-    public static function getInstance()
-    {
-        return GeneralUtility::makeInstance(self::class);
-    }
-
-    /**
      * Check if the SFC should create the cache.
      *
      * @param ServerRequestInterface $request
