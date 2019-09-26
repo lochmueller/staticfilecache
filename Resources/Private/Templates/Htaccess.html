@@ -41,9 +41,11 @@
 </f:if>
 
 <f:if condition="{httpPushHeaders}">
-	<f:for each="{httpPushHeaders}" as="header">
-			Header add Link "<{header.path}>; rel=preload; as={header.type}"
-	</f:for>
+	<ifModule mod_headers.c>
+		<f:for each="{httpPushHeaders}" as="header">
+				Header add Link "<{header.path}>; rel=preload; as={header.type}"
+		</f:for>
+	</ifModule>
 </f:if>
 
 <f:if condition="{sendStaticFileCacheHeader}">
