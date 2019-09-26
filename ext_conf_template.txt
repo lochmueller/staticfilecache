@@ -40,7 +40,7 @@ htaccessTemplateName = EXT:staticfilecache/Resources/Private/Templates/Htaccess.
 # cat=basic; type=options[InsertPageIncache=InsertPageIncache,ContentPostProcOutput=ContentPostProcOutput,Eofe=Eofe,Middleware=Middleware]; label="InsertPageIncache" is the default. ContentPostProcOutput is later and EOFE is the latest. Please try to use the default hook. Since TYPO3 9 also Middleware is possible (BETA!!!).
 saveCacheHook = InsertPageIncache
 
-# cat=basic; type=string; label=Override cache directory: If this config var is empty the default is "typo3temp/tx_staticfilecache/". If you change this value you HAVE TO addapt you rewrite configuration. Please add the folder INCLUSIVE a "/" at the end.
+# cat=basic; type=string; label=Override cache directory: If this config var is empty the default is "typo3temp/tx_staticfilecache/". If you change this value you HAVE TO addapt you rewrite configuration.
 overrideCacheDirectory =
 
 # cat=generator; type=boolean; label=Enable Cache Manifest generator (BETA!!!): Create manifest files

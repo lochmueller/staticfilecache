@@ -186,7 +186,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
             return;
         }
 
-        $absoluteCacheDir = GeneralUtility::getFileAbsFileName(GeneralUtility::makeInstance(CacheService::class)->getRelativeBaseDirectory());
+        $absoluteCacheDir = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory();
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
         $removeService->softRemoveDir($absoluteCacheDir . 'https/');
         $removeService->softRemoveDir($absoluteCacheDir . 'http/');

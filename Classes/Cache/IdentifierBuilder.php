@@ -43,7 +43,7 @@ class IdentifierBuilder extends StaticFileCacheObject
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
 
         $path = \implode('/', $parts) . '/' . \trim($urlParts['path'], '/');
-        $cacheFilename = GeneralUtility::getFileAbsFileName(GeneralUtility::makeInstance(CacheService::class)->getRelativeBaseDirectory() . $path);
+        $cacheFilename = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory() . $path;
         $fileExtension = (string)PathUtility::pathinfo(PathUtility::basename($cacheFilename), PATHINFO_EXTENSION);
         $typesExtensions = 'sfc,' . $configurationService->get('fileTypes');
         if (empty($fileExtension) || !GeneralUtility::inList($typesExtensions, $fileExtension)) {

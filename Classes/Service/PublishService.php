@@ -23,7 +23,7 @@ class PublishService extends AbstractService
     public function publish()
     {
         $arguments = [
-            'cacheDirectory' => GeneralUtility::makeInstance(CacheService::class)->getRelativeBaseDirectory(),
+            'cacheDirectory' => GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory(),
         ];
 
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
