@@ -8,6 +8,8 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -25,11 +27,11 @@ class SiteCacheable extends AbstractRule
      */
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
-        if (!($GLOBALS['TYPO3_REQUEST'] instanceof \TYPO3\CMS\Core\Http\ServerRequest)) {
+        if (!($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequest)) {
             return;
         }
         $site = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
-        if (!($site instanceof \TYPO3\CMS\Core\Site\Entity\Site)) {
+        if (!($site instanceof Site)) {
             return;
         }
         $config = $site->getConfiguration();

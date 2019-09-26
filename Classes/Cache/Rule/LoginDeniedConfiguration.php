@@ -26,7 +26,7 @@ class LoginDeniedConfiguration extends AbstractRule
     public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
     {
         $name = 'sendCacheHeaders_onlyWhenLoginDeniedInBranch';
-        $loginDeniedCfg = (!$frontendController->config['config'][$name] || !$frontendController->loginAllowedInBranch);
+        $loginDeniedCfg = (!$frontendController->config['config'][$name] || !$frontendController->checkIfLoginAllowedInBranch());
         if (!$loginDeniedCfg) {
             $explanation[__CLASS__] = 'LoginDeniedCfg is true';
         }

@@ -77,6 +77,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set
      * @throws InvalidDataException            if the data is not a string
+     * @throws \Exception            If thee backend is frozen
      *
      * @api
      */
@@ -205,6 +206,8 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      * Does garbage collection.
      *
      * @api
+     *
+     * @throws \Exception If the backend is frozen
      */
     public function collectGarbage()
     {
