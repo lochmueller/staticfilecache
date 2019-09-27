@@ -83,7 +83,7 @@ class StaticFileCache extends StaticFileCacheObject
         $explanation = (array)$ruleArguments['explanation'];
 
         if (!$ruleArguments['skipProcessing']) {
-            $timeOutTime = $this->calculateTimeout(0, $pObj);
+            $timeOutTime = $this->calculateTimeout($pObj);
 
             // Don't continue if there is already an existing valid cache entry and we've got an invalid now.
             // Prevents overriding if a logged in user is checking the page in a second call
@@ -147,19 +147,17 @@ class StaticFileCache extends StaticFileCacheObject
     /**
      * Calculate timeout
      *
-     * @param int $timeOutTime
      * @param TypoScriptFrontendController $tsfe
      * @return int
      */
-    protected function calculateTimeout(int $timeOutTime, TypoScriptFrontendController $tsfe): int
+    protected function calculateTimeout(TypoScriptFrontendController $tsfe): int
     {
         if (!\is_array($tsfe->page)) {
             $this->logger->warning('TSFE to not contains a valid page record?! Please check: https://github.com/lochmueller/staticfilecache/issues/150');
-            return $timeOutTime;
+            return 0;
         }
-        if (0 === $timeOutTime) {
-            $timeOutTime = $tsfe->get_cache_timeout();
-        }
+        $timeOutTime = $tsfe->get_cache_timeout();
+
         // If page has a endtime before the current timeOutTime, use it instead:
         if ($tsfe->page['endtime'] > 0 && $tsfe->page['endtime'] < $timeOutTime) {
             $timeOutTime = $tsfe->page['endtime'];
