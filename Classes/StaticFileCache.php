@@ -72,14 +72,6 @@ class StaticFileCache extends StaticFileCacheObject
 
         $uri = (string)$request->getUri();
 
-        // Signal: Initialize variables before starting the processing.
-        $preProcessArguments = [
-            'frontendController' => $pObj,
-            'uri' => $uri,
-        ];
-        $preProcessArguments = $this->dispatch('preProcess', $preProcessArguments);
-        $uri = $preProcessArguments['uri'];
-
         // cache rules
         $ruleArguments = [
             'frontendController' => $pObj,
