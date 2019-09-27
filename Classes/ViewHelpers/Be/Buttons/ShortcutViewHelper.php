@@ -3,7 +3,7 @@
  * ShortcutViewHelper
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\ViewHelpers\Be\Buttons;
 
@@ -45,5 +45,4 @@ class ShortcutViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons\Shortcu
         }
         return '';
     }
-
 }
