@@ -1,41 +1,35 @@
 <f:be.container>
-	<div class="typo3-fullDoc">
+	<div class="module">
+		<div class="module-loading-indicator"></div>
 		<div class="module-docheader">
-			<div class="module-docheader-bar module-docheader-bar-navigation">
+			<div class="module-docheader-bar module-docheader-bar-navigation row">
 
-				<div class="module-docheader-bar-column-left col-xs-12 text-right">
-					<strong>
-						<f:be.pagePath/>
-						<f:be.pageInfo/>
-						<f:be.buttons.csh/>
-					</strong>
+				<div class="module-docheader-bar-column-left col-xs-12 col-sm-3">
+					<f:render section="Menu" optional="true"/>
 				</div>
 
-				<f:comment>
-					<div class="left">
-					</div>
-					<div class="right">
-						<f:be.buttons.shortcut/>
-					</div>
-				</f:comment>
+				<div class="module-docheader-bar-column-right col-xs-12 col-sm-9 text-right">
+					<f:be.pagePath/>
+					<strong>
+						<f:be.pageInfo/>
+					</strong>
+					<f:be.buttons.csh/>
+				</div>
 			</div>
 
 			<div class="module-docheader-bar module-docheader-bar-buttons">
 				<div class="module-docheader-bar-column-left">
-					<f:render section="Menu" optional="true"/>
+					<f:render section="IconButtons" optional="true"/>
 				</div>
 				<div class="module-docheader-bar-column-right">
-					<f:render section="IconButtons" optional="true"/>
-					<f:be.buttons.shortcut/>
+					<sfc:be.buttons.shortcut/>
 				</div>
 			</div>
 		</div>
 
-		<div id="typo3-docbody">
-			<div id="typo3-inner-docbody">
-				<f:flashMessages/>
-				<f:render section="Content"/>
-			</div>
+		<div class="module-body">
+			<f:flashMessages/>
+			<f:render section="Content"/>
 		</div>
 	</div>
 </f:be.container>
