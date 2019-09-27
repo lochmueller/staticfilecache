@@ -22,8 +22,5 @@
 		<whitelist processUncoveredFilesFromWhitelist="true">
 			<directory suffix=".php">../Classes/</directory>
 		</whitelist>
-		<blacklist>
-			<directory>../.Build/</directory>
-		</blacklist>
 	</filter>
 </phpunit>
