@@ -1,10 +1,10 @@
 # EXT:staticfilecache
 
-StaticFileCache for TYPO3. Very flexible and very, very, very fast ;)
+StaticFileCache for TYPO3. Very flexible and very, very, very fast cache ;)
 
-You have to install the extension in composer mode. If your TYPO3 installation is not in composer mode, you should change that (!!) or you could also copy-paste the extension manually.
+It is recommended to install the extension in composer mode. If your TYPO3 installation is not in composer mode, you should change that (!!) or you could also copy-paste the extension manually or install it via TER (ExtensionKey: staticfilecache).
 
-Note: EXT:staticfilecache is a fork of EXT:nc_staticfilecache (EXT:fl_staticfilecach before) and has a lots of improvements.
+> Note: EXT:staticfilecache is a fork of EXT:nc_staticfilecache (EXT:fl_staticfilecache before) and has a lots of improvements. If it possible use EXT:staticfilecache instead of one of the old ones.
 
 # Support the developmet of the extension
 
