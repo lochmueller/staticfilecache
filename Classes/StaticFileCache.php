@@ -25,13 +25,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class StaticFileCache extends StaticFileCacheObject
 {
     /**
-     * Configuration of the extension.
-     *
-     * @var ConfigurationService
-     */
-    protected $configuration;
-
-    /**
      * Cache.
      *
      * @var UriFrontend
@@ -56,7 +49,6 @@ class StaticFileCache extends StaticFileCacheObject
             $this->logger->error('Problems getting the cache: ' . $exception->getMessage());
         }
         $this->signalDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
     }
 
     /**
@@ -103,10 +95,6 @@ class StaticFileCache extends StaticFileCacheObject
             if (empty($explanation)) {
                 // $content = (string)$response->getBody()->getContents();
                 $content = $pObj->content;
-                if ($this->configuration->isBool('showGenerationSignature')) {
-                    $content .= "\n<!-- cached statically on: " . $this->formatTimestamp((new DateTimeService())->getCurrentTime()) . ' -->';
-                    $content .= "\n<!-- expires on: " . $this->formatTimestamp($timeOutTime) . ' -->';
-                }
 
                 // Signal: Process content before writing to static cached file
                 $contentArguments = [

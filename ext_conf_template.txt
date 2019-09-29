@@ -1,9 +1,6 @@
 # cat=basic; type=boolean; label=Clear cache for all domains in tree: When the TYPO3 tree hosts more than one domain, each domain has it's own cache branch. When clearing the cache, only the cache for the domain you are logged on to will be cleared. If you would like the cache for all domains to be cleared when clearing the frontend cache, then check this box.
 clearCacheForAllDomains = 1
 
-# cat=basic; type=boolean; label=Show generation timestamp signature: This appends a comment at the end of the static html file. This can be useful for debugging purposes (look at the source and see if the comment is present).
-showGenerationSignature = 1
-
 # cat=basic; type=boolean; label=Boost mode: This mode do not delete the cache files, if editor change the cache or delete it. The URLs are added to a queue and there is a scheduler task that call the URLs to rebuild the cache. As result: The regular FE users always get a fast StaticFileCache.
 boostMode = 0
 
