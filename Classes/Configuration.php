@@ -72,8 +72,6 @@ class Configuration
      */
     public static function registerHooks()
     {
-        $configuration = self::getConfiguration();
-
         // Register with "crawler" extension:
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['crawler']['procInstructions']['tx_staticfilecache_clearstaticfile'] = 'clear static cache file';
 
@@ -198,12 +196,7 @@ class Configuration
         if (\is_array($configuration)) {
             return $configuration;
         }
-        if (VersionNumberUtility::convertVersionStringToArray(VersionNumberUtility::getCurrentTypo3Version())['version_main'] < 9) {
-            $configuration = isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) ? (array)\unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['staticfilecache']) : [];
-        } else {
-            $configuration = (array)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
-        }
-
+        $configuration = (array)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
         return $configuration;
     }
 }
