@@ -12,7 +12,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Service\CacheService;
-use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\TagService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

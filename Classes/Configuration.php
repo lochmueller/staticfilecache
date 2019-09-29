@@ -27,7 +27,6 @@ use SFC\Staticfilecache\Cache\Rule\ValidRequestMethod;
 use SFC\Staticfilecache\Cache\Rule\ValidUri;
 use SFC\Staticfilecache\Cache\StaticFileBackend;
 use SFC\Staticfilecache\Cache\UriFrontend;
-use SFC\Staticfilecache\Hook\Crawler;
 use SFC\Staticfilecache\Hook\InitFrontendUser;
 use SFC\Staticfilecache\Hook\LogoffFrontendUser;
 use SFC\Staticfilecache\Hook\UninstallProcess;

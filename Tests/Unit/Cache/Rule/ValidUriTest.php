@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Tests\Unit\Cache\Rule;
 
 use SFC\Staticfilecache\Cache\Rule\ValidUri;
+use TYPO3\CMS\Core\Http\ServerRequest;
 
 /**
  * Test the valid URI Rule.
@@ -25,15 +26,16 @@ class ValidUriTest extends AbstractRuleTest
         $skipProcessing = false;
 
         $validUriRule = new ValidUri();
-        $paths = [
-            '/index.php',
-            '/?param=value',
-            '/?type=1533906435',
-            '/invalid//path',
+
+        $requests = [
+            new ServerRequest('/index.php'),
+            new ServerRequest('/?param=value'),
+            new ServerRequest('/?type=1533906435'),
+            new ServerRequest('/invalid//path'),
         ];
-        foreach ($paths as $path) {
-            $result = $validUriRule->check($tsfe, $path, $explanation, $skipProcessing);
-            $this->assertTrue($result['skipProcessing'], 'Is "' . $path . '" valid?');
+        foreach ($requests as $request) {
+            $result = $validUriRule->check($tsfe, $request, $explanation, $skipProcessing);
+            $this->assertTrue($result['skipProcessing'], 'Is "' . $request->getUri() . '" valid?');
         }
     }
 
@@ -44,17 +46,18 @@ class ValidUriTest extends AbstractRuleTest
         $skipProcessing = false;
 
         $validUriRule = new ValidUri();
-        $paths = [
-            '',
-            '/',
-            '/home.html',
-            '/home.jsp',
-            '/home/deep',
-            '/home/deep.html',
+
+        $requests = [
+            new ServerRequest(''),
+            new ServerRequest('/'),
+            new ServerRequest('/home.html'),
+            new ServerRequest('/home.jsp'),
+            new ServerRequest('/home/deep'),
+            new ServerRequest('/home/deep.html'),
         ];
-        foreach ($paths as $path) {
-            $result = $validUriRule->check($tsfe, $path, $explanation, $skipProcessing);
-            $this->assertFalse($result['skipProcessing'], 'Is "' . $path . '" valid?');
+        foreach ($requests as $request) {
+            $result = $validUriRule->check($tsfe, $request, $explanation, $skipProcessing);
+            $this->assertFalse($result['skipProcessing'], 'Is "' . $request->getUri() . '" valid?');
         }
     }
 }
