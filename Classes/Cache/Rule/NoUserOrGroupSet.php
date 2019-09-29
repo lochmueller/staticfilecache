@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -22,11 +23,11 @@ class NoUserOrGroupSet extends AbstractRule
      * Check if no user or group is set.
      *
      * @param TypoScriptFrontendController $frontendController
-     * @param string                       $uri
+     * @param ServerRequestInterface $request
      * @param array                        $explanation
      * @param bool                         $skipProcessing
      */
-    public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
+    public function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
         if ($this->isUserOrGroupSet($frontendController)) {
             $explanation[__CLASS__] = 'User or group are set';

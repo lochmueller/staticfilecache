@@ -70,12 +70,10 @@ class StaticFileCache extends StaticFileCacheObject
         $pObj = $GLOBALS['TSFE'];
         $isStaticCached = false;
 
-        $uri = (string)$request->getUri();
-
         // cache rules
         $ruleArguments = [
             'frontendController' => $pObj,
-            'uri' => $uri,
+            'request' => $request,
             'explanation' => [],
             'skipProcessing' => false,
         ];
@@ -83,6 +81,7 @@ class StaticFileCache extends StaticFileCacheObject
         $explanation = (array)$ruleArguments['explanation'];
 
         if (!$ruleArguments['skipProcessing']) {
+            $uri = (string)$request->getUri();
             $timeOutTime = $this->calculateTimeout($pObj);
 
             // Don't continue if there is already an existing valid cache entry and we've got an invalid now.
@@ -112,7 +111,6 @@ class StaticFileCache extends StaticFileCacheObject
                 // Signal: Process content before writing to static cached file
                 $contentArguments = [
                     'frontendController' => $pObj,
-                    'uri' => $uri,
                     'content' => $content,
                     'timeOutSeconds' => $timeOutTime - (new DateTimeService())->getCurrentTime(),
                 ];
@@ -122,7 +120,6 @@ class StaticFileCache extends StaticFileCacheObject
                 );
                 $content = $contentArguments['content'];
                 $timeOutSeconds = $contentArguments['timeOutSeconds'];
-                $uri = $contentArguments['uri'];
                 $isStaticCached = true;
 
                 $tagService->send();
@@ -139,7 +136,6 @@ class StaticFileCache extends StaticFileCacheObject
         // Signal: Post process (no matter whether content was cached statically)
         $postProcessArguments = [
             'frontendController' => $pObj,
-            'uri' => $uri,
             'isStaticCached' => $isStaticCached,
         ];
         $this->dispatch('postProcess', $postProcessArguments);

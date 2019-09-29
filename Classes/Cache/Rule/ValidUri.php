@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -20,12 +21,13 @@ class ValidUri extends AbstractRule
      * Note: A "valid URL" check is already done in the URI frontend.
      *
      * @param TypoScriptFrontendController $frontendController
-     * @param string                       $uri
-     * @param array                        $explanation
-     * @param bool                         $skipProcessing
+     * @param ServerRequestInterface $request
+     * @param array $explanation
+     * @param bool $skipProcessing
      */
-    public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
+    public function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
+        $uri = (string)$request->getUri();
         if (false !== \mb_strpos($uri, '?')) {
             $explanation[__CLASS__] = 'The URI contain a "?" that is not allowed for StaticFileCache';
             $skipProcessing = true;

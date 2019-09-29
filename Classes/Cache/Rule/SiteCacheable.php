@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -21,11 +22,11 @@ class SiteCacheable extends AbstractRule
      * Check if the current site is static cacheable.
      *
      * @param TypoScriptFrontendController $frontendController
-     * @param string                       $uri
+     * @param ServerRequestInterface $request
      * @param array                        $explanation
      * @param bool                         $skipProcessing
      */
-    public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
+    public function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
         if (!($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequest)) {
             return;

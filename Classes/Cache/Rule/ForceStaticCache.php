@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -32,13 +33,13 @@ class ForceStaticCache extends AbstractRule
      * Method to check the rul and modify $explanation and/or $skipProcessing.
      *
      * @param TypoScriptFrontendController $frontendController
-     * @param string                       $uri
+     * @param ServerRequestInterface $request
      * @param array                        $explanation
      * @param bool                         $skipProcessing
      */
-    public function checkRule(TypoScriptFrontendController $frontendController, string $uri, array &$explanation, bool &$skipProcessing)
+    public function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
-        if ($this->isForceCacheUri($frontendController, $uri)) {
+        if ($this->isForceCacheUri($frontendController, $request)) {
             foreach ($explanation as $key => $value) {
                 foreach ($this->ignoreRules as $ignore) {
                     if (GeneralUtility::isFirstPartOfStr($key, $ignore)) {
@@ -66,18 +67,18 @@ class ForceStaticCache extends AbstractRule
      * Is force cache URI?
      *
      * @param TypoScriptFrontendController $frontendController
-     * @param string                       $uri
+     * @param ServerRequestInterface                       $request
      *
      * @return bool
      */
-    protected function isForceCacheUri(TypoScriptFrontendController $frontendController, string $uri): bool
+    protected function isForceCacheUri(TypoScriptFrontendController $frontendController, ServerRequestInterface $request): bool
     {
         $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $forceStatic = (bool)$frontendController->page['tx_staticfilecache_cache_force'];
         $params = [
             'forceStatic' => $forceStatic,
             'frontendController' => $frontendController,
-            'uri' => $uri,
+            'request' => $request,
         ];
         try {
             $params = $signalSlotDispatcher->dispatch(__CLASS__, 'isForceCacheUri', $params);
