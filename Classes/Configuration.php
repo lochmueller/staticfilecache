@@ -15,6 +15,7 @@ use SFC\Staticfilecache\Cache\Rule\LoginDeniedConfiguration;
 use SFC\Staticfilecache\Cache\Rule\NoBackendUser;
 use SFC\Staticfilecache\Cache\Rule\NoFakeFrontend;
 use SFC\Staticfilecache\Cache\Rule\NoIntScripts;
+use SFC\Staticfilecache\Cache\Rule\NoLongPathSegment;
 use SFC\Staticfilecache\Cache\Rule\NoNoCache;
 use SFC\Staticfilecache\Cache\Rule\NoUserOrGroupSet;
 use SFC\Staticfilecache\Cache\Rule\NoWorkspacePreview;
@@ -97,6 +98,7 @@ class Configuration
             ValidPageInformation::class,
             ForceStaticCache::class,
             NoFakeFrontend::class,
+            NoLongPathSegment::class,
         ];
 
         /** @var Dispatcher $signalSlotDispatcher */
