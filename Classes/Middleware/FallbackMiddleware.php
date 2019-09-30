@@ -1,7 +1,7 @@
 <?php
 
 /**
- * StaticFileCacheFallbackMiddleware
+ * FallbackMiddleware
  */
 
 declare(strict_types = 1);
@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * StaticFileCacheFallbackMiddleware
+ * FallbackMiddleware
  */
 class FallbackMiddleware implements MiddlewareInterface
 {
@@ -33,15 +33,14 @@ class FallbackMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $config = GeneralUtility::makeInstance(ConfigurationService::class);
-        if (!$config->isBool('useFallbackMiddleware')) {
-            return $handler->handle($request);
-        }
-
         try {
-            return $this->handleViaFallback($request);
+            if ($config->isBool('useFallbackMiddleware')) {
+                return $this->handleViaFallback($request);
+            }
         } catch (\Exception $exception) {
-            return $handler->handle($request);
+            // Not handled
         }
+        return $handler->handle($request);
     }
 
     /**
