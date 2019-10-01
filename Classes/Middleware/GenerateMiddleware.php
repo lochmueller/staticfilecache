@@ -4,7 +4,7 @@
  * GenerateMiddleware.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Middleware;
 
@@ -15,9 +15,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\DateTimeService;
-use TYPO3\CMS\Core\Http\SelfEmittableStreamInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -57,17 +55,12 @@ class GenerateMiddleware implements MiddlewareInterface
             return $response;
         }
 
-        $uri = (string) $request->getUri();
-
-        // Don't continue if there is already an existing valid cache entry and we've got an invalid now.
-        // Prevents overriding if a logged in user is checking the page in a second call
-        // see https://forge.typo3.org/issues/67526
-        if (!$response->hasHeader('X-SFC-Explanation') && $this->hasValidCacheEntry($uri)) {
-            return $response;
-        }
-
+        $uri = (string)$request->getUri();
         if (!$response->hasHeader('X-SFC-Explanation')) {
-            $content = (string) $response->getBody();
+            if ($this->hasValidCacheEntry($uri)) {
+                return $response;
+            }
+            $content = (string)$response->getBody();
             $timeOutTime = $this->calculateTimeout($GLOBALS['TSFE']);
             $timeOutSeconds = $timeOutTime - (new DateTimeService())->getCurrentTime();
         } else {
@@ -75,7 +68,7 @@ class GenerateMiddleware implements MiddlewareInterface
             $timeOutSeconds = 0;
         }
 
-        $this->cache->set($uri, $content, (array) $response->getHeader('X-SFC-Tags'), $timeOutSeconds);
+        $this->cache->set($uri, $content, (array)$response->getHeader('X-SFC-Tags'), $timeOutSeconds);
 
         return $response;
     }
@@ -98,7 +91,7 @@ class GenerateMiddleware implements MiddlewareInterface
         if ($tsfe->page['endtime'] > 0 && $tsfe->page['endtime'] < $timeOutTime) {
             $timeOutTime = $tsfe->page['endtime'];
         }
-        return (int) $timeOutTime;
+        return (int)$timeOutTime;
     }
 
     /**

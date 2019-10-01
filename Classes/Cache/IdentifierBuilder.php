@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\Service\CacheService;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\StaticFileCacheObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -26,21 +27,25 @@ class IdentifierBuilder extends StaticFileCacheObject
      * @throws \Exception
      * @return string
      */
-    public function getCacheFilename(string $requestUri): string
+    public function getFilepath(string $requestUri): string
     {
         if (!$this->isValidEntryIdentifier($requestUri)) {
             throw new \Exception('Invalid RequestUri as cache identifier: ' . $requestUri, 2346782);
         }
         $urlParts = \parse_url($requestUri);
         $parts = [
-            $urlParts['scheme'],
-            $urlParts['host'],
-            isset($urlParts['port']) ? (int)$urlParts['port'] : ('https' === $urlParts['scheme'] ? 443 : 80),
+            'scheme' => $urlParts['scheme'] ?? 'https',
+            'host' => $urlParts['host'] ?? 'invalid',
+            'port' => $urlParts['port'] ?? ('https' === $urlParts['scheme'] ? 443 : 80),
+            'path' => \trim($urlParts['path'] ?? '', '/'),
+            'index' => 'index'
         ];
 
-        $path = \implode('/', $parts) . '/' . \trim($urlParts['path'], '/');
-        $cacheFilename = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory() . $path;
-        return \rtrim($cacheFilename, '/') . '/index';
+        if (GeneralUtility::makeInstance(ConfigurationService::class)->isBool('rawurldecodeCacheFileName')) {
+            $parts['path'] = rawurldecode($parts['path']);
+        }
+
+        return GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory() . \implode('/', $parts);
     }
 
     /**

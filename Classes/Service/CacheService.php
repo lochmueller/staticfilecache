@@ -61,7 +61,7 @@ class CacheService extends AbstractService
     }
 
     /**
-     * Get absolute base directory
+     * Get absolute base directory incl. ending slash
      *
      * @return string
      */

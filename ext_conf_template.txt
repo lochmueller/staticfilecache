@@ -22,6 +22,9 @@ useFallbackMiddleware = 0
 # cat=basic; type=boolean; label=Hash URI in cache (BETA!!!): Hash the URI in cache so the cache idenfier is short. Avoid problems with very lage URIs
 hashUriInCache = 0
 
+# cat=basic; type=boolean; label=Use rawurldecode for path: call the PHP method rawurldecode for the cache filename path of the URI
+rawurldecodeCacheFileName = 0
+
 # cat=basic; type=string; label=Htaccess Template name: The template path for the htaccess file generation
 htaccessTemplateName = EXT:staticfilecache/Resources/Private/Templates/Htaccess.html
 

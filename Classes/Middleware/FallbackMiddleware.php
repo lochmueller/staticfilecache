@@ -67,7 +67,7 @@ class FallbackMiddleware implements MiddlewareInterface
             throw new \Exception('StaticFileCache Cookie is set', 12738912);
         }
 
-        $possibleStaticFile = GeneralUtility::makeInstance(IdentifierBuilder::class)->getCacheFilename((string)$uri);
+        $possibleStaticFile = GeneralUtility::makeInstance(IdentifierBuilder::class)->getFilepath((string)$uri);
 
         if (!is_file($possibleStaticFile) || !is_readable($possibleStaticFile)) {
             throw new \Exception('StaticFileCache file not found', 126371823);

@@ -45,7 +45,7 @@ class ManifestService extends AbstractService
 
         try {
             $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
-            $fileName = $identifierBuilder->getCacheFilename(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+            $fileName = $identifierBuilder->getFilepath(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
 
             // var_dump($fileName);
         } catch (\Exception $exception) {

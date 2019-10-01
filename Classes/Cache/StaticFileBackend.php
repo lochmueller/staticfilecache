@@ -59,7 +59,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         }
 
         $this->logger->debug('SFC Set', [$entryIdentifier, $tags, $lifetime]);
-        $fileName = $this->getCacheFilename($entryIdentifier);
+        $fileName = $this->getFilepath($entryIdentifier);
 
         try {
             // Create dir
@@ -130,7 +130,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     public function has($entryIdentifier)
     {
-        return \is_file($this->getCacheFilename($entryIdentifier)) || parent::has($entryIdentifier);
+        return \is_file($this->getFilepath($entryIdentifier)) || parent::has($entryIdentifier);
     }
 
     /**
@@ -279,7 +279,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      *
      * @return string
      */
-    protected function getCacheFilename(string $entryIdentifier): string
+    protected function getFilepath(string $entryIdentifier): string
     {
         if ($this->isHashedIdentifier()) {
             $data = parent::get($entryIdentifier);
@@ -291,7 +291,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         }
 
         $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
-        return $identifierBuilder->getCacheFilename($entryIdentifier);
+        return $identifierBuilder->getFilepath($entryIdentifier);
     }
 
     /**
@@ -320,7 +320,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     protected function removeStaticFiles(string $entryIdentifier): bool
     {
-        $fileName = $this->getCacheFilename($entryIdentifier);
+        $fileName = $this->getFilepath($entryIdentifier);
         $dispatchArguments = [
             'entryIdentifier' => $entryIdentifier,
             'fileName' => $fileName,
