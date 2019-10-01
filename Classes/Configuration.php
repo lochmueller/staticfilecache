@@ -28,6 +28,11 @@ use SFC\Staticfilecache\Cache\Rule\ValidRequestMethod;
 use SFC\Staticfilecache\Cache\Rule\ValidUri;
 use SFC\Staticfilecache\Cache\StaticFileBackend;
 use SFC\Staticfilecache\Cache\UriFrontend;
+use SFC\Staticfilecache\Generator\BrotliGenerator;
+use SFC\Staticfilecache\Generator\ConfigGenerator;
+use SFC\Staticfilecache\Generator\GzipGenerator;
+use SFC\Staticfilecache\Generator\ManifestGenerator;
+use SFC\Staticfilecache\Generator\PlainGenerator;
 use SFC\Staticfilecache\Hook\InitFrontendUser;
 use SFC\Staticfilecache\Hook\LogoffFrontendUser;
 use SFC\Staticfilecache\Hook\UninstallProcess;
@@ -118,7 +123,7 @@ class Configuration extends StaticFileCacheObject
      */
     public function registerCachingFramework(): Configuration
     {
-        $configuration = self::getConfiguration();
+        $configuration = $this->getConfiguration();
         $useNullBackend = isset($configuration['disableInDevelopment']) && $configuration['disableInDevelopment'] && GeneralUtility::getApplicationContext()->isDevelopment();
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache'] = [
@@ -159,6 +164,36 @@ class Configuration extends StaticFileCacheObject
     public function registerEid(): Configuration
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['sfc_manifest'] = 'EXT:staticfilecache/Resources/Private/Php/Manifest.php';
+        return $this;
+    }
+
+    /**
+     * Register generators
+     *
+     * @return Configuration
+     */
+    public function registerGenerators(): Configuration
+    {
+        $generators = [
+            'config' => ConfigGenerator::class,
+        ];
+        $configuration = $this->getConfiguration();
+
+        if ($configuration['enableGeneratorManifest']) {
+            $generators['manifest'] = ManifestGenerator::class;
+        }
+        if ($configuration['enableGeneratorPlain']) {
+            $generators['plain'] = PlainGenerator::class;
+        }
+        if ($configuration['enableGeneratorGzip']) {
+            $generators['gzip'] = GzipGenerator::class;
+        }
+        if ($configuration['enableGeneratorBrotli']) {
+            $generators['brotli'] = BrotliGenerator::class;
+        }
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['generators'] = $generators;
+
         return $this;
     }
 

@@ -73,8 +73,10 @@ class FallbackMiddleware implements MiddlewareInterface
             throw new \Exception('StaticFileCache file not found', 126371823);
         }
 
-        // Check if we can support compressed files
-        $headers = ['Content-Type' => 'text/html; charset=utf-8']; // 'X-sfc-fallback' => '1'
+        $headers = [
+            'Content-Type' => 'text/html; charset=utf-8',
+            'X-SFC-Fallback' => '1',
+        ];
         foreach ($request->getHeader('accept-encoding') as $acceptEncoding) {
             if (strpos($acceptEncoding, 'gzip') !== false) {
                 if (is_file($possibleStaticFile . '.gz') && is_readable($possibleStaticFile . '.gz')) {

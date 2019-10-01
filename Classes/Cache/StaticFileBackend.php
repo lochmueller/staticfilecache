@@ -9,10 +9,10 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Cache;
 
 use SFC\Staticfilecache\Domain\Repository\CacheRepository;
-use SFC\Staticfilecache\Generator\MetaGenerator;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
+use SFC\Staticfilecache\Service\GeneratorService;
 use SFC\Staticfilecache\Service\HtaccessService;
 use SFC\Staticfilecache\Service\QueueService;
 use SFC\Staticfilecache\Service\RemoveService;
@@ -74,7 +74,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
             $this->removeStaticFiles($entryIdentifier);
 
-            GeneralUtility::makeInstance(MetaGenerator::class)->generate($entryIdentifier, $fileName, $data);
+            GeneralUtility::makeInstance(GeneratorService::class)->generate($entryIdentifier, $fileName, $data);
             GeneralUtility::makeInstance(HtaccessService::class)->write($fileName, $realLifetime, $data);
         } catch (\Exception $exception) {
             $this->logger->error('Error in cache create process', ['exception' => $exception]);
@@ -328,7 +328,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
             ],
         ];
 
-        GeneralUtility::makeInstance(MetaGenerator::class)->remove($entryIdentifier, $fileName);
+        GeneralUtility::makeInstance(GeneratorService::class)->remove($entryIdentifier, $fileName);
 
         $dispatched = $this->dispatch('removeStaticFiles', $dispatchArguments);
         $files = $dispatched['files'];

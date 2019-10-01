@@ -10,4 +10,5 @@ if (!defined('TYPO3_MODE')) {
     ->registerCachingFramework()
     ->registerIcons()
     ->registerFluidNamespace()
-    ->registerEid();
+    ->registerEid()
+    ->registerGenerators();
