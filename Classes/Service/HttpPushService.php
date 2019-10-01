@@ -56,7 +56,7 @@ class HttpPushService extends AbstractService
     protected function getHttpPushHandler(): array
     {
         $objects = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['httpPush'] ?? [] as $httpPushService) {
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['HttpPush'] ?? [] as $httpPushService) {
             $objects[] = GeneralUtility::makeInstance($httpPushService);
         }
 

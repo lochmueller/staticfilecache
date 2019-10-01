@@ -172,31 +172,31 @@ class Configuration extends StaticFileCacheObject
     }
 
     /**
-     * Register generators
+     * Register generator
      *
      * @return Configuration
      */
     public function registerGenerators(): Configuration
     {
-        $generators = [
+        $generator = [
             'config' => ConfigGenerator::class,
         ];
         $configuration = $this->getConfiguration();
 
         if ($configuration['enableGeneratorManifest']) {
-            $generators['manifest'] = ManifestGenerator::class;
+            $generator['manifest'] = ManifestGenerator::class;
         }
         if ($configuration['enableGeneratorPlain']) {
-            $generators['plain'] = PlainGenerator::class;
+            $generator['plain'] = PlainGenerator::class;
         }
         if ($configuration['enableGeneratorGzip']) {
-            $generators['gzip'] = GzipGenerator::class;
+            $generator['gzip'] = GzipGenerator::class;
         }
         if ($configuration['enableGeneratorBrotli']) {
-            $generators['brotli'] = BrotliGenerator::class;
+            $generator['brotli'] = BrotliGenerator::class;
         }
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['generators'] = $generators;
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['Generator'] = $generator;
 
         return $this;
     }
@@ -208,7 +208,7 @@ class Configuration extends StaticFileCacheObject
      */
     public function registerHttpPushServices(): Configuration
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['httpPush'] = [
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['HttpPush'] = [
             'style' => StyleHttpPush::class,
             'script' => ScriptHttpPush::class,
             'image' => ImageHttpPush::class,

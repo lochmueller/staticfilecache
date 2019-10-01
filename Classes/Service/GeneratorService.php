@@ -52,7 +52,7 @@ class GeneratorService extends AbstractService
     protected function getImplementationObjects(): array
     {
         $objects = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['generators'] ?? [] as $implementation) {
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['Generator'] ?? [] as $implementation) {
             $objects[] = GeneralUtility::makeInstance($implementation);
         }
 
