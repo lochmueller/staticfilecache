@@ -182,10 +182,10 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
 
         // Remove files
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->removeFile($folder . $fileName);
-        $removeService->removeFile($folder . $fileName . self::FILE_EXTENSION_TAG);
-        $removeService->removeFile($folder . $fileName . self::FILE_EXTENSION_LIFETIME);
-        $removeService->removeFile($folder . $fileName . self::FILE_EXTENSION_IDENTIFIER);
+        $removeService->file($folder . $fileName);
+        $removeService->file($folder . $fileName . self::FILE_EXTENSION_TAG);
+        $removeService->file($folder . $fileName . self::FILE_EXTENSION_LIFETIME);
+        $removeService->file($folder . $fileName . self::FILE_EXTENSION_IDENTIFIER);
 
         return true;
     }
@@ -198,7 +198,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     public function flush()
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->softRemoveDir(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER))->removeDirs();
+        $removeService->directory(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER));
         $this->freeze = false;
     }
 

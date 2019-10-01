@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Cache\Rule;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -28,10 +27,7 @@ class SiteCacheable extends AbstractRule
      */
     public function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
-        if (!($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequest)) {
-            return;
-        }
-        $site = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
+        $site = $request->getAttribute('site');
         if (!($site instanceof Site)) {
             return;
         }

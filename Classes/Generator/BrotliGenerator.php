@@ -45,7 +45,7 @@ class BrotliGenerator extends AbstractGenerator
             return;
         }
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->removeFile($fileName . '.br');
+        $removeService->file($fileName . '.br');
     }
 
     /**

@@ -45,7 +45,7 @@ class GzipGenerator extends AbstractGenerator
     public function remove(string $entryIdentifier, string $fileName): void
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->removeFile($fileName . '.gz');
+        $removeService->file($fileName . '.gz');
     }
 
     /**

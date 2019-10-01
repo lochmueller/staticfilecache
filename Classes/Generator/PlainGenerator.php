@@ -36,6 +36,6 @@ class PlainGenerator extends AbstractGenerator
     public function remove(string $entryIdentifier, string $fileName): void
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->removeFile($fileName);
+        $removeService->file($fileName);
     }
 }
