@@ -11,4 +11,5 @@ if (!defined('TYPO3_MODE')) {
     ->registerIcons()
     ->registerFluidNamespace()
     ->registerEid()
-    ->registerGenerators();
+    ->registerGenerators()
+    ->registerHttpPushServices();

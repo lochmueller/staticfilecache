@@ -9,13 +9,7 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Service;
 
 use SFC\Staticfilecache\Service\HttpPush\AbstractHttpPush;
-use SFC\Staticfilecache\Service\HttpPush\FontHttpPush;
-use SFC\Staticfilecache\Service\HttpPush\ImageHttpPush;
-use SFC\Staticfilecache\Service\HttpPush\ScriptHttpPush;
-use SFC\Staticfilecache\Service\HttpPush\StyleHttpPush;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * HttpPushService.
@@ -61,26 +55,8 @@ class HttpPushService extends AbstractService
      */
     protected function getHttpPushHandler(): array
     {
-        $arguments = [
-            'httpPushServices' => [
-                StyleHttpPush::class,
-                ScriptHttpPush::class,
-                ImageHttpPush::class,
-                FontHttpPush::class,
-            ],
-        ];
-
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        /** @var Dispatcher $dispatcher */
-        $dispatcher = $objectManager->get(Dispatcher::class);
-        try {
-            $dispatcher->dispatch(__CLASS__, 'getHttpPushHandler', $arguments);
-        } catch (\Exception $exception) {
-            $this->logger->error('Problems in publis signal: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
-        }
-
         $objects = [];
-        foreach ((array)$arguments['httpPushServices'] as $httpPushService) {
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['httpPush'] ?? [] as $httpPushService) {
             $objects[] = GeneralUtility::makeInstance($httpPushService);
         }
 

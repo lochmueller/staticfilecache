@@ -36,6 +36,10 @@ use SFC\Staticfilecache\Generator\PlainGenerator;
 use SFC\Staticfilecache\Hook\InitFrontendUser;
 use SFC\Staticfilecache\Hook\LogoffFrontendUser;
 use SFC\Staticfilecache\Hook\UninstallProcess;
+use SFC\Staticfilecache\Service\HttpPush\FontHttpPush;
+use SFC\Staticfilecache\Service\HttpPush\ImageHttpPush;
+use SFC\Staticfilecache\Service\HttpPush\ScriptHttpPush;
+use SFC\Staticfilecache\Service\HttpPush\StyleHttpPush;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
@@ -193,6 +197,23 @@ class Configuration extends StaticFileCacheObject
         }
 
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['generators'] = $generators;
+
+        return $this;
+    }
+
+    /**
+     * Register HTTP push services
+     *
+     * @return Configuration
+     */
+    public function registerHttpPushServices(): Configuration
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['httpPush'] = [
+            'style' => StyleHttpPush::class,
+            'script' => ScriptHttpPush::class,
+            'image' => ImageHttpPush::class,
+            'font' => FontHttpPush::class,
+        ];
 
         return $this;
     }
