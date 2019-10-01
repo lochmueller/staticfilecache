@@ -4,9 +4,10 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-\SFC\Staticfilecache\Configuration::registerHooks();
-\SFC\Staticfilecache\Configuration::registerSlots();
-\SFC\Staticfilecache\Configuration::registerCachingFramework();
-\SFC\Staticfilecache\Configuration::registerIcons();
-\SFC\Staticfilecache\Configuration::registerFluidNamespace();
-\SFC\Staticfilecache\Configuration::registerEid();
+\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\SFC\Staticfilecache\Configuration::class)
+    ->registerHooks()
+    ->registerSlots()
+    ->registerCachingFramework()
+    ->registerIcons()
+    ->registerFluidNamespace()
+    ->registerEid();

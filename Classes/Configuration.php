@@ -43,12 +43,12 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 /**
  * Configuration.
  */
-class Configuration
+class Configuration extends StaticFileCacheObject
 {
     /**
      * Add Web>Info module:.
      */
-    public static function registerBackendModule()
+    public function registerBackendModule(): Configuration
     {
         ExtensionUtility::registerModule(
             'SFC.Staticfilecache',
@@ -64,22 +64,24 @@ class Configuration
                 'labels' => 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang_mod.xlf',
             ]
         );
+        return $this;
     }
 
     /**
      * Register hooks.
      */
-    public static function registerHooks()
+    public function registerHooks(): Configuration
     {
         // Set cookie when User logs in
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser']['staticfilecache'] = InitFrontendUser::class . '->setFeUserCookie';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing']['staticfilecache'] = LogoffFrontendUser::class . '->logoff';
+        return $this;
     }
 
     /**
      * Register slots.
      */
-    public static function registerSlots()
+    public function registerSlots(): Configuration
     {
         $ruleClasses = [
             StaticCacheable::class,
@@ -104,16 +106,17 @@ class Configuration
         /** @var Dispatcher $signalSlotDispatcher */
         $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         foreach ($ruleClasses as $class) {
-            $signalSlotDispatcher->connect(StaticFileCache::class, 'cacheRule', $class, 'check');
+            $signalSlotDispatcher->connect('SFC\\StaticFileCache\\StaticFileCache', 'cacheRule', $class, 'check');
         }
 
         $signalSlotDispatcher->connect(InstallUtility::class, 'afterExtensionUninstall', UninstallProcess::class, 'afterExtensionUninstall');
+        return $this;
     }
 
     /**
      * Register caching framework.
      */
-    public static function registerCachingFramework()
+    public function registerCachingFramework(): Configuration
     {
         $configuration = self::getConfiguration();
         $useNullBackend = isset($configuration['disableInDevelopment']) && $configuration['disableInDevelopment'] && GeneralUtility::getApplicationContext()->isDevelopment();
@@ -138,28 +141,31 @@ class Configuration
                 // 'hashLength' => 10,
             ],
         ];
+        return $this;
     }
 
     /**
      * Add fluid namespaces.
      */
-    public static function registerFluidNamespace()
+    public function registerFluidNamespace(): Configuration
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['sfc'] = ['SFC\\Staticfilecache\\ViewHelpers'];
+        return $this;
     }
 
     /**
      * Register eID scripts
      */
-    public static function registerEid()
+    public function registerEid(): Configuration
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['sfc_manifest'] = 'EXT:staticfilecache/Resources/Private/Php/Manifest.php';
+        return $this;
     }
 
     /**
      * Register icons.
      */
-    public static function registerIcons()
+    public function registerIcons(): Configuration
     {
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         $iconRegistry->registerIcon(
@@ -177,6 +183,7 @@ class Configuration
             FontawesomeIconProvider::class,
             ['name' => 'book']
         );
+        return $this;
     }
 
     /**
@@ -184,7 +191,7 @@ class Configuration
      *
      * @return array
      */
-    public static function getConfiguration(): array
+    public function getConfiguration(): array
     {
         static $configuration;
         if (\is_array($configuration)) {

@@ -49,7 +49,7 @@ class PrepareMiddleware implements MiddlewareInterface
             'explanation' => [],
             'skipProcessing' => false,
         ];
-        $ruleArguments = GeneralUtility::makeInstance(Dispatcher::class)->dispatch(__CLASS__, 'cacheRule', $ruleArguments);
+        $ruleArguments = GeneralUtility::makeInstance(Dispatcher::class)->dispatch('SFC\\StaticFileCache\\StaticFileCache', 'cacheRule', $ruleArguments);
         $explanation = (array)$ruleArguments['explanation'];
 
         if (!$ruleArguments['skipProcessing']) {
