@@ -155,7 +155,6 @@ class BackendController extends ActionController
                 ];
             }
         }
-
         return $rows;
     }
 

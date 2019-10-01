@@ -61,14 +61,13 @@ class GenerateMiddleware implements MiddlewareInterface
                 return $response;
             }
             $content = (string)$response->getBody();
-            $timeOutTime = $this->calculateTimeout($GLOBALS['TSFE']);
-            $timeOutSeconds = $timeOutTime - (new DateTimeService())->getCurrentTime();
+            $lifetime = $this->calculateLifetime($GLOBALS['TSFE']);
         } else {
             $content = implode(' ', $response->getHeader('X-SFC-Explanation'));
-            $timeOutSeconds = 0;
+            $lifetime = 0;
         }
 
-        $this->cache->set($uri, $content, (array)$response->getHeader('X-SFC-Tags'), $timeOutSeconds);
+        $this->cache->set($uri, $content, (array)$response->getHeader('X-SFC-Tags'), $lifetime);
 
         return $response;
     }
@@ -79,7 +78,7 @@ class GenerateMiddleware implements MiddlewareInterface
      * @param TypoScriptFrontendController $tsfe
      * @return int
      */
-    protected function calculateTimeout(TypoScriptFrontendController $tsfe): int
+    protected function calculateLifetime(TypoScriptFrontendController $tsfe): int
     {
         if (!\is_array($tsfe->page)) {
             // $this->logger->warning('TSFE to not contains a valid page record?! Please check: https://github.com/lochmueller/staticfilecache/issues/150');
@@ -89,7 +88,10 @@ class GenerateMiddleware implements MiddlewareInterface
 
         // If page has a endtime before the current timeOutTime, use it instead:
         if ($tsfe->page['endtime'] > 0 && $tsfe->page['endtime'] < $timeOutTime) {
-            $timeOutTime = $tsfe->page['endtime'];
+            $endtimeLifetime = $tsfe->page['endtime'] - time();
+            if ($endtimeLifetime > 0) {
+                $timeOutTime = $endtimeLifetime;
+            }
         }
         return (int)$timeOutTime;
     }
