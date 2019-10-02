@@ -10,7 +10,6 @@ namespace SFC\Staticfilecache\Cache\Rule;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Check if the doktype is valid.
@@ -27,21 +26,24 @@ class ValidDoktype extends AbstractRule
      */
     public function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
+        if (!isset($frontendController->page)) {
+            $explanation[__CLASS__] = 'There is no valid page in the frontendController object';
+            $skipProcessing = true;
+            return;
+        }
+
         $ignoreTypes = [
-            PageRepository::DOKTYPE_LINK,
-            PageRepository::DOKTYPE_SYSFOLDER,
-            PageRepository::DOKTYPE_RECYCLER,
+            3, // DOKTYPE_LINK,
+            254, // DOKTYPE_SYSFOLDER,
+            255, // DOKTYPE_RECYCLER,
         ];
-        if (isset($frontendController->page)) {
-            $currentType = (int)$frontendController->page['doktype'];
-            if (\in_array($currentType, $ignoreTypes, true)) {
-                $explanation[__CLASS__] = 'The Page doktype ' . $currentType . ' is one of the following not allowed numbers: ' . \implode(
+
+        $currentType = (int)$frontendController->page['doktype'];
+        if (\in_array($currentType, $ignoreTypes, true)) {
+            $explanation[__CLASS__] = 'The Page doktype ' . $currentType . ' is one of the following not allowed numbers: ' . \implode(
                     ', ',
                     $ignoreTypes
                 );
-                $skipProcessing = true;
-            }
-        } else {
             $skipProcessing = true;
         }
     }
