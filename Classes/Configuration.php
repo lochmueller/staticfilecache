@@ -40,6 +40,7 @@ use SFC\Staticfilecache\Service\HttpPush\FontHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\ImageHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\ScriptHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\StyleHttpPush;
+use SFC\Staticfilecache\Service\ObjectFactoryService;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
@@ -92,7 +93,17 @@ class Configuration extends StaticFileCacheObject
      */
     public function registerSlots(): Configuration
     {
-        $ruleClasses = [
+        $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+        $signalSlotDispatcher->connect(InstallUtility::class, 'afterExtensionUninstall', UninstallProcess::class, 'afterExtensionUninstall');
+        return $this;
+    }
+
+    /**
+     * @return Configuration
+     */
+    public function registerRules(): Configuration
+    {
+        GeneralUtility::makeInstance(ObjectFactoryService::class)->set('CacheRule', [
             StaticCacheable::class,
             ValidUri::class,
             SiteCacheable::class,
@@ -110,15 +121,8 @@ class Configuration extends StaticFileCacheObject
             ForceStaticCache::class,
             NoFakeFrontend::class,
             NoLongPathSegment::class,
-        ];
+        ]);
 
-        /** @var Dispatcher $signalSlotDispatcher */
-        $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        foreach ($ruleClasses as $class) {
-            $signalSlotDispatcher->connect('SFC\\StaticFileCache\\StaticFileCache', 'cacheRule', $class, 'check');
-        }
-
-        $signalSlotDispatcher->connect(InstallUtility::class, 'afterExtensionUninstall', UninstallProcess::class, 'afterExtensionUninstall');
         return $this;
     }
 
@@ -196,7 +200,7 @@ class Configuration extends StaticFileCacheObject
             $generator['brotli'] = BrotliGenerator::class;
         }
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['Generator'] = $generator;
+        GeneralUtility::makeInstance(ObjectFactoryService::class)->set('Generator', $generator);
 
         return $this;
     }
@@ -208,12 +212,12 @@ class Configuration extends StaticFileCacheObject
      */
     public function registerHttpPushServices(): Configuration
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['HttpPush'] = [
+        GeneralUtility::makeInstance(ObjectFactoryService::class)->set('HttpPush', [
             'style' => StyleHttpPush::class,
             'script' => ScriptHttpPush::class,
             'image' => ImageHttpPush::class,
             'font' => FontHttpPush::class,
-        ];
+        ]);
 
         return $this;
     }

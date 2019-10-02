@@ -27,7 +27,7 @@ class NoFakeFrontendTest extends AbstractRuleTest
         $skipProcessing = false;
 
         $fakeFrontendRule = new NoFakeFrontend();
-        $result = $fakeFrontendRule->check($tsfe, $request, $explanation, $skipProcessing);
-        $this->assertFalse($result['skipProcessing']);
+        $fakeFrontendRule->checkRule($tsfe, $request, $explanation, $skipProcessing);
+        $this->assertFalse($skipProcessing);
     }
 }

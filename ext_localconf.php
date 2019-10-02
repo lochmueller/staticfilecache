@@ -7,6 +7,7 @@ if (!defined('TYPO3_MODE')) {
 \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\SFC\Staticfilecache\Configuration::class)
     ->registerHooks()
     ->registerSlots()
+    ->registerRules()
     ->registerCachingFramework()
     ->registerIcons()
     ->registerFluidNamespace()

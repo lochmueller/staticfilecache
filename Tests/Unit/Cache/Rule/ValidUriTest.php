@@ -23,7 +23,6 @@ class ValidUriTest extends AbstractRuleTest
     {
         $tsfe = $this->getTsfe();
         $explanation = [];
-        $skipProcessing = false;
 
         $validUriRule = new ValidUri();
 
@@ -34,8 +33,9 @@ class ValidUriTest extends AbstractRuleTest
             new ServerRequest('/invalid//path'),
         ];
         foreach ($requests as $request) {
-            $result = $validUriRule->check($tsfe, $request, $explanation, $skipProcessing);
-            $this->assertTrue($result['skipProcessing'], 'Is "' . $request->getUri() . '" valid?');
+            $skipProcessing = false;
+            $validUriRule->checkRule($tsfe, $request, $explanation, $skipProcessing);
+            $this->assertTrue($skipProcessing, 'Is "' . $request->getUri() . '" valid?');
         }
     }
 
@@ -43,7 +43,6 @@ class ValidUriTest extends AbstractRuleTest
     {
         $tsfe = $this->getTsfe();
         $explanation = [];
-        $skipProcessing = false;
 
         $validUriRule = new ValidUri();
 
@@ -56,8 +55,9 @@ class ValidUriTest extends AbstractRuleTest
             new ServerRequest('/home/deep.html'),
         ];
         foreach ($requests as $request) {
-            $result = $validUriRule->check($tsfe, $request, $explanation, $skipProcessing);
-            $this->assertFalse($result['skipProcessing'], 'Is "' . $request->getUri() . '" valid?');
+            $skipProcessing = false;
+            $validUriRule->checkRule($tsfe, $request, $explanation, $skipProcessing);
+            $this->assertFalse($skipProcessing, 'Is "' . $request->getUri() . '" valid?');
         }
     }
 }

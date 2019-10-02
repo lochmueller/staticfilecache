@@ -41,9 +41,9 @@ class ValidDoktype extends AbstractRule
         $currentType = (int)$frontendController->page['doktype'];
         if (\in_array($currentType, $ignoreTypes, true)) {
             $explanation[__CLASS__] = 'The Page doktype ' . $currentType . ' is one of the following not allowed numbers: ' . \implode(
-                    ', ',
-                    $ignoreTypes
-                );
+                ', ',
+                $ignoreTypes
+            );
             $skipProcessing = true;
         }
     }

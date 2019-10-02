@@ -12,10 +12,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use SFC\Staticfilecache\Cache\Rule\AbstractRule;
 use SFC\Staticfilecache\Service\MiddlewareService;
+use SFC\Staticfilecache\Service\ObjectFactoryService;
 use SFC\Staticfilecache\Service\TagService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * PrepareMiddleware.
@@ -42,17 +43,15 @@ class PrepareMiddleware implements MiddlewareInterface
         // @todo migrate to complete middleware handling
         MiddlewareService::setResponse($response);
 
-        // Run cache rules
-        $ruleArguments = [
-            'frontendController' => $GLOBALS['TSFE'],
-            'request' => $request,
-            'explanation' => [],
-            'skipProcessing' => false,
-        ];
-        $ruleArguments = GeneralUtility::makeInstance(Dispatcher::class)->dispatch('SFC\\StaticFileCache\\StaticFileCache', 'cacheRule', $ruleArguments);
-        $explanation = (array)$ruleArguments['explanation'];
+        $rules = GeneralUtility::makeInstance(ObjectFactoryService::class)->get('CacheRule');
+        $explanation = [];
+        $skipProcessing = false;
+        foreach ($rules as $rule) {
+            /** @var $rule AbstractRule */
+            $rule->checkRule($GLOBALS['TSFE'], $request, $explanation, $skipProcessing);
+        }
 
-        if (!$ruleArguments['skipProcessing']) {
+        if (!$skipProcessing) {
             $tagService = GeneralUtility::makeInstance(TagService::class);
 
             $cacheTags = $tagService->getTags();

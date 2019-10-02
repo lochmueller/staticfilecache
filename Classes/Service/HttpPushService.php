@@ -31,7 +31,8 @@ class HttpPushService extends AbstractService
         if ($configurationService->isBool('sendHttp2PushEnable')) {
             $limit = (int)$configurationService->get('sendHttp2PushFileLimit');
             $extensions = GeneralUtility::trimExplode(',', (string)$configurationService->get('sendHttp2PushFileExtensions'), true);
-            $handlers = $this->getHttpPushHandler();
+            $objectFactory = GeneralUtility::makeInstance(ObjectFactoryService::class);
+            $handlers = $objectFactory->get('HttpPush');
 
             foreach ($extensions as $extension) {
                 foreach ($handlers as $handler) {
@@ -46,20 +47,5 @@ class HttpPushService extends AbstractService
         }
 
         return $headers;
-    }
-
-    /**
-     * Get HTTP push handlers.
-     *
-     * @return array
-     */
-    protected function getHttpPushHandler(): array
-    {
-        $objects = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache']['HttpPush'] ?? [] as $httpPushService) {
-            $objects[] = GeneralUtility::makeInstance($httpPushService);
-        }
-
-        return $objects;
     }
 }

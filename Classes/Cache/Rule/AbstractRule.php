@@ -17,35 +17,14 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 abstract class AbstractRule extends StaticFileCacheObject
 {
-    /**
-     * Wrapper for the signal.
-     *
-     * @param TypoScriptFrontendController $frontendController
-     * @param ServerRequestInterface $request
-     * @param array                        $explanation
-     * @param bool                         $skipProcessing
-     *
-     * @return array
-     */
-    public function check(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array $explanation, bool $skipProcessing): array
-    {
-        $this->checkRule($frontendController, $request, $explanation, $skipProcessing);
-
-        return [
-            'frontendController' => $frontendController,
-            'request' => $request,
-            'explanation' => $explanation,
-            'skipProcessing' => $skipProcessing,
-        ];
-    }
 
     /**
-     * Method to check the rul and modify $explanation and/or $skipProcessing.
+     * Method to check the rule and modify $explanation and/or $skipProcessing.
      *
      * @param TypoScriptFrontendController $frontendController
      * @param ServerRequestInterface                       $request
      * @param array                        $explanation
      * @param bool                         $skipProcessing
      */
-    abstract protected function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing);
+    abstract public function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing);
 }
