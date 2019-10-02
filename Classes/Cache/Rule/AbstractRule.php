@@ -26,5 +26,5 @@ abstract class AbstractRule extends StaticFileCacheObject
      * @param array                        $explanation
      * @param bool                         $skipProcessing
      */
-    abstract public function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing);
+    abstract public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing);
 }

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ObjectFactoryService
+ */
+
+declare(strict_types = 1);
+
 namespace SFC\Staticfilecache\Service;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -13,16 +19,13 @@ class ObjectFactoryService extends AbstractService
      * Get the objects for the given category.
      *
      * @param string $category
-     * @return array
+     * @return \Generator
      */
-    public function get(string $category): array
+    public function get(string $category): \Generator
     {
-        $objects = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache'][$category] ?? [] as $className) {
-            $objects[] = GeneralUtility::makeInstance($className);
+            yield GeneralUtility::makeInstance($className);
         }
-
-        return $objects;
     }
 
     /**

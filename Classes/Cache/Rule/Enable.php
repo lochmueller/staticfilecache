@@ -26,7 +26,7 @@ class Enable extends AbstractRule
      * @param array                        $explanation
      * @param bool                         $skipProcessing
      */
-    public function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
+    public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
         /** @var ConfigurationService $configuration */
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);

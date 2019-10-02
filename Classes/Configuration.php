@@ -13,6 +13,7 @@ use SFC\Staticfilecache\Cache\Rule\Enable;
 use SFC\Staticfilecache\Cache\Rule\ForceStaticCache;
 use SFC\Staticfilecache\Cache\Rule\LoginDeniedConfiguration;
 use SFC\Staticfilecache\Cache\Rule\NoBackendUser;
+use SFC\Staticfilecache\Cache\Rule\NoBackendUserCookie;
 use SFC\Staticfilecache\Cache\Rule\NoFakeFrontend;
 use SFC\Staticfilecache\Cache\Rule\NoIntScripts;
 use SFC\Staticfilecache\Cache\Rule\NoLongPathSegment;
@@ -100,28 +101,36 @@ class Configuration extends StaticFileCacheObject
     }
 
     /**
+     * Register rules
+     *
      * @return Configuration
      */
     public function registerRules(): Configuration
     {
         GeneralUtility::makeInstance(ObjectFactoryService::class)->set('CacheRule', [
-            StaticCacheable::class,
-            ValidUri::class,
-            SiteCacheable::class,
-            ValidDoktype::class,
-            NoWorkspacePreview::class,
-            NoUserOrGroupSet::class,
-            NoIntScripts::class,
-            LoginDeniedConfiguration::class,
-            PageCacheable::class,
-            NoNoCache::class,
-            NoBackendUser::class,
-            Enable::class,
-            ValidRequestMethod::class,
-            ValidPageInformation::class,
-            ForceStaticCache::class,
-            NoFakeFrontend::class,
-            NoLongPathSegment::class,
+            'staticCacheable' => StaticCacheable::class,
+            'validUri' => ValidUri::class,
+            'siteCacheable' => SiteCacheable::class,
+            'validDoktype' => ValidDoktype::class,
+            'noWorkspacePreview' => NoWorkspacePreview::class,
+            'noUserOrGroupSet' => NoUserOrGroupSet::class,
+            'noIntScripts' => NoIntScripts::class,
+            'loginDeniedConfiguration' => LoginDeniedConfiguration::class,
+            'pageCacheable' => PageCacheable::class,
+            'noNoCache' => NoNoCache::class,
+            'noBackendUser' => NoBackendUser::class,
+            'enable' => Enable::class,
+            'validRequestMethod' => ValidRequestMethod::class,
+            'validPageInformation' => ValidPageInformation::class,
+            'forceStaticCache' => ForceStaticCache::class,
+            'noFakeFrontend' => NoFakeFrontend::class,
+            'noLongPathSegment' => NoLongPathSegment::class,
+        ]);
+
+        GeneralUtility::makeInstance(ObjectFactoryService::class)->set('CacheRuleFallback', [
+            'validUri' => ValidUri::class,
+            'validRequestMethod' => ValidRequestMethod::class,
+            'noBackendUserCookie' => NoBackendUserCookie::class,
         ]);
 
         return $this;

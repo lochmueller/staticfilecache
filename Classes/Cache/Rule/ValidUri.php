@@ -16,6 +16,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class ValidUri extends AbstractRule
 {
+
     /**
      * Check if the URI is valid
      * Note: A "valid URL" check is already done in the URI frontend.
@@ -25,7 +26,7 @@ class ValidUri extends AbstractRule
      * @param array $explanation
      * @param bool $skipProcessing
      */
-    public function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
+    public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
         $uri = (string)$request->getUri();
         if (false !== \mb_strpos($uri, '?')) {

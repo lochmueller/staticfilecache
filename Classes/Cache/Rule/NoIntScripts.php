@@ -24,7 +24,7 @@ class NoIntScripts extends AbstractRule
      * @param array                        $explanation
      * @param bool                         $skipProcessing
      */
-    public function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
+    public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
         if ($frontendController->isINTincScript()) {
             foreach ((array)$frontendController->config['INTincScript'] as $key => $configuration) {

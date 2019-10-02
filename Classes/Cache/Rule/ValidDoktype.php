@@ -24,7 +24,7 @@ class ValidDoktype extends AbstractRule
      * @param array                        $explanation
      * @param bool                         $skipProcessing
      */
-    public function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
+    public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
         if (!isset($frontendController->page)) {
             $explanation[__CLASS__] = 'There is no valid page in the frontendController object';

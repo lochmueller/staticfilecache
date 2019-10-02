@@ -1,7 +1,7 @@
 <?php
 
 /**
- * No workspace preview.
+ * No active BE user (just check the cookie).
  */
 
 declare(strict_types = 1);
@@ -12,22 +12,24 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * No workspace preview.
+ * No active BE user (just check the cookie).
  */
-class NoWorkspacePreview extends AbstractRule
+class NoBackendUserCookie extends AbstractRule
 {
     /**
-     * Check if it is no workspace preview.
+     * No active BE user cookie.
      *
      * @param TypoScriptFrontendController $frontendController
      * @param ServerRequestInterface $request
-     * @param array                        $explanation
-     * @param bool                         $skipProcessing
+     * @param array $explanation
+     * @param bool $skipProcessing
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
     public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
-        if ($frontendController->doWorkspacePreview()) {
-            $explanation[__CLASS__] = 'The page is in workspace preview mode';
+        if (isset($_COOKIE[$GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']])) {
+            $skipProcessing = true;
+            $explanation[__CLASS__] = 'BE Login Cookie';
         }
     }
 }

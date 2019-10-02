@@ -13,8 +13,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\IdentifierBuilder;
+use SFC\Staticfilecache\Cache\Rule\AbstractRule;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
+use SFC\Staticfilecache\Service\ObjectFactoryService;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -54,15 +56,16 @@ class FallbackMiddleware implements MiddlewareInterface
     {
         $uri = $request->getUri();
 
-        if ($uri->getQuery() !== '') {
-            throw new \Exception('There should be no queries at the URI', 123678);
+        $explanation = [];
+        $skipProcessing = false;
+        foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('CacheRuleFallback') as $rule) {
+            /** @var $rule AbstractRule */
+            $rule->checkRule($GLOBALS['TSFE'], $request, $explanation, $skipProcessing);
+            if ($skipProcessing) {
+                throw new \Exception('Could not use fallback, because: ' . implode(', ', $explanation), 1236781);
+            }
         }
-        if ($request->getMethod() !== 'GET') {
-            throw new \Exception('Only GET is handled', 72389);
-        }
-        if (isset($_COOKIE[$GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']])) {
-            throw new \Exception('Only if there is no cookie', 627841);
-        }
+
         if (isset($_COOKIE['staticfilecache']) && $_COOKIE['staticfilecache'] === 'fe_typo_user_logged_in') {
             throw new \Exception('StaticFileCache Cookie is set', 12738912);
         }

@@ -31,11 +31,9 @@ class HttpPushService extends AbstractService
         if ($configurationService->isBool('sendHttp2PushEnable')) {
             $limit = (int)$configurationService->get('sendHttp2PushFileLimit');
             $extensions = GeneralUtility::trimExplode(',', (string)$configurationService->get('sendHttp2PushFileExtensions'), true);
-            $objectFactory = GeneralUtility::makeInstance(ObjectFactoryService::class);
-            $handlers = $objectFactory->get('HttpPush');
 
-            foreach ($extensions as $extension) {
-                foreach ($handlers as $handler) {
+            foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('HttpPush') as $handler) {
+                foreach ($extensions as $extension) {
                     /** @var AbstractHttpPush $handler */
                     if ($handler->canHandleExtension($extension)) {
                         $headers = \array_merge($headers, $handler->getHeaders($content));

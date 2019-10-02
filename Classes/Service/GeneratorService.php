@@ -25,7 +25,7 @@ class GeneratorService extends AbstractService
      */
     public function generate(string $entryIdentifier, string $fileName, string &$data, int $lifetime): void
     {
-        foreach ($this->getImplementationObjects() as $implementation) {
+        foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('Generator') as $implementation) {
             /* @var $implementation AbstractGenerator */
             $implementation->generate($entryIdentifier, $fileName, $data, $lifetime);
         }
@@ -39,19 +39,9 @@ class GeneratorService extends AbstractService
      */
     public function remove(string $entryIdentifier, string $fileName): void
     {
-        foreach ($this->getImplementationObjects() as $implementation) {
+        foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('Generator') as $implementation) {
             /* @var $implementation AbstractGenerator */
             $implementation->remove($entryIdentifier, $fileName);
         }
-    }
-
-    /**
-     * Get implementation objects.
-     *
-     * @return array
-     */
-    protected function getImplementationObjects(): array
-    {
-        return GeneralUtility::makeInstance(ObjectFactoryService::class)->get('Generator');
     }
 }

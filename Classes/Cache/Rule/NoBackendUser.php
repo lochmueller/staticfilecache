@@ -27,7 +27,7 @@ class NoBackendUser extends AbstractRule
      * @param bool $skipProcessing
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
-    public function checkRule(TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
+    public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
         $context = GeneralUtility::makeInstance(Context::class);
         if ($context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
