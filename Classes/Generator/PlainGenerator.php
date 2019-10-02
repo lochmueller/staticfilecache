@@ -21,8 +21,9 @@ class PlainGenerator extends AbstractGenerator
      * @param string $entryIdentifier
      * @param string $fileName
      * @param string $data
+     * @param int $lifetime
      */
-    public function generate(string $entryIdentifier, string $fileName, string &$data): void
+    public function generate(string $entryIdentifier, string $fileName, string &$data, int $lifetime): void
     {
         GeneralUtility::writeFile($fileName, $data);
     }

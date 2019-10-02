@@ -31,6 +31,7 @@ use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Generator\BrotliGenerator;
 use SFC\Staticfilecache\Generator\ConfigGenerator;
 use SFC\Staticfilecache\Generator\GzipGenerator;
+use SFC\Staticfilecache\Generator\HtaccessGenerator;
 use SFC\Staticfilecache\Generator\ManifestGenerator;
 use SFC\Staticfilecache\Generator\PlainGenerator;
 use SFC\Staticfilecache\Hook\InitFrontendUser;
@@ -184,6 +185,7 @@ class Configuration extends StaticFileCacheObject
     {
         $generator = [
             'config' => ConfigGenerator::class,
+            'htaccess' => HtaccessGenerator::class,
         ];
         $configuration = $this->getConfiguration();
 

@@ -21,12 +21,13 @@ class GeneratorService extends AbstractService
      * @param string $entryIdentifier
      * @param string $fileName
      * @param string $data
+     * @param int $lifetime
      */
-    public function generate(string $entryIdentifier, string $fileName, string &$data): void
+    public function generate(string $entryIdentifier, string $fileName, string &$data, int $lifetime): void
     {
         foreach ($this->getImplementationObjects() as $implementation) {
             /* @var $implementation AbstractGenerator */
-            $implementation->generate($entryIdentifier, $fileName, $data);
+            $implementation->generate($entryIdentifier, $fileName, $data, $lifetime);
         }
     }
 

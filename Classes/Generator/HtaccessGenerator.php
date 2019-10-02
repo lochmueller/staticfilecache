@@ -1,36 +1,39 @@
 <?php
 
-/**
- * HtaccessService.
- */
-
-declare(strict_types = 1);
-
-namespace SFC\Staticfilecache\Service;
+namespace SFC\Staticfilecache\Generator;
 
 use Psr\Http\Message\ResponseInterface;
+use SFC\Staticfilecache\Service\ConfigurationService;
+use SFC\Staticfilecache\Service\DateTimeService;
+use SFC\Staticfilecache\Service\HttpPushService;
+use SFC\Staticfilecache\Service\MiddlewareService;
+use SFC\Staticfilecache\Service\RemoveService;
+use SFC\Staticfilecache\Service\TagService;
+use SFC\Staticfilecache\Service\TypoScriptFrontendService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * HtaccessService.
+ * HtaccessGenerator
  */
-class HtaccessService extends AbstractService
+class HtaccessGenerator extends AbstractGenerator
 {
+
     /**
-     * Write htaccess file.
+     * Generate file.
      *
-     * @param string $originalFileName
-     * @param int    $lifetime
-     * @param string $originalContent
+     * @param string $entryIdentifier
+     * @param string $fileName
+     * @param string $data
+     * @param int $lifetime
      */
-    public function write(string $originalFileName, int $lifetime, string $originalContent)
+    public function generate(string $entryIdentifier, string $fileName, string &$data, int $lifetime): void
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
         $tagService = GeneralUtility::makeInstance(TagService::class);
 
-        $fileName = PathUtility::pathinfo($originalFileName, PATHINFO_DIRNAME) . '/.htaccess';
+        $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess';
         $accessTimeout = (int)$configuration->get('htaccessTimeout');
         $lifetime = $accessTimeout ? $accessTimeout : $lifetime;
 
@@ -47,10 +50,23 @@ class HtaccessService extends AbstractService
             'tags' => \implode(',', $tags),
             'tagHeaderName' => $tagService->getHeaderName(),
             'sendStaticFileCacheHeader' => $configuration->isBool('sendStaticFileCacheHeader'),
-            'httpPushHeaders' => GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders($originalContent),
+            'httpPushHeaders' => GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders($data),
         ];
 
-        $this->renderTemplateToFile($this->getTemplateName(), $variables, $fileName);
+        $this->renderTemplateToFile($this->getTemplateName(), $variables, $htaccessFile);
+    }
+
+    /**
+     * Remove file.
+     *
+     * @param string $entryIdentifier
+     * @param string $fileName
+     */
+    public function remove(string $entryIdentifier, string $fileName): void
+    {
+        $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess';
+        $removeService = GeneralUtility::makeInstance(RemoveService::class);
+        $removeService->file($htaccessFile);
     }
 
     /**

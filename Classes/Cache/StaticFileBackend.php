@@ -13,7 +13,6 @@ use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\GeneratorService;
-use SFC\Staticfilecache\Service\HtaccessService;
 use SFC\Staticfilecache\Service\QueueService;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
@@ -74,8 +73,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
             $this->removeStaticFiles($entryIdentifier);
 
-            GeneralUtility::makeInstance(GeneratorService::class)->generate($entryIdentifier, $fileName, $data);
-            GeneralUtility::makeInstance(HtaccessService::class)->write($fileName, $realLifetime, $data);
+            GeneralUtility::makeInstance(GeneratorService::class)->generate($entryIdentifier, $fileName, $data, $realLifetime);
         } catch (\Exception $exception) {
             $this->logger->error('Error in cache create process', ['exception' => $exception]);
         }
@@ -320,25 +318,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     protected function removeStaticFiles(string $entryIdentifier): bool
     {
         $fileName = $this->getFilepath($entryIdentifier);
-        $dispatchArguments = [
-            'entryIdentifier' => $entryIdentifier,
-            'fileName' => $fileName,
-            'files' => [
-                PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess',
-            ],
-        ];
-
         GeneralUtility::makeInstance(GeneratorService::class)->remove($entryIdentifier, $fileName);
-
-        $dispatched = $this->dispatch('removeStaticFiles', $dispatchArguments);
-        $files = $dispatched['files'];
-        $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        foreach ($files as $file) {
-            if (false === $removeService->file($file)) {
-                return false;
-            }
-        }
-
         return true;
     }
 
