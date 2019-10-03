@@ -98,9 +98,9 @@ class HtaccessGenerator extends AbstractGenerator
      *
      * @param string $templateName
      * @param array  $variables
-     * @param string $fileName
+     * @param string $htaccessFile
      */
-    protected function renderTemplateToFile(string $templateName, array $variables, string $fileName)
+    protected function renderTemplateToFile(string $templateName, array $variables, string $htaccessFile)
     {
         /** @var StandaloneView $renderer */
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
@@ -108,7 +108,7 @@ class HtaccessGenerator extends AbstractGenerator
         $renderer->assignMultiple($variables);
         $content = \trim((string)$renderer->render());
         // Note: Create even empty htaccess files (do not check!!!), so the delete is in sync
-        GeneralUtility::writeFile($fileName, $content);
+        GeneralUtility::writeFile($htaccessFile, $content);
     }
 
     /**
