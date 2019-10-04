@@ -34,7 +34,7 @@ class ScriptHttpPush extends AbstractHttpPush
      */
     public function getHeaders(string $content): array
     {
-        \preg_match_all('/src=["\']{1}[^="\']*\.js(\.gzi?p?)?(\?\d*)?(?=["\'])/', $content, $jsFiles);
+        \preg_match_all('/src=["\'][^="\']*\.js(\.gzi?p?)?(\?\d*)?(?=["\'])/', $content, $jsFiles);
 
         $res = array_map(function ($item) {
             // skip: src=('|") -> 5 chars
