@@ -72,9 +72,34 @@ class FallbackMiddleware implements MiddlewareInterface
 
         $possibleStaticFile = GeneralUtility::makeInstance(IdentifierBuilder::class)->getFilepath((string)$uri);
 
+        $headers = $this->getHeaders($request, $possibleStaticFile);
+
+        if (!is_file($possibleStaticFile) || !is_readable($possibleStaticFile)) {
+            throw new \Exception('StaticFileCache file not found', 126371823);
+        }
+
+        $cacheDirectory = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory();
+        if (strpos($possibleStaticFile, $cacheDirectory) !== 0) {
+            throw new \Exception('The path is not in the cache directory', 348923472);
+        }
+
+        return new HtmlResponse(GeneralUtility::getUrl($possibleStaticFile), 200, $headers);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param string $possibleStaticFile
+     * @return array
+     */
+    protected function getHeaders(ServerRequestInterface $request, string &$possibleStaticFile)
+    {
         $headers = [
             'Content-Type' => 'text/html; charset=utf-8',
         ];
+        $config = $this->getCacheConfiguration($possibleStaticFile);
+        if (isset($config->headers->{'Content-Type'})) {
+            $headers['Content-Type'] = implode(', ', $config->headers->{'Content-Type'});
+        }
         $debug = GeneralUtility::makeInstance(ConfigurationService::class)->isBool('debugHeaders');
         if ($debug) {
             $headers['X-SFC-State'] = 'StaticFileCache - via Fallback Middleware';
@@ -88,16 +113,21 @@ class FallbackMiddleware implements MiddlewareInterface
                 break;
             }
         }
+        return $headers;
+    }
 
-        if (!is_file($possibleStaticFile) || !is_readable($possibleStaticFile)) {
-            throw new \Exception('StaticFileCache file not found', 126371823);
+    /**
+     * Get cache configuration
+     *
+     * @param string $possibleStaticFile
+     * @return array
+     */
+    protected function getCacheConfiguration(string $possibleStaticFile): array
+    {
+        $configFile = $possibleStaticFile . '.config.json';
+        if (is_file($configFile) || !is_readable($configFile)) {
+            return (array)json_decode(GeneralUtility::getUrl($configFile));
         }
-
-        $cacheDirectory = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory();
-        if (strpos($possibleStaticFile, $cacheDirectory) !== 0) {
-            throw new \Exception('The path is not in the cache directory', 348923472);
-        }
-
-        return new HtmlResponse(GeneralUtility::getUrl($possibleStaticFile), 200, $headers);
+        return [];
     }
 }
