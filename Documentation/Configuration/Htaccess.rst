@@ -39,7 +39,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteRule .* - [E=SFC_PORT:%{HTTP:X-Forwarded-Port}]
 
     # Full path for redirect
-   RewriteRule .* - [E=SFC_FULLPATH:typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}/%{ENV:SFC_HOST}/%{ENV:SFC_PORT}%{ENV:SFC_URI}/index]
+   RewriteRule .* - [E=SFC_FULLPATH:typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}_%{ENV:SFC_HOST}_%{ENV:SFC_PORT}%{ENV:SFC_URI}/index]
 
    # Extension (Order: br, gzip, default)
    RewriteRule .* - [E=SFC_EXT:]

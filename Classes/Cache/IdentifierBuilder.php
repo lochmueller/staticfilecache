@@ -34,10 +34,13 @@ class IdentifierBuilder extends StaticFileCacheObject
             throw new \Exception('Invalid RequestUri as cache identifier: ' . $requestUri, 2346782);
         }
         $urlParts = \parse_url($requestUri);
-        $parts = [
+        $pageIdentifier = [
             'scheme' => $urlParts['scheme'] ?? 'https',
             'host' => $urlParts['host'] ?? 'invalid',
             'port' => $urlParts['port'] ?? ('https' === $urlParts['scheme'] ? 443 : 80),
+        ];
+        $parts = [
+            'pageIdent' => implode('_', $pageIdentifier),
             'path' => \trim($urlParts['path'] ?? '', '/'),
             'index' => 'index'
         ];
