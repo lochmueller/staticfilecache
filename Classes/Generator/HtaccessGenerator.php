@@ -8,14 +8,10 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Generator;
 
-use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
-use SFC\Staticfilecache\Service\HttpPushService;
 use SFC\Staticfilecache\Service\MiddlewareService;
 use SFC\Staticfilecache\Service\RemoveService;
-use SFC\Staticfilecache\Service\TagService;
-use SFC\Staticfilecache\Service\TypoScriptFrontendService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -37,27 +33,23 @@ class HtaccessGenerator extends AbstractGenerator
     public function generate(string $entryIdentifier, string $fileName, string &$data, int $lifetime): void
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $tagService = GeneralUtility::makeInstance(TagService::class);
 
         $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess';
         $accessTimeout = (int)$configuration->get('htaccessTimeout');
         $lifetime = $accessTimeout ? $accessTimeout : $lifetime;
 
-        $tags = $tagService->isEnable() ? $tagService->getTags() : [];
+        $headers = $this->getReponseHeaders();
+        if ($configuration->isBool('debugHeaders')) {
+            $headers['X-SFC-State'] = 'StaticFileCache - via htaccess';
+        }
+
         $variables = [
             'mode' => $accessTimeout ? 'A' : 'M',
             'lifetime' => $lifetime,
-            'debug' => $configuration->isBool('debugHeaders'),
-            'responseHeaders' => $this->getReponseHeaders(),
             'expires' => (new DateTimeService())->getCurrentTime() + $lifetime,
-            'typo3headers' => GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getAdditionalHeaders(),
             'sendCacheControlHeader' => $configuration->isBool('sendCacheControlHeader'),
             'sendCacheControlHeaderRedirectAfterCacheTimeout' => $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout'),
-            'sendTypo3Headers' => $configuration->isBool('sendTypo3Headers'),
-            'tags' => \implode(',', $tags),
-            'tagHeaderName' => $tagService->getHeaderName(),
-            'sendStaticFileCacheHeader' => $configuration->isBool('sendStaticFileCacheHeader'),
-            'httpPushHeaders' => GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders($data),
+            'headers' => $headers,
         ];
 
         $this->renderTemplateToFile($this->getTemplateName(), $variables, $htaccessFile);
@@ -84,16 +76,14 @@ class HtaccessGenerator extends AbstractGenerator
     protected function getReponseHeaders(): array
     {
         $response = MiddlewareService::getResponse();
-        if (!($response instanceof ResponseInterface)) {
-            return [];
-        }
+        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+        $validHeaders = GeneralUtility::trimExplode(',', (string)$configuration->get('validHtaccessHeaders'), true);
 
-        $validHeaders = ['Content-Type', 'Content-Language'];
         $headers = $response->getHeaders();
         $result = [];
         foreach ($headers as $name => $values) {
             if (in_array($name, $validHeaders)) {
-                $result[$name] =  implode('', $values);
+                $result[$name] = implode('', $values);
             }
         }
 

@@ -7,6 +7,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Generator;
 
+use SFC\Staticfilecache\Service\MiddlewareService;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -25,7 +26,10 @@ class ConfigGenerator extends AbstractGenerator
      */
     public function generate(string $entryIdentifier, string $fileName, string &$data, int $lifetime): void
     {
-        GeneralUtility::writeFile($fileName . '.config.json', '{}');
+        $config = [
+            'headers' =>  MiddlewareService::getResponse()->getHeaders()
+        ];
+        GeneralUtility::writeFile($fileName . '.config.json', \json_encode($config, JSON_PRETTY_PRINT));
     }
 
     /**

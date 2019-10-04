@@ -13,9 +13,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\Rule\AbstractRule;
+use SFC\Staticfilecache\Service\HttpPushService;
 use SFC\Staticfilecache\Service\MiddlewareService;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
-use SFC\Staticfilecache\Service\TagService;
+use SFC\Staticfilecache\Service\TypoScriptFrontendService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -40,9 +41,6 @@ class PrepareMiddleware implements MiddlewareInterface
     {
         $response = $handler->handle($request);
 
-        // @todo migrate to complete middleware handling
-        MiddlewareService::setResponse($response);
-
         $explanation = [];
         $skipProcessing = false;
         foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('CacheRule') as $rule) {
@@ -51,9 +49,7 @@ class PrepareMiddleware implements MiddlewareInterface
         }
 
         if (!$skipProcessing) {
-            $tagService = GeneralUtility::makeInstance(TagService::class);
-
-            $cacheTags = $tagService->getTags();
+            $cacheTags = GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getTags();
             $cacheTags[] = 'sfc_pageId_' . $GLOBALS['TSFE']->page['uid'];
             $cacheTags[] = 'sfc_domain_' . \str_replace('.', '_', $request->getUri()->getHost());
 
@@ -67,6 +63,14 @@ class PrepareMiddleware implements MiddlewareInterface
 
             $response = $response->withHeader('X-SFC-Tags', $cacheTags);
         }
+
+        $pushHeaders = (array)GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders((string)$response->getBody());
+        foreach ($pushHeaders as $pushHeader) {
+            $response = $response->withAddedHeader('Link', '<' . $pushHeader['path'] . '>; rel=preload; as=' . $pushHeader['type']);
+        }
+
+        // @todo migrate to complete middleware handling
+        MiddlewareService::setResponse($response);
 
         return $response;
     }

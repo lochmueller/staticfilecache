@@ -20,44 +20,11 @@
 	RewriteRule ^.*$ /index.php
 </IfModule>
 </f:if>
-<f:if condition="{responseHeaders}">
+
+<f:if condition="{headers}">
 	<ifModule mod_headers.c>
-		<f:for each="{responseHeaders}" key="name" as="value">
-			Header set {name} "{value}"
+		<f:for each="{headers}" key="name" as="value">
+				Header set {name} "{value}"
 		</f:for>
-	</ifModule>
-</f:if>
-<f:if condition="{sendTypo3Headers}"><f:if condition="{typo3headers -> f:count()}">
-	<ifModule mod_headers.c>
-		<f:for each="{typo3headers}" key="name" as="value">
-			Header set {name} "{value}"
-		</f:for>
-	</ifModule>
-</f:if></f:if>
-<f:if condition="{tags}">
-	<ifModule mod_headers.c>
-		Header set {tagHeaderName} "{tags}"
-	</ifModule>
-</f:if>
-
-<f:if condition="{httpPushHeaders}">
-	<ifModule mod_headers.c>
-		<f:for each="{httpPushHeaders}" as="header">
-				Header add Link "<{header.path}>; rel=preload; as={header.type}"
-		</f:for>
-	</ifModule>
-</f:if>
-
-<f:if condition="{sendStaticFileCacheHeader}">
-	<ifModule mod_headers.c>
-		Header set "X-Cache" "StaticFileCache"
-	</ifModule>
-</f:if>
-
-
-
-<f:if condition="{debug}">
-	<ifModule mod_headers.c>
-		Header set "X-SFC-State" "StaticFileCache - via htaccess"
 	</ifModule>
 </f:if>

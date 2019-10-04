@@ -10,6 +10,9 @@ backendDisplayMode = both
 # cat=basic; type=boolean; label=Debug headers:Send debug headers to get a information which component deliver the file (X-SFC-State).
 debugHeaders = 0
 
+# cat=basic; type=string; label=Valid htaccess headers:List of headers that are transfered to the htaccess configuration. E.g. if you use config.additionalHeaders.xxx you can add this headers here
+validHtaccessHeaders = Content-Type,Content-Language,Link,X-SFC-Tags
+
 # cat=basic; type=boolean; label=Disable StaticFileCache in development: When checked, the StaticFileCache won't be generated if in development application context.
 disableInDevelopment = 0
 
@@ -55,14 +58,8 @@ sendCacheControlHeaderRedirectAfterCacheTimeout = 0
 # cat=Headers; type=boolean; label=Send TYPO3 Headers: Send the config.additionalHeaders header via .htacess files
 sendTypo3Headers = 0
 
-# cat=Headers; type=boolean; label=Send StaticFileCache header: If enabled: The .htaccess configuration send a "X-Cache: StaticFileCache" header, if the page is delivered via cache/.htaccess. You can use this option for debugging in e.g. json fiels (also html files)
-sendStaticFileCacheHeader = 1
-
 # cat=Cache Tags; type=boolean; label=Enable Cache Tags: Output the TSFE cache Tags for the current site in the rendering and for the cache entry
 cacheTagsEnable = 0
-
-# cat=Cache Tags; type=string; label=Cache Tag name: The name of the header for the cache tags
-cacheTagsHeaderName = X-Cache-Tags
 
 # cat=HTTP/2 Push; type=boolean; label=Enable HTTP/2 Push: Enable sending HTTP/2 push headers (experimental)
 sendHttp2PushEnable = 0

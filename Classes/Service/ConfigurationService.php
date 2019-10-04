@@ -9,6 +9,8 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Service;
 
 use SFC\Staticfilecache\Configuration;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Handle extension and TS configuration.
@@ -27,7 +29,7 @@ class ConfigurationService extends AbstractService
      */
     public function __construct()
     {
-        $extensionConfig = Configuration::getConfiguration();
+        $extensionConfig = (array)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
         $this->configuration = \array_merge($this->configuration, $extensionConfig);
 
         if (\is_object($GLOBALS['TSFE']) && isset($GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.']) && \is_array($GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.'])) {
