@@ -72,14 +72,13 @@ class FallbackMiddleware implements MiddlewareInterface
 
         $possibleStaticFile = GeneralUtility::makeInstance(IdentifierBuilder::class)->getFilepath((string)$uri);
 
-        if (!is_file($possibleStaticFile) || !is_readable($possibleStaticFile)) {
-            throw new \Exception('StaticFileCache file not found', 126371823);
-        }
-
         $headers = [
             'Content-Type' => 'text/html; charset=utf-8',
-            'X-SFC-Fallback' => '1',
         ];
+        $debug = GeneralUtility::makeInstance(ConfigurationService::class)->isBool('debugHeaders');
+        if ($debug) {
+            $headers['X-SFC-State'] = 'StaticFileCache - via Fallback Middleware';
+        }
         foreach ($request->getHeader('accept-encoding') as $acceptEncoding) {
             if (strpos($acceptEncoding, 'gzip') !== false) {
                 if (is_file($possibleStaticFile . '.gz') && is_readable($possibleStaticFile . '.gz')) {
@@ -90,10 +89,15 @@ class FallbackMiddleware implements MiddlewareInterface
             }
         }
 
+        if (!is_file($possibleStaticFile) || !is_readable($possibleStaticFile)) {
+            throw new \Exception('StaticFileCache file not found', 126371823);
+        }
+
         $cacheDirectory = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory();
         if (strpos($possibleStaticFile, $cacheDirectory) !== 0) {
             throw new \Exception('The path is not in the cache directory', 348923472);
         }
+
         return new HtmlResponse(GeneralUtility::getUrl($possibleStaticFile), 200, $headers);
     }
 }

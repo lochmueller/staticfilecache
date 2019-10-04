@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * HtaccessGenerator
+ */
+
+declare(strict_types = 1);
+
 namespace SFC\Staticfilecache\Generator;
 
 use Psr\Http\Message\ResponseInterface;
@@ -41,6 +47,7 @@ class HtaccessGenerator extends AbstractGenerator
         $variables = [
             'mode' => $accessTimeout ? 'A' : 'M',
             'lifetime' => $lifetime,
+            'debug' => $configuration->isBool('debugHeaders'),
             'responseHeaders' => $this->getReponseHeaders(),
             'expires' => (new DateTimeService())->getCurrentTime() + $lifetime,
             'typo3headers' => GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getAdditionalHeaders(),

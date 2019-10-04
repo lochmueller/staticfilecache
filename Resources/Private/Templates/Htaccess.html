@@ -55,3 +55,9 @@
 </f:if>
 
 
+
+<f:if condition="{debug}">
+	<ifModule mod_headers.c>
+		Header set "X-SFC-State" "StaticFileCache - via htaccess"
+	</ifModule>
+</f:if>

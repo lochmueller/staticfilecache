@@ -14,6 +14,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Service\CacheService;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -55,16 +56,27 @@ class GenerateMiddleware implements MiddlewareInterface
             return $response;
         }
 
+        $debug = GeneralUtility::makeInstance(ConfigurationService::class)->isBool('debugHeaders');
+
         $uri = (string)$request->getUri();
         if (!$response->hasHeader('X-SFC-Explanation')) {
             if ($this->hasValidCacheEntry($uri)) {
+                if ($debug) {
+                    $response = $response->withHeader('X-SFC-State', 'TYPO3 - already in cache');
+                }
                 return $response;
             }
             $content = (string)$response->getBody();
             $lifetime = $this->calculateLifetime($GLOBALS['TSFE']);
+            if ($debug) {
+                $response = $response->withHeader('X-SFC-State', 'TYPO3 - add to cache');
+            }
         } else {
             $content = implode(' ', $response->getHeader('X-SFC-Explanation'));
             $lifetime = 0;
+            if ($debug) {
+                $response = $response->withHeader('X-SFC-State', 'TYPO3 - no cache');
+            }
         }
 
         $this->cache->set($uri, $content, (array)$response->getHeader('X-SFC-Tags'), $lifetime);
