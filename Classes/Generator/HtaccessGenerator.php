@@ -46,6 +46,7 @@ class HtaccessGenerator extends AbstractGenerator
         $variables = [
             'mode' => $accessTimeout ? 'A' : 'M',
             'lifetime' => $lifetime,
+            'TIME' => '{TIME}',
             'expires' => (new DateTimeService())->getCurrentTime() + $lifetime,
             'sendCacheControlHeader' => $configuration->isBool('sendCacheControlHeader'),
             'sendCacheControlHeaderRedirectAfterCacheTimeout' => $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout'),
