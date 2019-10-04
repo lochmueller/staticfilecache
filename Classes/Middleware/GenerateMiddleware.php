@@ -60,7 +60,7 @@ class GenerateMiddleware implements MiddlewareInterface
 
         $uri = (string)$request->getUri();
         if (!$response->hasHeader('X-SFC-Explanation')) {
-            if ($this->hasValidCacheEntry($uri)) {
+            if ($this->hasValidCacheEntry($uri) && !isset($_COOKIE['staticfilecache'])) {
                 if ($debug) {
                     $response = $response->withHeader('X-SFC-State', 'TYPO3 - already in cache');
                 }
