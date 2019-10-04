@@ -27,6 +27,7 @@ class ConfigGenerator extends AbstractGenerator
     public function generate(string $entryIdentifier, string $fileName, string &$data, int $lifetime): void
     {
         $config = [
+            'generated' => date('r'),
             'headers' =>  MiddlewareService::getResponse()->getHeaders()
         ];
         GeneralUtility::writeFile($fileName . '.config.json', \json_encode($config, JSON_PRETTY_PRINT));
