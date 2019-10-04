@@ -84,7 +84,7 @@ class HtaccessGenerator extends AbstractGenerator
         $result = [];
         foreach ($headers as $name => $values) {
             if (in_array($name, $validHeaders)) {
-                $result[$name] = implode('', $values);
+                $result[$name] = implode(', ', $values);
             }
         }
 

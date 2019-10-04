@@ -45,22 +45,6 @@ class CacheService extends AbstractService
     }
 
     /**
-     * Clear cache by page ID.
-     *
-     * @param int $pageId
-     *
-     * @throws NoSuchCacheException
-     */
-    public function clearByPageId(int $pageId): void
-    {
-        $cache = $this->get();
-        $cacheEntries = \array_keys($cache->getByTag('pageId_' . $pageId));
-        foreach ($cacheEntries as $cacheEntry) {
-            $cache->remove($cacheEntry);
-        }
-    }
-
-    /**
      * Get absolute base directory incl. ending slash
      *
      * @return string
