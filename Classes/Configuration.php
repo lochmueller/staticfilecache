@@ -58,9 +58,48 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 class Configuration extends StaticFileCacheObject
 {
     /**
+     * @var array
+     */
+    protected $configuration = [];
+
+    /**
+     * Configuration constructor.
+     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
+     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
+     */
+    public function __construct()
+    {
+        $this->configuration = (array)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
+    }
+
+    /**
+     * Call in ext_localconf.php
+     */
+    public function extLocalconf(): void
+    {
+        $this->registerHooks()
+            ->registerSlots()
+            ->registerRules()
+            ->registerCachingFramework()
+            ->registerIcons()
+            ->registerFluidNamespace()
+            ->registerEid()
+            ->registerGenerators()
+            ->registerHttpPushServices();
+    }
+
+    /**
+     * Call in ext_tables.php
+     */
+    public function extTables(): void
+    {
+        $this->registerBackendModule();
+    }
+
+    /**
      * Add Web>Info module:.
      */
-    public function registerBackendModule(): Configuration
+    protected function registerBackendModule(): Configuration
     {
         ExtensionUtility::registerModule(
             'SFC.Staticfilecache',
@@ -82,7 +121,7 @@ class Configuration extends StaticFileCacheObject
     /**
      * Register hooks.
      */
-    public function registerHooks(): Configuration
+    protected function registerHooks(): Configuration
     {
         // Set cookie when User logs in
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser']['staticfilecache'] = InitFrontendUser::class . '->setFeUserCookie';
@@ -93,7 +132,7 @@ class Configuration extends StaticFileCacheObject
     /**
      * Register slots.
      */
-    public function registerSlots(): Configuration
+    protected function registerSlots(): Configuration
     {
         $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $signalSlotDispatcher->connect(InstallUtility::class, 'afterExtensionUninstall', UninstallProcess::class, 'afterExtensionUninstall');
@@ -105,7 +144,7 @@ class Configuration extends StaticFileCacheObject
      *
      * @return Configuration
      */
-    public function registerRules(): Configuration
+    protected function registerRules(): Configuration
     {
         GeneralUtility::makeInstance(ObjectFactoryService::class)->set('CacheRule', [
             'staticCacheable' => StaticCacheable::class,
@@ -139,10 +178,9 @@ class Configuration extends StaticFileCacheObject
     /**
      * Register caching framework.
      */
-    public function registerCachingFramework(): Configuration
+    protected function registerCachingFramework(): Configuration
     {
-        $configuration = $this->getConfiguration();
-        $useNullBackend = isset($configuration['disableInDevelopment']) && $configuration['disableInDevelopment'] && GeneralUtility::getApplicationContext()->isDevelopment();
+        $useNullBackend = isset($this->configuration['disableInDevelopment']) && $this->configuration['disableInDevelopment'] && GeneralUtility::getApplicationContext()->isDevelopment();
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache'] = [
             'frontend' => UriFrontend::class,
@@ -170,7 +208,7 @@ class Configuration extends StaticFileCacheObject
     /**
      * Add fluid namespaces.
      */
-    public function registerFluidNamespace(): Configuration
+    protected function registerFluidNamespace(): Configuration
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['sfc'] = ['SFC\\Staticfilecache\\ViewHelpers'];
         return $this;
@@ -179,7 +217,7 @@ class Configuration extends StaticFileCacheObject
     /**
      * Register eID scripts
      */
-    public function registerEid(): Configuration
+    protected function registerEid(): Configuration
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['sfc_manifest'] = 'EXT:staticfilecache/Resources/Private/Php/Manifest.php';
         return $this;
@@ -190,24 +228,23 @@ class Configuration extends StaticFileCacheObject
      *
      * @return Configuration
      */
-    public function registerGenerators(): Configuration
+    protected function registerGenerators(): Configuration
     {
         $generator = [
             'config' => ConfigGenerator::class,
             'htaccess' => HtaccessGenerator::class,
         ];
-        $configuration = $this->getConfiguration();
 
-        if ($configuration['enableGeneratorManifest']) {
+        if ($this->configuration['enableGeneratorManifest']) {
             $generator['manifest'] = ManifestGenerator::class;
         }
-        if ($configuration['enableGeneratorPlain']) {
+        if ($this->configuration['enableGeneratorPlain']) {
             $generator['plain'] = PlainGenerator::class;
         }
-        if ($configuration['enableGeneratorGzip']) {
+        if ($this->configuration['enableGeneratorGzip']) {
             $generator['gzip'] = GzipGenerator::class;
         }
-        if ($configuration['enableGeneratorBrotli']) {
+        if ($this->configuration['enableGeneratorBrotli']) {
             $generator['brotli'] = BrotliGenerator::class;
         }
 
@@ -221,7 +258,7 @@ class Configuration extends StaticFileCacheObject
      *
      * @return Configuration
      */
-    public function registerHttpPushServices(): Configuration
+    protected function registerHttpPushServices(): Configuration
     {
         GeneralUtility::makeInstance(ObjectFactoryService::class)->set('HttpPush', [
             'style' => StyleHttpPush::class,
@@ -236,7 +273,7 @@ class Configuration extends StaticFileCacheObject
     /**
      * Register icons.
      */
-    public function registerIcons(): Configuration
+    protected function registerIcons(): Configuration
     {
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         $iconRegistry->registerIcon(
@@ -255,20 +292,5 @@ class Configuration extends StaticFileCacheObject
             ['name' => 'book']
         );
         return $this;
-    }
-
-    /**
-     * Get the current extension configuration.
-     *
-     * @return array
-     */
-    public function getConfiguration(): array
-    {
-        static $configuration;
-        if (\is_array($configuration)) {
-            return $configuration;
-        }
-        $configuration = (array)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
-        return $configuration;
     }
 }
