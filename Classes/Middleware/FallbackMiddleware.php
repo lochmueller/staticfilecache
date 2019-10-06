@@ -126,7 +126,7 @@ class FallbackMiddleware implements MiddlewareInterface
     {
         $configFile = $possibleStaticFile . '.config.json';
         if (is_file($configFile) || !is_readable($configFile)) {
-            return (array)json_decode(GeneralUtility::getUrl($configFile));
+            return (array)json_decode((string)GeneralUtility::getUrl($configFile));
         }
         return [];
     }
