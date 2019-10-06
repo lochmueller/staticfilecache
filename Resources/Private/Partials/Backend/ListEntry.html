@@ -4,7 +4,7 @@
 		<f:format.raw>{row.title}</f:format.raw> <i>[{row.uid}]</i>
 	</td>
 	<td><a href="{row.identifier}">{row.identifier}</a>
-		<f:if condition="{row.info.explanation -> f:count()}">
+		<f:if condition="{row.info.explanation}">
 			<f:then>
 				<core:icon identifier="status-status-permission-denied"/>
 			</f:then>
@@ -14,7 +14,7 @@
 		</f:if>
 	</td>
 	<td>
-		<f:if condition="{row.info.explanation -> f:count()}">
+		<f:if condition="{row.info.explanation}">
 			<f:then>
 				<core:icon identifier="status-status-permission-denied"/>
 			</f:then>
@@ -24,7 +24,7 @@
 		</f:if>
 	</td>
 	<td>
-		<f:if condition="{row.info.explanation -> f:count()}">
+		<f:if condition="{row.info.explanation}">
 			<f:then>
 				<core:icon identifier="status-status-permission-denied"/>
 			</f:then>
@@ -34,7 +34,7 @@
 		</f:if>
 	</td>
 </tr>
-<f:if condition="{row.info.explanation -> f:count()}">
+<f:if condition="{row.info.explanation}">
 	<f:then>
 		<tr>
 			<td colspan="4" class="danger">
