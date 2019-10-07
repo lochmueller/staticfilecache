@@ -1,7 +1,7 @@
 # cat=basic; type=boolean; label=Clear cache for all domains in tree: When the TYPO3 tree hosts more than one domain, each domain has it's own cache branch. When clearing the cache, only the cache for the domain you are logged on to will be cleared. If you would like the cache for all domains to be cleared when clearing the frontend cache, then check this box.
 clearCacheForAllDomains = 1
 
-# cat=basic; type=boolean; label=Boost mode: This mode do not delete the cache files, if editor change the cache or delete it. The URLs are added to a queue and there is a scheduler task that call the URLs to rebuild the cache. As result: The regular FE users always get a fast StaticFileCache.
+# cat=basic; type=boolean; label=Boost mode: This mode do not delete the cache files, if editor change the cache or delete it. The URLs are added to a queue and there is a symfony command (also in the scheduler task module) that call the URLs to rebuild the cache. As result: The regular FE users always get a fast StaticFileCache.
 boostMode = 0
 
 # cat=basic; type=options[Current=current,Childs=childs,Both=both]; label=Backend display options:The backend module should display cache entries of the current page, only the direct children or both?
