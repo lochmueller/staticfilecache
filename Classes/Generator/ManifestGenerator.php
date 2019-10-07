@@ -7,6 +7,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Generator;
 
+use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Service\ManifestService;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -22,10 +23,10 @@ class ManifestGenerator extends AbstractGenerator
      *
      * @param string $entryIdentifier
      * @param string $fileName
-     * @param string $data
+     * @param ResponseInterface $response
      * @param int $lifetime
      */
-    public function generate(string $entryIdentifier, string $fileName, string &$data, int $lifetime): void
+    public function generate(string $entryIdentifier, string $fileName, ResponseInterface &$response, int $lifetime): void
     {
         $manifestService = GeneralUtility::makeInstance(ManifestService::class);
         $content = $manifestService->generateManifestContent($entryIdentifier, $data);

@@ -8,9 +8,9 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Generator;
 
+use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
-use SFC\Staticfilecache\Service\MiddlewareService;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -27,10 +27,10 @@ class HtaccessGenerator extends AbstractGenerator
      *
      * @param string $entryIdentifier
      * @param string $fileName
-     * @param string $data
+     * @param ResponseInterface $response
      * @param int $lifetime
      */
-    public function generate(string $entryIdentifier, string $fileName, string &$data, int $lifetime): void
+    public function generate(string $entryIdentifier, string $fileName, ResponseInterface &$response, int $lifetime): void
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
 
@@ -38,7 +38,7 @@ class HtaccessGenerator extends AbstractGenerator
         $accessTimeout = (int)$configuration->get('htaccessTimeout');
         $lifetime = $accessTimeout ? $accessTimeout : $lifetime;
 
-        $headers = $this->getReponseHeaders();
+        $headers = $this->getReponseHeaders($response);
         if ($configuration->isBool('debugHeaders')) {
             $headers['X-SFC-State'] = 'StaticFileCache - via htaccess';
         }
@@ -72,11 +72,11 @@ class HtaccessGenerator extends AbstractGenerator
     /**
      * Get reponse headers
      *
+     * @param ResponseInterface $response
      * @return array
      */
-    protected function getReponseHeaders(): array
+    protected function getReponseHeaders(ResponseInterface $response): array
     {
-        $response = MiddlewareService::getResponse();
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
         $validHeaders = GeneralUtility::trimExplode(',', (string)$configuration->get('validHtaccessHeaders'), true);
 

@@ -7,6 +7,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Generator;
 
+use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\StaticFileCacheObject;
 
 /**
@@ -20,10 +21,10 @@ abstract class AbstractGenerator extends StaticFileCacheObject
      *
      * @param string $entryIdentifier
      * @param string $fileName
-     * @param string $data
+     * @param ResponseInterface $response
      * @param int $lifetime
      */
-    abstract public function generate(string $entryIdentifier, string $fileName, string &$data, int $lifetime): void;
+    abstract public function generate(string $entryIdentifier, string $fileName, ResponseInterface &$response, int $lifetime): void;
 
     /**
      * Remove file.

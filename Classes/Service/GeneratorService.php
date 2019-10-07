@@ -7,6 +7,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
+use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Generator\AbstractGenerator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -20,14 +21,14 @@ class GeneratorService extends AbstractService
      *
      * @param string $entryIdentifier
      * @param string $fileName
-     * @param string $data
+     * @param ResponseInterface $response
      * @param int $lifetime
      */
-    public function generate(string $entryIdentifier, string $fileName, string &$data, int $lifetime): void
+    public function generate(string $entryIdentifier, string $fileName, ResponseInterface &$response, int $lifetime): void
     {
         foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('Generator') as $implementation) {
             /* @var $implementation AbstractGenerator */
-            $implementation->generate($entryIdentifier, $fileName, $data, $lifetime);
+            $implementation->generate($entryIdentifier, $fileName, $response, $lifetime);
         }
     }
 

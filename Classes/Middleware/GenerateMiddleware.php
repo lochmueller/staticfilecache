@@ -66,20 +66,18 @@ class GenerateMiddleware implements MiddlewareInterface
                 }
                 return $response;
             }
-            $content = (string)$response->getBody();
             $lifetime = $this->calculateLifetime($GLOBALS['TSFE']);
             if ($debug) {
                 $response = $response->withHeader('X-SFC-State', 'TYPO3 - add to cache');
             }
         } else {
-            $content = implode(' ', $response->getHeader('X-SFC-Explanation'));
             $lifetime = 0;
             if ($debug) {
                 $response = $response->withHeader('X-SFC-State', 'TYPO3 - no cache');
             }
         }
 
-        $this->cache->set($uri, $content, (array)$response->getHeader('X-SFC-Tags'), $lifetime);
+        $this->cache->set($uri, $response, (array)$response->getHeader('X-SFC-Tags'), $lifetime);
 
         return $response;
     }

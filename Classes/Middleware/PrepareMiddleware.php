@@ -14,7 +14,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\Rule\AbstractRule;
 use SFC\Staticfilecache\Service\HttpPushService;
-use SFC\Staticfilecache\Service\MiddlewareService;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
 use SFC\Staticfilecache\Service\TypoScriptFrontendService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -68,9 +67,6 @@ class PrepareMiddleware implements MiddlewareInterface
         foreach ($pushHeaders as $pushHeader) {
             $response = $response->withAddedHeader('Link', '<' . $pushHeader['path'] . '>; rel=preload; as=' . $pushHeader['type']);
         }
-
-        // @todo migrate to complete middleware handling
-        MiddlewareService::setResponse($response);
 
         return $response;
     }

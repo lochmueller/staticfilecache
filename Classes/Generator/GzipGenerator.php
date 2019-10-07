@@ -7,6 +7,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Generator;
 
+use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -26,12 +27,12 @@ class GzipGenerator extends AbstractGenerator
      *
      * @param string $entryIdentifier
      * @param string $fileName
-     * @param string $data
+     * @param ResponseInterface $response
      * @param int $lifetime
      */
-    public function generate(string $entryIdentifier, string $fileName, string &$data, int $lifetime): void
+    public function generate(string $entryIdentifier, string $fileName, ResponseInterface &$response, int $lifetime): void
     {
-        $contentGzip = \gzencode($data, $this->getCompressionLevel());
+        $contentGzip = \gzencode((string)$response->getBody(), $this->getCompressionLevel());
         if ($contentGzip) {
             GeneralUtility::writeFile($fileName . '.gz', $contentGzip);
         }

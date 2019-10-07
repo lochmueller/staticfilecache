@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Domain\Repository\CacheRepository;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
@@ -34,7 +35,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      * Saves data in the cache.
      *
      * @param string $entryIdentifier An identifier for this specific cache entry
-     * @param string $data            The data to be stored
+     * @param ResponseInterface $data            The data to be stored
      * @param array  $tags            Tags to associate with this cache entry
      * @param int    $lifetime        Lifetime of this cache entry in seconds
      *
@@ -51,7 +52,9 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
             'priority' => $this->getPriority($entryIdentifier),
         ];
         if (\in_array('explanation', $tags, true)) {
-            $databaseData['explanation'] = $data;
+            $databaseData['explanation'] = $data->getHeader('X-SFC-Explanation');
+
+            // @todo serilize?!?!
             parent::set($entryIdentifier, \serialize($databaseData), $tags, $realLifetime);
 
             return;
