@@ -138,11 +138,6 @@ class BackendController extends ActionController
         foreach ($dbRows as $row) {
             $cacheEntries = $cache->getByTag('sfc_pageId_' . $row['uid']);
             foreach ($cacheEntries as $identifier => $info) {
-                $cached = !is_array($info['explanation']) || empty($info['explanation']);
-                if ('all' !== $filter && (('cached' === $filter && !$cached) || ('notCached' === $filter && $cached))) {
-                    continue;
-                }
-
                 $rows[] = [
                     'uid' => $row['uid'],
                     'title' => BackendUtility::getRecordTitle(
@@ -150,12 +145,19 @@ class BackendController extends ActionController
                         $row,
                         true
                     ),
+                    'cached' => !is_array($info['explanation']) || empty($info['explanation']),
                     'identifier' => $identifier,
                     'info' => $info,
                 ];
             }
         }
-        return $rows;
+
+        return array_filter($rows, function ($row) use ($filter) {
+            if ($filter === 'all') {
+                return true;
+            }
+            return ('cached' === $filter && $row['cached']) || ('notCached' === $filter && !$row['cached']);
+        });
     }
 
     /**

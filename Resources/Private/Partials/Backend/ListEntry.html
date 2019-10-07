@@ -4,38 +4,38 @@
 		<f:format.raw>{row.title}</f:format.raw> <i>[{row.uid}]</i>
 	</td>
 	<td><a href="{row.identifier}">{row.identifier}</a>
-		<f:if condition="{row.info.explanation}">
+		<f:if condition="{row.cached}">
 			<f:then>
-				<core:icon identifier="status-status-permission-denied"/>
-			</f:then>
-			<f:else>
 				<core:icon identifier="status-status-permission-granted"/>
+			</f:then>
+			<f:else>
+				<core:icon identifier="status-status-permission-denied"/>
 			</f:else>
 		</f:if>
 	</td>
 	<td>
-		<f:if condition="{row.info.explanation}">
+		<f:if condition="{row.cached}">
 			<f:then>
-				<core:icon identifier="status-status-permission-denied"/>
-			</f:then>
-			<f:else>
 				<f:render section="date" arguments="{timestamp: row.info.created}" />
+			</f:then>
+			<f:else>
+				<core:icon identifier="status-status-permission-denied"/>
 			</f:else>
 		</f:if>
 	</td>
 	<td>
-		<f:if condition="{row.info.explanation}">
+		<f:if condition="{row.cached}">
 			<f:then>
-				<core:icon identifier="status-status-permission-denied"/>
+				<f:render section="date" arguments="{timestamp: row.info.expires}" />
 			</f:then>
 			<f:else>
-				<f:render section="date" arguments="{timestamp: row.info.expires}" />
+				<core:icon identifier="status-status-permission-denied"/>
 			</f:else>
 		</f:if>
 	</td>
 </tr>
-<f:if condition="{row.info.explanation}">
-	<f:then>
+<f:if condition="{row.cached}">
+	<f:else>
 		<tr>
 			<td colspan="4" class="danger">
 				<ul>
@@ -47,10 +47,8 @@
 				</ul>
 			</td>
 		</tr>
-	</f:then>
+	</f:else>
 </f:if>
-
-
 
 <f:section name="date">
 	<f:if condition="{timestamp}">
