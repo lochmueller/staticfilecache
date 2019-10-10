@@ -26,7 +26,8 @@ class PageCacheable extends AbstractRule
      */
     public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
-        if (!$frontendController->page['tx_staticfilecache_cache']) {
+        $cache = (bool)($frontendController->page['tx_staticfilecache_cache'] ?? true);
+        if (!$cache) {
             $explanation[__CLASS__] = 'static cache disabled on page';
         }
     }

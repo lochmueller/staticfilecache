@@ -38,7 +38,7 @@ class ValidDoktype extends AbstractRule
             255, // DOKTYPE_RECYCLER,
         ];
 
-        $currentType = (int)$frontendController->page['doktype'];
+        $currentType = (int)($frontendController->page['doktype'] ?? 1);
         if (\in_array($currentType, $ignoreTypes, true)) {
             $explanation[__CLASS__] = 'The Page doktype ' . $currentType . ' is one of the following not allowed numbers: ' . \implode(
                 ', ',
