@@ -1,7 +1,7 @@
 # cat=basic; type=boolean; label=Clear cache for all domains in tree: When the TYPO3 tree hosts more than one domain, each domain has it's own cache branch. When clearing the cache, only the cache for the domain you are logged on to will be cleared. If you would like the cache for all domains to be cleared when clearing the frontend cache, then check this box.
 clearCacheForAllDomains = 1
 
-# cat=basic; type=boolean; label=Boost mode: This mode do not delete the cache files, if editor change the cache or delete it. The URLs are added to a queue and there is a symfony command (also in the scheduler task module) that call the URLs to rebuild the cache. As result: The regular FE users always get a fast StaticFileCache.
+# cat=basic; type=boolean; label=Boost mode: This mode do not delete the cache files, if editor change the cache or delete it. The URLs are added to a queue and there is a symfony command (also in the scheduler task module) that call the URLs to rebuild the cache. As result: The regular FE users always get a fast StaticFileCache. Note: If you enable this feature you need the scheduler task. Without the scheduler tasks the website is not updateable anymore.
 boostMode = 0
 
 # cat=basic; type=options[Current=current,Childs=childs,Both=both]; label=Backend display options:The backend module should display cache entries of the current page, only the direct children or both?
@@ -10,7 +10,7 @@ backendDisplayMode = both
 # cat=basic; type=boolean; label=Debug headers:Send debug headers to get a information which component deliver the file (X-SFC-State).
 debugHeaders = 0
 
-# cat=basic; type=string; label=Valid htaccess headers:List of headers that are transfered to the htaccess configuration. E.g. if you use config.additionalHeaders.xxx you can add this headers here
+# cat=basic; type=string; label=Valid htaccess headers:List of headers that are transfered to the htaccess configuration. E.g. if you use config.additionalHeaders.xxx you can add this headers here. Please change this configuration only, if you know waht you do. "Content-Type" is recommended.
 validHtaccessHeaders = Content-Type,Content-Language,Link,X-SFC-Tags
 
 # cat=basic; type=boolean; label=Disable StaticFileCache in development: When checked, the StaticFileCache won't be generated if in development application context.
@@ -23,7 +23,7 @@ renameTablesToOtherPrefix = 0
 useReverseUriLengthInPriority = 1
 
 # cat=basic; type=boolean; label=Use fallback middleware: use the fallback middleware to deliver the static file, if there is no htaccess configuration
-useFallbackMiddleware = 0
+useFallbackMiddleware = 1
 
 # cat=basic; type=boolean; label=Hash URI in cache (BETA!!!): Hash the URI in cache so the cache idenfier is short. Avoid problems with very lage URIs
 hashUriInCache = 0
@@ -37,16 +37,16 @@ htaccessTemplateName = EXT:staticfilecache/Resources/Private/Templates/Htaccess.
 # cat=basic; type=string; label=Override cache directory: If this config var is empty the default is "typo3temp/tx_staticfilecache/". If you change this value you HAVE TO addapt you rewrite configuration.
 overrideCacheDirectory =
 
-# cat=generator; type=boolean; label=Enable Cache Manifest generator (BETA!!!): Create manifest files
+# cat=Generator; type=boolean; label=Enable Cache Manifest generator (BETA!!!): Create manifest files
 enableGeneratorManifest = 0
 
-# cat=generator; type=boolean; label=Enable Plain generator: When checked, the normal (default) file will write to the cache.
+# cat=Generator; type=boolean; label=Enable Plain generator: When checked, the normal (default) file will write to the cache.
 enableGeneratorPlain = 0
 
-# cat=generator; type=boolean; label=Enable GZIP compression generator: When checked, a gzipped version of the static file is written to the cache directory. Take care to also choose the proper .htaccess configuration when enabling this option.
+# cat=Generator; type=boolean; label=Enable GZIP compression generator: When checked, a gzipped version of the static file is written to the cache directory. Take care to also choose the proper .htaccess configuration when enabling this option.
 enableGeneratorGzip = 1
 
-# cat=generator; type=boolean; label=Enable Brotli generator: When checked, the brotli version of the static file is written to the cache directory.
+# cat=Generator; type=boolean; label=Enable Brotli generator: When checked, the brotli version of the static file is written to the cache directory.
 enableGeneratorBrotli = 0
 
 # cat=Headers; type=boolean; label=Send Cache-Control header: If your Apache installation has 'mod_expires' loaded, you can use it to send Cache-Control headers. For each statically cached page a .htaccess file will be created with a mod_expires rule. This rule will make Apache send a cache header when delivering the cached page to the visitor.
@@ -55,14 +55,14 @@ sendCacheControlHeader = 1
 # cat=Headers; type=boolean; label=Send Cache-Control header redirect after cache timeout: Add a mod_rewrite statement to the generated htaccess files, that redirect the user to the index.php, if the Cache is invalid.
 sendCacheControlHeaderRedirectAfterCacheTimeout = 0
 
-# cat=Cache Tags; type=boolean; label=Enable Cache Tags: Output the TSFE cache Tags for the current site in the rendering and for the cache entry
+# cat=Headers; type=boolean; label=Enable Cache Tags: Output the TSFE cache Tags for the current site in the rendering and for the cache entry
 cacheTagsEnable = 0
 
-# cat=HTTP/2 Push; type=boolean; label=Enable HTTP/2 Push: Enable sending HTTP/2 push headers (experimental)
+# cat=HttpPush; type=boolean; label=Enable HTTP/2 Push: Enable sending HTTP/2 push headers (experimental)
 sendHttp2PushEnable = 0
 
-# cat=HTTP/2 Push; type=string; label=File extensions for HTTP/2 push: Different file extension for HTTP/2 push. Please take care, that there is a Handler for parsing the file Extensions
+# cat=HttpPush; type=string; label=File extensions for HTTP/2 push: Different file extension for HTTP/2 push. Please take care, that there is a Handler for parsing the file Extensions
 sendHttp2PushFileExtensions = css,js
 
-# cat=HTTP/2 Push; type=string; label=File limit for HTTP/2 push: The limit of files that are added as HTTP/2 push
+# cat=HttpPush; type=string; label=File limit for HTTP/2 push: The limit of files that are added as HTTP/2 push
 sendHttp2PushFileLimit = 10

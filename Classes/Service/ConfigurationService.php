@@ -26,10 +26,15 @@ class ConfigurationService extends AbstractService
 
     /**
      * Build up the configuration.
+     *
+     * @throws \Exception
      */
     public function __construct()
     {
         $extensionConfig = (array)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
+        if (!array_key_exists('validHtaccessHeaders', $extensionConfig)) {
+            throw new \Exception('It seams your extension configuration stored in the LocalConfiguration is old. Please save the configuration of the StaticFileCache extension in the extension manager or deployment process.');
+        }
         $this->configuration = \array_merge($this->configuration, $extensionConfig);
 
         if (\is_object($GLOBALS['TSFE']) && isset($GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.']) && \is_array($GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.'])) {
