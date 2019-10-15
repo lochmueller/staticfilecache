@@ -11,5 +11,5 @@ Related Issue
 More Details
 ------------
 
-- Work in Progess?
+- Work in Progress?
 - Open Issues?

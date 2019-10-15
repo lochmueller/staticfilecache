@@ -6,7 +6,7 @@ It is recommended to install the extension in composer mode. If your TYPO3 insta
 
 > Note: EXT:staticfilecache is a fork of EXT:nc_staticfilecache (EXT:fl_staticfilecache before) and has a lots of improvements. If it possible use EXT:staticfilecache instead of one of the old ones.
 
-# Support the developmet of the extension
+# Support the development of the extension
 
 - [Amazon](https://www.amazon.de/hz/wishlist/ls/SWHV1AQPUTH9)
 - [PayPal](https://www.paypal.me/lochmueller/100)
