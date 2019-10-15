@@ -38,7 +38,7 @@ There are situations, where the page is created with a new URL, but TYPO3 could 
 
 In this configuration example you get two pages like http://www.domain.org/ and http://www.domain.org/en/ but TYPO3 call the hook only once.
 
-More details and a workarround of this problem: https://github.com/lochmueller/staticfilecache/issues/7#issuecomment-317096513
+More details and a workaround of this problem: https://github.com/lochmueller/staticfilecache/issues/7#issuecomment-317096513
 
 Caching Framework with none-DB-backends
 ---------------------------------------
@@ -50,10 +50,10 @@ Please keep this in mind. If you use StaticFileCache you do not need to use a Re
 Clear all caches for editors
 ----------------------------
 
-The possibiliy to clear all caches is not very usefull for regular editor, because they do not understand what exactly means "clear all caches". So it is recommended to use the PageTSConfig option "options.clearCache.pages" to prevent a system wide clear cache mechanism for editors. Ask the editor "why" they use the "clear all cache" and use cache tags, cache groups and clear cache hooks to create the right situation without clearing all caches.
+The possibility to clear all caches is not very useful for regular editor, because they do not understand what exactly means "clear all caches". So it is recommended to use the PageTSConfig option "options.clearCache.pages" to prevent a system wide clear cache mechanism for editors. Ask the editor "why" they use the "clear all cache" and use cache tags, cache groups and clear cache hooks to create the right situation without clearing all caches.
 
 Hard remove of cf_* tables
 --------------------------
 
 There are mechanisms (e.g. typo3_console clear cache force) that a truncate the cf_* tables directly. In this case the StaticFileCache is not in sync anymore (the DB and file layer).
-If you are using such mechanim, please use the "renameTablesToOtherPrefix" configuration that the caching tables of the StaticFileCache get another prefix.
+If you are using such mechanism, please use the "renameTablesToOtherPrefix" configuration that the caching tables of the StaticFileCache get another prefix.
