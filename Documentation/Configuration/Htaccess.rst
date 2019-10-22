@@ -23,6 +23,10 @@ This is the base .htaccess configuration. Please take a look for the default var
    RewriteCond %{HTTP_HOST} ^([^:]+)(:[0-9]+)?$
    RewriteRule .* - [E=SFC_HOST:%1]
 
+   # Disable cache for EXT:solr indexing requests
+   RewriteCond %{HTTP:X-Tx-Solr-Iq} .+
+   RewriteRule .* - [E=SFC_HOST:invalid-host]
+
    # Get scheme
    RewriteRule .* - [E=SFC_PROTOCOL:http]
    RewriteCond %{SERVER_PORT} ^443$ [OR]
