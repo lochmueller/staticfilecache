@@ -29,7 +29,8 @@ class ManifestGenerator extends AbstractGenerator
     public function generate(string $entryIdentifier, string $fileName, ResponseInterface &$response, int $lifetime): void
     {
         $manifestService = GeneralUtility::makeInstance(ManifestService::class);
-        $content = $manifestService->generateManifestContent($entryIdentifier, $data);
+        $html = (string)$response->getBody();
+        $content = $manifestService->generateManifestContent($entryIdentifier, $html);
         if ($content !== '') {
             GeneralUtility::writeFile($fileName . '.sfc', $content);
         }
