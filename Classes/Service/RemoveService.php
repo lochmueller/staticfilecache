@@ -38,6 +38,29 @@ class RemoveService extends AbstractService
     }
 
     /**
+     * Add the subdirecotries of thee given folder to the remove function.
+     *
+     * @param string $absoluteDirName
+     *
+     * @return RemoveService
+     */
+    public function subdirectories(string $absoluteDirName): self
+    {
+        if (!\is_dir($absoluteDirName)) {
+            return $this;
+        }
+
+        foreach (new \DirectoryIterator($absoluteDirName) as $item) {
+            /** @var $item \DirectoryIterator */
+            if ($item->isDir() && !$item->isDot()) {
+                $this->directory($item->getPathname() . '/');
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * Rename the dir and mark them as "to remove".
      * Speed up the remove process.
      *
