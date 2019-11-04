@@ -79,6 +79,7 @@ class BackendController extends ActionController
         $htaccessConfigurationService = GeneralUtility::makeInstance(HtaccessConfigurationService::class);
         $this->view->assignMultiple([
             'foundHtaccess' => $htaccessConfigurationService->foundConfigurationInHtaccess(),
+            'missingModules' => $htaccessConfigurationService->getMissingApacheModules(),
         ]);
     }
 

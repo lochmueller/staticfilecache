@@ -17,6 +17,19 @@
 		</f:else>
 	</f:if>
 
+	<f:if condition="{missingModules -> f:count()}">
+		<f:then>
+			<div class="alert alert-warning" role="alert">We couldn't find the required apache modules for the htaccess configuration:
+				<f:for each="{missingModules}" as="mod">
+					{mod}
+				</f:for>
+			</div>
+		</f:then>
+		<f:else>
+			<div class="alert alert-info" role="alert">We found the required apache modules in youur installation.</div>
+		</f:else>
+	</f:if>
+
 	<h2>Support the extension development...</h2>
 	<p>
 		<a href="https://www.paypal.me/lochmueller/100" target="_blank" class="btn btn-lg btn-success">
