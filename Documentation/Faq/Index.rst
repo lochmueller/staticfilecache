@@ -6,6 +6,9 @@ A: This is NOT a error of StaticFileCache. The TSFE of your instance is set to "
 This could be any plugin, content element, TypoScript configuration or cHash calculation problem. I suggest do check the TSFE->set_no_cache function and enable the TYPO3 syslog to get the real reason, why the page is not cached.
 Please do not create GitHub issues related to this message and search here on Github or check the Slack channel for many answers.
 
+*Q: My page is not cachable and I am using EXT:form incl. Honeypot?*
+A: This is the reason: https://docs.typo3.org/c/typo3/cms-form/master/en-us/I/FAQ/Index.html#the-honeypot-does-not-work-with-static-site-caching-what-can-i-do
+
 *Q: Tell me about caching*
 A: Here's a nice writeup on caching I found:
 http://www.port80software.com/products/cacheright/cachingandcachecontrol
