@@ -2,7 +2,7 @@
 <f:if condition="{sendCacheControlHeader}">
 <IfModule mod_expires.c>
 	ExpiresActive on
-	ExpiresByType text/html {mode}{lifetime}
+	ExpiresByType {contentType} {mode}{lifetime}
 </IfModule>
 </f:if>
 <f:if condition="{sendCacheControlHeaderRedirectAfterCacheTimeout}">
