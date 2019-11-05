@@ -60,4 +60,21 @@ class CacheService extends AbstractService
         $absolutePath = Environment::getPublicPath() . '/' . $relativeDirectory;
         return GeneralUtility::resolveBackPath($absolutePath);
     }
+
+    /**
+     * Flush the cache
+     *
+     * @param bool $includeBoostQueue
+     * @throws NoSuchCacheException
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException
+     */
+    public function flush(bool $includeBoostQueue = false)
+    {
+        if ($includeBoostQueue) {
+            \define('SFC_QUEUE_WORKER', true);
+        }
+        $this->get()->flush();
+        $this->getManager()->flushCachesInGroup('pages');
+    }
 }

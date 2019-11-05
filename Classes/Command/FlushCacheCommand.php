@@ -48,12 +48,8 @@ class FlushCacheCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getArgument('force-boost-mode-flush')) {
-            \define('SFC_QUEUE_WORKER', true);
-        }
         $cacheService = GeneralUtility::makeInstance(CacheService::class);
-        $cacheService->get()->flush();
-        $cacheService->getManager()->flushCachesInGroup('pages');
+        $cacheService->flush((bool) $input->getArgument('force-boost-mode-flush'));
 
         return 0;
     }
