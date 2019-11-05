@@ -30,6 +30,14 @@ abstract class AbstractRepository extends StaticFileCacheObject
     }
 
     /**
+     * Truncate the table
+     */
+    public function truncate()
+    {
+        $this->getConnection()->truncate($this->getTableName());
+    }
+
+    /**
      * Insert record.
      *
      * @param array $data

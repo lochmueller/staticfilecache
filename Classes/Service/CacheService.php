@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
+use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
@@ -76,5 +77,9 @@ class CacheService extends AbstractService
         }
         $this->get()->flush();
         $this->getManager()->flushCachesInGroup('pages');
+
+        if ($includeBoostQueue) {
+            GeneralUtility::makeInstance(QueueRepository::class)->truncate();
+        }
     }
 }
