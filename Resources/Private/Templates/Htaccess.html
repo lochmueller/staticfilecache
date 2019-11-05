@@ -15,7 +15,7 @@
 	RewriteCond %{ENV:REDIRECT_STATUS} ^$
 	RewriteRule .* - [F,L]
 
-	RewriteCond {TIME} ><f:format.date format="YmdHis">@{expires}</f:format.date>
+	RewriteCond %{TIME} ><f:format.date format="YmdHis">@{expires}</f:format.date>
 	RewriteRule ^.*$ /index.php
 </IfModule>
 </f:if>
