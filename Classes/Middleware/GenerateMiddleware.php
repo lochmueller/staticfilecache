@@ -50,6 +50,10 @@ class GenerateMiddleware implements MiddlewareInterface
             return $response;
         }
 
+        if ($response->getStatusCode() !== 200) {
+            return $response;
+        }
+
         try {
             $this->cache = GeneralUtility::makeInstance(CacheService::class)->get();
         } catch (\Exception $exception) {
