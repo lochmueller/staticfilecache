@@ -12,6 +12,7 @@ use SFC\Staticfilecache\Domain\Repository\PageRepository;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
+use SFC\Staticfilecache\Service\EnvironmentService;
 use SFC\Staticfilecache\Service\HtaccessConfigurationService;
 use SFC\Staticfilecache\Service\QueueService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -77,9 +78,12 @@ class BackendController extends ActionController
     public function supportAction(): void
     {
         $htaccessConfigurationService = GeneralUtility::makeInstance(HtaccessConfigurationService::class);
+        $environmentService = GeneralUtility::makeInstance(EnvironmentService::class);
         $this->view->assignMultiple([
             'foundHtaccess' => $htaccessConfigurationService->foundConfigurationInHtaccess(),
             'missingModules' => $htaccessConfigurationService->getMissingApacheModules(),
+            'envInfoLink' => $environmentService->getLink(),
+            'envInfoMarkdown' => $environmentService->getMarkdown(),
         ]);
     }
 

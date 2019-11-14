@@ -49,7 +49,7 @@ class FlushCacheCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $cacheService = GeneralUtility::makeInstance(CacheService::class);
-        $cacheService->flush((bool) $input->getArgument('force-boost-mode-flush'));
+        $cacheService->flush((bool)$input->getArgument('force-boost-mode-flush'));
 
         return 0;
     }

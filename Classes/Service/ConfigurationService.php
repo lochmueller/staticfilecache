@@ -46,7 +46,7 @@ class ConfigurationService extends AbstractService
     }
 
     /**
-     * Get the configuration.
+     * Get the configuration for the given key.
      *
      * @param string $key
      *
@@ -62,6 +62,16 @@ class ConfigurationService extends AbstractService
         }
 
         return $result;
+    }
+
+    /**
+     * Get the configuration.
+     *
+     * @return array
+     */
+    public function getAll()
+    {
+        return $this->configuration;
     }
 
     /**
