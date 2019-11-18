@@ -36,10 +36,16 @@ class NoFakeFrontend extends AbstractRule
             foreach ($this->getCallPaths() as $path) {
                 if (StringUtility::endsWith($path, $ignorePath)) {
                     $skipProcessing = true;
+                    $explanation[__CLASS__] = 'Fake frontend';
 
                     return;
                 }
             }
+        }
+
+        if ($request->hasHeader('x-yoast-page-request')) {
+            $skipProcessing = true;
+            $explanation[__CLASS__] = 'Yoast SEO page request';
         }
     }
 
