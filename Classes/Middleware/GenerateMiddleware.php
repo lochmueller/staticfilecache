@@ -60,25 +60,17 @@ class GenerateMiddleware implements MiddlewareInterface
             return $this->removeSfcHeaders($response);
         }
 
-        $debug = GeneralUtility::makeInstance(ConfigurationService::class)->isBool('debugHeaders');
-
         $uri = (string)$request->getUri();
         if (!$response->hasHeader('X-SFC-Explanation')) {
             if ($this->hasValidCacheEntry($uri) && !isset($_COOKIE['staticfilecache'])) {
-                if ($debug) {
-                    $response = $response->withHeader('X-SFC-State', 'TYPO3 - already in cache');
-                }
+                $response = $response->withHeader('X-SFC-State', 'TYPO3 - already in cache');
                 return $this->removeSfcHeaders($response);
             }
             $lifetime = $this->calculateLifetime($GLOBALS['TSFE']);
-            if ($debug) {
-                $response = $response->withHeader('X-SFC-State', 'TYPO3 - add to cache');
-            }
+            $response = $response->withHeader('X-SFC-State', 'TYPO3 - add to cache');
         } else {
             $lifetime = 0;
-            if ($debug) {
-                $response = $response->withHeader('X-SFC-State', 'TYPO3 - no cache');
-            }
+            $response = $response->withHeader('X-SFC-State', 'TYPO3 - no cache');
         }
 
         $this->cache->set($uri, $response, (array)$response->getHeader('X-SFC-Tags'), $lifetime);
@@ -134,10 +126,13 @@ class GenerateMiddleware implements MiddlewareInterface
      */
     protected function removeSfcHeaders(ResponseInterface $response): ResponseInterface
     {
-        // idea: Remove by configuration
-        $response = $response->withoutHeader('X-SFC-Cachable');
-        $response = $response->withoutHeader('X-SFC-Explanation');
-        $response = $response->withoutHeader('X-SFC-Tags');
+        $debug = GeneralUtility::makeInstance(ConfigurationService::class)->isBool('debugHeaders');
+        if (!$debug) {
+            $response = $response->withoutHeader('X-SFC-Cachable');
+            $response = $response->withoutHeader('X-SFC-State');
+            $response = $response->withoutHeader('X-SFC-Explanation');
+            $response = $response->withoutHeader('X-SFC-Tags');
+        }
 
         return $response;
     }
