@@ -47,17 +47,17 @@ class GenerateMiddleware implements MiddlewareInterface
         $response = $handler->handle($request);
 
         if (!$response->hasHeader('X-SFC-Cachable')) {
-            return $response;
+            return $this->removeSfcHeaders($response);
         }
 
         if ($response->getStatusCode() !== 200) {
-            return $response;
+            return $this->removeSfcHeaders($response);
         }
 
         try {
             $this->cache = GeneralUtility::makeInstance(CacheService::class)->get();
         } catch (\Exception $exception) {
-            return $response;
+            return $this->removeSfcHeaders($response);
         }
 
         $debug = GeneralUtility::makeInstance(ConfigurationService::class)->isBool('debugHeaders');
@@ -68,7 +68,7 @@ class GenerateMiddleware implements MiddlewareInterface
                 if ($debug) {
                     $response = $response->withHeader('X-SFC-State', 'TYPO3 - already in cache');
                 }
-                return $response;
+                return $this->removeSfcHeaders($response);
             }
             $lifetime = $this->calculateLifetime($GLOBALS['TSFE']);
             if ($debug) {
@@ -83,7 +83,7 @@ class GenerateMiddleware implements MiddlewareInterface
 
         $this->cache->set($uri, $response, (array)$response->getHeader('X-SFC-Tags'), $lifetime);
 
-        return $response;
+        return $this->removeSfcHeaders($response);
     }
 
     /**
@@ -124,5 +124,21 @@ class GenerateMiddleware implements MiddlewareInterface
         return false !== $entry &&
             empty($entry['explanation']) &&
             $entry['expires'] >= (new DateTimeService())->getCurrentTime();
+    }
+
+    /**
+     * Remove all Sfc headers
+     *
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    protected function removeSfcHeaders(ResponseInterface $response): ResponseInterface
+    {
+        // idea: Remove by configuration
+        $response = $response->withoutHeader('X-SFC-Cachable');
+        $response = $response->withoutHeader('X-SFC-Explanation');
+        $response = $response->withoutHeader('X-SFC-Tags');
+
+        return $response;
     }
 }
