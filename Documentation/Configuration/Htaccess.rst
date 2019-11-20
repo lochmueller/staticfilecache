@@ -161,7 +161,7 @@ If the TYPO3 Installation isn´t in your root directory (say your site lives in 
 
 You are of course free to make the rules as complex as you like.
 
-There might be some files you never want to pull from cache even if they are indexed. For example you might have some custom realurl rules that make your RSS feed accessible as rss.xml. You can skip rewriting to static file with the following condition:
+There might be some files you never want to pull from cache even if they are indexed. For example you might have some custom speaking url rules that make your RSS feed accessible as rss.xml. You can skip rewriting to static file with the following condition:
 
 .. code-block:: apache
 
