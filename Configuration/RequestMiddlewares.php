@@ -5,19 +5,16 @@ return [
         'staticfilecache/prepare' => [
             'target' => \SFC\Staticfilecache\Middleware\PrepareMiddleware::class,
             'before' => [
-                'typo3/cms-frontend/tsfe',
+                'typo3/cms-frontend/base-redirect-resolver',
             ],
             'after' => [
-                'typo3/cms-frontend/eid',
+                'typo3/cms-frontend/site',
             ],
         ],
         'staticfilecache/generate' => [
             'target' => \SFC\Staticfilecache\Middleware\GenerateMiddleware::class,
             'before' => [
                 'staticfilecache/prepare',
-            ],
-            'after' => [
-                'typo3/cms-frontend/eid',
             ],
         ],
         'staticfilecache/fallback' => [
