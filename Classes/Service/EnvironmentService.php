@@ -8,6 +8,7 @@ namespace SFC\Staticfilecache\Service;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * EnvironmentService
@@ -25,7 +26,7 @@ class EnvironmentService
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
 
         return array_merge([
-            'TYPO3 Version' => \TYPO3_VERSION,
+            'TYPO3 Version' => VersionNumberUtility::getCurrentTypo3Version(),
             'SFC Version' => ExtensionManagementUtility::getExtensionVersion('staticfilecache'),
             'PHP Version' => phpversion(),
             'OS' => Environment::isWindows() ? 'Windows' : 'Unix',
@@ -41,7 +42,7 @@ class EnvironmentService
      */
     public function getMarkdown(): string
     {
-        $result = ['**Environment**'];
+        $result = ['... Add your description here ...', '', '', '**Environment**'];
         foreach ($this->get() as $key => $value) {
             $result[] = '* **' . $key . '**: ' . $value;
         }
