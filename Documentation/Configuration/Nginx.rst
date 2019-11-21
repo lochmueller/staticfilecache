@@ -63,6 +63,7 @@ By the following configuration:
        }
 
        charset utf-8;
+       default_type text/html;
        try_files /typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index
              /typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}
              =405;
