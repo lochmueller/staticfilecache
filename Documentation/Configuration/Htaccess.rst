@@ -94,6 +94,13 @@ This is the base .htaccess configuration. Please take a look for the default var
    ### Begin: StaticFileCache (options) ####
 
    # Set proper content type and encoding for gzipped html.
+	 <FilesMatch "\.gzip$">
+		 SetEnv no-gzip 1
+		 SetEnv no-brotli 1
+		 <IfModule mod_headers.c>
+				Header set Content-Encoding gzip
+		 </IfModule>
+	 </FilesMatch>
    <FilesMatch "\.gz$">
       SetEnv no-gzip 1
       SetEnv no-brotli 1
@@ -111,6 +118,18 @@ This is the base .htaccess configuration. Please take a look for the default var
 
    # if there are same problems with ForceType, please try the AddType alternative
    # Set proper content type gzipped html
+	 <FilesMatch "\.html\.gzip$">
+      ForceType text/html
+      # AddType "text/html" .gzip
+   </FilesMatch>
+   <FilesMatch "\.xml\.gzip$">
+      ForceType text/xml
+      # AddType "text/xml" .gzip
+   </FilesMatch>
+   <FilesMatch "\.rss\.gzip$">
+      ForceType text/xml
+      # AddType "text/xml" .gzip
+   </FilesMatch>
    <FilesMatch "\.html\.gz$">
       ForceType text/html
       # AddType "text/html" .gz
