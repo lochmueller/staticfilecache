@@ -26,7 +26,7 @@ class NoWorkspacePreview extends AbstractRule
      */
     public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
-        if ($frontendController->doWorkspacePreview()) {
+        if (is_object($frontendController) && $frontendController->doWorkspacePreview()) {
             $explanation[__CLASS__] = 'The page is in workspace preview mode';
         }
     }

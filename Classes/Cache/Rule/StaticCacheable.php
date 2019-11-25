@@ -29,7 +29,7 @@ class StaticCacheable extends AbstractRule
      */
     public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
     {
-        if (!$frontendController->isStaticCacheble()) {
+        if (is_object($frontendController) && !$frontendController->isStaticCacheble()) {
             $explanation[__CLASS__] = 'The page is not static cacheable via TypoScriptFrontend. Check the first Question on: https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Faq/Index.rst';
         }
     }
