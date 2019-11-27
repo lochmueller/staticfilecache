@@ -86,7 +86,7 @@ class HtaccessGenerator extends AbstractGenerator
     protected function getReponseHeaders(ResponseInterface $response): array
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $validHeaders = GeneralUtility::trimExplode(',', (string)$configuration->get('validHtaccessHeaders'), true);
+        $validHeaders = GeneralUtility::trimExplode(',', $configuration->get('validHtaccessHeaders') . ',Content-Type', true);
 
         $headers = $response->getHeaders();
         $result = [];
