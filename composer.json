@@ -36,30 +36,30 @@
 		}
 	],
 	"require": {
-		"php": ">=7.2.0",
+		"php": "^7.2||^7.3",
 		"ext-pdo": "*",
 		"ext-zlib": "*",
-		"typo3/cms-core": "^9.5||^10.1||dev-master",
-		"typo3/cms-frontend": "^9.5||^10.1||dev-master",
-		"typo3/cms-extbase": "^9.5||^10.1||dev-master"
+		"typo3/cms-core": "^9.5||^10.1",
+		"typo3/cms-frontend": "^9.5||^10.1",
+		"typo3/cms-extbase": "^9.5||^10.1"
 	},
 	"replace": {
 		"typo3-ter/staticfilecache": "self.version"
 	},
 	"homepage": "https://github.com/lochmueller/staticfilecache",
-	"license": "GPL-2.0+",
+	"license": "GPL-2.0-or-later",
 	"support": {
 		"issues": "https://github.com/lochmueller/staticfilecache/issues"
 	},
 	"require-dev": {
-		"namelesscoder/typo3-repository-client": "2.0.0",
+		"namelesscoder/typo3-repository-client": "^2.0",
 		"typo3/testing-framework": "^4.2",
 		"squizlabs/php_codesniffer": "^3.4",
 		"phpmd/phpmd": "^2.6",
 		"scrutinizer/ocular": "^1.5",
 		"friendsofphp/php-cs-fixer": "^2.14",
 		"phpmetrics/phpmetrics": "^2.4",
-		"rector/rector": "^0.4.12"
+		"rector/rector": "^0.4"
 	},
 	"suggest": {
 		"lochmueller/seocli": "Scan websites against SEO criteria and/or trigger the indexing process and cache warming in deployment scripts",
@@ -96,6 +96,9 @@
 		],
 		"code:phpdoc": [
 			"docker run --rm -v $(pwd):/data phpdoc/phpdoc -d Classes -t .Build/phpdoc"
+		],
+		"code:phpstan": [
+			"phpstan analyse Classes"
 		],
 		"code:php-cs-fixer": [
 			"php-cs-fixer fix --config Resources/Private/Build/PhpCsFixer.php --cache-file=.Build/phpcs.cache"
