@@ -30,10 +30,14 @@ class StyleHttpPushTest extends AbstractHttpPushTest
             [
                 'path' => '/bootstrap/4.3.9/css/bootstrap.min.css',
                 'type' => 'style',
-            ]
+            ],
+            [
+                'path' => '/typo3temp/assets/bootstrappackage/fonts/346739da479e213b7b079a21c35f9ffac6feb37c93b4210969602358a8011f68/webfont.css',
+                'type' => 'style',
+            ],
         ];
 
         $this->assertEquals($exepected, $headers, 'Wrong header result from service');
-        $this->assertCount(1, $headers);
+        $this->assertCount(2, $headers);
     }
 }
