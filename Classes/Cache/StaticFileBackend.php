@@ -332,13 +332,13 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     }
 
     /**
-     * Check if boost mode is active and if the calls are not part of the worker.
+     * Check if boost mode is active (worker runs without boost mode).
      *
      * @return bool
      */
     protected function isBoostMode(): bool
     {
-        return (bool)$this->configuration->get('boostMode') && !\defined('SFC_QUEUE_WORKER');
+        return (bool)$this->configuration->get('boostMode');
     }
 
     /**

@@ -25,6 +25,13 @@ class ConfigurationService extends AbstractService
     protected $configuration = [];
 
     /**
+     * Overrides
+     *
+     * @var array
+     */
+    protected $overrides = [];
+
+    /**
      * Build up the configuration.
      *
      * @throws \Exception
@@ -55,13 +62,38 @@ class ConfigurationService extends AbstractService
     public function get(string $key)
     {
         $result = null;
-        if (isset($this->configuration[$key])) {
+        if (array_key_exists($key, $this->overrides)) {
+            $result = (string)$this->overrides[$key];
+        } elseif (isset($this->configuration[$key])) {
             $result = (string)$this->configuration[$key];
         } elseif (isset($GLOBALS['TSFE']->config['config']['tx_staticfilecache.'][$key])) {
             $result = (string)$GLOBALS['TSFE']->config['config']['tx_staticfilecache.'][$key];
         }
 
         return $result;
+    }
+
+    /**
+     * Override a value in execution context.
+     *
+     * @param string $key
+     * @param string $value
+     */
+    public function override(string $key, string $value)
+    {
+        $this->overrides[$key] = $value;
+    }
+
+    /**
+     * Remove the override if exists.
+     *
+     * @param string $key
+     */
+    public function reset(string $key)
+    {
+        if (array_key_exists($key, $this->overrides)) {
+            unset($this->overrides[$key]);
+        }
     }
 
     /**

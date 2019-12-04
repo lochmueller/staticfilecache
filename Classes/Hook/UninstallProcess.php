@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace SFC\Staticfilecache\Hook;
 
 use SFC\Staticfilecache\Service\CacheService;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
@@ -29,9 +30,9 @@ class UninstallProcess extends AbstractHook
      */
     public function afterExtensionUninstall(string $extensionKey, InstallUtility $installUtility)
     {
-        if (!\defined('SFC_QUEUE_WORKER')) {
-            \define('SFC_QUEUE_WORKER', true);
-        }
+        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+        $configuration->override('boostMode', '0');
+
         $cacheService = GeneralUtility::makeInstance(CacheService::class);
         $cacheService->get()->flush();
 

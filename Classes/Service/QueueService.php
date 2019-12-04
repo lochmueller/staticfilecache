@@ -93,9 +93,8 @@ class QueueService extends AbstractService
      */
     public function runSingleRequest(array $runEntry): void
     {
-        if (!\defined('SFC_QUEUE_WORKER')) {
-            \define('SFC_QUEUE_WORKER', true);
-        }
+        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+        $configuration->override('boostMode', '0');
 
         $this->logger->debug('SFC Queue run', $runEntry);
 

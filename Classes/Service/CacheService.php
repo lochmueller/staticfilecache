@@ -73,7 +73,8 @@ class CacheService extends AbstractService
     public function flush(bool $includeBoostQueue = false)
     {
         if ($includeBoostQueue) {
-            \define('SFC_QUEUE_WORKER', true);
+            $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+            $configuration->override('boostMode', '0');
         }
         $this->get()->flush();
         $this->getManager()->flushCachesInGroup('pages');
