@@ -28,6 +28,10 @@ class ScriptHttpPushTest extends AbstractHttpPushTest
 
         $exepected = [
             [
+                'path' => '/typo3conf/ext/bootstrap_package/Resources/Public/Contrib/webfontloader/webfontloader.js',
+                'type' => 'script'
+            ],
+            [
                 'path' => '/jquery-3.3.1.slim.min.js',
                 'type' => 'script'
             ],
@@ -41,7 +45,7 @@ class ScriptHttpPushTest extends AbstractHttpPushTest
             ],
         ];
 
-        $this->assertEquals($exepected, $headers, 'Wrong header result from service');
-        $this->assertCount(3, $headers);
+        self::assertEquals($exepected, $headers, 'Wrong header result from service');
+        self::assertCount(4, $headers);
     }
 }

@@ -37,7 +37,7 @@ class StyleHttpPushTest extends AbstractHttpPushTest
             ],
         ];
 
-        $this->assertEquals($exepected, $headers, 'Wrong header result from service');
-        $this->assertCount(2, $headers);
+        self::assertEquals($exepected, $headers, 'Wrong header result from service');
+        self::assertCount(2, $headers);
     }
 }
