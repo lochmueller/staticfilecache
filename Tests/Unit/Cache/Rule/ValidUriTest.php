@@ -35,7 +35,7 @@ class ValidUriTest extends AbstractRuleTest
         foreach ($requests as $request) {
             $skipProcessing = false;
             $validUriRule->checkRule($tsfe, $request, $explanation, $skipProcessing);
-            $this->assertTrue($skipProcessing, 'Is "' . $request->getUri() . '" valid?');
+            self::assertTrue($skipProcessing, 'Is "' . $request->getUri() . '" valid?');
         }
     }
 
@@ -57,7 +57,7 @@ class ValidUriTest extends AbstractRuleTest
         foreach ($requests as $request) {
             $skipProcessing = false;
             $validUriRule->checkRule($tsfe, $request, $explanation, $skipProcessing);
-            $this->assertFalse($skipProcessing, 'Is "' . $request->getUri() . '" valid?');
+            self::assertFalse($skipProcessing, 'Is "' . $request->getUri() . '" valid?');
         }
     }
 }

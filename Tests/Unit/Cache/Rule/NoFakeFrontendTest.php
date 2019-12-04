@@ -28,6 +28,6 @@ class NoFakeFrontendTest extends AbstractRuleTest
 
         $fakeFrontendRule = new NoFakeFrontend();
         $fakeFrontendRule->checkRule($tsfe, $request, $explanation, $skipProcessing);
-        $this->assertFalse($skipProcessing);
+        self::assertFalse($skipProcessing);
     }
 }
