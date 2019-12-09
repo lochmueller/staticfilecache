@@ -57,3 +57,9 @@ Hard remove of cf_* tables
 
 There are mechanisms (e.g. typo3_console clear cache force) that a truncate the cf_* tables directly. In this case the StaticFileCache is not in sync anymore (the DB and file layer).
 If you are using such mechanism, please use the "renameTablesToOtherPrefix" configuration that the caching tables of the StaticFileCache get another prefix.
+
+Using Garbage Collection
+------------------------
+
+By using the garbage collection of the core. Please select the right backend. The Typo3DatabaseBackend should only slected in combination with the StaticFileCacheBackend to avoid problems in the cache structure.
+
