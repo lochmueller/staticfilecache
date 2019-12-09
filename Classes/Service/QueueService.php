@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
-use SFC\Staticfilecache\Command\BoostQueueCleanupCommand;
 use SFC\Staticfilecache\Command\BoostQueueCommand;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -17,7 +16,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Queue service.
  *
  * @see BoostQueueCommand
- * @see BoostQueueCleanupCommand
  */
 class QueueService extends AbstractService
 {
