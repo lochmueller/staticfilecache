@@ -33,9 +33,9 @@
 		"php": "^7.2||^7.3",
 		"ext-pdo": "*",
 		"ext-zlib": "*",
-		"typo3/cms-core": "^9.5||^10.1",
-		"typo3/cms-frontend": "^9.5||^10.1",
-		"typo3/cms-extbase": "^9.5||^10.1"
+		"typo3/cms-core": "^9.5||^10.2",
+		"typo3/cms-frontend": "^9.5||^10.2",
+		"typo3/cms-extbase": "^9.5||^10.2"
 	},
 	"replace": {
 		"typo3-ter/staticfilecache": "self.version"
