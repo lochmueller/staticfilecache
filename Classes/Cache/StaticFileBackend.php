@@ -253,15 +253,16 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
     /**
      * Does garbage collection.
+     *
+     * Note: Do not check boostmode. If we check boost mode, we get the problem, that the core garbage collection drop
+     * the DB related part of StaticFileCache but not the files, because the "garbage collection" works directly on
+     * the caching backends and not on the caches itself. By ignoring the boost mode in this function we take care,
+     * that the StaticFileCache drop the file AND the db representation. Please take care, that you select both backends
+     * in the garbage collection task in the Scheduler.
      */
     public function collectGarbage()
     {
         $expiredIdentifiers = GeneralUtility::makeInstance(CacheRepository::class)->findExpiredIdentifiers();
-        if ($this->isBoostMode()) {
-            $this->getQueue()->addIdentifiers($expiredIdentifiers);
-
-            return;
-        }
         parent::collectGarbage();
         foreach ($expiredIdentifiers as $identifier) {
             $this->removeStaticFiles($identifier);

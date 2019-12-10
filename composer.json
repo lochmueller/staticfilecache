@@ -72,9 +72,7 @@
 	},
 	"scripts": {
 		"code": [
-			"@code:rector",
 			"@code:php-cs-fixer",
-			"@code:phpdoc",
 			"@code:metrics"
 		],
 		"code:rector": [

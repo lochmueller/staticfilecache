@@ -7,7 +7,6 @@ declare(strict_types = 1);
 
 namespace SFC\Staticfilecache\Service;
 
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
