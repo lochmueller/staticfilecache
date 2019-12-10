@@ -28,10 +28,21 @@ class ManifestService extends AbstractService
      */
     public function generateManifestContent(string $filename, string &$data): string
     {
+        return ''; // @todo feel free to add parser for JS, CSS and IMAGE
 
-        // @todo implement
+        $content = [
+            'CAHCHE MANIFEST',
+            '# Created at ' . date(\DateTime::COOKIE),
+        ];
 
-        return '';
+        $regex = '/(\/[^"\']*\.(?:png|jpg|jpeg|gif|png|svg))/i';
+        if (preg_match($regex, $data, $matches)) {
+            foreach ($matches as $match) {
+                $content[] = $match;
+            }
+        }
+
+        return implode("\n", $content);
     }
 
     /**
