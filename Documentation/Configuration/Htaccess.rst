@@ -118,7 +118,7 @@ This is the base .htaccess configuration. Please take a look for the default var
 
    # if there are same problems with ForceType, please try the AddType alternative
    # Set proper content type gzipped html
-	 <FilesMatch "\.html\.gzip$">
+	 <FilesMatch "\.gzip$">
       ForceType text/html
       # AddType "text/html" .gzip
    </FilesMatch>
@@ -130,7 +130,7 @@ This is the base .htaccess configuration. Please take a look for the default var
       ForceType text/xml
       # AddType "text/xml" .gzip
    </FilesMatch>
-   <FilesMatch "\.html\.gz$">
+   <FilesMatch "\.gz$">
       ForceType text/html
       # AddType "text/html" .gz
    </FilesMatch>
@@ -142,7 +142,7 @@ This is the base .htaccess configuration. Please take a look for the default var
       ForceType text/xml
       # AddType "text/xml" .gz
    </FilesMatch>
-   <FilesMatch "\.html\.br$">
+   <FilesMatch "\.br$">
       ForceType text/html
       # AddType "text/html" .br
    </FilesMatch>
