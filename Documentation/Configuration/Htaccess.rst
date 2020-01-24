@@ -10,6 +10,7 @@ This is the base .htaccess configuration. Please take a look for the default var
    # Document root configuration
    RewriteRule .* - [E=SFC_ROOT:%{DOCUMENT_ROOT}]
    # RewriteRule .* - [E=SFC_ROOT:%{DOCUMENT_ROOT}/t3site] # Example if your installation is installed in a directory
+   # NOTE: There are cases (apache versions and configuration) where DOCUMENT_ROOT do not exists. Please set the SFC_ROOT to the right directory without DOCUMENT_ROOT then!
 
    # Cleanup URI
    RewriteCond %{REQUEST_URI} ^.*$
