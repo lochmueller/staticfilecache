@@ -58,7 +58,7 @@ class ClientService extends AbstractService
     {
         $jar = GeneralUtility::makeInstance(CookieJar::class);
         $cookie = GeneralUtility::makeInstance(SetCookie::class);
-        $cookie->setName('staticfilecache');
+        $cookie->setName(CookieService::FE_COOKIE_NAME);
         $cookie->setValue('1');
         $cookie->setPath('/');
         $cookie->setExpires((new DateTimeService())->getCurrentTime() + 3600);

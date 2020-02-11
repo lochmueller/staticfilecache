@@ -16,6 +16,7 @@ use SFC\Staticfilecache\Cache\IdentifierBuilder;
 use SFC\Staticfilecache\Cache\Rule\AbstractRule;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
+use SFC\Staticfilecache\Service\CookieService;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -66,7 +67,7 @@ class FallbackMiddleware implements MiddlewareInterface
             }
         }
 
-        if (isset($_COOKIE['staticfilecache']) && $_COOKIE['staticfilecache'] === 'fe_typo_user_logged_in') {
+        if (isset($_COOKIE[CookieService::FE_COOKIE_NAME]) && $_COOKIE[CookieService::FE_COOKIE_NAME] === 'typo_user_logged_in') {
             throw new \Exception('StaticFileCache Cookie is set', 12738912);
         }
 

@@ -15,6 +15,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
+use SFC\Staticfilecache\Service\CookieService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -62,7 +63,7 @@ class GenerateMiddleware implements MiddlewareInterface
 
         $uri = (string)$request->getUri();
         if (!$response->hasHeader('X-SFC-Explanation')) {
-            if ($this->hasValidCacheEntry($uri) && !isset($_COOKIE['staticfilecache'])) {
+            if ($this->hasValidCacheEntry($uri) && !isset($_COOKIE[CookieService::FE_COOKIE_NAME])) {
                 $response = $response->withHeader('X-SFC-State', 'TYPO3 - already in cache');
                 return $this->removeSfcHeaders($response);
             }
