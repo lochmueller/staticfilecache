@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2cdf8407e2ba905815ab62b5df6d7e0",
+    "content-hash": "98d0a61c29d917fca71ed0c063cab3f8",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -2495,6 +2495,57 @@
                 }
             ],
             "description": "A framework to build extensions for TYPO3 CMS.",
+            "homepage": "https://typo3.org",
+            "time": "2019-12-17T14:17:37+00:00"
+        },
+        {
+            "name": "typo3/cms-extensionmanager",
+            "version": "v9.5.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TYPO3-CMS/extensionmanager.git",
+                "reference": "57b8d1b48e9c6286d3330bb43d34592086f7f5f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TYPO3-CMS/extensionmanager/zipball/57b8d1b48e9c6286d3330bb43d34592086f7f5f0",
+                "reference": "57b8d1b48e9c6286d3330bb43d34592086f7f5f0",
+                "shasum": ""
+            },
+            "require": {
+                "typo3/cms-core": "9.5.13"
+            },
+            "conflict": {
+                "typo3/cms": "*"
+            },
+            "type": "typo3-cms-framework",
+            "extra": {
+                "typo3/cms": {
+                    "Package": {
+                        "protected": true,
+                        "partOfFactoryDefault": true,
+                        "partOfMinimalUsableSystem": true
+                    },
+                    "extension-key": "extensionmanager"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TYPO3\\CMS\\Extensionmanager\\": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "TYPO3 Core Team",
+                    "email": "typo3cms@typo3.org",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TYPO3 Extension Manager",
             "homepage": "https://typo3.org",
             "time": "2019-12-17T14:17:37+00:00"
         },

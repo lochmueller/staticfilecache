@@ -3,7 +3,7 @@ parameters:
     - '*/Tests/*'
     - '*/.Build/*'
     - '*/Api/*'
-  php_version_features: '7.2'
+  php_version_features: '7.3'
 services:
   Rector\Php\Rector\ConstFetch\SensitiveConstantNameRector: ~
   Rector\Php\Rector\Property\TypedPropertyRector: ~
