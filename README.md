@@ -5,6 +5,8 @@
 [![License](https://poser.pugx.org/lochmueller/staticfilecache/license)](https://packagist.org/packages/lochmueller/staticfilecache)
 [![TYPO3](https://img.shields.io/badge/TYPO3-9-orange.svg)](https://typo3.org/)
 [![TYPO3](https://img.shields.io/badge/TYPO3-10-orange.svg)](https://typo3.org/)
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/lochmueller/staticfilecache.svg)](http://isitmaintained.com/project/lochmueller/staticfilecache "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/lochmueller/staticfilecache.svg)](http://isitmaintained.com/project/lochmueller/staticfilecache "Percentage of issues still open")
 
 StaticFileCache for TYPO3. Very flexible and very, very, very fast cache ;)
 
