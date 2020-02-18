@@ -1,5 +1,11 @@
 # EXT:staticfilecache
 
+[![Latest Stable Version](https://poser.pugx.org/lochmueller/staticfilecache/v/stable)](https://packagist.org/packages/lochmueller/staticfilecache)
+[![Total Downloads](https://poser.pugx.org/lochmueller/staticfilecache/downloads)](https://packagist.org/packages/lochmueller/staticfilecache)
+[![License](https://poser.pugx.org/lochmueller/staticfilecache/license)](https://packagist.org/packages/lochmueller/staticfilecache)
+[![TYPO3](https://img.shields.io/badge/TYPO3-9-orange.svg)](https://typo3.org/)
+[![TYPO3](https://img.shields.io/badge/TYPO3-10-orange.svg)](https://typo3.org/)
+
 StaticFileCache for TYPO3. Very flexible and very, very, very fast cache ;)
 
 It is recommended to install the extension in composer mode. If your TYPO3 installation is not in composer mode, you should change that (!!) or you could also copy-paste the extension manually or install it via TER (ExtensionKey: staticfilecache).
