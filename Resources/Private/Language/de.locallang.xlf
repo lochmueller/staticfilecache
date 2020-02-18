@@ -16,8 +16,12 @@
 			<target>Speichere Seitencache als statische Datei</target>
 		</trans-unit>
 		<trans-unit id="staticfilecache.tx_staticfilecache_cache_force">
-			<source>Force the static cache generation (!!!)</source>
-			<target>Erzwingt die statische Generierung (!!!)</target>
+			<source>Force the static cache generation</source>
+			<target>Erzwingt die statische Generierung</target>
+		</trans-unit>
+		<trans-unit id="staticfilecache.tx_staticfilecache_cache_force.desc">
+			<source>IMPORTANT NOTE: This result in undefined states. Do not enable this field for editors, do not use in production and do not report bugs related to this feature!</source>
+			<target>WICHTIGER HINWEIS: Das Ergebnis ist ein undefinierter Zustand. Bitte nicht für Redakteure freigeben, in Production benutzen oder Bugs im Zusammenhang mit dieser Option reporten!</target>
 		</trans-unit>
 		<trans-unit id="staticfilecache.tx_staticfilecache_cache_offline">
 			<source>Cache offline (Manifest) - only if page is cached staticly</source>

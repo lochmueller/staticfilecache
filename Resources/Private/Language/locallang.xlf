@@ -23,7 +23,10 @@
 			<source>Cache page as static file</source>
 		</trans-unit>
 			<trans-unit id="staticfilecache.tx_staticfilecache_cache_force">
-				<source>Force the static cache generation (!!!)</source>
+				<source>Force the static cache generation (NOTE: This result in undefined states. Do not enable this field for editors, do not use in production and do not report bugs related to this feature!)</source>
+			</trans-unit>
+			<trans-unit id="staticfilecache.tx_staticfilecache_cache_force.desc">
+				<source>IMPORTANT NOTE: This result in undefined states. Do not enable this field for editors, do not use in production and do not report bugs related to this feature!</source>
 			</trans-unit>
 			<trans-unit id="staticfilecache.tx_staticfilecache_cache_priority">
 				<source>Cache priority (high => important)</source>

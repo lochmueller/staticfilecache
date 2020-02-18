@@ -16,6 +16,7 @@ $tmp = [
     'tx_staticfilecache_cache_force' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:staticfilecache.tx_staticfilecache_cache_force',
+        'description' => 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:staticfilecache.tx_staticfilecache_cache_force.desc',
         'config' => [
             'type' => 'check',
             'default' => '0',
