@@ -123,6 +123,14 @@ This is the base .htaccess configuration. Please take a look for the default var
       ForceType text/html
       # AddType "text/html" .gzip
    </FilesMatch>
+   <FilesMatch "\.js\.gzip$">
+      ForceType text/javascript
+      # AddType "text/javascript" .gzip
+   </FilesMatch>
+   <FilesMatch "\.css\.gzip$">
+      ForceType text/css
+      # AddType "text/css" .gzip
+   </FilesMatch>
    <FilesMatch "\.xml\.gzip$">
       ForceType text/xml
       # AddType "text/xml" .gzip
