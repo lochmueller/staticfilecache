@@ -1,3 +1,4 @@
 /.idea/
 /.Build/
 /var
+/Tests/.phpunit.result.cache

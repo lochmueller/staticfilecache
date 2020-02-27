@@ -25,6 +25,8 @@ class UriFrontendTest extends AbstractTest
      */
     public function testCheckValidPath()
     {
+        $this->resetSingletonInstances = true;
+
         $validUris = [
             'https://www.domain.tld/path.html',
             'https://www.example.pl/',
@@ -41,6 +43,8 @@ class UriFrontendTest extends AbstractTest
      */
     public function testCheckInValidPath()
     {
+        $this->resetSingletonInstances = true;
+
         $invalidUris = [
             '/path.html',
         ];
