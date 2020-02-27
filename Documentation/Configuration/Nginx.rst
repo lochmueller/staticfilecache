@@ -76,8 +76,7 @@ By the following configuration:
 *Extension configuration*
 
 Nginx does not interpret .htaccess files, therefore you may want to disable the
-sendCacheControlHeader and sendCacheControlHeaderRedirectAfterCacheTimeout
-options to prevent .htaccess generation.
+htaccess genrator to prevent .htaccess generation.
 
 .. _location: http://nginx.org/en/docs/http/ngx_http_core_module.html#location
 .. _try_files: http://nginx.org/en/docs/http/ngx_http_core_module.html#try_files

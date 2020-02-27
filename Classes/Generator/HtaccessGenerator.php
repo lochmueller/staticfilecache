@@ -50,13 +50,15 @@ class HtaccessGenerator extends AbstractGenerator
             }
         }
 
+        $sendCacheControlHeader = isset($GLOBALS['TSFE']->config['config']['sendCacheHeaders']) ? (bool)$GLOBALS['TSFE']->config['config']['sendCacheHeaders'] : false;
+
         $variables = [
             'contentType' => $contentType,
             'mode' => $accessTimeout ? 'A' : 'M',
             'lifetime' => $lifetime,
             'TIME' => '{TIME}',
             'expires' => (new DateTimeService())->getCurrentTime() + $lifetime,
-            'sendCacheControlHeader' => $configuration->isBool('sendCacheControlHeader'),
+            'sendCacheControlHeader' => $sendCacheControlHeader,
             'sendCacheControlHeaderRedirectAfterCacheTimeout' => $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout'),
             'headers' => $headers,
         ];
