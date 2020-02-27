@@ -33,10 +33,10 @@
 		"php": "^7.3||^7.4",
 		"ext-pdo": "*",
 		"ext-zlib": "*",
-		"typo3/cms-core": "^9.5||^10.2",
-		"typo3/cms-extbase": "^9.5||^10.2",
-		"typo3/cms-extensionmanager": "^9.5||^10.2",
-		"typo3/cms-frontend": "^9.5||^10.2"
+		"typo3/cms-core": "^9.5||^10.3",
+		"typo3/cms-extbase": "^9.5||^10.3",
+		"typo3/cms-extensionmanager": "^9.5||^10.3",
+		"typo3/cms-frontend": "^9.5||^10.3"
 	},
 	"replace": {
 		"typo3-ter/staticfilecache": "self.version"
