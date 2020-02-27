@@ -31,6 +31,14 @@ class CookieService extends AbstractService
     }
 
     /**
+     * Unset the Cookie.
+     */
+    public function unsetCookie()
+    {
+        $this->setCookie(time() - 3600);
+    }
+
+    /**
      * Gets the domain to be used on setting cookies.
      * The information is taken from the value in $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'].
      *
