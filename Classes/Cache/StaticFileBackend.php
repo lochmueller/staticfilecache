@@ -53,7 +53,10 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         ];
         if (\in_array('explanation', $tags, true)) {
             $databaseData['explanation'] = $data->getHeader('X-SFC-Explanation');
-            parent::set($entryIdentifier, \serialize($databaseData), $tags, $realLifetime);
+            if (!parent::has($entryIdentifier)) {
+                // Add only the details if there is no valid cache entry
+                parent::set($entryIdentifier, \serialize($databaseData), $tags, $realLifetime);
+            }
             return;
         }
 
