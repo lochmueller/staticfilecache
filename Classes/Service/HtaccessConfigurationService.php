@@ -41,12 +41,14 @@ class HtaccessConfigurationService extends AbstractService
      */
     public function getMissingApacheModules(): array
     {
-        $modules = function_exists('apache_get_modules') ? \apache_get_modules() : [];
+        if (!function_exists('apache_get_modules')) {
+            return [];
+        }
         $required = [
             'mod_rewrite',
             'mod_headers',
             'mod_expires',
         ];
-        return array_diff($required, $modules);
+        return array_diff($required, \apache_get_modules());
     }
 }
