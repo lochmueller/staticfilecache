@@ -11,6 +11,7 @@ namespace SFC\Staticfilecache\Domain\Repository;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * CacheRepository.
@@ -73,6 +74,10 @@ class CacheRepository extends AbstractRepository
     protected function getTableName(): string
     {
         $prefix = 'cf_';
+        if (VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getNumericTypo3Version()) >= 10003000) {
+            $prefix = 'cache_';
+        }
+
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
         if ($configuration->isBool('renameTablesToOtherPrefix')) {
             $prefix = 'sfc_';
