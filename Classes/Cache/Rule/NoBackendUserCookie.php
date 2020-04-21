@@ -4,7 +4,7 @@
  * No active BE user (just check the cookie).
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 

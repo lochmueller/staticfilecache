@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 $baseDir = \dirname(\dirname(\dirname(__DIR__)));
 require $baseDir . '/.Build/vendor/autoload.php';
@@ -18,15 +18,20 @@ return PhpCsFixer\Config::create()
         '@DoctrineAnnotation' => true,
         '@PSR2' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'blank_line_after_opening_tag' => true,
+        'braces' => ['allow_single_line_closure' => true],
         'cast_spaces' => ['space' => 'none'],
+        'compact_nullable_typehint' => true,
         'concat_space' => ['spacing' => 'one'],
-        'declare_equal_normalize' => ['space' => 'single'],
+        'declare_equal_normalize' => ['space' => 'none'],
         'dir_constant' => true,
         'function_typehint_space' => true,
         'hash_to_slash_comment' => true,
         'lowercase_cast' => true,
+        'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
         'modernize_types_casting' => true,
         'native_function_casing' => true,
+        'new_with_braces' => true,
         'no_alias_functions' => true,
         'no_blank_lines_after_phpdoc' => true,
         'no_empty_phpdoc' => true,
@@ -56,6 +61,7 @@ return PhpCsFixer\Config::create()
         'phpdoc_types_order' => ['null_adjustment' => 'always_last', 'sort_algorithm' => 'none'],
         'return_type_declaration' => ['space_before' => 'none'],
         'single_quote' => true,
+        'single_trait_insert_per_statement' => true,
         'whitespace_after_comma_in_array' => true,
     ])
     ->setFinder($finder);

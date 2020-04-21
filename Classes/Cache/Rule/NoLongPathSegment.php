@@ -4,7 +4,7 @@
  * Check if there is no path segment that is to long.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache\Rule;
 

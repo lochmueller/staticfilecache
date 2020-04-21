@@ -4,7 +4,7 @@
  * HtaccessConfigurationService
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
 

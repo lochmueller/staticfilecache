@@ -4,7 +4,7 @@
  * IdentifierBuilderTest.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Tests\Unit\Cache;
 

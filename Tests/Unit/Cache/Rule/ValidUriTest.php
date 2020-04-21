@@ -4,7 +4,7 @@
  * Test the valid URI Rule.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Tests\Unit\Cache\Rule;
 
@@ -21,7 +21,7 @@ class ValidUriTest extends AbstractRuleTest
 {
     public function testInvalidUri()
     {
-        $this->markTestSkipped('Check TSFE in v10');
+        self::markTestSkipped('Check TSFE in v10');
 
         $tsfe = $this->getTsfe();
         $explanation = [];
@@ -43,7 +43,7 @@ class ValidUriTest extends AbstractRuleTest
 
     public function testValidUri()
     {
-        $this->markTestSkipped('Check TSFE in v10');
+        self::markTestSkipped('Check TSFE in v10');
 
         $tsfe = $this->getTsfe();
         $explanation = [];

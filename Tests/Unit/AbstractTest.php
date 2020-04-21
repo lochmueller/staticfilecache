@@ -4,7 +4,7 @@
  * Abstract test.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Tests\Unit;
 
@@ -36,7 +36,7 @@ abstract class AbstractTest extends UnitTestCase
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
 
         $currentVersion = VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getCurrentTypo3Version());
-        if($currentVersion >= 10003000) {
+        if ($currentVersion >= 10003000) {
             $cacheManager->setCacheConfigurations([
                 'pages' => [
                     'frontend' => VariableFrontend::class,
@@ -45,16 +45,14 @@ abstract class AbstractTest extends UnitTestCase
             ]);
 
             return new TypoScriptFrontendController(new Context(), 0, 0);
-
-        } else {
-            $cacheManager->setCacheConfigurations([
+        }
+        $cacheManager->setCacheConfigurations([
                 'cache_pages' => [
                     'frontend' => VariableFrontend::class,
                     'backend' => NullBackend::class,
                 ],
             ]);
 
-            return new TypoScriptFrontendController([], 0, 0);
-        }
+        return new TypoScriptFrontendController([], 0, 0);
     }
 }

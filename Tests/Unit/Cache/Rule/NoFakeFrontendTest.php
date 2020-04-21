@@ -4,7 +4,7 @@
  * Test the Fake Frontend Rule.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Tests\Unit\Cache\Rule;
 
@@ -21,7 +21,7 @@ class NoFakeFrontendTest extends AbstractRuleTest
 {
     public function testCheckNoFakeFrontendController()
     {
-        $this->markTestSkipped('Check TSFE in v10');
+        self::markTestSkipped('Check TSFE in v10');
 
         $tsfe = $this->getTsfe();
         $request = new ServerRequest();

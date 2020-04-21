@@ -4,7 +4,7 @@
  * Override original to use our own controller.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SFC\Staticfilecache\ViewHelpers\Be\Widget;
 
