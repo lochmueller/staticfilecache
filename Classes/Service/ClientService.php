@@ -11,6 +11,7 @@ namespace SFC\Staticfilecache\Service;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
+use GuzzleHttp\HandlerStack;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
@@ -77,6 +78,13 @@ class ClientService extends AbstractService
         // Core options
         $httpOptions = (array)$GLOBALS['TYPO3_CONF_VARS']['HTTP'];
         $httpOptions['verify'] = filter_var($httpOptions['verify'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? $httpOptions['verify'];
+        if (isset($httpOptions['handler']) && is_array($httpOptions['handler'])) {
+            $stack = HandlerStack::create();
+            foreach ($httpOptions['handler'] ?? [] as $handler) {
+                $stack->push($handler);
+            }
+            $httpOptions['handler'] = $stack;
+        }
 
         // extended
         $params = [
