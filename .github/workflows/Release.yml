@@ -1,0 +1,14 @@
+name: Release
+on:
+  release:
+    types: [published]
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: the-coding-owl/action-typo3-extension-repository-upload@0.0.1
+        env: 
+          SECRET_USERNAME: ${{ secrets.USERNAME }}
+          SECRET_PASSWORD: ${{ secrets.PASSWORD }}
+          EXTENSION_KEY: 'github_actions_test'
+          UPLOAD_MESSAGE: ${{ github.event.release.body }}
