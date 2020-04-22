@@ -12,4 +12,4 @@ jobs:
           SECRET_USERNAME: ${{ secrets.USERNAME }}
           SECRET_PASSWORD: ${{ secrets.PASSWORD }}
           EXTENSION_KEY: 'staticfilecache'
-          UPLOAD_MESSAGE: ${{ github.event.push.commits.0.message }}
+          UPLOAD_MESSAGE: 'Next release :) More information on https://github.com/lochmueller/staticfilecache/releases'
