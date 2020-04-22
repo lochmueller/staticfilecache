@@ -1,7 +1,8 @@
 name: Release
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - '*'
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -10,5 +11,5 @@ jobs:
         env: 
           SECRET_USERNAME: ${{ secrets.USERNAME }}
           SECRET_PASSWORD: ${{ secrets.PASSWORD }}
-          EXTENSION_KEY: 'github_actions_test'
+          EXTENSION_KEY: 'staticfilecache'
           UPLOAD_MESSAGE: ${{ github.event.release.body }}
