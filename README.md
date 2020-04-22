@@ -1,6 +1,7 @@
 # EXT:staticfilecache
 
 [![Latest Stable Version](https://poser.pugx.org/lochmueller/staticfilecache/v/stable)](https://packagist.org/packages/lochmueller/staticfilecache)
+[![Test](https://github.com/lochmueller/staticfilecache/workflows/Test/badge.svg)
 [![Total Downloads](https://poser.pugx.org/lochmueller/staticfilecache/downloads)](https://packagist.org/packages/lochmueller/staticfilecache)
 [![License](https://poser.pugx.org/lochmueller/staticfilecache/license)](https://packagist.org/packages/lochmueller/staticfilecache)
 [![TYPO3](https://img.shields.io/badge/TYPO3-9-orange.svg)](https://typo3.org/)
