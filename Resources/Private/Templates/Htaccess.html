@@ -21,9 +21,9 @@
 </f:if>
 
 <f:if condition="{headers}">
-	<ifModule mod_headers.c>
+	<IfModule mod_headers.c>
 		<f:for each="{headers}" key="name" as="value">
 				Header set {name} "{value}"
 		</f:for>
-	</ifModule>
+	</IfModule>
 </f:if>
