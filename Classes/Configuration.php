@@ -14,6 +14,7 @@ use SFC\Staticfilecache\Cache\Rule\ForceStaticCache;
 use SFC\Staticfilecache\Cache\Rule\LoginDeniedConfiguration;
 use SFC\Staticfilecache\Cache\Rule\NoBackendUser;
 use SFC\Staticfilecache\Cache\Rule\NoBackendUserCookie;
+use SFC\Staticfilecache\Cache\Rule\NoCrawlerCall;
 use SFC\Staticfilecache\Cache\Rule\NoFakeFrontend;
 use SFC\Staticfilecache\Cache\Rule\NoIntScripts;
 use SFC\Staticfilecache\Cache\Rule\NoLongPathSegment;
@@ -167,6 +168,7 @@ class Configuration extends StaticFileCacheObject
             'forceStaticCache' => ForceStaticCache::class,
             'noFakeFrontend' => NoFakeFrontend::class,
             'noLongPathSegment' => NoLongPathSegment::class,
+            'noCrawlerCall' => NoCrawlerCall::class,
         ]);
 
         GeneralUtility::makeInstance(ObjectFactoryService::class)->set('CacheRuleFallback', [
