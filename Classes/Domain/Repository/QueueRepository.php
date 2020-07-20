@@ -26,7 +26,7 @@ class QueueRepository extends AbstractRepository
 
         return (array)$queryBuilder->select('*')
             ->from($this->getTableName())
-            ->where($queryBuilder->expr()->eq('call_date', $queryBuilder->createNamedParameter(0)))
+            ->where($queryBuilder->expr()->eq('call_date', 0))
             ->setMaxResults($limit)
             ->orderBy('cache_priority', 'desc')
             ->execute()
@@ -45,7 +45,7 @@ class QueueRepository extends AbstractRepository
         $queryBuilder = $this->createQuery();
         $where = $queryBuilder->expr()->andX(
             $queryBuilder->expr()->eq('cache_url', $queryBuilder->createNamedParameter($identifier)),
-            $queryBuilder->expr()->eq('call_date', $queryBuilder->createNamedParameter(0))
+            $queryBuilder->expr()->eq('call_date', 0)
         );
 
         return (int)$queryBuilder->select('uid')
@@ -66,7 +66,7 @@ class QueueRepository extends AbstractRepository
 
         return (array)$queryBuilder->select('uid')
             ->from($this->getTableName())
-            ->where($queryBuilder->expr()->gt('call_date', $queryBuilder->createNamedParameter(0)))
+            ->where($queryBuilder->expr()->gt('call_date', 0))
             ->execute()
             ->fetchAll();
     }
