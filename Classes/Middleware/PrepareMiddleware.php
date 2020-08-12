@@ -13,6 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\Rule\AbstractRule;
+use SFC\Staticfilecache\Event\CacheRuleEvent;
 use SFC\Staticfilecache\Service\HttpPushService;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
 use SFC\Staticfilecache\Service\TypoScriptFrontendService;
@@ -23,6 +24,21 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PrepareMiddleware implements MiddlewareInterface
 {
+
+    /**
+     * @var \Psr\EventDispatcher\EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * PrepareMiddleware constructor.
+     * @param \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(\Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     /**
      * Process an incoming server request.
      *
@@ -47,17 +63,20 @@ class PrepareMiddleware implements MiddlewareInterface
             $rule->checkRule($request, $explanation, $skipProcessing);
         }
 
-        if (!$skipProcessing) {
+        $event = new CacheRuleEvent($request, $explanation, $skipProcessing);
+        $this->eventDispatcher->dispatch($event);
+
+        if (!$event->isSkipProcessing()) {
             $cacheTags = GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getTags();
             $cacheTags[] = 'sfc_pageId_' . $GLOBALS['TSFE']->page['uid'];
-            $cacheTags[] = 'sfc_domain_' . \str_replace('.', '_', $request->getUri()->getHost());
+            $cacheTags[] = 'sfc_domain_' . \str_replace('.', '_', $event->getRequest()->getUri()->getHost());
 
-            if (empty($explanation)) {
+            if (empty($event->getExplanation())) {
                 $response = $response->withHeader('X-SFC-Cachable', '1');
             } else {
                 $cacheTags[] = 'explanation';
                 $response = $response->withHeader('X-SFC-Cachable', '0');
-                foreach ($explanation as $item) {
+                foreach ($event->getExplanation() as $item) {
                     $response = $response->withAddedHeader('X-SFC-Explanation', $item);
                 }
             }

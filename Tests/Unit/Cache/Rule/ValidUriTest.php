@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Tests\Unit\Cache\Rule;
 
-use SFC\Staticfilecache\Cache\Rule\ValidUri;
+use SFC\Staticfilecache\Cache\Rule\ValidUriListener;
 use TYPO3\CMS\Core\Http\ServerRequest;
 
 /**
@@ -23,7 +23,7 @@ class ValidUriTest extends AbstractRuleTest
     {
         $explanation = [];
 
-        $validUriRule = new ValidUri();
+        $validUriRule = new ValidUriListener();
 
         $requests = [
             new ServerRequest('/index.php'),
@@ -42,7 +42,7 @@ class ValidUriTest extends AbstractRuleTest
     {
         $explanation = [];
 
-        $validUriRule = new ValidUri();
+        $validUriRule = new ValidUriListener();
 
         $requests = [
             new ServerRequest(''),

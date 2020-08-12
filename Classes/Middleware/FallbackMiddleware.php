@@ -13,11 +13,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\IdentifierBuilder;
-use SFC\Staticfilecache\Cache\Rule\AbstractRule;
+use SFC\Staticfilecache\Event\CacheRuleFallbackEvent;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\CookieService;
-use SFC\Staticfilecache\Service\ObjectFactoryService;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -26,6 +25,21 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FallbackMiddleware implements MiddlewareInterface
 {
+
+    /**
+     * @var \Psr\EventDispatcher\EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * PrepareMiddleware constructor.
+     * @param \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(\Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     /**
      * Process the fallback middleware
      *
@@ -37,9 +51,9 @@ class FallbackMiddleware implements MiddlewareInterface
     {
         $config = GeneralUtility::makeInstance(ConfigurationService::class);
         try {
-            if ($config->isBool('useFallbackMiddleware')) {
-                return $this->handleViaFallback($request);
-            }
+            //if ($config->isBool('useFallbackMiddleware')) {
+            return $this->handleViaFallback($request);
+            // }
         } catch (\Exception $exception) {
             // Not handled
         }
@@ -55,17 +69,14 @@ class FallbackMiddleware implements MiddlewareInterface
      */
     protected function handleViaFallback(ServerRequestInterface $request): ResponseInterface
     {
-        $uri = $request->getUri();
+        $event = new CacheRuleFallbackEvent($request, [], false);
+        $this->eventDispatcher->dispatch($event);
 
-        $explanation = [];
-        $skipProcessing = false;
-        foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('CacheRuleFallback') as $rule) {
-            /** @var $rule AbstractRule */
-            $rule->checkRule($request, $explanation, $skipProcessing);
-            if ($skipProcessing) {
-                throw new \Exception('Could not use fallback, because: ' . implode(', ', $explanation), 1236781);
-            }
+        if ($event->isSkipProcessing()) {
+            throw new \Exception('Could not use fallback, because: ' . implode(', ', $event->getExplanation()), 1236781);
         }
+
+        $uri = $request->getUri();
 
         if (isset($_COOKIE[CookieService::FE_COOKIE_NAME]) && $_COOKIE[CookieService::FE_COOKIE_NAME] === 'typo_user_logged_in') {
             throw new \Exception('StaticFileCache Cookie is set', 12738912);
@@ -73,7 +84,7 @@ class FallbackMiddleware implements MiddlewareInterface
 
         $possibleStaticFile = GeneralUtility::makeInstance(IdentifierBuilder::class)->getFilepath((string)$uri);
 
-        $headers = $this->getHeaders($request, $possibleStaticFile);
+        $headers = $this->getHeaders($event->getRequest(), $possibleStaticFile);
 
         if (!is_file($possibleStaticFile) || !is_readable($possibleStaticFile)) {
             throw new \Exception('StaticFileCache file not found', 126371823);

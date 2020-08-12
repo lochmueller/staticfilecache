@@ -13,8 +13,6 @@ class AfterPackageDeactivationListener
 {
     public function __invoke(AfterPackageDeactivationEvent $event): void
     {
-        var_dump('call');
-        die();
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
         $configuration->override('boostMode', '0');
 

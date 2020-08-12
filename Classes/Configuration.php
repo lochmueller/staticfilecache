@@ -13,7 +13,6 @@ use SFC\Staticfilecache\Cache\Rule\Enable;
 use SFC\Staticfilecache\Cache\Rule\ForceStaticCache;
 use SFC\Staticfilecache\Cache\Rule\LoginDeniedConfiguration;
 use SFC\Staticfilecache\Cache\Rule\NoBackendUser;
-use SFC\Staticfilecache\Cache\Rule\NoBackendUserCookie;
 use SFC\Staticfilecache\Cache\Rule\NoCrawlerCall;
 use SFC\Staticfilecache\Cache\Rule\NoFakeFrontend;
 use SFC\Staticfilecache\Cache\Rule\NoIntScripts;
@@ -21,13 +20,10 @@ use SFC\Staticfilecache\Cache\Rule\NoLongPathSegment;
 use SFC\Staticfilecache\Cache\Rule\NoNoCache;
 use SFC\Staticfilecache\Cache\Rule\NoUserOrGroupSet;
 use SFC\Staticfilecache\Cache\Rule\NoWorkspacePreview;
-use SFC\Staticfilecache\Cache\Rule\PageCacheable;
 use SFC\Staticfilecache\Cache\Rule\SiteCacheable;
 use SFC\Staticfilecache\Cache\Rule\StaticCacheable;
 use SFC\Staticfilecache\Cache\Rule\ValidDoktype;
 use SFC\Staticfilecache\Cache\Rule\ValidPageInformation;
-use SFC\Staticfilecache\Cache\Rule\ValidRequestMethod;
-use SFC\Staticfilecache\Cache\Rule\ValidUri;
 use SFC\Staticfilecache\Cache\StaticFileBackend;
 use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Generator\BrotliGenerator;
@@ -142,29 +138,20 @@ class Configuration extends StaticFileCacheObject
     {
         GeneralUtility::makeInstance(ObjectFactoryService::class)->set('CacheRule', [
             'staticCacheable' => StaticCacheable::class,
-            'validUri' => ValidUri::class,
             'siteCacheable' => SiteCacheable::class,
             'validDoktype' => ValidDoktype::class,
             'noWorkspacePreview' => NoWorkspacePreview::class,
             'noUserOrGroupSet' => NoUserOrGroupSet::class,
             'noIntScripts' => NoIntScripts::class,
             'loginDeniedConfiguration' => LoginDeniedConfiguration::class,
-            'pageCacheable' => PageCacheable::class,
             'noNoCache' => NoNoCache::class,
             'noBackendUser' => NoBackendUser::class,
             'enable' => Enable::class,
-            'validRequestMethod' => ValidRequestMethod::class,
             'validPageInformation' => ValidPageInformation::class,
             'forceStaticCache' => ForceStaticCache::class,
             'noFakeFrontend' => NoFakeFrontend::class,
             'noLongPathSegment' => NoLongPathSegment::class,
             'noCrawlerCall' => NoCrawlerCall::class,
-        ]);
-
-        GeneralUtility::makeInstance(ObjectFactoryService::class)->set('CacheRuleFallback', [
-            'validUri' => ValidUri::class,
-            'validRequestMethod' => ValidRequestMethod::class,
-            'noBackendUserCookie' => NoBackendUserCookie::class,
         ]);
 
         return $this;
