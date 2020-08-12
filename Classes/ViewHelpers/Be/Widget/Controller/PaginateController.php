@@ -69,9 +69,8 @@ class PaginateController extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controll
                     $query->setLimit($newLimit);
                 }
             }
-            $modifiedObjects = $query->execute();
 
-            return $modifiedObjects;
+            return $query->execute();
         }
         if ($this->objects instanceof ObjectStorage) {
             $modifiedObjects = [];
@@ -84,9 +83,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controll
             return $modifiedObjects;
         }
         if (\is_array($this->objects)) {
-            $modifiedObjects = \array_slice($this->objects, $offset, $itemsPerPage);
-
-            return $modifiedObjects;
+            return \array_slice($this->objects, $offset, $itemsPerPage);
         }
         throw new \InvalidArgumentException(
             'The view helper "' . static::class

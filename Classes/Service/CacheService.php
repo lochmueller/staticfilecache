@@ -14,7 +14,6 @@ use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Cache Service.
@@ -40,9 +39,7 @@ class CacheService extends AbstractService
      */
     public function getManager(): CacheManager
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-
-        return $objectManager->get(CacheManager::class);
+        return GeneralUtility::makeInstance(CacheManager::class);
     }
 
     /**

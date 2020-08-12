@@ -50,8 +50,8 @@ class BackendController extends ActionController
      */
     public function boostAction($run = false): void
     {
-        $configurationService = $this->objectManager->get(ConfigurationService::class);
-        $queueRepository = $this->objectManager->get(QueueRepository::class);
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
         if ($run) {
             $items = $queueRepository->findOpen(10);
             $queueService = GeneralUtility::makeInstance(QueueService::class);

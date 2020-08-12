@@ -16,7 +16,6 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * RemoteFileBackend.
@@ -323,8 +322,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         }
 
         try {
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $resourceFactory = $objectManager->get(ResourceFactory::class);
+            $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
             $storage = $resourceFactory->getDefaultStorage();
             $baseName = (string)$storage->sanitizeFileName($baseName);
         } catch (\Exception $exception) {

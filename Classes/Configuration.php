@@ -46,6 +46,7 @@ use SFC\Staticfilecache\Service\HttpPush\StyleHttpPush;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -174,7 +175,7 @@ class Configuration extends StaticFileCacheObject
      */
     protected function registerCachingFramework(): Configuration
     {
-        $useNullBackend = isset($this->configuration['disableInDevelopment']) && $this->configuration['disableInDevelopment'] && GeneralUtility::getApplicationContext()->isDevelopment();
+        $useNullBackend = isset($this->configuration['disableInDevelopment']) && $this->configuration['disableInDevelopment'] && Environment::getContext()->isDevelopment();
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['staticfilecache'] = [
             'frontend' => UriFrontend::class,

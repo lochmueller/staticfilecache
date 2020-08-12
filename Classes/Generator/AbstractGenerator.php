@@ -24,7 +24,7 @@ abstract class AbstractGenerator extends StaticFileCacheObject
      * @param ResponseInterface $response
      * @param int $lifetime
      */
-    abstract public function generate(string $entryIdentifier, string $fileName, ResponseInterface &$response, int $lifetime): void;
+    abstract public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void;
 
     /**
      * Remove file.

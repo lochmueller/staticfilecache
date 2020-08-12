@@ -26,7 +26,7 @@ class ManifestGenerator extends AbstractGenerator
      * @param ResponseInterface $response
      * @param int $lifetime
      */
-    public function generate(string $entryIdentifier, string $fileName, ResponseInterface &$response, int $lifetime): void
+    public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
     {
         $manifestService = GeneralUtility::makeInstance(ManifestService::class);
         $html = (string)$response->getBody();
