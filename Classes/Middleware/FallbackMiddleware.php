@@ -61,7 +61,7 @@ class FallbackMiddleware implements MiddlewareInterface
         $skipProcessing = false;
         foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('CacheRuleFallback') as $rule) {
             /** @var $rule AbstractRule */
-            $rule->checkRule(null, $request, $explanation, $skipProcessing);
+            $rule->checkRule($request, $explanation, $skipProcessing);
             if ($skipProcessing) {
                 throw new \Exception('Could not use fallback, because: ' . implode(', ', $explanation), 1236781);
             }

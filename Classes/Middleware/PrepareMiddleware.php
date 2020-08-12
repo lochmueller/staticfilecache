@@ -44,7 +44,7 @@ class PrepareMiddleware implements MiddlewareInterface
         $skipProcessing = false;
         foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('CacheRule') as $rule) {
             /** @var $rule AbstractRule */
-            $rule->checkRule($GLOBALS['TSFE'], $request, $explanation, $skipProcessing);
+            $rule->checkRule($request, $explanation, $skipProcessing);
         }
 
         if (!$skipProcessing) {

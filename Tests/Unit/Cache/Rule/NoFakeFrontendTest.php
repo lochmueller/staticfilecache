@@ -21,15 +21,12 @@ class NoFakeFrontendTest extends AbstractRuleTest
 {
     public function testCheckNoFakeFrontendController()
     {
-        self::markTestSkipped('Check TSFE in v10');
-
-        $tsfe = $this->getTsfe();
         $request = new ServerRequest();
         $explanation = [];
         $skipProcessing = false;
 
         $fakeFrontendRule = new NoFakeFrontend();
-        $fakeFrontendRule->checkRule($tsfe, $request, $explanation, $skipProcessing);
+        $fakeFrontendRule->checkRule($request, $explanation, $skipProcessing);
         self::assertFalse($skipProcessing);
     }
 }

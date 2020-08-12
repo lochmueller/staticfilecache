@@ -51,7 +51,7 @@ class HtaccessGenerator extends AbstractGenerator
         }
 
         if (isset($headers['Link'])) {
-            $headers['Link'] = str_replace('"', '', $headers['Link'] );
+            $headers['Link'] = str_replace('"', '', $headers['Link']);
         }
 
         $sendCacheControlHeader = isset($GLOBALS['TSFE']->config['config']['sendCacheHeaders']) ? (bool)$GLOBALS['TSFE']->config['config']['sendCacheHeaders'] : false;

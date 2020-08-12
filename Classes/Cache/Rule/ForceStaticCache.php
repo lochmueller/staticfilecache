@@ -32,14 +32,14 @@ class ForceStaticCache extends AbstractRule
     /**
      * Method to check the rul and modify $explanation and/or $skipProcessing.
      *
-     * @param TypoScriptFrontendController $frontendController
+     *
      * @param ServerRequestInterface $request
      * @param array                        $explanation
      * @param bool                         $skipProcessing
      */
-    public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
+    public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
-        if ($this->isForceCacheUri($frontendController, $request)) {
+        if ($this->isForceCacheUri($GLOBALS['TSFE'], $request)) {
             foreach ($explanation as $key => $value) {
                 foreach ($this->ignoreRules as $ignore) {
                     if (GeneralUtility::isFirstPartOfStr($key, $ignore)) {
@@ -52,13 +52,13 @@ class ForceStaticCache extends AbstractRule
                 // force the generation
                 $skipProcessing = false;
 
-                if (!\is_array($frontendController->config['INTincScript'])) {
+                if (!\is_array($GLOBALS['TSFE']->config['INTincScript'])) {
                     // Avoid exceptions in recursivelyReplaceIntPlaceholdersInContent
-                    $frontendController->config['INTincScript'] = [];
+                    $GLOBALS['TSFE']->config['INTincScript'] = [];
                 }
 
                 // render the plugins in the output
-                $frontendController->INTincScript();
+                $GLOBALS['TSFE']->INTincScript();
             }
         }
     }
@@ -66,7 +66,7 @@ class ForceStaticCache extends AbstractRule
     /**
      * Is force cache URI?
      *
-     * @param TypoScriptFrontendController $frontendController
+     *
      * @param ServerRequestInterface                       $request
      *
      * @return bool

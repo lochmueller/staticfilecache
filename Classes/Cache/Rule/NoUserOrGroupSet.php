@@ -22,12 +22,12 @@ class NoUserOrGroupSet extends AbstractRule
     /**
      * Check if no user or group is set.
      *
-     * @param TypoScriptFrontendController $frontendController
+     *
      * @param ServerRequestInterface $request
      * @param array                        $explanation
      * @param bool                         $skipProcessing
      */
-    public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
+    public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
         if ($this->isUserOrGroupSet()) {
             $explanation[__CLASS__] = 'User or group are set';

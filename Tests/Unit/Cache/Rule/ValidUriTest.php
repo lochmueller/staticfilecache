@@ -21,9 +21,6 @@ class ValidUriTest extends AbstractRuleTest
 {
     public function testInvalidUri()
     {
-        self::markTestSkipped('Check TSFE in v10');
-
-        $tsfe = $this->getTsfe();
         $explanation = [];
 
         $validUriRule = new ValidUri();
@@ -36,16 +33,13 @@ class ValidUriTest extends AbstractRuleTest
         ];
         foreach ($requests as $request) {
             $skipProcessing = false;
-            $validUriRule->checkRule($tsfe, $request, $explanation, $skipProcessing);
+            $validUriRule->checkRule($request, $explanation, $skipProcessing);
             self::assertTrue($skipProcessing, 'Is "' . $request->getUri() . '" valid?');
         }
     }
 
     public function testValidUri()
     {
-        self::markTestSkipped('Check TSFE in v10');
-
-        $tsfe = $this->getTsfe();
         $explanation = [];
 
         $validUriRule = new ValidUri();
@@ -60,7 +54,7 @@ class ValidUriTest extends AbstractRuleTest
         ];
         foreach ($requests as $request) {
             $skipProcessing = false;
-            $validUriRule->checkRule($tsfe, $request, $explanation, $skipProcessing);
+            $validUriRule->checkRule($request, $explanation, $skipProcessing);
             self::assertFalse($skipProcessing, 'Is "' . $request->getUri() . '" valid?');
         }
     }

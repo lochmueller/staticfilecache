@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Cache\Rule;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Check if there is no path segment that is to long.
@@ -19,12 +18,12 @@ class NoLongPathSegment extends AbstractRule
     /**
      * Check if there is no path segment that is to long.
      *
-     * @param TypoScriptFrontendController $frontendController
+     *
      * @param ServerRequestInterface $request
      * @param array $explanation
      * @param bool $skipProcessing
      */
-    public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
+    public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
         $uri = (string)$request->getUri();
         $path = (string)\parse_url($uri, PHP_URL_PATH);
