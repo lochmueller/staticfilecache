@@ -45,3 +45,14 @@ It is recommended to install the extension in composer mode. If your TYPO3 insta
 - [The need for speed](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/NeedSpeed/Index.rst)
 
 Have fun with the extension!
+
+
+
+##  ToDos:
+https://forge.typo3.org/attachments/download/35200/TYPO3-v10-LTS-whats-new.pdf
+- Dashboard Info
+https://docs.typo3.org/c/typo3/cms-dashboard/master/en-us/Configuration/WidgetRegistration.html
+Cache via DI
+Client nach PSR-18
+Remove SignalSlot Dispatcher
+Issues
