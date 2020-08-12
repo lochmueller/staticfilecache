@@ -39,7 +39,6 @@ use SFC\Staticfilecache\Generator\PlainGenerator;
 use SFC\Staticfilecache\Hook\DatamapHook;
 use SFC\Staticfilecache\Hook\InitFrontendUser;
 use SFC\Staticfilecache\Hook\LogoffFrontendUser;
-use SFC\Staticfilecache\Hook\UninstallProcess;
 use SFC\Staticfilecache\Service\HttpPush\FontHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\ImageHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\ScriptHttpPush;
@@ -50,9 +49,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
-use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
  * Configuration.
@@ -80,7 +77,6 @@ class Configuration extends StaticFileCacheObject
     public function extLocalconf(): void
     {
         $this->registerHooks()
-            ->registerSlots()
             ->registerRules()
             ->registerCachingFramework()
             ->registerIcons()
@@ -126,20 +122,13 @@ class Configuration extends StaticFileCacheObject
     protected function registerHooks(): Configuration
     {
         // Set cookie when User logs in
+
+        // @todo move to middleware!
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser']['staticfilecache'] = InitFrontendUser::class . '->setFeUserCookie';
+
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing']['staticfilecache'] = LogoffFrontendUser::class . '->logoff';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = DatamapHook::class;
 
-        return $this;
-    }
-
-    /**
-     * Register slots.
-     */
-    protected function registerSlots(): Configuration
-    {
-        $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $signalSlotDispatcher->connect(InstallUtility::class, 'afterExtensionUninstall', UninstallProcess::class, 'afterExtensionUninstall');
         return $this;
     }
 

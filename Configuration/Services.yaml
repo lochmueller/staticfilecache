@@ -6,3 +6,9 @@ services:
 
   SFC\Staticfilecache\:
     resource: '../Classes/*'
+
+  SFC\Staticfilecache\EventListener\AfterPackageDeactivationListener:
+    tags:
+      - name: event.listener
+        identifier: 'SfcAfterPackageDeactivationListener'
+        event: TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent

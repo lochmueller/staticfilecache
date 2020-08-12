@@ -32,7 +32,7 @@ abstract class AbstractRepository extends StaticFileCacheObject
     /**
      * Truncate the table
      */
-    public function truncate()
+    public function truncate(): void
     {
         $this->getConnection()->truncate($this->getTableName());
     }
