@@ -125,7 +125,7 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
         );
         $requiredTableStructures = str_replace('###CACHE_TABLE###', $this->cacheTable, $cacheTableSql) . LF . LF;
         $tagsTableSql = file_get_contents(
-            ExtensionManagementUtility::extPath('core') .
+            ExtensionManagementUtility::extPath('staticfilecache') .
             'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendTags.sql'
         );
         $requiredTableStructures .= str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql) . LF;
