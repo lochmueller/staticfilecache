@@ -13,6 +13,7 @@ use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
@@ -110,5 +111,24 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
 
             return $arguments;
         }
+    }
+
+    /**
+     * Change the template to allow longer idenitifiers
+     * @return string
+     */
+    public function getTableDefinitions()
+    {
+        $cacheTableSql = file_get_contents(
+            ExtensionManagementUtility::extPath('staticfilecache') .
+            'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendCache.sql'
+        );
+        $requiredTableStructures = str_replace('###CACHE_TABLE###', $this->cacheTable, $cacheTableSql) . LF . LF;
+        $tagsTableSql = file_get_contents(
+            ExtensionManagementUtility::extPath('core') .
+            'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendTags.sql'
+        );
+        $requiredTableStructures .= str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql) . LF;
+        return $requiredTableStructures;
     }
 }
