@@ -50,9 +50,9 @@ class HtaccessGenerator extends AbstractGenerator
             }
         }
 
-        if (isset($headers['Link'])) {
-            $headers['Link'] = str_replace('"', '', $headers['Link']);
-        }
+        $headers = array_map(function ($item) {
+            return str_replace('"', '', $item);
+        }, $headers);
 
         $sendCacheControlHeader = isset($GLOBALS['TSFE']->config['config']['sendCacheHeaders']) ? (bool)$GLOBALS['TSFE']->config['config']['sendCacheHeaders'] : false;
 
