@@ -7,6 +7,11 @@ services:
   SFC\Staticfilecache\:
     resource: '../Classes/*'
 
+  SFC\Staticfilecache\Command\BoostQueueCommand:
+    tags:
+      - name: 'console.command'
+        command: 'staticfilecache:boostQueue'
+
   SFC\Staticfilecache\EventListener\AfterPackageDeactivationListener:
     tags:
       - name: event.listener

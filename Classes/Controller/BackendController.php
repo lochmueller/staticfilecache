@@ -27,6 +27,21 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class BackendController extends ActionController
 {
+
+    /**
+     * @var QueueService
+     */
+    protected $queueService;
+
+    /**
+     * BackendController constructor.
+     * @param QueueService $queueService
+     */
+    public function __construct(QueueService $queueService)
+    {
+        $this->queueService = $queueService;
+    }
+
     /**
      * MAIN function for static publishing information.
      *
@@ -54,10 +69,9 @@ class BackendController extends ActionController
         $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
         if ($run) {
             $items = $queueRepository->findOpen(10);
-            $queueService = GeneralUtility::makeInstance(QueueService::class);
             try {
                 foreach ($items as $item) {
-                    $queueService->runSingleRequest($item);
+                    $this->queueService->runSingleRequest($item);
                 }
             } catch (\Exception $exception) {
                 $this->addFlashMessage('Error in run: ' . $exception->getMessage(), 'Runner', FlashMessage::ERROR, true);

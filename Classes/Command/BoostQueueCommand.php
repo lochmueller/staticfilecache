@@ -13,13 +13,30 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * BoostQueueRunCommand.
  */
 class BoostQueueCommand extends AbstractCommand
 {
+
+    /**
+     * @var QueueRepository
+     */
+    protected $queueRepository;
+
+    /**
+     * @var QueueService
+     */
+    protected $queueService;
+
+    public function __construct(QueueRepository $queueRepository, QueueService $queueService)
+    {
+        $this->queueRepository = $queueRepository;
+        $this->queueService = $queueService;
+        parent::__construct('staticfilecache:boostQueue');
+    }
+
     /**
      * Configures the current command.
      */
@@ -51,15 +68,13 @@ class BoostQueueCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
-        $queueService = GeneralUtility::makeInstance(QueueService::class);
         $io = new SymfonyStyle($input, $output);
 
         $startTime = \time();
         $stopProcessingAfter = (int)$input->getOption('stop-processing-after');
         $limit = (int)$input->getOption('limit-items');
         $limit = $limit > 0 ? $limit : 5000;
-        $rows = $queueRepository->findOpen($limit);
+        $rows = $this->queueRepository->findOpen($limit);
 
         $io->progressStart(\count($rows));
         foreach ($rows as $runEntry) {
@@ -68,7 +83,7 @@ class BoostQueueCommand extends AbstractCommand
                 break;
             }
 
-            $queueService->runSingleRequest($runEntry);
+            $this->queueService->runSingleRequest($runEntry);
             $io->progressAdvance();
         }
         $io->progressFinish();
@@ -89,12 +104,10 @@ class BoostQueueCommand extends AbstractCommand
      */
     protected function cleanupQueue(SymfonyStyle $io)
     {
-        $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
-
-        $rows = $queueRepository->findOld();
+        $rows = $this->queueRepository->findOld();
         $io->progressStart(\count($rows));
         foreach ($rows as $row) {
-            $queueRepository->delete(['uid' => $row['uid']]);
+            $this->queueRepository->delete(['uid' => $row['uid']]);
             $io->progressAdvance();
         }
         $io->progressFinish();

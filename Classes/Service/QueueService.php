@@ -10,7 +10,6 @@ namespace SFC\Staticfilecache\Service;
 
 use SFC\Staticfilecache\Command\BoostQueueCommand;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Queue service.
@@ -28,11 +27,33 @@ class QueueService extends AbstractService
     protected $queueRepository;
 
     /**
-     * QueueService constructor.
+     * @var ConfigurationService
      */
-    public function __construct()
+    protected $configurationService;
+
+    /**
+     * @var ClientService
+     */
+    protected $clientService;
+
+    /**
+     * @var CacheService
+     */
+    protected $cacheService;
+
+    /**
+     * QueueService constructor.
+     * @param QueueRepository $queueRepository
+     * @param ConfigurationService $configurationService
+     * @param ClientService $clientService
+     * @param CacheService $cacheService
+     */
+    public function __construct(QueueRepository $queueRepository, ConfigurationService $configurationService, ClientService $clientService, CacheService $cacheService)
     {
-        $this->queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
+        $this->queueRepository = $queueRepository;
+        $this->configurationService = $configurationService;
+        $this->clientService = $clientService;
+        $this->cacheService = $cacheService;
     }
 
     /**
@@ -63,7 +84,7 @@ class QueueService extends AbstractService
 
         $priority = 0;
         try {
-            $cache = GeneralUtility::makeInstance(CacheService::class)->get();
+            $cache = $this->cacheService->get();
             $infos = $cache->get($identifier);
             if (isset($infos['priority'])) {
                 $priority = (int)$infos['priority'];
@@ -91,13 +112,16 @@ class QueueService extends AbstractService
      */
     public function runSingleRequest(array $runEntry): void
     {
-        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $configuration->override('boostMode', '0');
+        $this->configurationService->override('boostMode', '0');
+        $cache = $this->cacheService->get();
+
+        if ($cache->has($runEntry['cache_url'])) {
+            $cache->remove($runEntry['cache_url']);
+        }
 
         $this->logger->debug('SFC Queue run', $runEntry);
 
-        $clientService = GeneralUtility::makeInstance(ClientService::class);
-        $statusCode = $clientService->runSingleRequest($runEntry['cache_url']);
+        $statusCode = $this->clientService->runSingleRequest($runEntry['cache_url']);
 
         $data = [
             'call_date' => \time(),
@@ -106,11 +130,7 @@ class QueueService extends AbstractService
 
         if (200 !== $statusCode) {
             // Call the flush, if the page is not accessable
-            $cache = GeneralUtility::makeInstance(CacheService::class)->get();
             $cache->flushByTag('sfc_pageId_' . $runEntry['page_uid']);
-            if ($cache->has($runEntry['cache_url'])) {
-                $cache->remove($runEntry['cache_url']);
-            }
         }
 
         $this->queueRepository->update($data, ['uid' => (int)$runEntry['uid']]);
