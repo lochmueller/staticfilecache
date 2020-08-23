@@ -49,8 +49,6 @@ class PrepareMiddleware implements MiddlewareInterface
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

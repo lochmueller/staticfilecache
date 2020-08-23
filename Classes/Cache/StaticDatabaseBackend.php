@@ -15,7 +15,6 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * General Cache functions for StaticFileCache.
@@ -32,20 +31,6 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
     protected $configuration;
 
     /**
-     * Signal Slot dispatcher.
-     *
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     */
-    protected $signalSlotDispatcher;
-
-    /**
-     * Signal class.
-     *
-     * @var string
-     */
-    protected $signalClass = '';
-
-    /**
      * Constructs this backend.
      *
      * @param string $context application context
@@ -55,8 +40,6 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
     {
         parent::__construct($context, $options);
         $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $this->signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $this->signalClass = \get_class($this);
         $this->setLogger(GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__));
     }
 
@@ -91,26 +74,6 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
         }
 
         return (int)$lifetime;
-    }
-
-    /**
-     * Call Dispatcher.
-     *
-     * @param string $signalName
-     * @param array  $arguments
-     *
-     * @return array
-     */
-    protected function dispatch(string $signalName, array $arguments): array
-    {
-        try {
-            return $this->signalSlotDispatcher->dispatch($this->signalClass, $signalName, $arguments);
-        } catch (\Exception $exception) {
-            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger($this->signalClass);
-            $logger->error('Problems by calling signal: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
-
-            return $arguments;
-        }
     }
 
     /**

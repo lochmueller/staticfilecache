@@ -9,8 +9,8 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Cache\Rule;
 
 use Psr\Http\Message\ServerRequestInterface;
+use SFC\Staticfilecache\Event\ForceStaticFileCacheEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -18,6 +18,21 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class ForceStaticCache extends AbstractRule
 {
+
+    /**
+     * @var \Psr\EventDispatcher\EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * PrepareMiddleware constructor.
+     * @param \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(\Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     /**
      * Ignore rule in force mode.
      *
@@ -34,8 +49,8 @@ class ForceStaticCache extends AbstractRule
      *
      *
      * @param ServerRequestInterface $request
-     * @param array                        $explanation
-     * @param bool                         $skipProcessing
+     * @param array $explanation
+     * @param bool $skipProcessing
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
@@ -67,7 +82,7 @@ class ForceStaticCache extends AbstractRule
      * Is force cache URI?
      *
      *
-     * @param ServerRequestInterface                       $request
+     * @param ServerRequestInterface $request
      *
      * @return bool
      */
@@ -76,19 +91,11 @@ class ForceStaticCache extends AbstractRule
         if (!is_object($frontendController)) {
             return false;
         }
-        $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $forceStatic = (bool)($frontendController->page['tx_staticfilecache_cache_force'] ?? false);
-        $params = [
-            'forceStatic' => $forceStatic,
-            'frontendController' => $frontendController,
-            'request' => $request,
-        ];
-        try {
-            $params = $signalSlotDispatcher->dispatch(__CLASS__, 'isForceCacheUri', $params);
-        } catch (\Exception $exception) {
-            $this->logger->error('Problems by calling signal: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
-        }
 
-        return (bool)$params['forceStatic'];
+        $forceStatic = (bool)($frontendController->page['tx_staticfilecache_cache_force'] ?? false);
+        $event = new ForceStaticFileCacheEvent($forceStatic, $frontendController, $request);
+        $this->eventDispatcher->dispatch($event);
+
+        return $event->isForceStatic();
     }
 }

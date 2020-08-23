@@ -12,15 +12,30 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\HandlerStack;
+use SFC\Staticfilecache\Event\BuildClientEvent;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * ClientService.
  */
 class ClientService extends AbstractService
 {
+
+    /**
+     * @var \Psr\EventDispatcher\EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * PrepareMiddleware constructor.
+     * @param \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(\Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     /**
      * Run a single request with guzzle and return status code.
      *
@@ -86,15 +101,11 @@ class ClientService extends AbstractService
             $httpOptions['handler'] = $stack;
         }
 
-        // extended
-        $params = [
-            'sfc' => $options,
-            'core' => $httpOptions,
-        ];
-        $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $params = $signalSlotDispatcher->dispatch(__CLASS__, 'getCallableClient', $params);
-        $base = $params['core'];
-        ArrayUtility::mergeRecursiveWithOverrule($base, $params['sfc']);
+        $event = new BuildClientEvent($options, $httpOptions);
+        $this->eventDispatcher->dispatch($event);
+
+        $base = $event->getHttpOptions();
+        ArrayUtility::mergeRecursiveWithOverrule($base, $event->getOptions());
 
         return GeneralUtility::makeInstance(Client::class, $base);
     }
