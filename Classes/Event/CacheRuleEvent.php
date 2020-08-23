@@ -45,4 +45,9 @@ class CacheRuleEvent
     {
         $this->explanation[$key] = $message;
     }
+
+    public function truncateExplanations(): void
+    {
+        $this->explanation = [];
+    }
 }

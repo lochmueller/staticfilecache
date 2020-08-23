@@ -10,7 +10,6 @@ namespace SFC\Staticfilecache;
 
 use SFC\Staticfilecache\Cache\RemoteFileBackend;
 use SFC\Staticfilecache\Cache\Rule\Enable;
-use SFC\Staticfilecache\Cache\Rule\ForceStaticCache;
 use SFC\Staticfilecache\Cache\Rule\LoginDeniedConfiguration;
 use SFC\Staticfilecache\Cache\Rule\NoBackendUser;
 use SFC\Staticfilecache\Cache\Rule\NoCrawlerCall;
@@ -148,7 +147,6 @@ class Configuration extends StaticFileCacheObject
             'noBackendUser' => NoBackendUser::class,
             'enable' => Enable::class,
             'validPageInformation' => ValidPageInformation::class,
-            'forceStaticCache' => ForceStaticCache::class,
             'noFakeFrontend' => NoFakeFrontend::class,
             'noLongPathSegment' => NoLongPathSegment::class,
             'noCrawlerCall' => NoCrawlerCall::class,
