@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache\EventListener\CacheRule;
+namespace SFC\Staticfilecache\Cache\Listener;
 
 use SFC\Staticfilecache\Event\CacheRuleEvent;
 

@@ -13,13 +13,13 @@ services:
         identifier: 'SfcAfterPackageDeactivationListener'
         event: TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent
 
-  SFC\Staticfilecache\EventListener\CacheRule\PageCacheableListener:
+  SFC\Staticfilecache\Cache\Listener\PageCacheableListener:
     tags:
       - name: event.listener
         identifier: 'SfcCacheRulePageCacheableListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
 
-  SFC\Staticfilecache\EventListener\CacheRule\ValidUriListener:
+  SFC\Staticfilecache\Cache\Listener\ValidUriListener:
     tags:
       - name: event.listener
         identifier: 'SfcCacheRuleValidUriListener'
@@ -28,7 +28,7 @@ services:
         identifier: 'SfcCacheRuleValidUriListenerFallback'
         event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
 
-  SFC\Staticfilecache\EventListener\CacheRule\ValidRequestMethodListener:
+  SFC\Staticfilecache\Cache\Listener\ValidRequestMethodListener:
     tags:
       - name: event.listener
         identifier: 'SfcCacheRuleValidRequestMethodListener'
@@ -37,7 +37,7 @@ services:
         identifier: 'SfcCacheRuleValidRequestMethodListenerFallback'
         event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
 
-  SFC\Staticfilecache\EventListener\CacheRule\NoBackendUserCookieListener:
+  SFC\Staticfilecache\Cache\Listener\NoBackendUserCookieListener:
     tags:
       - name: event.listener
         identifier: 'SfcCacheRuleNoBackendUserCookieListenerFallback'
