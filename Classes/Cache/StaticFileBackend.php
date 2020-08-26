@@ -93,7 +93,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         $priority = 0;
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
         if ($configuration->isBool('useReverseUriLengthInPriority')) {
-            $priority += (1000 - strlen($uri));
+            $priority += (QueueService::PRIORITY_MEDIUM - strlen($uri));
         }
 
         if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
@@ -216,6 +216,8 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         }
 
         if ($this->isBoostMode()) {
+            // @todo Check if there is only one Tag in the structure of pageId_XXXX, then increase the priority as seconds parameter oder addIdentifiers (1000 => prio height)
+
             $this->getQueue()->addIdentifiers($identifiers);
 
             return;

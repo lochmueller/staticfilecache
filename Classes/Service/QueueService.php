@@ -18,6 +18,9 @@ use SFC\Staticfilecache\Domain\Repository\QueueRepository;
  */
 class QueueService extends AbstractService
 {
+    const PRIORITY_HIGH = 2000;
+    const PRIORITY_MEDIUM = 1000;
+    const PRIORITY_LOW = 0;
 
     /**
      * Queue repository.
@@ -60,11 +63,12 @@ class QueueService extends AbstractService
      * Add identifiers to Queue.
      *
      * @param array $identifiers
+     * @param int $overridePriority
      */
-    public function addIdentifiers(array $identifiers): void
+    public function addIdentifiers(array $identifiers, int $overridePriority = 0): void
     {
         foreach ($identifiers as $identifier) {
-            $this->addIdentifier($identifier);
+            $this->addIdentifier($identifier, $overridePriority);
         }
     }
 
@@ -72,8 +76,9 @@ class QueueService extends AbstractService
      * Add identifier to Queue.
      *
      * @param string $identifier
+     * @param int $overridePriority
      */
-    public function addIdentifier(string $identifier): void
+    public function addIdentifier(string $identifier, int $overridePriority = 0): void
     {
         $count = $this->queueRepository->countOpenByIdentifier($identifier);
         if ($count > 0) {
@@ -82,14 +87,18 @@ class QueueService extends AbstractService
 
         $this->logger->debug('SFC Queue add', [$identifier]);
 
-        $priority = 0;
-        try {
-            $cache = $this->cacheService->get();
-            $infos = $cache->get($identifier);
-            if (isset($infos['priority'])) {
-                $priority = (int)$infos['priority'];
+        if ($overridePriority) {
+            $priority = $overridePriority;
+        } else {
+            $priority = 0;
+            try {
+                $cache = $this->cacheService->get();
+                $infos = $cache->get($identifier);
+                if (isset($infos['priority'])) {
+                    $priority = (int)$infos['priority'];
+                }
+            } catch (\Exception $exception) {
             }
-        } catch (\Exception $exception) {
         }
 
         $data = [
