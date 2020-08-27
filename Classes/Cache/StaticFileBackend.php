@@ -19,6 +19,7 @@ use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -216,9 +217,13 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         }
 
         if ($this->isBoostMode()) {
-            // @todo Check if there is only one Tag in the structure of pageId_XXXX, then increase the priority as seconds parameter oder addIdentifiers (1000 => prio height)
+            $priority = QueueService::PRIORITY_LOW;
 
-            $this->getQueue()->addIdentifiers($identifiers);
+            if (count($tags) === 1 && StringUtility::beginsWith($tags[0], 'pageId_')) {
+                $priority = QueueService::PRIORITY_HIGH;
+            }
+
+            $this->getQueue()->addIdentifiers($identifiers, $prio);
 
             return;
         }

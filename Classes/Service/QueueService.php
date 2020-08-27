@@ -65,7 +65,7 @@ class QueueService extends AbstractService
      * @param array $identifiers
      * @param int $overridePriority
      */
-    public function addIdentifiers(array $identifiers, int $overridePriority = 0): void
+    public function addIdentifiers(array $identifiers, int $overridePriority = QueueService::PRIORITY_LOW): void
     {
         foreach ($identifiers as $identifier) {
             $this->addIdentifier($identifier, $overridePriority);
@@ -78,7 +78,7 @@ class QueueService extends AbstractService
      * @param string $identifier
      * @param int $overridePriority
      */
-    public function addIdentifier(string $identifier, int $overridePriority = 0): void
+    public function addIdentifier(string $identifier, int $overridePriority = QueueService::PRIORITY_LOW): void
     {
         $count = $this->queueRepository->countOpenByIdentifier($identifier);
         if ($count > 0) {
@@ -90,7 +90,7 @@ class QueueService extends AbstractService
         if ($overridePriority) {
             $priority = $overridePriority;
         } else {
-            $priority = 0;
+            $priority = QueueService::PRIORITY_LOW;
             try {
                 $cache = $this->cacheService->get();
                 $infos = $cache->get($identifier);
