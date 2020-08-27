@@ -223,7 +223,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
                 $priority = QueueService::PRIORITY_HIGH;
             }
 
-            $this->getQueue()->addIdentifiers($identifiers, $prio);
+            $this->getQueue()->addIdentifiers($identifiers, $priority);
 
             return;
         }
