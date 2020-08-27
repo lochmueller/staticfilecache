@@ -9,30 +9,24 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\ViewHelpers\Be\Widget;
 
 use SFC\Staticfilecache\ViewHelpers\Be\Widget\Controller\PaginateController;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
-use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
 
 /**
  * Override original to use our own controller.
  */
-class PaginateViewHelper extends AbstractWidgetViewHelper
+class PaginateViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\PaginateViewHelper
 {
-    /**
-     * Controller
-     *
-     * @var \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller\PaginateController
-     */
-    protected $controller;
 
     /**
-     * Inject paginate controller
-     *
-     * @param \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller\PaginateController $controller
+     * @var PaginateController
      */
-    public function injectPaginateController(\TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller\PaginateController $controller)
+    protected $controllerOverride;
+
+    /**
+     * @param PaginateController $controllerOverride
+     */
+    public function injectPaginateControllerOverride(PaginateController $controllerOverride)
     {
-        $this->controller = $controller;
+        $this->controllerOverride = $controllerOverride;
     }
 
     /**
@@ -41,30 +35,12 @@ class PaginateViewHelper extends AbstractWidgetViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('objects', 'array', 'The QueryResult containing all objects.', true);
-        $this->registerArgument('as', 'string', 'as', true);
-        $this->registerArgument('configuration', 'array', 'configuration', false, ['itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true, 'maximumNumberOfLinks' => 99]);
+        $this->overrideArgument('objects', 'array', 'The QueryResult containing all objects.', true);
     }
 
-    /**
-     * Render
-     *
-     * @return string
-     */
-    public function render()
-    {
-        return $this->initiateSubRequest();
-    }
-
-    /**
-     * Init subrequest.
-     *
-     * @return ResponseInterface
-     */
     protected function initiateSubRequest()
     {
-        $this->controller = GeneralUtility::makeInstance(PaginateController::class);
-
+        $this->controller = $this->controllerOverride;
         return parent::initiateSubRequest();
     }
 }

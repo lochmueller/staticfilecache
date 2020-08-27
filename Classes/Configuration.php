@@ -25,6 +25,7 @@ use SFC\Staticfilecache\Cache\Rule\ValidDoktype;
 use SFC\Staticfilecache\Cache\Rule\ValidPageInformation;
 use SFC\Staticfilecache\Cache\StaticFileBackend;
 use SFC\Staticfilecache\Cache\UriFrontend;
+use SFC\Staticfilecache\Controller\BackendController;
 use SFC\Staticfilecache\Generator\BrotliGenerator;
 use SFC\Staticfilecache\Generator\ConfigGenerator;
 use SFC\Staticfilecache\Generator\GzipGenerator;
@@ -96,12 +97,12 @@ class Configuration extends StaticFileCacheObject
     protected function registerBackendModule(): Configuration
     {
         ExtensionUtility::registerModule(
-            'SFC.Staticfilecache',
+            'Staticfilecache',
             'web',
             'staticfilecache',
             '',
             [
-                'Backend' => 'list,boost,support',
+                BackendController::class => 'list,boost,support',
             ],
             [
                 'access' => 'user,group',
