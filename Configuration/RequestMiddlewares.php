@@ -1,6 +1,7 @@
 <?php
 
 use SFC\Staticfilecache\Middleware\FallbackMiddleware;
+use SFC\Staticfilecache\Middleware\FrontendUserMiddleware;
 use SFC\Staticfilecache\Middleware\GenerateMiddleware;
 use SFC\Staticfilecache\Middleware\PrepareMiddleware;
 
@@ -25,6 +26,15 @@ return [
             'target' => FallbackMiddleware::class,
             'before' => [
                 'typo3/cms-frontend/timetracker',
+            ],
+        ],
+        'staticfilecache/frontend-user' => [
+            'target' => FrontendUserMiddleware::class,
+            'after' => [
+                'typo3/cms-frontend/authentication',
+            ],
+            'before' => [
+                'staticfilecache/generate',
             ],
         ],
     ],

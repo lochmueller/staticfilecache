@@ -58,9 +58,6 @@ class ForceStaticCacheListener
      */
     protected function isForceCacheUri(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request): bool
     {
-        return false;
-
-        // @todo check!
         if (!is_object($frontendController)) {
             return false;
         }

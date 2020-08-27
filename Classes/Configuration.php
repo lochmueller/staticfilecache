@@ -33,7 +33,6 @@ use SFC\Staticfilecache\Generator\HtaccessGenerator;
 use SFC\Staticfilecache\Generator\ManifestGenerator;
 use SFC\Staticfilecache\Generator\PlainGenerator;
 use SFC\Staticfilecache\Hook\DatamapHook;
-use SFC\Staticfilecache\Hook\InitFrontendUser;
 use SFC\Staticfilecache\Hook\LogoffFrontendUser;
 use SFC\Staticfilecache\Service\HttpPush\FontHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\ImageHttpPush;
@@ -117,11 +116,6 @@ class Configuration extends StaticFileCacheObject
      */
     protected function registerHooks(): Configuration
     {
-        // Set cookie when User logs in
-
-        // @todo move to middleware!
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser']['staticfilecache'] = InitFrontendUser::class . '->setFeUserCookie';
-
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing']['staticfilecache'] = LogoffFrontendUser::class . '->logoff';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = DatamapHook::class;
 
