@@ -41,7 +41,7 @@ trait CacheTrait
      */
     protected function cacheRunTime(string $entryIdentifier, callable $callback)
     {
-        return $this->cacheViaTrait($entryIdentifier, $callback, 'cache_runtime');
+        return $this->cacheViaTrait($entryIdentifier, $callback, 'runtime');
     }
 
     /**
@@ -56,7 +56,7 @@ trait CacheTrait
      */
     protected function cacheLongTime(string $entryIdentifier, callable $callback, int $lifetime = 3600, array $tags = [])
     {
-        return $this->cacheViaTrait('sfc_' . $entryIdentifier, $callback, 'cache_pagesection', $lifetime, $tags);
+        return $this->cacheViaTrait('sfc_' . $entryIdentifier, $callback, 'pagesection', $lifetime, $tags);
     }
 
     /**
