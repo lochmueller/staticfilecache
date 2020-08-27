@@ -58,7 +58,7 @@ class ConfigurationService extends AbstractService
      *
      * @return string|null
      */
-    public function get(string $key)
+    public function get(string $key): ?string
     {
         $result = null;
         if (array_key_exists($key, $this->overrides)) {
@@ -78,7 +78,7 @@ class ConfigurationService extends AbstractService
      * @param string $key
      * @param string $value
      */
-    public function override(string $key, string $value)
+    public function override(string $key, string $value): void
     {
         $this->overrides[$key] = $value;
     }
@@ -88,7 +88,7 @@ class ConfigurationService extends AbstractService
      *
      * @param string $key
      */
-    public function reset(string $key)
+    public function reset(string $key): void
     {
         if (array_key_exists($key, $this->overrides)) {
             unset($this->overrides[$key]);
@@ -100,7 +100,7 @@ class ConfigurationService extends AbstractService
      *
      * @return array
      */
-    public function getAll()
+    public function getAll(): array
     {
         return $this->configuration;
     }
