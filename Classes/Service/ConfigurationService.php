@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
 
-use SFC\Staticfilecache\Configuration;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

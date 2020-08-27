@@ -6,8 +6,12 @@
 
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache\Service;
+namespace SFC\Staticfilecache\Middleware;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\IdentifierBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -16,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * For handling the Offline functions
  */
-class ManifestService extends AbstractService
+class ManifestMiddleware implements MiddlewareInterface
 {
 
     /**
@@ -56,12 +60,18 @@ class ManifestService extends AbstractService
 
         try {
             $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
-            $fileName = $identifierBuilder->getFilepath(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+            // $fileName =
+            $identifierBuilder->getFilepath(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
 
             // var_dump($fileName);
         } catch (\Exception $exception) {
             // $this->lo
             //$exception->getMessage()
         }
+    }
+
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        // TODO: Implement process() method.
     }
 }

@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Middleware;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -25,19 +26,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FallbackMiddleware implements MiddlewareInterface
 {
-
     /**
-     * @var \Psr\EventDispatcher\EventDispatcherInterface
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 
     /**
-     * PrepareMiddleware constructor.
-     * @param \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     * @var ConfigurationService
      */
-    public function __construct(\Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher)
+    protected $configurationService;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher, ConfigurationService $configurationService)
     {
         $this->eventDispatcher = $eventDispatcher;
+        $this->configurationService = $configurationService;
     }
 
     /**
@@ -49,11 +51,10 @@ class FallbackMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $config = GeneralUtility::makeInstance(ConfigurationService::class);
         try {
-            //if ($config->isBool('useFallbackMiddleware')) {
-            return $this->handleViaFallback($request);
-            // }
+            if ($this->configurationService->isBool('useFallbackMiddleware')) {
+                return $this->handleViaFallback($request);
+            }
         } catch (\Exception $exception) {
             // Not handled
         }
@@ -112,7 +113,7 @@ class FallbackMiddleware implements MiddlewareInterface
         if (isset($config->headers->{'Content-Type'})) {
             $headers['Content-Type'] = implode(', ', $config->headers->{'Content-Type'});
         }
-        $debug = GeneralUtility::makeInstance(ConfigurationService::class)->isBool('debugHeaders');
+        $debug = $this->configurationService->isBool('debugHeaders');
         if ($debug) {
             $headers['X-SFC-State'] = 'StaticFileCache - via Fallback Middleware';
         }
