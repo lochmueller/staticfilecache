@@ -139,7 +139,7 @@ class QueueService extends AbstractService
 
         if (200 !== $statusCode) {
             // Call the flush, if the page is not accessable
-            $cache->flushByTag('sfc_pageId_' . $runEntry['page_uid']);
+            $cache->flushByTag('pageId_' . $runEntry['page_uid']);
         }
 
         $this->queueRepository->update($data, ['uid' => (int)$runEntry['uid']]);

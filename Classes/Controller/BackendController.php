@@ -155,7 +155,7 @@ class BackendController extends ActionController
         $dbRows = GeneralUtility::makeInstance(PageRepository::class)->findForBackend($this->getCurrentUid(), $this->getDisplayMode());
 
         foreach ($dbRows as $row) {
-            $cacheEntries = $cache->getByTag('sfc_pageId_' . $row['uid']);
+            $cacheEntries = $cache->getByTag('pageId_' . $row['uid']);
             foreach ($cacheEntries as $identifier => $info) {
                 $rows[] = [
                     'uid' => $row['uid'],

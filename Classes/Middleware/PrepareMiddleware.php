@@ -67,7 +67,6 @@ class PrepareMiddleware implements MiddlewareInterface
 
         if (!$event->isSkipProcessing()) {
             $cacheTags = GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getTags();
-            $cacheTags[] = 'sfc_pageId_' . $GLOBALS['TSFE']->page['uid'];
             $cocnfiguration = GeneralUtility::makeInstance(ConfigurationService::class);
             if (false === (bool)$cocnfiguration->get('clearCacheForAllDomains')) {
                 $cacheTags[] = 'sfc_domain_' . \str_replace('.', '_', $event->getRequest()->getUri()->getHost());
