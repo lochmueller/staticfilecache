@@ -14,6 +14,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\Rule\AbstractRule;
 use SFC\Staticfilecache\Event\CacheRuleEvent;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\HttpPushService;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
 use SFC\Staticfilecache\Service\TypoScriptFrontendService;
@@ -67,7 +68,10 @@ class PrepareMiddleware implements MiddlewareInterface
         if (!$event->isSkipProcessing()) {
             $cacheTags = GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getTags();
             $cacheTags[] = 'sfc_pageId_' . $GLOBALS['TSFE']->page['uid'];
-            $cacheTags[] = 'sfc_domain_' . \str_replace('.', '_', $event->getRequest()->getUri()->getHost());
+            $cocnfiguration = GeneralUtility::makeInstance(ConfigurationService::class);
+            if (false === (bool)$cocnfiguration->get('clearCacheForAllDomains')) {
+                $cacheTags[] = 'sfc_domain_' . \str_replace('.', '_', $event->getRequest()->getUri()->getHost());
+            }
 
             if (empty($event->getExplanation())) {
                 $response = $response->withHeader('X-SFC-Cachable', '1');
