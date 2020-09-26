@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xliff version="1.0">
-  <file source-language="en" datatype="plaintext" original="messages" date="2017-08-02T14:22:55Z" target-language="zh-CN">
+  <file source-language="en" datatype="plaintext" original="messages" date="2017-08-02T14:22:55Z" target-language="zh-TW">
     <header>
       <type>misc</type>
       <description>Language file for the StaticFileCache extension</description>
