@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" target-language="uk" datatype="plaintext" original="messages" date="2017-08-02T14:22:55Z">
+    <header>
+      <type>misc</type>
+      <description>Language file for the StaticFileCache extension</description>
+    </header>
+    <body>
+      <trans-unit id="module.title">
+        <source>StaticFileCache</source>
+        <target state="needs-translation">StaticFileCache</target>
+      </trans-unit>
+      <trans-unit id="staticfilecache.tx_staticfilecache_cache">
+        <source>Cache page as static file</source>
+        <target state="needs-translation">Cache page as static file</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
