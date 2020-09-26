@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2017-08-02T14:22:55Z" target-language="da">
+    <header>
+      <type>misc</type>
+      <description>Language file for the StaticFileCache extension</description>
+    </header>
+    <body>
+      <trans-unit id="module.title">
+        <source>StaticFileCache</source>
+        <target state="needs-translation">StaticFileCache</target>
+      </trans-unit>
+      <trans-unit id="module.intro.current">
+        <source>This module displays the cache entries and errors of the current page.</source>
+        <target state="needs-translation">This module displays the cache entries and errors of the current page.</target>
+      </trans-unit>
+      <trans-unit id="module.intro.childs">
+        <source>This module displays the cache entries and errors of all direct child pages.</source>
+        <target state="needs-translation">This module displays the cache entries and errors of all direct child pages.</target>
+      </trans-unit>
+      <trans-unit id="module.intro.both">
+        <source>This module displays the cache entries and errors of the current and all direct child pages.</source>
+        <target state="needs-translation">This module displays the cache entries and errors of the current and all direct child pages.</target>
+      </trans-unit>
+      <trans-unit id="staticfilecache.tx_staticfilecache_cache">
+        <source>Cache page as static file</source>
+        <target state="needs-translation">Cache page as static file</target>
+      </trans-unit>
+      <trans-unit id="staticfilecache.tx_staticfilecache_cache_force">
+        <source>Force the static cache generation (NOTE: This result in undefined states. Do not enable this field for editors, do not use in production and do not report bugs related to this feature!)</source>
+        <target state="needs-translation">Force the static cache generation (NOTE: This result in undefined states. Do not enable this field for editors, do not use in production and do not report bugs related to this feature!)</target>
+      </trans-unit>
+      <trans-unit id="staticfilecache.tx_staticfilecache_cache_force.desc">
+        <source>IMPORTANT NOTE: This result in undefined states. Do not enable this field for editors, do not use in production and do not report bugs related to this feature!</source>
+        <target state="needs-translation">IMPORTANT NOTE: This result in undefined states. Do not enable this field for editors, do not use in production and do not report bugs related to this feature!</target>
+      </trans-unit>
+      <trans-unit id="staticfilecache.tx_staticfilecache_cache_priority">
+        <source>Cache priority (high =&gt; important)</source>
+        <target state="needs-translation">Cache priority (high =&gt; important)</target>
+      </trans-unit>
+      <trans-unit id="staticfilecache.tx_staticfilecache_cache_offline">
+        <source>Cache offline (Manifest) - only if page is cached staticly</source>
+        <target state="needs-translation">Cache offline (Manifest) - only if page is cached staticly</target>
+      </trans-unit>
+      <trans-unit id="moduleFunction.tx_staticfilecache_infomodule">
+        <source>StaticFileCache</source>
+        <target state="needs-translation">StaticFileCache</target>
+      </trans-unit>
+      <trans-unit id="staticfilecache_task_removeExpiredPages.name">
+        <source>Remove expired pages</source>
+        <target state="needs-translation">Remove expired pages</target>
+      </trans-unit>
+      <trans-unit id="staticfilecache_task_removeExpiredPages.description">
+        <source>All expired pages will be removed from the cache.</source>
+        <target state="needs-translation">All expired pages will be removed from the cache.</target>
+      </trans-unit>
+      <trans-unit id="entriesEmpty">
+        <source>No entries on this level of the page tree.</source>
+        <target state="needs-translation">No entries on this level of the page tree.</target>
+      </trans-unit>
+      <trans-unit id="removeAllExpired">
+        <source>Remove all expired pages</source>
+        <target state="needs-translation">Remove all expired pages</target>
+      </trans-unit>
+      <trans-unit id="refresh">
+        <source>Refresh</source>
+        <target state="needs-translation">Refresh</target>
+      </trans-unit>
+      <trans-unit id="page">
+        <source>Page</source>
+        <target state="needs-translation">Page</target>
+      </trans-unit>
+      <trans-unit id="identifier">
+        <source>Identifier</source>
+        <target state="needs-translation">Identifier</target>
+      </trans-unit>
+      <trans-unit id="created">
+        <source>Created</source>
+        <target state="needs-translation">Created</target>
+      </trans-unit>
+      <trans-unit id="expires">
+        <source>Expires</source>
+        <target state="needs-translation">Expires</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
