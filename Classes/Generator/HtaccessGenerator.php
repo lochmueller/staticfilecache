@@ -1,7 +1,7 @@
 <?php
 
 /**
- * HtaccessGenerator
+ * HtaccessGenerator.
  */
 
 declare(strict_types=1);
@@ -17,18 +17,12 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * HtaccessGenerator
+ * HtaccessGenerator.
  */
 class HtaccessGenerator extends AbstractGenerator
 {
-
     /**
      * Generate file.
-     *
-     * @param string $entryIdentifier
-     * @param string $fileName
-     * @param ResponseInterface $response
-     * @param int $lifetime
      */
     public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
     {
@@ -72,9 +66,6 @@ class HtaccessGenerator extends AbstractGenerator
 
     /**
      * Remove file.
-     *
-     * @param string $entryIdentifier
-     * @param string $fileName
      */
     public function remove(string $entryIdentifier, string $fileName): void
     {
@@ -84,10 +75,7 @@ class HtaccessGenerator extends AbstractGenerator
     }
 
     /**
-     * Get reponse headers
-     *
-     * @param ResponseInterface $response
-     * @return array
+     * Get reponse headers.
      */
     protected function getReponseHeaders(ResponseInterface $response): array
     {
@@ -97,7 +85,7 @@ class HtaccessGenerator extends AbstractGenerator
         $headers = $response->getHeaders();
         $result = [];
         foreach ($headers as $name => $values) {
-            if (in_array($name, $validHeaders)) {
+            if (\in_array($name, $validHeaders, true)) {
                 $result[$name] = implode(', ', $values);
             }
         }
@@ -107,10 +95,6 @@ class HtaccessGenerator extends AbstractGenerator
 
     /**
      * Render template to file.
-     *
-     * @param string $templateName
-     * @param array  $variables
-     * @param string $htaccessFile
      */
     protected function renderTemplateToFile(string $templateName, array $variables, string $htaccessFile)
     {
@@ -118,20 +102,18 @@ class HtaccessGenerator extends AbstractGenerator
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
         $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateName));
         $renderer->assignMultiple($variables);
-        $content = \trim((string)$renderer->render());
+        $content = trim((string)$renderer->render());
         // Note: Create even empty htaccess files (do not check!!!), so the delete is in sync
         GeneralUtility::writeFile($htaccessFile, $content);
     }
 
     /**
      * Get the template name.
-     *
-     * @return string
      */
     protected function getTemplateName(): string
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $templateName = \trim((string)$configuration->get('htaccessTemplateName'));
+        $templateName = trim((string)$configuration->get('htaccessTemplateName'));
         if ('' === $templateName) {
             return 'EXT:staticfilecache/Resources/Private/Templates/Htaccess.html';
         }

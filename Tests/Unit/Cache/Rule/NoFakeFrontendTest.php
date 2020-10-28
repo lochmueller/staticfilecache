@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
  * @internal
  * @coversNothing
  */
-class NoFakeFrontendTest extends AbstractRuleTest
+final class NoFakeFrontendTest extends AbstractRuleTest
 {
     public function testCheckNoFakeFrontendController()
     {

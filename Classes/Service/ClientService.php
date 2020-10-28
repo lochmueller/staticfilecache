@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ClientService extends AbstractService
 {
-
     /**
      * @var \Psr\EventDispatcher\EventDispatcherInterface
      */
@@ -29,7 +28,6 @@ class ClientService extends AbstractService
 
     /**
      * PrepareMiddleware constructor.
-     * @param \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher
      */
     public function __construct(\Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher)
     {
@@ -38,15 +36,11 @@ class ClientService extends AbstractService
 
     /**
      * Run a single request with guzzle and return status code.
-     *
-     * @param string $url
-     *
-     * @return int
      */
     public function runSingleRequest(string $url): int
     {
         try {
-            $host = \parse_url($url, PHP_URL_HOST);
+            $host = parse_url($url, PHP_URL_HOST);
             if (false === $host) {
                 throw new \Exception('No host in cache_url', 1263782);
             }
@@ -64,11 +58,7 @@ class ClientService extends AbstractService
     /**
      * Get a cllable client.
      *
-     * @param string $domain
-     *
      * @throws \Exception
-     *
-     * @return Client
      */
     protected function getCallableClient(string $domain): Client
     {
@@ -93,7 +83,7 @@ class ClientService extends AbstractService
         // Core options
         $httpOptions = (array)$GLOBALS['TYPO3_CONF_VARS']['HTTP'];
         $httpOptions['verify'] = filter_var($httpOptions['verify'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? $httpOptions['verify'];
-        if (isset($httpOptions['handler']) && is_array($httpOptions['handler'])) {
+        if (isset($httpOptions['handler']) && \is_array($httpOptions['handler'])) {
             $stack = HandlerStack::create();
             foreach ($httpOptions['handler'] ?? [] as $handler) {
                 $stack->push($handler);

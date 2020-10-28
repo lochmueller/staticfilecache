@@ -20,15 +20,10 @@ class StaticCacheable extends AbstractRule
      *
      * Please keep this topic in mind: https://forge.typo3.org/issues/83212
      * EXT:form honeypot uses anonymous FE user, so the caching is disabled
-     *
-     *
-     * @param ServerRequestInterface $request
-     * @param array                        $explanation
-     * @param bool                         $skipProcessing
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
-        if (is_object($GLOBALS['TSFE']) && !$GLOBALS['TSFE']->isStaticCacheble()) {
+        if (\is_object($GLOBALS['TSFE']) && !$GLOBALS['TSFE']->isStaticCacheble()) {
             $explanation[__CLASS__] = 'The page is not static cacheable via TypoScriptFrontend. Check the first Question on: https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Faq/Index.rst';
         }
     }

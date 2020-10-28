@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PrepareMiddleware implements MiddlewareInterface
 {
-
     /**
      * @var \Psr\EventDispatcher\EventDispatcherInterface
      */
@@ -33,7 +32,6 @@ class PrepareMiddleware implements MiddlewareInterface
 
     /**
      * PrepareMiddleware constructor.
-     * @param \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher
      */
     public function __construct(\Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher)
     {
@@ -46,10 +44,6 @@ class PrepareMiddleware implements MiddlewareInterface
      * Processes an incoming server request in order to produce a response.
      * If unable to produce the response itself, it may delegate to the provided
      * request handler to do so.
-     *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -58,7 +52,7 @@ class PrepareMiddleware implements MiddlewareInterface
         $explanation = [];
         $skipProcessing = false;
         foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('CacheRule') as $rule) {
-            /** @var $rule AbstractRule */
+            // @var $rule AbstractRule
             $rule->checkRule($request, $explanation, $skipProcessing);
         }
 
@@ -69,7 +63,7 @@ class PrepareMiddleware implements MiddlewareInterface
             $cacheTags = GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getTags();
             $cocnfiguration = GeneralUtility::makeInstance(ConfigurationService::class);
             if (false === (bool)$cocnfiguration->get('clearCacheForAllDomains')) {
-                $cacheTags[] = 'sfc_domain_' . \str_replace('.', '_', $event->getRequest()->getUri()->getHost());
+                $cacheTags[] = 'sfc_domain_' . str_replace('.', '_', $event->getRequest()->getUri()->getHost());
             }
 
             if (empty($event->getExplanation())) {

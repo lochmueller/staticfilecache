@@ -17,8 +17,6 @@ class QueueRepository extends AbstractRepository
      * Find the entries for the worker.
      *
      * @param int $limit
-     *
-     * @return array
      */
     public function findOpen($limit = 999): array
     {
@@ -30,15 +28,14 @@ class QueueRepository extends AbstractRepository
             ->setMaxResults($limit)
             ->orderBy('cache_priority', 'desc')
             ->execute()
-            ->fetchAll();
+            ->fetchAll()
+        ;
     }
 
     /**
      * Find open by identnfier.
      *
      * @param string $identifier
-     *
-     * @return int
      */
     public function countOpenByIdentifier($identifier): int
     {
@@ -52,13 +49,12 @@ class QueueRepository extends AbstractRepository
             ->from($this->getTableName())
             ->where($where)
             ->execute()
-            ->rowCount();
+            ->rowCount()
+        ;
     }
 
     /**
      * Find old entries.
-     *
-     * @return array
      */
     public function findOld(): array
     {
@@ -68,13 +64,12 @@ class QueueRepository extends AbstractRepository
             ->from($this->getTableName())
             ->where($queryBuilder->expr()->gt('call_date', 0))
             ->execute()
-            ->fetchAll();
+            ->fetchAll()
+        ;
     }
 
     /**
      * Get the table name.
-     *
-     * @return string
      */
     protected function getTableName(): string
     {

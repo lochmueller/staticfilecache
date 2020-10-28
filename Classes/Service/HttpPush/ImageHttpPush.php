@@ -21,7 +21,7 @@ class ImageHttpPush extends AbstractHttpPush
     protected $imageExtensions = ['png', 'jpg', 'jpeg'];
 
     /**
-     * Last checked extension
+     * Last checked extension.
      *
      * @var string
      */
@@ -31,8 +31,6 @@ class ImageHttpPush extends AbstractHttpPush
      * Check if the class can handle the file extension.
      *
      * @param $fileExtension
-     *
-     * @return bool
      */
     public function canHandleExtension(string $fileExtension): bool
     {
@@ -40,23 +38,20 @@ class ImageHttpPush extends AbstractHttpPush
         if ($handle) {
             $this->lastExtension = $fileExtension;
         }
+
         return $handle;
     }
 
     /**
      * Get headers for the current file extension.
-     *
-     * @param string $content
-     *
-     * @return array
      */
     public function getHeaders(string $content): array
     {
-        if ($this->lastExtension === null) {
+        if (null === $this->lastExtension) {
             return [];
         }
 
-        \preg_match_all('/(?<=["\'])[^="\'\\\\]*\.(' . $this->lastExtension . ')\.*\d*\.*(?=["\'])/', $content, $imagesFiles);
+        preg_match_all('/(?<=["\'])[^="\'\\\\]*\.(' . $this->lastExtension . ')\.*\d*\.*(?=["\'])/', $content, $imagesFiles);
         $paths = $this->streamlineFilePaths((array)$imagesFiles[0]);
 
         return $this->mapPathsWithType($paths, 'image');

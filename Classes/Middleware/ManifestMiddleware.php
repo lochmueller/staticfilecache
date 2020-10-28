@@ -22,18 +22,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ManifestMiddleware implements MiddlewareInterface
 {
-
     /**
-     * Generate the manifest file content
-     *
-     * @param string $filename
-     * @param string $data
-     * @return string
+     * Generate the manifest file content.
      */
     public function generateManifestContent(string $filename, string &$data): string
     {
-        return ''; // @todo feel free to add parser for JS, CSS and IMAGE
-
+        return ''; /** @todo feel free to add parser for JS, CSS and IMAGE */
         $content = [
             'CAHCHE MANIFEST',
             '# Created at ' . date(\DateTime::COOKIE),
@@ -50,7 +44,7 @@ class ManifestMiddleware implements MiddlewareInterface
     }
 
     /**
-     * Frontend call of the appcache files
+     * Frontend call of the appcache files.
      */
     public function callEid()
     {

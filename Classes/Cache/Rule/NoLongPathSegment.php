@@ -17,22 +17,18 @@ class NoLongPathSegment extends AbstractRule
 {
     /**
      * Check if there is no path segment that is to long.
-     *
-     *
-     * @param ServerRequestInterface $request
-     * @param array $explanation
-     * @param bool $skipProcessing
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
         $uri = (string)$request->getUri();
-        $path = (string)\parse_url($uri, PHP_URL_PATH);
+        $path = (string)parse_url($uri, PHP_URL_PATH);
         $segments = explode('/', $path);
 
         foreach ($segments as $segment) {
-            if (strlen($segment) > 255) {
+            if (\strlen($segment) > 255) {
                 $explanation[__CLASS__] = 'The URI seegment of the URI is to long to create a folder based on tthis segment: ' . $segment;
                 $skipProcessing = true;
+
                 return;
             }
         }

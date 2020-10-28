@@ -19,7 +19,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class BoostQueueCommand extends AbstractCommand
 {
-
     /**
      * @var QueueRepository
      */
@@ -46,7 +45,8 @@ class BoostQueueCommand extends AbstractCommand
         $this->setDescription('Run (work on) the cache boost queue. Call this task every 5 minutes.')
             ->addOption('limit-items', null, InputOption::VALUE_REQUIRED, 'Limit the items that are crawled. 0 => all', 500)
             ->addOption('stop-processing-after', null, InputOption::VALUE_REQUIRED, 'Stop crawling new items after N seconds since scheduler task started. 0 => infinite', 240)
-            ->addOption('avoid-cleanup', null, InputOption::VALUE_NONE, 'Avoid the cleanup of the queue items');
+            ->addOption('avoid-cleanup', null, InputOption::VALUE_NONE, 'Avoid the cleanup of the queue items')
+        ;
     }
 
     /**
@@ -57,12 +57,9 @@ class BoostQueueCommand extends AbstractCommand
      * execute() method, you set the code to execute by passing
      * a Closure to the setCode() method.
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      *
      * @return int|null null or 0 if everything went fine, or an error code
-     *
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      *
      * @see setCode()
      */
@@ -70,7 +67,7 @@ class BoostQueueCommand extends AbstractCommand
     {
         $io = new SymfonyStyle($input, $output);
 
-        $startTime = \time();
+        $startTime = time();
         $stopProcessingAfter = (int)$input->getOption('stop-processing-after');
         $limit = (int)$input->getOption('limit-items');
         $limit = $limit > 0 ? $limit : 5000;
@@ -78,8 +75,9 @@ class BoostQueueCommand extends AbstractCommand
 
         $io->progressStart(\count($rows));
         foreach ($rows as $runEntry) {
-            if ($stopProcessingAfter > 0 && \time() >= $startTime + $stopProcessingAfter) {
+            if ($stopProcessingAfter > 0 && time() >= $startTime + $stopProcessingAfter) {
                 $io->note('Skip after "stopProcessingAfter" time.');
+
                 break;
             }
 
@@ -98,9 +96,7 @@ class BoostQueueCommand extends AbstractCommand
     }
 
     /**
-     * Cleanup queue
-     *
-     * @param SymfonyStyle $io
+     * Cleanup queue.
      */
     protected function cleanupQueue(SymfonyStyle $io)
     {

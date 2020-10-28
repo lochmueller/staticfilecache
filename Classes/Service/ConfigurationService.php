@@ -24,7 +24,7 @@ class ConfigurationService extends AbstractService
     protected $configuration = [];
 
     /**
-     * Overrides
+     * Overrides.
      *
      * @var array
      */
@@ -38,13 +38,13 @@ class ConfigurationService extends AbstractService
     public function __construct()
     {
         $extensionConfig = (array)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
-        if (!array_key_exists('validHtaccessHeaders', $extensionConfig)) {
+        if (!\array_key_exists('validHtaccessHeaders', $extensionConfig)) {
             throw new \Exception('It seams your extension configuration stored in the LocalConfiguration is old. Please save the configuration of the StaticFileCache extension in the extension manager or deployment process.');
         }
-        $this->configuration = \array_merge($this->configuration, $extensionConfig);
+        $this->configuration = array_merge($this->configuration, $extensionConfig);
 
         if (\is_object($GLOBALS['TSFE']) && isset($GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.']) && \is_array($GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.'])) {
-            $this->configuration = \array_merge(
+            $this->configuration = array_merge(
                 $this->configuration,
                 $GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.']
             );
@@ -53,15 +53,11 @@ class ConfigurationService extends AbstractService
 
     /**
      * Get the configuration for the given key.
-     *
-     * @param string $key
-     *
-     * @return string|null
      */
     public function get(string $key): ?string
     {
         $result = null;
-        if (array_key_exists($key, $this->overrides)) {
+        if (\array_key_exists($key, $this->overrides)) {
             $result = (string)$this->overrides[$key];
         } elseif (isset($this->configuration[$key])) {
             $result = (string)$this->configuration[$key];
@@ -74,9 +70,6 @@ class ConfigurationService extends AbstractService
 
     /**
      * Override a value in execution context.
-     *
-     * @param string $key
-     * @param string $value
      */
     public function override(string $key, string $value): void
     {
@@ -85,20 +78,16 @@ class ConfigurationService extends AbstractService
 
     /**
      * Remove the override if exists.
-     *
-     * @param string $key
      */
     public function reset(string $key): void
     {
-        if (array_key_exists($key, $this->overrides)) {
+        if (\array_key_exists($key, $this->overrides)) {
             unset($this->overrides[$key]);
         }
     }
 
     /**
      * Get the configuration.
-     *
-     * @return array
      */
     public function getAll(): array
     {
@@ -107,8 +96,6 @@ class ConfigurationService extends AbstractService
 
     /**
      * Get backend display mode.
-     *
-     * @return string
      */
     public function getBackendDisplayMode(): string
     {
@@ -123,10 +110,6 @@ class ConfigurationService extends AbstractService
 
     /**
      * Get the configuration as bool.
-     *
-     * @param string $key
-     *
-     * @return bool
      */
     public function isBool(string $key): bool
     {

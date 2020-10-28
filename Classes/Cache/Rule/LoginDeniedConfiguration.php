@@ -17,15 +17,10 @@ class LoginDeniedConfiguration extends AbstractRule
 {
     /**
      * Check LoginDeniedConfiguration.
-     *
-     *
-     * @param ServerRequestInterface $request
-     * @param array                        $explanation
-     * @param bool                         $skipProcessing
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
-        if (!is_object($GLOBALS['TSFE'])) {
+        if (!\is_object($GLOBALS['TSFE'])) {
             return;
         }
         $name = 'sendCacheHeaders_onlyWhenLoginDeniedInBranch';

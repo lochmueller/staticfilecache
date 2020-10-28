@@ -1,8 +1,9 @@
 <?php
 
 /**
- * NoCrawlerCall
+ * NoCrawlerCall.
  */
+
 namespace SFC\Staticfilecache\Cache\Rule;
 
 use Psr\Http\Message\ServerRequestInterface;

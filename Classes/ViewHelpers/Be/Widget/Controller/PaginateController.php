@@ -59,7 +59,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controll
     {
         if ($this->objects instanceof QueryResultInterface) {
             $currentRange = $offset + $itemsPerPage;
-            $endOfRange = \min($currentRange, \count($this->objects));
+            $endOfRange = min($currentRange, \count($this->objects));
             $query = $this->objects->getQuery();
             $query->setLimit($itemsPerPage);
             if ($offset > 0) {
@@ -75,7 +75,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controll
         if ($this->objects instanceof ObjectStorage) {
             $modifiedObjects = [];
             $objectArray = $this->objects->toArray();
-            $endOfRange = \min($offset + $itemsPerPage, \count($objectArray));
+            $endOfRange = min($offset + $itemsPerPage, \count($objectArray));
             for ($i = $offset; $i < $endOfRange; ++$i) {
                 $modifiedObjects[] = $objectArray[$i];
             }
@@ -85,6 +85,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controll
         if (\is_array($this->objects)) {
             return \array_slice($this->objects, $offset, $itemsPerPage);
         }
+
         throw new \InvalidArgumentException(
             'The view helper "' . static::class
             . '" accepts as argument "QueryResultInterface", "\SplObjectStorage", "ObjectStorage" or an array. '

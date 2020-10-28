@@ -24,8 +24,6 @@ class CacheService extends AbstractService
      * Get the StaticFileCache.
      *
      * @throws NoSuchCacheException
-     *
-     * @return VariableFrontend
      */
     public function get(): VariableFrontend
     {
@@ -34,8 +32,6 @@ class CacheService extends AbstractService
 
     /**
      * Get the cache manager.
-     *
-     * @return CacheManager
      */
     public function getManager(): CacheManager
     {
@@ -43,28 +39,25 @@ class CacheService extends AbstractService
     }
 
     /**
-     * Get absolute base directory incl. ending slash
-     *
-     * @return string
+     * Get absolute base directory incl. ending slash.
      */
     public function getAbsoluteBaseDirectory(): string
     {
         $relativeDirectory = 'typo3temp/tx_staticfilecache/';
         $overrideDirectory = trim((string)GeneralUtility::makeInstance(ConfigurationService::class)->get('overrideCacheDirectory'));
-        if ($overrideDirectory !== '') {
+        if ('' !== $overrideDirectory) {
             $relativeDirectory = rtrim($overrideDirectory, '/') . '/';
         }
 
         $absolutePath = Environment::getPublicPath() . '/' . $relativeDirectory;
+
         return GeneralUtility::resolveBackPath($absolutePath);
     }
 
     /**
-     * Flush the cache
+     * Flush the cache.
      *
-     * @param bool $includeBoostQueue
      * @throws NoSuchCacheException
-     *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException
      */
     public function flush(bool $includeBoostQueue = false)

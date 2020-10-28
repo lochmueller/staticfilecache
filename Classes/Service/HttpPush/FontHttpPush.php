@@ -17,8 +17,6 @@ class FontHttpPush extends AbstractHttpPush
      * Check if the class can handle the file extension.
      *
      * @param $fileExtension
-     *
-     * @return bool
      */
     public function canHandleExtension(string $fileExtension): bool
     {
@@ -27,14 +25,10 @@ class FontHttpPush extends AbstractHttpPush
 
     /**
      * Get headers for the current file extension.
-     *
-     * @param string $content
-     *
-     * @return array
      */
     public function getHeaders(string $content): array
     {
-        \preg_match_all('/(?<=["\'])[^="\']*\.woff2?\.*\d*\.*(?:gzi?p?)*(?=["\'])/', $content, $fontFiles);
+        preg_match_all('/(?<=["\'])[^="\']*\.woff2?\.*\d*\.*(?:gzi?p?)*(?=["\'])/', $content, $fontFiles);
         $paths = $this->streamlineFilePaths((array)$fontFiles[0]);
 
         return $this->mapPathsWithType($paths, 'font');

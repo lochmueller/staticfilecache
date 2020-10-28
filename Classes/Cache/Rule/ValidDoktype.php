@@ -17,17 +17,13 @@ class ValidDoktype extends AbstractRule
 {
     /**
      * Check if the URI is valid.
-     *
-     *
-     * @param ServerRequestInterface $request
-     * @param array                        $explanation
-     * @param bool                         $skipProcessing
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
         if (!isset($GLOBALS['TSFE']->page)) {
             $explanation[__CLASS__] = 'There is no valid page in the frontendController object';
             $skipProcessing = true;
+
             return;
         }
 
@@ -39,7 +35,7 @@ class ValidDoktype extends AbstractRule
 
         $currentType = (int)($GLOBALS['TSFE']->page['doktype'] ?? 1);
         if (\in_array($currentType, $ignoreTypes, true)) {
-            $explanation[__CLASS__] = 'The Page doktype ' . $currentType . ' is one of the following not allowed numbers: ' . \implode(
+            $explanation[__CLASS__] = 'The Page doktype ' . $currentType . ' is one of the following not allowed numbers: ' . implode(
                 ', ',
                 $ignoreTypes
             );

@@ -16,13 +16,8 @@ use SFC\Staticfilecache\StaticFileCacheObject;
  */
 abstract class AbstractRule extends StaticFileCacheObject
 {
-
     /**
      * Method to check the rule and modify $explanation and/or $skipProcessing.
-     *
-     * @param ServerRequestInterface $request
-     * @param array                  $explanation
-     * @param bool                   $skipProcessing
      */
     abstract public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void;
 }

@@ -15,9 +15,6 @@ use SFC\Staticfilecache\Tests\Unit\AbstractTest;
  */
 abstract class AbstractHttpPushTest extends AbstractTest
 {
-    /**
-     * @return string
-     */
     protected function getExampleContent(): string
     {
         return '<!doctype html>

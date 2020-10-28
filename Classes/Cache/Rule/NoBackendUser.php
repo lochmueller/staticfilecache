@@ -20,10 +20,6 @@ class NoBackendUser extends AbstractRule
     /**
      * No active BE user.
      *
-     *
-     * @param ServerRequestInterface $request
-     * @param array $explanation
-     * @param bool $skipProcessing
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void

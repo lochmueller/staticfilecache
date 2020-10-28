@@ -16,7 +16,7 @@ use SFC\Staticfilecache\Service\HttpPush\ImageHttpPush;
  * @internal
  * @coversNothing
  */
-class ImageHttpPushTest extends AbstractHttpPushTest
+final class ImageHttpPushTest extends AbstractHttpPushTest
 {
     /**
      * Test get valid headers.
@@ -34,7 +34,7 @@ class ImageHttpPushTest extends AbstractHttpPushTest
             ],
         ];
 
-        self::assertEquals($exepected, $headers, 'Wrong header result from service');
+        self::assertSame($exepected, $headers, 'Wrong header result from service');
         self::assertCount(1, $headers);
     }
 }

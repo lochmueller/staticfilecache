@@ -18,10 +18,6 @@ class HttpPushService extends AbstractService
 {
     /**
      * Get http push headers.
-     *
-     * @param string $content
-     *
-     * @return array
      */
     public function getHttpPushHeaders(string $content): array
     {
@@ -34,11 +30,11 @@ class HttpPushService extends AbstractService
             $extensions = GeneralUtility::trimExplode(',', (string)$configurationService->get('sendHttp2PushFileExtensions'), true);
 
             $limitToAreaMatches = [];
-            if ($limitToArea === 'head') {
-                \preg_match_all('/<head[^>]*>.*<\/head>/s', $content, $limitToAreaMatches);
+            if ('head' === $limitToArea) {
+                preg_match_all('/<head[^>]*>.*<\/head>/s', $content, $limitToAreaMatches);
                 $content = (string)$limitToAreaMatches[0][0];
-            } elseif ($limitToArea === 'body') {
-                \preg_match_all('/<body[^>]*>.*<\/body>/s', $content, $limitToAreaMatches);
+            } elseif ('body' === $limitToArea) {
+                preg_match_all('/<body[^>]*>.*<\/body>/s', $content, $limitToAreaMatches);
                 $content = (string)$limitToAreaMatches[0][0];
             }
 
@@ -46,7 +42,7 @@ class HttpPushService extends AbstractService
                 foreach ($extensions as $extension) {
                     /** @var AbstractHttpPush $handler */
                     if ($handler->canHandleExtension($extension)) {
-                        $headers = \array_merge($headers, $handler->getHeaders($content));
+                        $headers = array_merge($headers, $handler->getHeaders($content));
                     }
                 }
             }

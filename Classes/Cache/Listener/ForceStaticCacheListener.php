@@ -18,7 +18,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class ForceStaticCacheListener
 {
-
     /**
      * @var \Psr\EventDispatcher\EventDispatcherInterface
      */
@@ -26,7 +25,6 @@ class ForceStaticCacheListener
 
     /**
      * PrepareMiddleware constructor.
-     * @param \Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher
      */
     public function __construct(\Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher)
     {
@@ -51,14 +49,10 @@ class ForceStaticCacheListener
 
     /**
      * Is force cache URI?
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return bool
      */
     protected function isForceCacheUri(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request): bool
     {
-        if (!is_object($frontendController)) {
+        if (!\is_object($frontendController)) {
             return false;
         }
 

@@ -58,26 +58,8 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
     }
 
     /**
-     * Get the real life time.
+     * Change the template to allow longer idenitifiers.
      *
-     * @param int $lifetime
-     *
-     * @return int
-     */
-    protected function getRealLifetime($lifetime): int
-    {
-        if (null === $lifetime) {
-            $lifetime = $this->defaultLifetime;
-        }
-        if (0 === $lifetime || $lifetime > $this->maximumLifetime) {
-            $lifetime = $this->maximumLifetime;
-        }
-
-        return (int)$lifetime;
-    }
-
-    /**
-     * Change the template to allow longer idenitifiers
      * @return string
      */
     public function getTableDefinitions()
@@ -92,6 +74,24 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
             'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendTags.sql'
         );
         $requiredTableStructures .= str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql) . LF;
+
         return $requiredTableStructures;
+    }
+
+    /**
+     * Get the real life time.
+     *
+     * @param int $lifetime
+     */
+    protected function getRealLifetime($lifetime): int
+    {
+        if (null === $lifetime) {
+            $lifetime = $this->defaultLifetime;
+        }
+        if (0 === $lifetime || $lifetime > $this->maximumLifetime) {
+            $lifetime = $this->maximumLifetime;
+        }
+
+        return (int)$lifetime;
     }
 }

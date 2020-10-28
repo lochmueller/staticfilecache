@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ObjectFactoryService
+ * ObjectFactoryService.
  */
 
 declare(strict_types=1);
@@ -11,15 +11,12 @@ namespace SFC\Staticfilecache\Service;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * ObjectFactoryService
+ * ObjectFactoryService.
  */
 class ObjectFactoryService extends AbstractService
 {
     /**
      * Get the objects for the given category.
-     *
-     * @param string $category
-     * @return \Generator
      */
     public function get(string $category): \Generator
     {
@@ -30,9 +27,6 @@ class ObjectFactoryService extends AbstractService
 
     /**
      * Set the given classnames in the category.
-     *
-     * @param string $category
-     * @param array $classNames
      */
     public function set(string $category, array $classNames)
     {

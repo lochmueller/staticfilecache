@@ -18,11 +18,6 @@ class SiteCacheable extends AbstractRule
 {
     /**
      * Check if the current site is static cacheable.
-     *
-     *
-     * @param ServerRequestInterface $request
-     * @param array                        $explanation
-     * @param bool                         $skipProcessing
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {

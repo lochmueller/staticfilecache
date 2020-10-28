@@ -34,9 +34,6 @@ trait CacheTrait
     /**
      * Cache run time.
      *
-     * @param string   $entryIdentifier
-     * @param callable $callback
-     *
      * @return mixed
      */
     protected function cacheRunTime(string $entryIdentifier, callable $callback)
@@ -47,10 +44,7 @@ trait CacheTrait
     /**
      * Cache long time.
      *
-     * @param string   $entryIdentifier
-     * @param callable $callback
-     * @param int      $lifetime        Default 60 Minutes (3.600 seconds)
-     * @param array    $tags
+     * @param int $lifetime Default 60 Minutes (3.600 seconds)
      *
      * @return mixed
      */
@@ -62,9 +56,7 @@ trait CacheTrait
     /**
      * Cache remote file time.
      *
-     * @param string $entryIdentifier
-     * @param int    $lifetime        Default 60 Minutes (3.600 seconds)
-     * @param array  $tags
+     * @param int $lifetime Default 60 Minutes (3.600 seconds)
      *
      * @return mixed
      */
@@ -84,12 +76,6 @@ trait CacheTrait
 
     /**
      * Cache via Trait logic.
-     *
-     * @param string   $entryIdentifier
-     * @param callable $callback
-     * @param string   $cacheIdentifier
-     * @param int      $lifetime
-     * @param array    $tags
      *
      * @return mixed
      */

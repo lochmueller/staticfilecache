@@ -38,10 +38,6 @@ class GenerateMiddleware implements MiddlewareInterface
      * Processes an incoming server request in order to produce a response.
      * If unable to produce the response itself, it may delegate to the provided
      * request handler to do so.
-     *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -51,7 +47,7 @@ class GenerateMiddleware implements MiddlewareInterface
             return $this->removeSfcHeaders($response);
         }
 
-        if ($response->getStatusCode() !== 200) {
+        if (200 !== $response->getStatusCode()) {
             return $this->removeSfcHeaders($response);
         }
 
@@ -65,6 +61,7 @@ class GenerateMiddleware implements MiddlewareInterface
         if (!$response->hasHeader('X-SFC-Explanation')) {
             if ($this->hasValidCacheEntry($uri) && !isset($_COOKIE[CookieService::FE_COOKIE_NAME])) {
                 $response = $response->withHeader('X-SFC-State', 'TYPO3 - already in cache');
+
                 return $this->removeSfcHeaders($response);
             }
             $lifetime = $this->calculateLifetime($GLOBALS['TSFE']);
@@ -80,10 +77,7 @@ class GenerateMiddleware implements MiddlewareInterface
     }
 
     /**
-     * Calculate timeout
-     *
-     * @param TypoScriptFrontendController $tsfe
-     * @return int
+     * Calculate timeout.
      */
     protected function calculateLifetime(TypoScriptFrontendController $tsfe): int
     {
@@ -100,6 +94,7 @@ class GenerateMiddleware implements MiddlewareInterface
                 $timeOutTime = $endtimeLifetime;
             }
         }
+
         return (int)$timeOutTime;
     }
 
@@ -120,10 +115,7 @@ class GenerateMiddleware implements MiddlewareInterface
     }
 
     /**
-     * Remove all Sfc headers
-     *
-     * @param ResponseInterface $response
-     * @return ResponseInterface
+     * Remove all Sfc headers.
      */
     protected function removeSfcHeaders(ResponseInterface $response): ResponseInterface
     {

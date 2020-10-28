@@ -25,7 +25,8 @@ class FlushCacheCommand extends AbstractCommand
     {
         parent::configure();
         $this->setDescription('Flush the cache. If the boost mode is active, all pages are added to the queue (you have to run the BoostQueueRun Command to recrawl the pages). If you use the force-boost-mode-flush argument, you directly drop the cache even the page is in Boostmode.')
-            ->addOption('force-boost-mode-flush', null, InputOption::VALUE_NONE, 'Force a boost mode flush');
+            ->addOption('force-boost-mode-flush', null, InputOption::VALUE_NONE, 'Force a boost mode flush')
+        ;
     }
 
     /**
@@ -35,9 +36,6 @@ class FlushCacheCommand extends AbstractCommand
      * as a concrete class. In this case, instead of defining the
      * execute() method, you set the code to execute by passing
      * a Closure to the setCode() method.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException

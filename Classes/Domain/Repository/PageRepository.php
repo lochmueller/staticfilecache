@@ -18,8 +18,6 @@ class PageRepository extends AbstractRepository
      *
      * @param int    $pageId
      * @param string $displayMode
-     *
-     * @return array
      */
     public function findForBackend($pageId, $displayMode): array
     {
@@ -29,13 +27,16 @@ class PageRepository extends AbstractRepository
         switch ($displayMode) {
             case 'current':
                 $where[] = $queryBuilder->expr()->eq('uid', $pageId);
+
                 break;
             case 'childs':
                 $where[] = $queryBuilder->expr()->eq('pid', $pageId);
+
                 break;
             case 'both':
                 $where[] = $queryBuilder->expr()->eq('uid', $pageId);
                 $where[] = $queryBuilder->expr()->eq('pid', $pageId);
+
                 break;
         }
 
@@ -43,13 +44,12 @@ class PageRepository extends AbstractRepository
             ->from('pages')
             ->orWhere(...$where)
             ->execute()
-            ->fetchAll();
+            ->fetchAll()
+        ;
     }
 
     /**
      * Get the table name.
-     *
-     * @return string
      */
     protected function getTableName(): string
     {

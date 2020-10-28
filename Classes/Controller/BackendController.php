@@ -27,7 +27,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class BackendController extends ActionController
 {
-
     /**
      * @var QueueService
      */
@@ -35,7 +34,6 @@ class BackendController extends ActionController
 
     /**
      * BackendController constructor.
-     * @param QueueService $queueService
      */
     public function __construct(QueueService $queueService)
     {
@@ -44,8 +42,6 @@ class BackendController extends ActionController
 
     /**
      * MAIN function for static publishing information.
-     *
-     * @param string $filter
      */
     public function listAction(string $filter = ''): void
     {
@@ -69,6 +65,7 @@ class BackendController extends ActionController
         $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
         if ($run) {
             $items = $queueRepository->findOpen(10);
+
             try {
                 foreach ($items as $item) {
                     $this->queueService->runSingleRequest($item);
@@ -102,11 +99,7 @@ class BackendController extends ActionController
     }
 
     /**
-     * Set filter
-     *
-     * @param string $filter
-     *
-     * @return string
+     * Set filter.
      */
     protected function setFilter(string $filter): string
     {
@@ -125,9 +118,7 @@ class BackendController extends ActionController
     }
 
     /**
-     * Get backend user
-     *
-     * @return BackendUserAuthentication
+     * Get backend user.
      */
     protected function getBackendUser(): BackendUserAuthentication
     {
@@ -136,13 +127,11 @@ class BackendController extends ActionController
 
     /**
      * Get cache pages entries.
-     *
-     * @param string $filter
-     * @return array
      */
     protected function getCachePagesEntries(string $filter): array
     {
         $rows = [];
+
         try {
             $cache = GeneralUtility::makeInstance(CacheService::class)->get();
         } catch (\Exception $exception) {
@@ -164,7 +153,7 @@ class BackendController extends ActionController
                         $row,
                         true
                     ),
-                    'cached' => !is_array($info['explanation']) || empty($info['explanation']),
+                    'cached' => !\is_array($info['explanation']) || empty($info['explanation']),
                     'identifier' => $identifier,
                     'info' => $info,
                 ];
@@ -172,17 +161,16 @@ class BackendController extends ActionController
         }
 
         return array_filter($rows, function ($row) use ($filter) {
-            if ($filter === 'all') {
+            if ('all' === $filter) {
                 return true;
             }
+
             return ('cached' === $filter && $row['cached']) || ('notCached' === $filter && !$row['cached']);
         });
     }
 
     /**
      * Get display mode.
-     *
-     * @return string
      */
     protected function getDisplayMode(): string
     {
@@ -193,8 +181,6 @@ class BackendController extends ActionController
 
     /**
      * Get the current UID.
-     *
-     * @return int
      */
     protected function getCurrentUid(): int
     {

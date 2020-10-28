@@ -31,14 +31,13 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class StaticFileBackend extends StaticDatabaseBackend implements TransientBackendInterface
 {
-
     /**
      * Saves data in the cache.
      *
-     * @param string $entryIdentifier An identifier for this specific cache entry
+     * @param string            $entryIdentifier An identifier for this specific cache entry
      * @param ResponseInterface $data            The data to be stored
-     * @param array  $tags            Tags to associate with this cache entry
-     * @param int    $lifetime        Lifetime of this cache entry in seconds
+     * @param array             $tags            Tags to associate with this cache entry
+     * @param int               $lifetime        Lifetime of this cache entry in seconds
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception                      if no cache frontend has been set
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the data is not a string
@@ -56,8 +55,9 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
             $databaseData['explanation'] = $data->getHeader('X-SFC-Explanation');
             if (!parent::has($entryIdentifier)) {
                 // Add only the details if there is no valid cache entry
-                parent::set($entryIdentifier, \serialize($databaseData), $tags, $realLifetime);
+                parent::set($entryIdentifier, serialize($databaseData), $tags, $realLifetime);
             }
+
             return;
         }
 
@@ -67,13 +67,13 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         try {
             // Create dir
             $cacheDir = (string)PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
-            if (!\is_dir($cacheDir)) {
+            if (!is_dir($cacheDir)) {
                 GeneralUtility::mkdir_deep($cacheDir);
             }
 
             // call set in front of the generation, because the set method
             // of the DB backend also call remove (this remove do not remove the folder already created above)
-            parent::set($entryIdentifier, \serialize($databaseData), $tags, $realLifetime);
+            parent::set($entryIdentifier, serialize($databaseData), $tags, $realLifetime);
 
             $this->removeStaticFiles($entryIdentifier);
 
@@ -81,26 +81,6 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         } catch (\Exception $exception) {
             $this->logger->error('Error in cache create process', ['exception' => $exception]);
         }
-    }
-
-    /**
-     * Get prority
-     *
-     * @param string $uri
-     * @return int
-     */
-    protected function getPriority(string $uri)
-    {
-        $priority = 0;
-        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        if ($configuration->isBool('useReverseUriLengthInPriority')) {
-            $priority += (QueueService::PRIORITY_MEDIUM - strlen($uri));
-        }
-
-        if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-            $priority += (int)$GLOBALS['TSFE']->page['tx_staticfilecache_cache_priority'];
-        }
-        return $priority;
     }
 
     /**
@@ -120,7 +100,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
             return false;
         }
 
-        return \unserialize($result);
+        return unserialize($result);
     }
 
     /**
@@ -132,7 +112,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     public function has($entryIdentifier)
     {
-        return \is_file($this->getFilepath($entryIdentifier)) || parent::has($entryIdentifier);
+        return is_file($this->getFilepath($entryIdentifier)) || parent::has($entryIdentifier);
     }
 
     /**
@@ -154,7 +134,8 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
         if ($this->isBoostMode()) {
             $this->getQueue()
-                ->addIdentifier($entryIdentifier);
+                ->addIdentifier($entryIdentifier)
+            ;
 
             return true;
         }
@@ -174,7 +155,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     public function flush()
     {
         if (false === (bool)$this->configuration->get('clearCacheForAllDomains')) {
-            $this->flushByTag('sfc_domain_' . \str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
+            $this->flushByTag('sfc_domain_' . str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
 
             return;
         }
@@ -213,13 +194,13 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
         $identifiers = [];
         foreach ($tags as $tag) {
-            $identifiers = \array_merge($identifiers, $this->findIdentifiersByTagIncludingExpired($tag));
+            $identifiers = array_merge($identifiers, $this->findIdentifiersByTagIncludingExpired($tag));
         }
 
         if ($this->isBoostMode()) {
             $priority = QueueService::PRIORITY_LOW;
 
-            if (count($tags) === 1 && StringUtility::beginsWith($tags[0], 'pageId_')) {
+            if (1 === \count($tags) && StringUtility::beginsWith($tags[0], 'pageId_')) {
                 $priority = QueueService::PRIORITY_HIGH;
             }
 
@@ -280,11 +261,29 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     }
 
     /**
+     * Get prority.
+     *
+     * @return int
+     */
+    protected function getPriority(string $uri)
+    {
+        $priority = 0;
+        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+        if ($configuration->isBool('useReverseUriLengthInPriority')) {
+            $priority += (QueueService::PRIORITY_MEDIUM - \strlen($uri));
+        }
+
+        if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+            $priority += (int)$GLOBALS['TSFE']->page['tx_staticfilecache_cache_priority'];
+        }
+
+        return $priority;
+    }
+
+    /**
      * Get the cache folder for the given entry.
      *
      * @param $entryIdentifier
-     *
-     * @return string
      */
     protected function getFilepath(string $entryIdentifier): string
     {
@@ -294,10 +293,12 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
                 return '';
             }
             $entry = unserialize($data);
+
             return $entry['url'];
         }
 
         $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
+
         return $identifierBuilder->getFilepath($entryIdentifier);
     }
 
@@ -305,8 +306,6 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      * Call findIdentifiersByTag but ignore the expires check.
      *
      * @param string $tag
-     *
-     * @return array
      */
     protected function findIdentifiersByTagIncludingExpired($tag): array
     {
@@ -321,21 +320,18 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     /**
      * Remove the static files of the given identifier.
      *
-     * @param string $entryIdentifier
-     *
      * @return bool success if the files are deleted
      */
     protected function removeStaticFiles(string $entryIdentifier): bool
     {
         $fileName = $this->getFilepath($entryIdentifier);
         GeneralUtility::makeInstance(GeneratorService::class)->remove($entryIdentifier, $fileName);
+
         return true;
     }
 
     /**
      * Get queue manager.
-     *
-     * @return QueueService
      */
     protected function getQueue(): QueueService
     {
@@ -344,8 +340,6 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
     /**
      * Check if boost mode is active (worker runs without boost mode).
-     *
-     * @return bool
      */
     protected function isBoostMode(): bool
     {
@@ -354,8 +348,6 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
     /**
      * Check if the "hashUriInCache" feature is enabled.
-     *
-     * @return bool
      */
     protected function isHashedIdentifier(): bool
     {

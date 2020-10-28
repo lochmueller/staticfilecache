@@ -17,17 +17,12 @@ class NoIntScripts extends AbstractRule
 {
     /**
      * Check if there are no _INT scripts.
-     *
-     *
-     * @param ServerRequestInterface $request
-     * @param array                        $explanation
-     * @param bool                         $skipProcessing
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
-        if (is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->isINTincScript()) {
+        if (\is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->isINTincScript()) {
             foreach ((array)$GLOBALS['TSFE']->config['INTincScript'] as $key => $configuration) {
-                $explanation[__CLASS__ . ':' . $key] = 'The page has a INTincScript: ' . \implode(', ', $this->getInformation($configuration));
+                $explanation[__CLASS__ . ':' . $key] = 'The page has a INTincScript: ' . implode(', ', $this->getInformation($configuration));
             }
         }
     }
@@ -36,8 +31,6 @@ class NoIntScripts extends AbstractRule
      * Get the debug information.
      *
      * @param array $configuration
-     *
-     * @return array
      */
     protected function getInformation($configuration): array
     {

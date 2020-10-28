@@ -22,36 +22,41 @@ class RemoveService extends AbstractService
     protected $removeDirs = [];
 
     /**
+     * Finally remove the dirs.
+     */
+    public function __destruct()
+    {
+        foreach ($this->removeDirs as $removeDir) {
+            GeneralUtility::rmdir($removeDir, true);
+        }
+        $this->removeDirs = [];
+    }
+
+    /**
      * Remove the given file. If the file do not exists, the function return true.
-     *
-     * @param string $absoulteFileName
-     *
-     * @return bool
      */
     public function file(string $absoulteFileName): bool
     {
-        if (!\is_file($absoulteFileName)) {
+        if (!is_file($absoulteFileName)) {
             return true;
         }
 
-        return (bool)\unlink($absoulteFileName);
+        return (bool)unlink($absoulteFileName);
     }
 
     /**
      * Add the subdirecotries of thee given folder to the remove function.
      *
-     * @param string $absoluteDirName
-     *
      * @return RemoveService
      */
     public function subdirectories(string $absoluteDirName): self
     {
-        if (!\is_dir($absoluteDirName)) {
+        if (!is_dir($absoluteDirName)) {
             return $this;
         }
 
         foreach (new \DirectoryIterator($absoluteDirName) as $item) {
-            /** @var $item \DirectoryIterator */
+            /** @var \DirectoryIterator $item */
             if ($item->isDir() && !$item->isDot()) {
                 $this->directory($item->getPathname() . '/');
             }
@@ -64,29 +69,16 @@ class RemoveService extends AbstractService
      * Rename the dir and mark them as "to remove".
      * Speed up the remove process.
      *
-     * @param string $absoluteDirName
-     *
      * @return RemoveService
      */
     public function directory(string $absoluteDirName): self
     {
-        if (\is_dir($absoluteDirName)) {
-            $tempAbsoluteDir = \rtrim($absoluteDirName, '/') . '_' . GeneralUtility::milliseconds() . '/';
-            \rename($absoluteDirName, $tempAbsoluteDir);
+        if (is_dir($absoluteDirName)) {
+            $tempAbsoluteDir = rtrim($absoluteDirName, '/') . '_' . GeneralUtility::milliseconds() . '/';
+            rename($absoluteDirName, $tempAbsoluteDir);
             $this->removeDirs[] = $tempAbsoluteDir;
         }
 
         return $this;
-    }
-
-    /**
-     * Finally remove the dirs.
-     */
-    public function __destruct()
-    {
-        foreach ($this->removeDirs as $removeDir) {
-            GeneralUtility::rmdir($removeDir, true);
-        }
-        $this->removeDirs = [];
     }
 }

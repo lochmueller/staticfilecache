@@ -4,7 +4,6 @@ namespace SFC\Staticfilecache\Event;
 
 class BuildClientEvent
 {
-
     /**
      * @var array
      */

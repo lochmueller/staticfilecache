@@ -16,7 +16,7 @@ use SFC\Staticfilecache\Service\HttpPush\StyleHttpPush;
  * @internal
  * @coversNothing
  */
-class StyleHttpPushTest extends AbstractHttpPushTest
+final class StyleHttpPushTest extends AbstractHttpPushTest
 {
     /**
      * Test get valid headers.
@@ -37,7 +37,7 @@ class StyleHttpPushTest extends AbstractHttpPushTest
             ],
         ];
 
-        self::assertEquals($exepected, $headers, 'Wrong header result from service');
+        self::assertSame($exepected, $headers, 'Wrong header result from service');
         self::assertCount(2, $headers);
     }
 }

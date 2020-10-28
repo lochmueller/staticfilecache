@@ -19,8 +19,6 @@ class CacheRepository extends AbstractRepository
 {
     /**
      * Get the expired cache identifiers.
-     *
-     * @return array
      */
     public function findExpiredIdentifiers(): array
     {
@@ -33,7 +31,8 @@ class CacheRepository extends AbstractRepository
             ))
             ->groupBy('identifier')
             ->execute()
-            ->fetchAll();
+            ->fetchAll()
+        ;
 
         $cacheIdentifiers = [];
         foreach ($rows as $row) {
@@ -45,8 +44,6 @@ class CacheRepository extends AbstractRepository
 
     /**
      * Get all the cache identifiers.
-     *
-     * @return array
      */
     public function findAllIdentifiers(): array
     {
@@ -55,7 +52,8 @@ class CacheRepository extends AbstractRepository
             ->from($this->getTableName())
             ->groupBy('identifier')
             ->execute()
-            ->fetchAll();
+            ->fetchAll()
+        ;
 
         $cacheIdentifiers = [];
         foreach ($rows as $row) {
@@ -67,8 +65,6 @@ class CacheRepository extends AbstractRepository
 
     /**
      * Get the table name.
-     *
-     * @return string
      */
     protected function getTableName(): string
     {

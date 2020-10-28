@@ -18,10 +18,10 @@ use TYPO3\CMS\Core\Cache\Backend\NullBackend;
  * @internal
  * @coversNothing
  */
-class UriFrontendTest extends AbstractTest
+final class UriFrontendTest extends AbstractTest
 {
     /**
-     * Test a valid path
+     * Test a valid path.
      */
     public function testCheckValidPath()
     {
@@ -39,7 +39,7 @@ class UriFrontendTest extends AbstractTest
     }
 
     /**
-     * Test check invalid path
+     * Test check invalid path.
      */
     public function testCheckInValidPath()
     {

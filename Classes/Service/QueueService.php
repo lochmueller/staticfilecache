@@ -46,10 +46,6 @@ class QueueService extends AbstractService
 
     /**
      * QueueService constructor.
-     * @param QueueRepository $queueRepository
-     * @param ConfigurationService $configurationService
-     * @param ClientService $clientService
-     * @param CacheService $cacheService
      */
     public function __construct(QueueRepository $queueRepository, ConfigurationService $configurationService, ClientService $clientService, CacheService $cacheService)
     {
@@ -61,11 +57,8 @@ class QueueService extends AbstractService
 
     /**
      * Add identifiers to Queue.
-     *
-     * @param array $identifiers
-     * @param int $overridePriority
      */
-    public function addIdentifiers(array $identifiers, int $overridePriority = QueueService::PRIORITY_LOW): void
+    public function addIdentifiers(array $identifiers, int $overridePriority = self::PRIORITY_LOW): void
     {
         foreach ($identifiers as $identifier) {
             $this->addIdentifier($identifier, $overridePriority);
@@ -74,11 +67,8 @@ class QueueService extends AbstractService
 
     /**
      * Add identifier to Queue.
-     *
-     * @param string $identifier
-     * @param int $overridePriority
      */
-    public function addIdentifier(string $identifier, int $overridePriority = QueueService::PRIORITY_LOW): void
+    public function addIdentifier(string $identifier, int $overridePriority = self::PRIORITY_LOW): void
     {
         $count = $this->queueRepository->countOpenByIdentifier($identifier);
         if ($count > 0) {
@@ -90,7 +80,8 @@ class QueueService extends AbstractService
         if ($overridePriority) {
             $priority = $overridePriority;
         } else {
-            $priority = QueueService::PRIORITY_LOW;
+            $priority = self::PRIORITY_LOW;
+
             try {
                 $cache = $this->cacheService->get();
                 $infos = $cache->get($identifier);
@@ -104,7 +95,7 @@ class QueueService extends AbstractService
         $data = [
             'cache_url' => $identifier,
             'page_uid' => 0,
-            'invalid_date' => \time(),
+            'invalid_date' => time(),
             'call_result' => '',
             'cache_priority' => $priority,
         ];
@@ -114,8 +105,6 @@ class QueueService extends AbstractService
 
     /**
      * Run a single request with guzzle.
-     *
-     * @param array $runEntry
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
@@ -133,7 +122,7 @@ class QueueService extends AbstractService
         $statusCode = $this->clientService->runSingleRequest($runEntry['cache_url']);
 
         $data = [
-            'call_date' => \time(),
+            'call_date' => time(),
             'call_result' => $statusCode,
         ];
 

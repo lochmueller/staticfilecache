@@ -1,7 +1,7 @@
 <?php
 
 /**
- * FallbackMiddleware
+ * FallbackMiddleware.
  */
 
 declare(strict_types=1);
@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * FallbackMiddleware
+ * FallbackMiddleware.
  */
 class FallbackMiddleware implements MiddlewareInterface
 {
@@ -43,11 +43,7 @@ class FallbackMiddleware implements MiddlewareInterface
     }
 
     /**
-     * Process the fallback middleware
-     *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
+     * Process the fallback middleware.
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -58,14 +54,13 @@ class FallbackMiddleware implements MiddlewareInterface
         } catch (\Exception $exception) {
             // Not handled
         }
+
         return $handler->handle($request);
     }
 
     /**
-     * Handle the fallback
+     * Handle the fallback.
      *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      * @throws \Exception
      */
     protected function handleViaFallback(ServerRequestInterface $request): ResponseInterface
@@ -79,7 +74,7 @@ class FallbackMiddleware implements MiddlewareInterface
 
         $uri = $request->getUri();
 
-        if (isset($_COOKIE[CookieService::FE_COOKIE_NAME]) && $_COOKIE[CookieService::FE_COOKIE_NAME] === 'typo_user_logged_in') {
+        if (isset($_COOKIE[CookieService::FE_COOKIE_NAME]) && 'typo_user_logged_in' === $_COOKIE[CookieService::FE_COOKIE_NAME]) {
             throw new \Exception('StaticFileCache Cookie is set', 12738912);
         }
 
@@ -92,7 +87,7 @@ class FallbackMiddleware implements MiddlewareInterface
         }
 
         $cacheDirectory = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory();
-        if (strpos($possibleStaticFile, $cacheDirectory) !== 0) {
+        if (0 !== strpos($possibleStaticFile, $cacheDirectory)) {
             throw new \Exception('The path is not in the cache directory', 348923472);
         }
 
@@ -100,8 +95,6 @@ class FallbackMiddleware implements MiddlewareInterface
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @param string $possibleStaticFile
      * @return array
      */
     protected function getHeaders(ServerRequestInterface $request, string &$possibleStaticFile)
@@ -118,22 +111,21 @@ class FallbackMiddleware implements MiddlewareInterface
             $headers['X-SFC-State'] = 'StaticFileCache - via Fallback Middleware';
         }
         foreach ($request->getHeader('accept-encoding') as $acceptEncoding) {
-            if (strpos($acceptEncoding, 'gzip') !== false) {
+            if (false !== strpos($acceptEncoding, 'gzip')) {
                 if (is_file($possibleStaticFile . '.gz') && is_readable($possibleStaticFile . '.gz')) {
                     $headers['Content-Encoding'] = 'gzip';
                     $possibleStaticFile .= '.gz';
                 }
+
                 break;
             }
         }
+
         return $headers;
     }
 
     /**
-     * Get cache configuration
-     *
-     * @param string $possibleStaticFile
-     * @return array
+     * Get cache configuration.
      */
     protected function getCacheConfiguration(string $possibleStaticFile): array
     {
@@ -141,6 +133,7 @@ class FallbackMiddleware implements MiddlewareInterface
         if (is_file($configFile) || !is_readable($configFile)) {
             return (array)json_decode((string)GeneralUtility::getUrl($configFile));
         }
+
         return [];
     }
 }

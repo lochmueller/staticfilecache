@@ -50,16 +50,14 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     protected $freeze = false;
 
     /**
-     * Hash length
+     * Hash length.
      *
      * @var int
      */
     protected $hashLength = 3;
 
     /**
-     * Set hash length
-     *
-     * @param int $hashLength
+     * Set hash length.
      */
     public function setHashLength(int $hashLength): void
     {
@@ -76,7 +74,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set
      * @throws InvalidDataException            if the data is not a string
-     * @throws \Exception            If thee backend is frozen
+     * @throws \Exception                      If thee backend is frozen
      *
      * @api
      */
@@ -99,7 +97,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
 
         // Check cache dir
         $absoluteCacheDir = GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER);
-        if (!\is_dir(PathUtility::dirname($absoluteCacheDir . $fileName))) {
+        if (!is_dir(PathUtility::dirname($absoluteCacheDir . $fileName))) {
             GeneralUtility::mkdir_deep(PathUtility::dirname($absoluteCacheDir . $fileName));
         }
 
@@ -108,7 +106,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
             throw new InvalidDataException('Could not write local cache file', 7324892);
         }
 
-        GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_TAG, '|' . \implode('|', $tags) . '|');
+        GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_TAG, '|' . implode('|', $tags) . '|');
         GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_LIFETIME, $this->calculateExpiryTime($lifetime)->getTimestamp());
         GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_IDENTIFIER, $entryIdentifier);
     }
@@ -144,15 +142,15 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     {
         $folder = GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER);
         $fileName = $this->getFileName($entryIdentifier);
-        if (!\is_file($folder . $fileName)) {
+        if (!is_file($folder . $fileName)) {
             return false;
         }
         if ($this->freeze) {
             return true;
         }
-        $validUntil = (int)\file_get_contents($folder . $fileName . self::FILE_EXTENSION_LIFETIME);
+        $validUntil = (int)file_get_contents($folder . $fileName . self::FILE_EXTENSION_LIFETIME);
 
-        return $validUntil > \time();
+        return $validUntil > time();
     }
 
     /**
@@ -175,7 +173,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         }
         $folder = GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER);
         $fileName = $this->getFileName($entryIdentifier);
-        if (!\is_file($folder . $fileName)) {
+        if (!is_file($folder . $fileName)) {
             return false;
         }
 
@@ -214,13 +212,13 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
             throw new \Exception('Backend is frozen!', 123789);
         }
 
-        $lifetimeFiles = \glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*/*/*' . self::FILE_EXTENSION_LIFETIME);
+        $lifetimeFiles = glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*/*/*' . self::FILE_EXTENSION_LIFETIME);
 
         $identifiers = [];
 
         foreach ($lifetimeFiles as $lifetimeFile) {
-            if ((int)\file_get_contents($lifetimeFile) < \time()) {
-                $identifiers[] = \file_get_contents(\str_replace(self::FILE_EXTENSION_LIFETIME, self::FILE_EXTENSION_IDENTIFIER, $lifetimeFile));
+            if ((int)file_get_contents($lifetimeFile) < time()) {
+                $identifiers[] = file_get_contents(str_replace(self::FILE_EXTENSION_LIFETIME, self::FILE_EXTENSION_IDENTIFIER, $lifetimeFile));
             }
         }
 
@@ -261,11 +259,11 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      */
     public function findIdentifiersByTag($tag)
     {
-        $tagsFiles = \glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*/*/*' . self::FILE_EXTENSION_TAG);
+        $tagsFiles = glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*/*/*' . self::FILE_EXTENSION_TAG);
         $identifiers = [];
         foreach ($tagsFiles as $tagsFile) {
-            if (false !== \mb_strpos(\file_get_contents($tagsFile), '|' . $tag . '|')) {
-                $identifiers[] = \file_get_contents(\str_replace(self::FILE_EXTENSION_TAG, self::FILE_EXTENSION_IDENTIFIER, $tagsFile));
+            if (false !== mb_strpos(file_get_contents($tagsFile), '|' . $tag . '|')) {
+                $identifiers[] = file_get_contents(str_replace(self::FILE_EXTENSION_TAG, self::FILE_EXTENSION_IDENTIFIER, $tagsFile));
             }
         }
 
@@ -300,20 +298,17 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     /**
      * Get filename.
      *
-     * @param string $entryIdentifier
-     *
      * @throws \Exception
-     * @return string
      */
     protected function getFileName(string $entryIdentifier): string
     {
-        $urlParts = \parse_url($entryIdentifier);
+        $urlParts = parse_url($entryIdentifier);
         if (isset($urlParts['path'])) {
             $pathInfo = PathUtility::pathinfo($urlParts['path']);
             if (isset($pathInfo['basename'])) {
-                $baseName = \urldecode($pathInfo['basename']);
+                $baseName = urldecode($pathInfo['basename']);
             } elseif (isset($pathInfo['filename'])) {
-                $baseName = \urldecode($pathInfo['filename']);
+                $baseName = urldecode($pathInfo['filename']);
             } else {
                 throw new \Exception('Could not fetch basename or filename of ' . $entryIdentifier, 123678);
             }
@@ -331,7 +326,8 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
 
         // Hash
         $hash = (string)GeneralUtility::shortMD5($entryIdentifier, $this->hashLength);
-        $remoteStructure = \implode('/', str_split($hash));
+        $remoteStructure = implode('/', str_split($hash));
+
         return $remoteStructure . '/' . $baseName;
     }
 }

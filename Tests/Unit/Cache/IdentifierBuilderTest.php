@@ -17,10 +17,10 @@ use SFC\Staticfilecache\Tests\Unit\AbstractTest;
  * @internal
  * @coversNothing
  */
-class IdentifierBuilderTest extends AbstractTest
+final class IdentifierBuilderTest extends AbstractTest
 {
     /**
-     * Test a valid path
+     * Test a valid path.
      */
     public function testCheckValidPath()
     {
@@ -37,7 +37,7 @@ class IdentifierBuilderTest extends AbstractTest
     }
 
     /**
-     * Test check invalid path
+     * Test check invalid path.
      */
     public function testCheckInValidPath()
     {

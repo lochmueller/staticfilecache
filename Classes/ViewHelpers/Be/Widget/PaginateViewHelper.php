@@ -15,15 +15,11 @@ use SFC\Staticfilecache\ViewHelpers\Be\Widget\Controller\PaginateController;
  */
 class PaginateViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\PaginateViewHelper
 {
-
     /**
      * @var PaginateController
      */
     protected $controllerOverride;
 
-    /**
-     * @param PaginateController $controllerOverride
-     */
     public function injectPaginateControllerOverride(PaginateController $controllerOverride)
     {
         $this->controllerOverride = $controllerOverride;
@@ -41,6 +37,7 @@ class PaginateViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Paginate
     protected function initiateSubRequest()
     {
         $this->controller = $this->controllerOverride;
+
         return parent::initiateSubRequest();
     }
 }

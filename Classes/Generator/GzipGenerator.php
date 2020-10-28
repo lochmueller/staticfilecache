@@ -24,15 +24,10 @@ class GzipGenerator extends AbstractGenerator
 
     /**
      * Generate file.
-     *
-     * @param string $entryIdentifier
-     * @param string $fileName
-     * @param ResponseInterface $response
-     * @param int $lifetime
      */
     public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
     {
-        $contentGzip = \gzencode((string)$response->getBody(), $this->getCompressionLevel());
+        $contentGzip = gzencode((string)$response->getBody(), $this->getCompressionLevel());
         if ($contentGzip) {
             GeneralUtility::writeFile($fileName . '.gz', $contentGzip);
         }
@@ -40,9 +35,6 @@ class GzipGenerator extends AbstractGenerator
 
     /**
      * Remove file.
-     *
-     * @param string $entryIdentifier
-     * @param string $fileName
      */
     public function remove(string $entryIdentifier, string $fileName): void
     {
@@ -53,8 +45,6 @@ class GzipGenerator extends AbstractGenerator
     /**
      * Get frontend compression level.
      * The value is between 1 (low) and 9 (high).
-     *
-     * @return int
      */
     protected function getCompressionLevel(): int
     {

@@ -1,8 +1,9 @@
 <?php
 
 /**
- * EnvironmentService
+ * EnvironmentService.
  */
+
 namespace SFC\Staticfilecache\Service;
 
 use TYPO3\CMS\Core\Core\Environment;
@@ -11,15 +12,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
- * EnvironmentService
+ * EnvironmentService.
  */
 class EnvironmentService
 {
-
     /**
-     * Get information
-     *
-     * @return array
+     * Get information.
      */
     public function get(): array
     {
@@ -28,7 +26,7 @@ class EnvironmentService
         return array_merge([
             'TYPO3 Version' => VersionNumberUtility::getCurrentTypo3Version(),
             'SFC Version' => ExtensionManagementUtility::getExtensionVersion('staticfilecache'),
-            'PHP Version' => phpversion(),
+            'PHP Version' => PHP_VERSION,
             'OS' => Environment::isWindows() ? 'Windows' : 'Unix',
             'Composer' => Environment::isComposerMode() ? 'yes' : 'no',
             'SFC Settings' => '(see below)',
@@ -36,9 +34,7 @@ class EnvironmentService
     }
 
     /**
-     * Get markdown
-     *
-     * @return string
+     * Get markdown.
      */
     public function getMarkdown(): string
     {
@@ -46,13 +42,12 @@ class EnvironmentService
         foreach ($this->get() as $key => $value) {
             $result[] = '* **' . $key . '**: ' . $value;
         }
+
         return implode("\n", $result);
     }
 
     /**
-     * Get Link
-     *
-     * @return string
+     * Get Link.
      */
     public function getLink(): string
     {

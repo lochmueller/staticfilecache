@@ -1,8 +1,9 @@
 <?php
 
 /**
- * DatamapHook
+ * DatamapHook.
  */
+
 namespace SFC\Staticfilecache\Hook;
 
 use SFC\Staticfilecache\Service\CacheService;
@@ -13,11 +14,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * DatamapHook
+ * DatamapHook.
  */
 class DatamapHook extends AbstractHook
 {
-
     /**
      * Check if the page is removed out of the SFC.
      * We drop the cache in this case.
@@ -26,11 +26,10 @@ class DatamapHook extends AbstractHook
      * @param $table
      * @param $id
      * @param $fieldArray
-     * @param DataHandler $dataHandler
      */
     public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, DataHandler $dataHandler)
     {
-        if ($table !== 'pages') {
+        if ('pages' !== $table) {
             return;
         }
 
