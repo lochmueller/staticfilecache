@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
  */
 final class NoFakeFrontendTest extends AbstractRuleTest
 {
-    public function testCheckNoFakeFrontendController()
+    public function testCheckNoFakeFrontendController(): void
     {
         $request = new ServerRequest();
         $explanation = [];
@@ -27,6 +27,6 @@ final class NoFakeFrontendTest extends AbstractRuleTest
 
         $fakeFrontendRule = new NoFakeFrontend();
         $fakeFrontendRule->checkRule($request, $explanation, $skipProcessing);
-        self::assertFalse($skipProcessing);
+        static::assertFalse($skipProcessing);
     }
 }

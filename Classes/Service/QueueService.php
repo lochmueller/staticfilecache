@@ -18,9 +18,9 @@ use SFC\Staticfilecache\Domain\Repository\QueueRepository;
  */
 class QueueService extends AbstractService
 {
-    const PRIORITY_HIGH = 2000;
-    const PRIORITY_MEDIUM = 1000;
-    const PRIORITY_LOW = 0;
+    public const PRIORITY_HIGH = 2000;
+    public const PRIORITY_MEDIUM = 1000;
+    public const PRIORITY_LOW = 0;
 
     /**
      * Queue repository.
@@ -86,7 +86,7 @@ class QueueService extends AbstractService
                 $cache = $this->cacheService->get();
                 $infos = $cache->get($identifier);
                 if (isset($infos['priority'])) {
-                    $priority = (int)$infos['priority'];
+                    $priority = (int) $infos['priority'];
                 }
             } catch (\Exception $exception) {
             }
@@ -128,9 +128,9 @@ class QueueService extends AbstractService
 
         if (200 !== $statusCode) {
             // Call the flush, if the page is not accessable
-            $cache->flushByTag('pageId_' . $runEntry['page_uid']);
+            $cache->flushByTag('pageId_'.$runEntry['page_uid']);
         }
 
-        $this->queueRepository->update($data, ['uid' => (int)$runEntry['uid']]);
+        $this->queueRepository->update($data, ['uid' => (int) $runEntry['uid']]);
     }
 }

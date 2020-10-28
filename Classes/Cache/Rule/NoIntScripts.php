@@ -21,8 +21,8 @@ class NoIntScripts extends AbstractRule
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
         if (\is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->isINTincScript()) {
-            foreach ((array)$GLOBALS['TSFE']->config['INTincScript'] as $key => $configuration) {
-                $explanation[__CLASS__ . ':' . $key] = 'The page has a INTincScript: ' . implode(', ', $this->getInformation($configuration));
+            foreach ((array) $GLOBALS['TSFE']->config['INTincScript'] as $key => $configuration) {
+                $explanation[__CLASS__.':'.$key] = 'The page has a INTincScript: '.implode(', ', $this->getInformation($configuration));
             }
         }
     }
@@ -36,7 +36,7 @@ class NoIntScripts extends AbstractRule
     {
         $info = [];
         if (isset($configuration['type'])) {
-            $info[] = 'type: ' . $configuration['type'];
+            $info[] = 'type: '.$configuration['type'];
         }
         $check = [
             'userFunc',
@@ -46,7 +46,7 @@ class NoIntScripts extends AbstractRule
         ];
         foreach ($check as $value) {
             if (isset($configuration['conf'][$value])) {
-                $info[] = $value . ': ' . $configuration['conf'][$value];
+                $info[] = $value.': '.$configuration['conf'][$value];
             }
         }
 

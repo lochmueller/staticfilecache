@@ -39,7 +39,7 @@ class BoostQueueCommand extends AbstractCommand
     /**
      * Configures the current command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
         $this->setDescription('Run (work on) the cache boost queue. Call this task every 5 minutes.')
@@ -59,7 +59,7 @@ class BoostQueueCommand extends AbstractCommand
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      *
-     * @return int|null null or 0 if everything went fine, or an error code
+     * @return null|int null or 0 if everything went fine, or an error code
      *
      * @see setCode()
      */
@@ -68,8 +68,8 @@ class BoostQueueCommand extends AbstractCommand
         $io = new SymfonyStyle($input, $output);
 
         $startTime = time();
-        $stopProcessingAfter = (int)$input->getOption('stop-processing-after');
-        $limit = (int)$input->getOption('limit-items');
+        $stopProcessingAfter = (int) $input->getOption('stop-processing-after');
+        $limit = (int) $input->getOption('limit-items');
         $limit = $limit > 0 ? $limit : 5000;
         $rows = $this->queueRepository->findOpen($limit);
 
@@ -86,9 +86,9 @@ class BoostQueueCommand extends AbstractCommand
         }
         $io->progressFinish();
 
-        $io->success(\count($rows) . ' items are done (perhaps not all are processed).');
+        $io->success(\count($rows).' items are done (perhaps not all are processed).');
 
-        if (!(bool)$input->getOption('avoid-cleanup')) {
+        if (!(bool) $input->getOption('avoid-cleanup')) {
             $this->cleanupQueue($io);
         }
 
@@ -98,7 +98,7 @@ class BoostQueueCommand extends AbstractCommand
     /**
      * Cleanup queue.
      */
-    protected function cleanupQueue(SymfonyStyle $io)
+    protected function cleanupQueue(SymfonyStyle $io): void
     {
         $rows = $this->queueRepository->findOld();
         $io->progressStart(\count($rows));
@@ -108,6 +108,6 @@ class BoostQueueCommand extends AbstractCommand
         }
         $io->progressFinish();
 
-        $io->success(\count($rows) . ' items are removed.');
+        $io->success(\count($rows).' items are removed.');
     }
 }

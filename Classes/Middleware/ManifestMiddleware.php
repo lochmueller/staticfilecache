@@ -30,7 +30,7 @@ class ManifestMiddleware implements MiddlewareInterface
         return ''; /** @todo feel free to add parser for JS, CSS and IMAGE */
         $content = [
             'CAHCHE MANIFEST',
-            '# Created at ' . date(\DateTime::COOKIE),
+            '# Created at '.date(\DateTime::COOKIE),
         ];
 
         $regex = '/(\/[^"\']*\.(?:png|jpg|jpeg|gif|png|svg))/i';
@@ -46,11 +46,11 @@ class ManifestMiddleware implements MiddlewareInterface
     /**
      * Frontend call of the appcache files.
      */
-    public function callEid()
+    public function callEid(): void
     {
         header('Content-Type: text/cache-manifest');
         header('Cache-Control: no-cache, must-revalidate');
-        header('Expires: ' . date(DATE_RFC1123));
+        header('Expires: '.date(DATE_RFC1123));
 
         try {
             $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * EnvironmentService.
  */
@@ -40,7 +42,7 @@ class EnvironmentService
     {
         $result = ['... Add your description here ...', '', '', '**Environment**'];
         foreach ($this->get() as $key => $value) {
-            $result[] = '* **' . $key . '**: ' . $value;
+            $result[] = '* **'.$key.'**: '.$value;
         }
 
         return implode("\n", $result);

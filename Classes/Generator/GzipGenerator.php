@@ -20,16 +20,16 @@ class GzipGenerator extends AbstractGenerator
     /**
      * The default compression level.
      */
-    const DEFAULT_COMPRESSION_LEVEL = 3;
+    public const DEFAULT_COMPRESSION_LEVEL = 3;
 
     /**
      * Generate file.
      */
     public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
     {
-        $contentGzip = gzencode((string)$response->getBody(), $this->getCompressionLevel());
+        $contentGzip = gzencode((string) $response->getBody(), $this->getCompressionLevel());
         if ($contentGzip) {
-            GeneralUtility::writeFile($fileName . '.gz', $contentGzip);
+            GeneralUtility::writeFile($fileName.'.gz', $contentGzip);
         }
     }
 
@@ -39,7 +39,7 @@ class GzipGenerator extends AbstractGenerator
     public function remove(string $entryIdentifier, string $fileName): void
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->file($fileName . '.gz');
+        $removeService->file($fileName.'.gz');
     }
 
     /**
@@ -50,7 +50,7 @@ class GzipGenerator extends AbstractGenerator
     {
         $level = self::DEFAULT_COMPRESSION_LEVEL;
         if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {
-            $level = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'];
+            $level = (int) $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'];
         }
 
         return MathUtility::forceIntegerInRange($level, 1, 9, self::DEFAULT_COMPRESSION_LEVEL);

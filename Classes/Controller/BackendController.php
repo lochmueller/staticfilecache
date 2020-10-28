@@ -71,13 +71,13 @@ class BackendController extends ActionController
                     $this->queueService->runSingleRequest($item);
                 }
             } catch (\Exception $exception) {
-                $this->addFlashMessage('Error in run: ' . $exception->getMessage(), 'Runner', FlashMessage::ERROR, true);
+                $this->addFlashMessage('Error in run: '.$exception->getMessage(), 'Runner', FlashMessage::ERROR, true);
             }
 
-            $this->addFlashMessage('Run ' . \count($items) . ' entries', 'Runner', FlashMessage::OK, true);
+            $this->addFlashMessage('Run '.\count($items).' entries', 'Runner', FlashMessage::OK, true);
         }
         $this->view->assignMultiple([
-            'enable' => (bool)$configurationService->get('boostMode'),
+            'enable' => (bool) $configurationService->get('boostMode'),
             'open' => \count($queueRepository->findOpen(99999999)),
             'old' => \count($queueRepository->findOld()),
         ]);
@@ -106,7 +106,7 @@ class BackendController extends ActionController
         $user = $this->getBackendUser();
         $validFilter = ['all', 'cached', 'notCached'];
         if ('' === $filter) {
-            $filter = (string)$user->getSessionData('sfc_filter');
+            $filter = (string) $user->getSessionData('sfc_filter');
         }
         if (!\in_array($filter, $validFilter, true)) {
             $filter = 'all';
@@ -136,7 +136,7 @@ class BackendController extends ActionController
             $cache = GeneralUtility::makeInstance(CacheService::class)->get();
         } catch (\Exception $exception) {
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-            $logger->error('Problems by fetching the cache: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
+            $logger->error('Problems by fetching the cache: '.$exception->getMessage().' / '.$exception->getFile().':'.$exception->getLine());
 
             return $rows;
         }
@@ -144,7 +144,7 @@ class BackendController extends ActionController
         $dbRows = GeneralUtility::makeInstance(PageRepository::class)->findForBackend($this->getCurrentUid(), $this->getDisplayMode());
 
         foreach ($dbRows as $row) {
-            $cacheEntries = $cache->getByTag('pageId_' . $row['uid']);
+            $cacheEntries = $cache->getByTag('pageId_'.$row['uid']);
             foreach ($cacheEntries as $identifier => $info) {
                 $rows[] = [
                     'uid' => $row['uid'],
@@ -184,6 +184,6 @@ class BackendController extends ActionController
      */
     protected function getCurrentUid(): int
     {
-        return (int)GeneralUtility::_GET('id');
+        return (int) GeneralUtility::_GET('id');
     }
 }

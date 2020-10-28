@@ -21,7 +21,7 @@ final class StyleHttpPushTest extends AbstractHttpPushTest
     /**
      * Test get valid headers.
      */
-    public function testGetValidHeaders()
+    public function testGetValidHeaders(): void
     {
         $service = new StyleHttpPush();
         $headers = $service->getHeaders($this->getExampleContent());
@@ -37,7 +37,7 @@ final class StyleHttpPushTest extends AbstractHttpPushTest
             ],
         ];
 
-        self::assertSame($exepected, $headers, 'Wrong header result from service');
-        self::assertCount(2, $headers);
+        static::assertSame($exepected, $headers, 'Wrong header result from service');
+        static::assertCount(2, $headers);
     }
 }

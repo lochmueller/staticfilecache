@@ -21,7 +21,7 @@ class FlushCacheCommand extends AbstractCommand
     /**
      * Configures the current command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
         $this->setDescription('Flush the cache. If the boost mode is active, all pages are added to the queue (you have to run the BoostQueueRun Command to recrawl the pages). If you use the force-boost-mode-flush argument, you directly drop the cache even the page is in Boostmode.')
@@ -40,14 +40,14 @@ class FlushCacheCommand extends AbstractCommand
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException
      *
-     * @return int|null null or 0 if everything went fine, or an error code
+     * @return null|int null or 0 if everything went fine, or an error code
      *
      * @see setCode()
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $cacheService = GeneralUtility::makeInstance(CacheService::class);
-        $cacheService->flush((bool)$input->getOption('force-boost-mode-flush'));
+        $cacheService->flush((bool) $input->getOption('force-boost-mode-flush'));
 
         return 0;
     }

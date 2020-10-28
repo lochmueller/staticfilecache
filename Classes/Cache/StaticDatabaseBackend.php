@@ -48,12 +48,12 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
      *
      * @param FrontendInterface $cache The frontend for this backend
      */
-    public function setCache(FrontendInterface $cache)
+    public function setCache(FrontendInterface $cache): void
     {
         parent::setCache($cache);
         if ($this->configuration->isBool('renameTablesToOtherPrefix')) {
-            $this->cacheTable = 'sfc_' . $this->cacheIdentifier;
-            $this->tagsTable = 'sfc_' . $this->cacheIdentifier . '_tags';
+            $this->cacheTable = 'sfc_'.$this->cacheIdentifier;
+            $this->tagsTable = 'sfc_'.$this->cacheIdentifier.'_tags';
         }
     }
 
@@ -65,15 +65,15 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
     public function getTableDefinitions()
     {
         $cacheTableSql = file_get_contents(
-            ExtensionManagementUtility::extPath('staticfilecache') .
+            ExtensionManagementUtility::extPath('staticfilecache').
             'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendCache.sql'
         );
-        $requiredTableStructures = str_replace('###CACHE_TABLE###', $this->cacheTable, $cacheTableSql) . LF . LF;
+        $requiredTableStructures = str_replace('###CACHE_TABLE###', $this->cacheTable, $cacheTableSql).LF.LF;
         $tagsTableSql = file_get_contents(
-            ExtensionManagementUtility::extPath('staticfilecache') .
+            ExtensionManagementUtility::extPath('staticfilecache').
             'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendTags.sql'
         );
-        $requiredTableStructures .= str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql) . LF;
+        $requiredTableStructures .= str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql).LF;
 
         return $requiredTableStructures;
     }
@@ -92,6 +92,6 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
             $lifetime = $this->maximumLifetime;
         }
 
-        return (int)$lifetime;
+        return (int) $lifetime;
     }
 }

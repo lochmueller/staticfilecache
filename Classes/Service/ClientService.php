@@ -47,9 +47,9 @@ class ClientService extends AbstractService
             $client = $this->getCallableClient($host);
             $response = $client->get($url);
 
-            return (int)$response->getStatusCode();
+            return (int) $response->getStatusCode();
         } catch (\Exception $exception) {
-            $this->logger->error('Problems in single request running: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
+            $this->logger->error('Problems in single request running: '.$exception->getMessage().' / '.$exception->getFile().':'.$exception->getLine());
         }
 
         return 900;
@@ -81,7 +81,7 @@ class ClientService extends AbstractService
         ];
 
         // Core options
-        $httpOptions = (array)$GLOBALS['TYPO3_CONF_VARS']['HTTP'];
+        $httpOptions = (array) $GLOBALS['TYPO3_CONF_VARS']['HTTP'];
         $httpOptions['verify'] = filter_var($httpOptions['verify'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? $httpOptions['verify'];
         if (isset($httpOptions['handler']) && \is_array($httpOptions['handler'])) {
             $stack = HandlerStack::create();

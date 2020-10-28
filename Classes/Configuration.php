@@ -65,7 +65,7 @@ class Configuration extends StaticFileCacheObject
      */
     public function __construct()
     {
-        $this->configuration = (array)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
+        $this->configuration = (array) GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
     }
 
     /**
@@ -119,7 +119,7 @@ class Configuration extends StaticFileCacheObject
      */
     protected function registerHooks(): self
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing']['staticfilecache'] = LogoffFrontendUser::class . '->logoff';
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing']['staticfilecache'] = LogoffFrontendUser::class.'->logoff';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = DatamapHook::class;
 
         return $this;

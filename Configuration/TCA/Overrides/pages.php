@@ -46,5 +46,5 @@ ExtensionManagementUtility::addTCAcolumns('pages', $tmp);
 ExtensionManagementUtility::addFieldsToPalette(
     'pages',
     'caching',
-    '--linebreak--,' . implode(',', array_keys($tmp))
+    '--linebreak--,'.implode(',', array_keys($tmp))
 );

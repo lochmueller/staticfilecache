@@ -41,8 +41,8 @@ class NoUserOrGroupSet extends AbstractRule
         $context = GeneralUtility::makeInstance(Context::class);
 
         try {
-            $userIsLoggedIn = (bool)$context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
-            $groupIds = (array)$context->getPropertyFromAspect('frontend.user', 'groupIds');
+            $userIsLoggedIn = (bool) $context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
+            $groupIds = (array) $context->getPropertyFromAspect('frontend.user', 'groupIds');
         } catch (AspectNotFoundException $e) {
             return false;
         }

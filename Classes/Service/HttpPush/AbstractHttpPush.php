@@ -47,7 +47,7 @@ abstract class AbstractHttpPush extends AbstractService
         });
 
         return array_map(function ($url) {
-            return '/' . ltrim(str_replace(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), '', $url), '/');
+            return '/'.ltrim(str_replace(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), '', $url), '/');
         }, $paths);
     }
 

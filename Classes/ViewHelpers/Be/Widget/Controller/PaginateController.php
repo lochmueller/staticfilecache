@@ -21,10 +21,10 @@ class PaginateController extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controll
      *
      * @param int $currentPage
      */
-    public function indexAction($currentPage = 1)
+    public function indexAction($currentPage = 1): void
     {
         // set current page
-        $this->currentPage = (int)$currentPage;
+        $this->currentPage = (int) $currentPage;
         if ($this->currentPage < 1) {
             $this->currentPage = 1;
         }
@@ -33,7 +33,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controll
             $modifiedObjects = null;
         } else {
             // modify query
-            $this->itemsPerPage = (int)$this->configuration['itemsPerPage'];
+            $this->itemsPerPage = (int) $this->configuration['itemsPerPage'];
             $this->offset = $this->itemsPerPage * ($this->currentPage - 1);
             // use slice here for array support
             $modifiedObjects = $this->prepareObjectsSlice($this->itemsPerPage, $this->offset);
@@ -87,9 +87,9 @@ class PaginateController extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controll
         }
 
         throw new \InvalidArgumentException(
-            'The view helper "' . static::class
-            . '" accepts as argument "QueryResultInterface", "\SplObjectStorage", "ObjectStorage" or an array. '
-            . 'given: ' . \get_class($this->objects),
+            'The view helper "'.static::class
+            .'" accepts as argument "QueryResultInterface", "\SplObjectStorage", "ObjectStorage" or an array. '
+            .'given: '.\get_class($this->objects),
             1385547291
         );
     }

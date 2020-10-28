@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * DatamapHook.
  */
@@ -27,22 +29,22 @@ class DatamapHook extends AbstractHook
      * @param $id
      * @param $fieldArray
      */
-    public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, DataHandler $dataHandler)
+    public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, DataHandler $dataHandler): void
     {
         if ('pages' !== $table) {
             return;
         }
 
         if (MathUtility::canBeInterpretedAsInteger($id)) {
-            $row = BackendUtility::getRecord($table, (int)$id);
-            $allowSfc = (bool)$row['tx_staticfilecache_cache'];
+            $row = BackendUtility::getRecord($table, (int) $id);
+            $allowSfc = (bool) $row['tx_staticfilecache_cache'];
             if (!$allowSfc) {
                 try {
                     // Delete cache
                     $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
                     $configuration->override('boostMode', '0');
                     $cacheService = GeneralUtility::makeInstance(CacheService::class);
-                    $cacheService->get()->flushByTag('pageId_' . $id);
+                    $cacheService->get()->flushByTag('pageId_'.$id);
                     $configuration->reset('boostMode');
                 } catch (\Exception $ex) {
                 }

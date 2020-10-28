@@ -28,8 +28,8 @@ class HtaccessGenerator extends AbstractGenerator
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
 
-        $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess';
-        $accessTimeout = (int)$configuration->get('htaccessTimeout');
+        $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME).'/.htaccess';
+        $accessTimeout = (int) $configuration->get('htaccessTimeout');
         $lifetime = $accessTimeout ? $accessTimeout : $lifetime;
 
         $headers = $this->getReponseHeaders($response);
@@ -48,7 +48,7 @@ class HtaccessGenerator extends AbstractGenerator
             return str_replace('"', '', $item);
         }, $headers);
 
-        $sendCacheControlHeader = isset($GLOBALS['TSFE']->config['config']['sendCacheHeaders']) ? (bool)$GLOBALS['TSFE']->config['config']['sendCacheHeaders'] : false;
+        $sendCacheControlHeader = isset($GLOBALS['TSFE']->config['config']['sendCacheHeaders']) ? (bool) $GLOBALS['TSFE']->config['config']['sendCacheHeaders'] : false;
 
         $variables = [
             'contentType' => $contentType,
@@ -69,7 +69,7 @@ class HtaccessGenerator extends AbstractGenerator
      */
     public function remove(string $entryIdentifier, string $fileName): void
     {
-        $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess';
+        $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME).'/.htaccess';
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
         $removeService->file($htaccessFile);
     }
@@ -80,7 +80,7 @@ class HtaccessGenerator extends AbstractGenerator
     protected function getReponseHeaders(ResponseInterface $response): array
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $validHeaders = GeneralUtility::trimExplode(',', $configuration->get('validHtaccessHeaders') . ',Content-Type', true);
+        $validHeaders = GeneralUtility::trimExplode(',', $configuration->get('validHtaccessHeaders').',Content-Type', true);
 
         $headers = $response->getHeaders();
         $result = [];
@@ -96,13 +96,13 @@ class HtaccessGenerator extends AbstractGenerator
     /**
      * Render template to file.
      */
-    protected function renderTemplateToFile(string $templateName, array $variables, string $htaccessFile)
+    protected function renderTemplateToFile(string $templateName, array $variables, string $htaccessFile): void
     {
         /** @var StandaloneView $renderer */
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
         $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateName));
         $renderer->assignMultiple($variables);
-        $content = trim((string)$renderer->render());
+        $content = trim((string) $renderer->render());
         // Note: Create even empty htaccess files (do not check!!!), so the delete is in sync
         GeneralUtility::writeFile($htaccessFile, $content);
     }
@@ -113,7 +113,7 @@ class HtaccessGenerator extends AbstractGenerator
     protected function getTemplateName(): string
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $templateName = trim((string)$configuration->get('htaccessTemplateName'));
+        $templateName = trim((string) $configuration->get('htaccessTemplateName'));
         if ('' === $templateName) {
             return 'EXT:staticfilecache/Resources/Private/Templates/Htaccess.html';
         }

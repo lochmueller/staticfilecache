@@ -24,7 +24,7 @@ class TypoScriptFrontendService extends AbstractService
             return [];
         }
 
-        return array_unique((array)$tsfe->getPageCacheTags());
+        return array_unique((array) $tsfe->getPageCacheTags());
     }
 
     /**

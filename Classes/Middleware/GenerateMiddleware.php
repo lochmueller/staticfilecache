@@ -57,7 +57,7 @@ class GenerateMiddleware implements MiddlewareInterface
             return $this->removeSfcHeaders($response);
         }
 
-        $uri = (string)$request->getUri();
+        $uri = (string) $request->getUri();
         if (!$response->hasHeader('X-SFC-Explanation')) {
             if ($this->hasValidCacheEntry($uri) && !isset($_COOKIE[CookieService::FE_COOKIE_NAME])) {
                 $response = $response->withHeader('X-SFC-State', 'TYPO3 - already in cache');
@@ -71,7 +71,7 @@ class GenerateMiddleware implements MiddlewareInterface
             $response = $response->withHeader('X-SFC-State', 'TYPO3 - no cache');
         }
 
-        $this->cache->set($uri, $response, (array)$response->getHeader('X-SFC-Tags'), $lifetime);
+        $this->cache->set($uri, $response, (array) $response->getHeader('X-SFC-Tags'), $lifetime);
 
         return $this->removeSfcHeaders($response);
     }
@@ -95,7 +95,7 @@ class GenerateMiddleware implements MiddlewareInterface
             }
         }
 
-        return (int)$timeOutTime;
+        return (int) $timeOutTime;
     }
 
     /**

@@ -20,7 +20,7 @@ class PaginateViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Paginate
      */
     protected $controllerOverride;
 
-    public function injectPaginateControllerOverride(PaginateController $controllerOverride)
+    public function injectPaginateControllerOverride(PaginateController $controllerOverride): void
     {
         $this->controllerOverride = $controllerOverride;
     }
@@ -28,7 +28,7 @@ class PaginateViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Paginate
     /**
      * Initialize arguments.
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->overrideArgument('objects', 'array', 'The QueryResult containing all objects.', true);

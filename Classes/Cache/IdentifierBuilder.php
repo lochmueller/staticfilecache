@@ -27,7 +27,7 @@ class IdentifierBuilder extends StaticFileCacheObject
     public function getFilepath(string $requestUri): string
     {
         if (!$this->isValidEntryIdentifier($requestUri)) {
-            throw new \Exception('Invalid RequestUri as cache identifier: ' . $requestUri, 2346782);
+            throw new \Exception('Invalid RequestUri as cache identifier: '.$requestUri, 2346782);
         }
         $urlParts = parse_url($requestUri);
         $pageIdentifier = [
@@ -46,10 +46,10 @@ class IdentifierBuilder extends StaticFileCacheObject
         }
 
         $absoluteBasePath = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory();
-        $resultPath = GeneralUtility::resolveBackPath($absoluteBasePath . implode('/', $parts));
+        $resultPath = GeneralUtility::resolveBackPath($absoluteBasePath.implode('/', $parts));
 
         if (!StringUtility::beginsWith($resultPath, $absoluteBasePath)) {
-            throw new \Exception('The generated filename "' . $resultPath . '" should start with the cache directory "' . $absoluteBasePath . '"', 123781);
+            throw new \Exception('The generated filename "'.$resultPath.'" should start with the cache directory "'.$absoluteBasePath.'"', 123781);
         }
 
         return $resultPath;

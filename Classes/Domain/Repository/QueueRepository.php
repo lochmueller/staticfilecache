@@ -22,7 +22,7 @@ class QueueRepository extends AbstractRepository
     {
         $queryBuilder = $this->createQuery();
 
-        return (array)$queryBuilder->select('*')
+        return (array) $queryBuilder->select('*')
             ->from($this->getTableName())
             ->where($queryBuilder->expr()->eq('call_date', 0))
             ->setMaxResults($limit)
@@ -45,7 +45,7 @@ class QueueRepository extends AbstractRepository
             $queryBuilder->expr()->eq('call_date', 0)
         );
 
-        return (int)$queryBuilder->select('uid')
+        return (int) $queryBuilder->select('uid')
             ->from($this->getTableName())
             ->where($where)
             ->execute()
@@ -60,7 +60,7 @@ class QueueRepository extends AbstractRepository
     {
         $queryBuilder = $this->createQuery();
 
-        return (array)$queryBuilder->select('uid')
+        return (array) $queryBuilder->select('uid')
             ->from($this->getTableName())
             ->where($queryBuilder->expr()->gt('call_date', 0))
             ->execute()

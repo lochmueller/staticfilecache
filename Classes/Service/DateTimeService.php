@@ -27,7 +27,7 @@ class DateTimeService extends AbstractService
         }
 
         try {
-            $time = (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
+            $time = (int) GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
         } catch (\Exception $exception) {
             $time = time();
         }

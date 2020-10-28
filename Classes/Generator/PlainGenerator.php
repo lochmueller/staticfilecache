@@ -21,7 +21,7 @@ class PlainGenerator extends AbstractGenerator
      */
     public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
     {
-        GeneralUtility::writeFile($fileName, (string)$response->getBody());
+        GeneralUtility::writeFile($fileName, (string) $response->getBody());
     }
 
     /**

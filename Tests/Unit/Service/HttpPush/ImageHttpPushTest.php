@@ -21,7 +21,7 @@ final class ImageHttpPushTest extends AbstractHttpPushTest
     /**
      * Test get valid headers.
      */
-    public function testGetValidHeaders()
+    public function testGetValidHeaders(): void
     {
         $service = new ImageHttpPush();
         $service->canHandleExtension('jpg');
@@ -34,7 +34,7 @@ final class ImageHttpPushTest extends AbstractHttpPushTest
             ],
         ];
 
-        self::assertSame($exepected, $headers, 'Wrong header result from service');
-        self::assertCount(1, $headers);
+        static::assertSame($exepected, $headers, 'Wrong header result from service');
+        static::assertCount(1, $headers);
     }
 }

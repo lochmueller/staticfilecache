@@ -37,7 +37,7 @@ class ConfigurationService extends AbstractService
      */
     public function __construct()
     {
-        $extensionConfig = (array)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
+        $extensionConfig = (array) GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('staticfilecache');
         if (!\array_key_exists('validHtaccessHeaders', $extensionConfig)) {
             throw new \Exception('It seams your extension configuration stored in the LocalConfiguration is old. Please save the configuration of the StaticFileCache extension in the extension manager or deployment process.');
         }
@@ -58,11 +58,11 @@ class ConfigurationService extends AbstractService
     {
         $result = null;
         if (\array_key_exists($key, $this->overrides)) {
-            $result = (string)$this->overrides[$key];
+            $result = (string) $this->overrides[$key];
         } elseif (isset($this->configuration[$key])) {
-            $result = (string)$this->configuration[$key];
+            $result = (string) $this->configuration[$key];
         } elseif (isset($GLOBALS['TSFE']->config['config']['tx_staticfilecache.'][$key])) {
-            $result = (string)$GLOBALS['TSFE']->config['config']['tx_staticfilecache.'][$key];
+            $result = (string) $GLOBALS['TSFE']->config['config']['tx_staticfilecache.'][$key];
         }
 
         return $result;
@@ -113,6 +113,6 @@ class ConfigurationService extends AbstractService
      */
     public function isBool(string $key): bool
     {
-        return (bool)$this->get($key);
+        return (bool) $this->get($key);
     }
 }

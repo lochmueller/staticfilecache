@@ -21,14 +21,14 @@ class HtaccessConfigurationService extends AbstractService
      */
     public function foundConfigurationInHtaccess(): bool
     {
-        $htacessFile = Environment::getPublicPath() . '/.htaccess';
+        $htacessFile = Environment::getPublicPath().'/.htaccess';
         if (!is_file($htacessFile)) {
             return false;
         }
 
         $content = GeneralUtility::getUrl($htacessFile);
 
-        return (bool)strpos($content, 'SFC_FULLPATH');
+        return (bool) strpos($content, 'SFC_FULLPATH');
     }
 
     /**

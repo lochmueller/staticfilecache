@@ -14,7 +14,7 @@ class ValidUriListener
 {
     public function __invoke(CacheRuleEvent $event): void
     {
-        $uri = (string)$event->getRequest()->getUri();
+        $uri = (string) $event->getRequest()->getUri();
         if (false !== mb_strpos($uri, '?')) {
             $event->addExplanation(__CLASS__, 'The URI contain a "?" that is not allowed for StaticFileCache');
             $event->setSkipProcessing(true);
@@ -22,7 +22,7 @@ class ValidUriListener
             $event->addExplanation(__CLASS__, 'The URI contain a "index.php" that is not allowed for StaticFileCache');
             $event->setSkipProcessing(true);
         } elseif (false !== mb_strpos(parse_url($uri, PHP_URL_PATH), '//')) {
-            $event->addExplanation(__CLASS__, 'Illegal link configuration. The URI should not contain a "//" ' .
+            $event->addExplanation(__CLASS__, 'Illegal link configuration. The URI should not contain a "//" '.
                 'because a folder name without name is not possible');
             $event->setSkipProcessing(true);
         }

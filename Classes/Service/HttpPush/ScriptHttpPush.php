@@ -33,7 +33,7 @@ class ScriptHttpPush extends AbstractHttpPush
         $res = array_map(function ($item) {
             // skip: src=('|") -> 5 chars
             return substr($item, 5);
-        }, (array)$jsFiles['0']);
+        }, (array) $jsFiles['0']);
 
         $paths = $this->streamlineFilePaths($res);
 

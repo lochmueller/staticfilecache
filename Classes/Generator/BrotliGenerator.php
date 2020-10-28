@@ -24,9 +24,9 @@ class BrotliGenerator extends AbstractGenerator
         if (!$this->checkAvailable()) {
             return;
         }
-        $contentCompress = brotli_compress((string)$response->getBody());
+        $contentCompress = brotli_compress((string) $response->getBody());
         if ($contentCompress) {
-            GeneralUtility::writeFile($fileName . '.br', $contentCompress);
+            GeneralUtility::writeFile($fileName.'.br', $contentCompress);
         }
     }
 
@@ -39,7 +39,7 @@ class BrotliGenerator extends AbstractGenerator
             return;
         }
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->file($fileName . '.br');
+        $removeService->file($fileName.'.br');
     }
 
     /**

@@ -22,7 +22,7 @@ class LogoffFrontendUser extends AbstractHook
      *
      * @param array $parameters
      */
-    public function logoff($parameters, AbstractUserAuthentication $parentObject)
+    public function logoff($parameters, AbstractUserAuthentication $parentObject): void
     {
         $service = GeneralUtility::makeInstance(CookieService::class);
         if (('FE' === $parentObject->loginType || 'BE' === $parentObject->loginType) && true === $parentObject->newSessionID) {

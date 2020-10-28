@@ -41,7 +41,7 @@ class RemoveService extends AbstractService
             return true;
         }
 
-        return (bool)unlink($absoulteFileName);
+        return (bool) unlink($absoulteFileName);
     }
 
     /**
@@ -58,7 +58,7 @@ class RemoveService extends AbstractService
         foreach (new \DirectoryIterator($absoluteDirName) as $item) {
             /** @var \DirectoryIterator $item */
             if ($item->isDir() && !$item->isDot()) {
-                $this->directory($item->getPathname() . '/');
+                $this->directory($item->getPathname().'/');
             }
         }
 
@@ -74,7 +74,7 @@ class RemoveService extends AbstractService
     public function directory(string $absoluteDirName): self
     {
         if (is_dir($absoluteDirName)) {
-            $tempAbsoluteDir = rtrim($absoluteDirName, '/') . '_' . GeneralUtility::milliseconds() . '/';
+            $tempAbsoluteDir = rtrim($absoluteDirName, '/').'_'.GeneralUtility::milliseconds().'/';
             rename($absoluteDirName, $tempAbsoluteDir);
             $this->removeDirs[] = $tempAbsoluteDir;
         }

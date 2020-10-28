@@ -62,8 +62,8 @@ class PrepareMiddleware implements MiddlewareInterface
         if (!$event->isSkipProcessing()) {
             $cacheTags = GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getTags();
             $cocnfiguration = GeneralUtility::makeInstance(ConfigurationService::class);
-            if (false === (bool)$cocnfiguration->get('clearCacheForAllDomains')) {
-                $cacheTags[] = 'sfc_domain_' . str_replace('.', '_', $event->getRequest()->getUri()->getHost());
+            if (false === (bool) $cocnfiguration->get('clearCacheForAllDomains')) {
+                $cacheTags[] = 'sfc_domain_'.str_replace('.', '_', $event->getRequest()->getUri()->getHost());
             }
 
             if (empty($event->getExplanation())) {
@@ -79,9 +79,9 @@ class PrepareMiddleware implements MiddlewareInterface
             $response = $response->withHeader('X-SFC-Tags', $cacheTags);
         }
 
-        $pushHeaders = (array)GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders((string)$response->getBody());
+        $pushHeaders = (array) GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders((string) $response->getBody());
         foreach ($pushHeaders as $pushHeader) {
-            $response = $response->withAddedHeader('Link', '<' . $pushHeader['path'] . '>; rel=preload; as=' . $pushHeader['type']);
+            $response = $response->withAddedHeader('Link', '<'.$pushHeader['path'].'>; rel=preload; as='.$pushHeader['type']);
         }
 
         return $response;

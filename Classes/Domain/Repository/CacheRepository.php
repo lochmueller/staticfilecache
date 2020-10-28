@@ -74,6 +74,6 @@ class CacheRepository extends AbstractRepository
             $prefix = 'sfc_';
         }
 
-        return $prefix . 'staticfilecache';
+        return $prefix.'staticfilecache';
     }
 }

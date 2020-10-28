@@ -42,7 +42,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      * @throws \TYPO3\CMS\Core\Cache\Exception                      if no cache frontend has been set
      * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the data is not a string
      */
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
     {
         $realLifetime = $this->getRealLifetime($lifetime);
         $time = (new DateTimeService())->getCurrentTime();
@@ -66,7 +66,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
         try {
             // Create dir
-            $cacheDir = (string)PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
+            $cacheDir = (string) PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
             if (!is_dir($cacheDir)) {
                 GeneralUtility::mkdir_deep($cacheDir);
             }
@@ -152,10 +152,10 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception
      */
-    public function flush()
+    public function flush(): void
     {
-        if (false === (bool)$this->configuration->get('clearCacheForAllDomains')) {
-            $this->flushByTag('sfc_domain_' . str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
+        if (false === (bool) $this->configuration->get('clearCacheForAllDomains')) {
+            $this->flushByTag('sfc_domain_'.str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
 
             return;
         }
@@ -182,7 +182,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception
      */
-    public function flushByTags(array $tags)
+    public function flushByTags(array $tags): void
     {
         $this->throwExceptionIfFrontendDoesNotExist();
 
@@ -223,7 +223,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception
      */
-    public function flushByTag($tag)
+    public function flushByTag($tag): void
     {
         $this->throwExceptionIfFrontendDoesNotExist();
 
@@ -251,7 +251,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      * that the StaticFileCache drop the file AND the db representation. Please take care, that you select both backends
      * in the garbage collection task in the Scheduler.
      */
-    public function collectGarbage()
+    public function collectGarbage(): void
     {
         $expiredIdentifiers = GeneralUtility::makeInstance(CacheRepository::class)->findExpiredIdentifiers();
         parent::collectGarbage();
@@ -274,7 +274,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         }
 
         if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-            $priority += (int)$GLOBALS['TSFE']->page['tx_staticfilecache_cache_priority'];
+            $priority += (int) $GLOBALS['TSFE']->page['tx_staticfilecache_cache_priority'];
         }
 
         return $priority;
@@ -343,7 +343,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     protected function isBoostMode(): bool
     {
-        return (bool)$this->configuration->get('boostMode');
+        return (bool) $this->configuration->get('boostMode');
     }
 
     /**
@@ -351,6 +351,6 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     protected function isHashedIdentifier(): bool
     {
-        return (bool)$this->configuration->isBool('hashUriInCache');
+        return (bool) $this->configuration->isBool('hashUriInCache');
     }
 }

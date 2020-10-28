@@ -28,7 +28,7 @@ class ObjectFactoryService extends AbstractService
     /**
      * Set the given classnames in the category.
      */
-    public function set(string $category, array $classNames)
+    public function set(string $category, array $classNames): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['staticfilecache'][$category] = $classNames;
     }

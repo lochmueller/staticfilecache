@@ -56,7 +56,7 @@ class ForceStaticCacheListener
             return false;
         }
 
-        $forceStatic = (bool)($frontendController->page['tx_staticfilecache_cache_force'] ?? false);
+        $forceStatic = (bool) ($frontendController->page['tx_staticfilecache_cache_force'] ?? false);
         $event = new ForceStaticFileCacheEvent($forceStatic, $frontendController, $request);
         $this->eventDispatcher->dispatch($event);
 

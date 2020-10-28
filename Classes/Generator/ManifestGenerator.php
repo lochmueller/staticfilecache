@@ -23,10 +23,10 @@ class ManifestGenerator extends AbstractGenerator
     public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
     {
         $manifestService = GeneralUtility::makeInstance(ManifestService::class);
-        $html = (string)$response->getBody();
+        $html = (string) $response->getBody();
         $content = $manifestService->generateManifestContent($entryIdentifier, $html);
         if ('' !== $content) {
-            GeneralUtility::writeFile($fileName . '.sfc', $content);
+            GeneralUtility::writeFile($fileName.'.sfc', $content);
         }
     }
 
@@ -36,6 +36,6 @@ class ManifestGenerator extends AbstractGenerator
     public function remove(string $entryIdentifier, string $fileName): void
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->file($fileName . '.sfc');
+        $removeService->file($fileName.'.sfc');
     }
 }

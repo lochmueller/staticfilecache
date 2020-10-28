@@ -51,8 +51,8 @@ class ImageHttpPush extends AbstractHttpPush
             return [];
         }
 
-        preg_match_all('/(?<=["\'])[^="\'\\\\]*\.(' . $this->lastExtension . ')\.*\d*\.*(?=["\'])/', $content, $imagesFiles);
-        $paths = $this->streamlineFilePaths((array)$imagesFiles[0]);
+        preg_match_all('/(?<=["\'])[^="\'\\\\]*\.('.$this->lastExtension.')\.*\d*\.*(?=["\'])/', $content, $imagesFiles);
+        $paths = $this->streamlineFilePaths((array) $imagesFiles[0]);
 
         return $this->mapPathsWithType($paths, 'image');
     }
