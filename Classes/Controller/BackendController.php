@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -93,6 +94,7 @@ class BackendController extends ActionController
         $this->view->assignMultiple([
             'foundHtaccess' => $htaccessConfigurationService->foundConfigurationInHtaccess(),
             'missingModules' => $htaccessConfigurationService->getMissingApacheModules(),
+            'useCrawler' => ExtensionManagementUtility::isLoaded('crawler'),
             'envInfoLink' => $environmentService->getLink(),
             'envInfoMarkdown' => $environmentService->getMarkdown(),
         ]);
