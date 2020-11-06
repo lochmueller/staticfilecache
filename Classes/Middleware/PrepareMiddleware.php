@@ -75,8 +75,10 @@ class PrepareMiddleware implements MiddlewareInterface
                     $response = $response->withAddedHeader('X-SFC-Explanation', $item);
                 }
             }
-
-            $response = $response->withHeader('X-SFC-Tags', $cacheTags);
+            
+            if (!empty($cacheTags)) {
+                $response = $response->withHeader('X-SFC-Tags', $cacheTags);
+            }
         }
 
         $pushHeaders = (array) GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders((string) $response->getBody());
