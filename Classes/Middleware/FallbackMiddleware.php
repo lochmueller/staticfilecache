@@ -103,8 +103,8 @@ class FallbackMiddleware implements MiddlewareInterface
             'Content-Type' => 'text/html; charset=utf-8',
         ];
         $config = $this->getCacheConfiguration($possibleStaticFile);
-        if (isset($config->headers->{'Content-Type'})) {
-            $headers['Content-Type'] = implode(', ', $config->headers->{'Content-Type'});
+        if (isset($config['headers']->{'Content-Type'})) {
+            $headers['Content-Type'] = implode(', ', $config['headers']->{'Content-Type'});
         }
         $debug = $this->configurationService->isBool('debugHeaders');
         if ($debug) {

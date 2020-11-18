@@ -75,7 +75,7 @@ class PrepareMiddleware implements MiddlewareInterface
                     $response = $response->withAddedHeader('X-SFC-Explanation', $item);
                 }
             }
-            
+
             if (!empty($cacheTags)) {
                 $response = $response->withHeader('X-SFC-Tags', $cacheTags);
             }
