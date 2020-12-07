@@ -36,6 +36,12 @@ services:
         identifier: 'SfcCacheRuleValidUriListenerFallback'
         event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
 
+  SFC\Staticfilecache\Cache\Listener\SolrIndexingProcessListener:
+    tags:
+      - name: event.listener
+        identifier: 'SfcSolrIndexingProcessListenerFallback'
+        event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
+
   SFC\Staticfilecache\Cache\Listener\ValidRequestMethodListener:
     tags:
       - name: event.listener
