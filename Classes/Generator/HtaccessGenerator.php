@@ -45,7 +45,7 @@ class HtaccessGenerator extends AbstractGenerator
         }
 
         $headers = array_map(function ($item) {
-            return str_replace('"', '', $item);
+            return str_replace('"', '\"', $item);
         }, $headers);
 
         $sendCacheControlHeader = isset($GLOBALS['TSFE']->config['config']['sendCacheHeaders']) ? (bool) $GLOBALS['TSFE']->config['config']['sendCacheHeaders'] : false;
