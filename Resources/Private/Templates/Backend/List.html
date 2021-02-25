@@ -19,39 +19,37 @@
 		<f:form.submit value="Set!" class="btn btn-primary" />
 	</f:form>
 
-	<sfc:be.widget.paginate objects="{rows}" as="paginatedRows" configuration="{itemsPerPage: 20, insertAbove: 1}">
-		<table class="table table-striped">
-			<tr>
-				<th class="col-sm-3">
-					<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:page"/>
-				</th>
-				<th class="col-sm-7">
-					<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:identifier"/>
-				</th>
-				<th class="col-sm-1">
-					<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:created"/>
-				</th>
-				<th class="col-sm-1">
-					<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:expires"/>
-				</th>
-			</tr>
+	<table class="table table-striped">
+		<tr>
+			<th class="col-sm-3">
+				<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:page"/>
+			</th>
+			<th class="col-sm-7">
+				<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:identifier"/>
+			</th>
+			<th class="col-sm-1">
+				<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:created"/>
+			</th>
+			<th class="col-sm-1">
+				<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:expires"/>
+			</th>
+		</tr>
 
-			<f:if condition="{paginatedRows}">
-				<f:then>
-					<f:for each="{paginatedRows}" as="row">
-						<f:render partial="Backend/ListEntry" arguments="{row:row}"/>
-					</f:for>
-				</f:then>
-				<f:else>
-					<tr>
-						<td colspan="4">{f:translate(key:
-							'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:entriesEmpty')}
-						</td>
-					</tr>
-				</f:else>
-			</f:if>
-		</table>
-	</sfc:be.widget.paginate>
+		<f:if condition="{rows}">
+			<f:then>
+				<f:for each="{rows}" as="row">
+					<f:render partial="Backend/ListEntry" arguments="{row:row}"/>
+				</f:for>
+			</f:then>
+			<f:else>
+				<tr>
+					<td colspan="4">{f:translate(key:
+						'LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:entriesEmpty')}
+					</td>
+				</tr>
+			</f:else>
+		</f:if>
+	</table>
 
 	<f:link.action action="support" class="btn btn-success">
 		Do you like the extension? Support new features...
