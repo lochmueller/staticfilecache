@@ -15,6 +15,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\IdentifierBuilder;
 use SFC\Staticfilecache\Event\CacheRuleFallbackEvent;
+use SFC\Staticfilecache\Exception;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\CookieService;
@@ -51,7 +52,7 @@ class FallbackMiddleware implements MiddlewareInterface
             if ($this->configurationService->isBool('useFallbackMiddleware')) {
                 return $this->handleViaFallback($request);
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             // Not handled
         }
 
@@ -69,13 +70,13 @@ class FallbackMiddleware implements MiddlewareInterface
         $this->eventDispatcher->dispatch($event);
 
         if ($event->isSkipProcessing()) {
-            throw new \Exception('Could not use fallback, because: '.implode(', ', $event->getExplanation()), 1236781);
+            throw new Exception('Could not use fallback, because: '.implode(', ', $event->getExplanation()), 1236781);
         }
 
         $uri = $request->getUri();
 
         if (isset($_COOKIE[CookieService::FE_COOKIE_NAME]) && 'typo_user_logged_in' === $_COOKIE[CookieService::FE_COOKIE_NAME]) {
-            throw new \Exception('StaticFileCache Cookie is set', 12738912);
+            throw new Exception('StaticFileCache Cookie is set', 12738912);
         }
 
         $possibleStaticFile = GeneralUtility::makeInstance(IdentifierBuilder::class)->getFilepath((string) $uri);
@@ -83,12 +84,12 @@ class FallbackMiddleware implements MiddlewareInterface
         $headers = $this->getHeaders($event->getRequest(), $possibleStaticFile);
 
         if (!is_file($possibleStaticFile) || !is_readable($possibleStaticFile)) {
-            throw new \Exception('StaticFileCache file not found', 126371823);
+            throw new Exception('StaticFileCache file not found', 126371823);
         }
 
         $cacheDirectory = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory();
         if (0 !== strpos($possibleStaticFile, $cacheDirectory)) {
-            throw new \Exception('The path is not in the cache directory', 348923472);
+            throw new Exception('The path is not in the cache directory', 348923472);
         }
 
         return new HtmlResponse(GeneralUtility::getUrl($possibleStaticFile), 200, $headers);

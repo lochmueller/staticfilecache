@@ -31,23 +31,22 @@ class DatamapHook extends AbstractHook
      */
     public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, DataHandler $dataHandler): void
     {
-        if ('pages' !== $table) {
+        if ('pages' !== $table || !MathUtility::canBeInterpretedAsInteger($id)) {
             return;
         }
 
-        if (MathUtility::canBeInterpretedAsInteger($id)) {
-            $row = BackendUtility::getRecord($table, (int) $id);
-            $allowSfc = (bool) $row['tx_staticfilecache_cache'];
-            if (!$allowSfc) {
-                try {
-                    // Delete cache
-                    $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-                    $configuration->override('boostMode', '0');
-                    $cacheService = GeneralUtility::makeInstance(CacheService::class);
-                    $cacheService->get()->flushByTag('pageId_'.$id);
-                    $configuration->reset('boostMode');
-                } catch (\Exception $ex) {
-                }
+        $row = BackendUtility::getRecord($table, (int) $id);
+        $allowSfc = (bool) $row['tx_staticfilecache_cache'];
+        if (!$allowSfc) {
+            try {
+                // Delete cache
+                $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+                $configuration->override('boostMode', '0');
+                $cacheService = GeneralUtility::makeInstance(CacheService::class);
+                $cacheService->get()->flushByTag('pageId_'.$id);
+                $configuration->reset('boostMode');
+            } catch (\Exception $ex) {
+                return;
             }
         }
     }

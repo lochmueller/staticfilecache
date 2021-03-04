@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use SFC\Staticfilecache\Exception;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
 use TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface;
@@ -81,7 +82,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
     {
         if ($this->freeze) {
-            throw new \Exception('Backend is frozen!', 123789);
+            throw new Exception('Backend is frozen!', 123789);
         }
         $this->remove($entryIdentifier);
         $fileName = $this->getFileName($entryIdentifier);
@@ -169,7 +170,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     public function remove($entryIdentifier)
     {
         if ($this->freeze) {
-            throw new \Exception('Backend is frozen!', 123789);
+            throw new Exception('Backend is frozen!', 123789);
         }
         $folder = GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER);
         $fileName = $this->getFileName($entryIdentifier);
@@ -310,10 +311,10 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
             } elseif (isset($pathInfo['filename'])) {
                 $baseName = urldecode($pathInfo['filename']);
             } else {
-                throw new \Exception('Could not fetch basename or filename of '.$entryIdentifier, 123678);
+                throw new Exception('Could not fetch basename or filename of '.$entryIdentifier, 123678);
             }
         } else {
-            throw new \Exception('Could not fetch a valid path from identifier '.$entryIdentifier, 23478);
+            throw new Exception('Could not fetch a valid path from identifier '.$entryIdentifier, 23478);
         }
 
         try {

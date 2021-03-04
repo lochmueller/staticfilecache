@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use SFC\Staticfilecache\Exception;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\StaticFileCacheObject;
@@ -49,7 +50,7 @@ class IdentifierBuilder extends StaticFileCacheObject
         $resultPath = GeneralUtility::resolveBackPath($absoluteBasePath.implode('/', $parts));
 
         if (!StringUtility::beginsWith($resultPath, $absoluteBasePath)) {
-            throw new \Exception('The generated filename "'.$resultPath.'" should start with the cache directory "'.$absoluteBasePath.'"', 123781);
+            throw new Exception('The generated filename "'.$resultPath.'" should start with the cache directory "'.$absoluteBasePath.'"', 123781);
         }
 
         return $resultPath;

@@ -34,6 +34,7 @@ class PageRepository extends AbstractRepository
 
                 break;
             case 'both':
+            default:
                 $where[] = $queryBuilder->expr()->eq('uid', $pageId);
                 $where[] = $queryBuilder->expr()->eq('pid', $pageId);
 
