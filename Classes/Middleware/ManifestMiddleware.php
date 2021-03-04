@@ -27,7 +27,7 @@ class ManifestMiddleware implements MiddlewareInterface
      */
     public function generateManifestContent(string $filename, string &$data): string
     {
-        return ''; /** @todo feel free to add parser for JS, CSS and IMAGE */
+        return ''; /** @todo feel free to add parser for JS, CSS and IMAGE
         $content = [
             'CAHCHE MANIFEST',
             '# Created at '.date(\DateTime::COOKIE),
@@ -40,7 +40,7 @@ class ManifestMiddleware implements MiddlewareInterface
             }
         }
 
-        return implode("\n", $content);
+        return implode("\n", $content);*/
     }
 
     /**
@@ -66,6 +66,6 @@ class ManifestMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // TODO: Implement process() method.
+        return $handler->handle($request);
     }
 }
