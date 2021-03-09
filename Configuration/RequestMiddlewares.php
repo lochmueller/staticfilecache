@@ -1,9 +1,14 @@
 <?php
 
+use SFC\Staticfilecache\Middleware\FallbackMiddleware;
+use SFC\Staticfilecache\Middleware\FrontendUserMiddleware;
+use SFC\Staticfilecache\Middleware\GenerateMiddleware;
+use SFC\Staticfilecache\Middleware\PrepareMiddleware;
+
 return [
     'frontend' => [
         'staticfilecache/prepare' => [
-            'target' => \SFC\Staticfilecache\Middleware\PrepareMiddleware::class,
+            'target' => PrepareMiddleware::class,
             'before' => [
                 'typo3/cms-frontend/base-redirect-resolver',
             ],
@@ -12,15 +17,24 @@ return [
             ],
         ],
         'staticfilecache/generate' => [
-            'target' => \SFC\Staticfilecache\Middleware\GenerateMiddleware::class,
+            'target' => GenerateMiddleware::class,
             'before' => [
                 'staticfilecache/prepare',
             ],
         ],
         'staticfilecache/fallback' => [
-            'target' => \SFC\Staticfilecache\Middleware\FallbackMiddleware::class,
+            'target' => FallbackMiddleware::class,
             'before' => [
                 'typo3/cms-frontend/timetracker',
+            ],
+        ],
+        'staticfilecache/frontend-user' => [
+            'target' => FrontendUserMiddleware::class,
+            'after' => [
+                'typo3/cms-frontend/authentication',
+            ],
+            'before' => [
+                'staticfilecache/generate',
             ],
         ],
     ],

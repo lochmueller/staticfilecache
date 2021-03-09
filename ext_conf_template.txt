@@ -63,3 +63,6 @@ sendHttp2PushFileExtensions = css,js
 
 # cat=HttpPush; type=string; label=File limit for HTTP/2 push: The limit of files that are added as HTTP/2 push
 sendHttp2PushFileLimit = 10
+
+# cat=HttpPush; type=options[No Limit=,<head> tag=head,<body> tag=body]; label=Limit the pushes to specific areas: You can select from either '<head>' or '<body>', which pushes only the assets from the named area. Otherwise, and as default, the whole '<html>' tag is taken.
+sendHttp2PushLimitToArea =

@@ -17,12 +17,12 @@ use SFC\Staticfilecache\Tests\Unit\AbstractTest;
  * @internal
  * @coversNothing
  */
-class IdentifierBuilderTest extends AbstractTest
+final class IdentifierBuilderTest extends AbstractTest
 {
     /**
-     * Test a valid path
+     * Test a valid path.
      */
-    public function testCheckValidPath()
+    public function testCheckValidPath(): void
     {
         $validUris = [
             'https://www.domain.tld/path.html',
@@ -32,14 +32,14 @@ class IdentifierBuilderTest extends AbstractTest
 
         foreach ($validUris as $uri) {
             $identBuilder = new IdentifierBuilder();
-            self::assertTrue($identBuilder->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be valid!');
+            static::assertTrue($identBuilder->isValidEntryIdentifier($uri), 'The URI "'.$uri.'" should be valid!');
         }
     }
 
     /**
-     * Test check invalid path
+     * Test check invalid path.
      */
-    public function testCheckInValidPath()
+    public function testCheckInValidPath(): void
     {
         $invalidUris = [
             '/path.html',
@@ -47,7 +47,7 @@ class IdentifierBuilderTest extends AbstractTest
 
         foreach ($invalidUris as $uri) {
             $identBuilder = new IdentifierBuilder();
-            self::assertFalse($identBuilder->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be invalid!');
+            static::assertFalse($identBuilder->isValidEntryIdentifier($uri), 'The URI "'.$uri.'" should be invalid!');
         }
     }
 }

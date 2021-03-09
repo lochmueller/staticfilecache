@@ -17,19 +17,16 @@ use TYPO3\CMS\Core\Http\ServerRequest;
  * @internal
  * @coversNothing
  */
-class NoFakeFrontendTest extends AbstractRuleTest
+final class NoFakeFrontendTest extends AbstractRuleTest
 {
-    public function testCheckNoFakeFrontendController()
+    public function testCheckNoFakeFrontendController(): void
     {
-        self::markTestSkipped('Check TSFE in v10');
-
-        $tsfe = $this->getTsfe();
         $request = new ServerRequest();
         $explanation = [];
         $skipProcessing = false;
 
         $fakeFrontendRule = new NoFakeFrontend();
-        $fakeFrontendRule->checkRule($tsfe, $request, $explanation, $skipProcessing);
-        self::assertFalse($skipProcessing);
+        $fakeFrontendRule->checkRule($request, $explanation, $skipProcessing);
+        static::assertFalse($skipProcessing);
     }
 }

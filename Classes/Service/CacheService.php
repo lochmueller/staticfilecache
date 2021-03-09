@@ -14,7 +14,6 @@ use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Cache Service.
@@ -25,8 +24,6 @@ class CacheService extends AbstractService
      * Get the StaticFileCache.
      *
      * @throws NoSuchCacheException
-     *
-     * @return VariableFrontend
      */
     public function get(): VariableFrontend
     {
@@ -35,42 +32,35 @@ class CacheService extends AbstractService
 
     /**
      * Get the cache manager.
-     *
-     * @return CacheManager
      */
     public function getManager(): CacheManager
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-
-        return $objectManager->get(CacheManager::class);
+        return GeneralUtility::makeInstance(CacheManager::class);
     }
 
     /**
-     * Get absolute base directory incl. ending slash
-     *
-     * @return string
+     * Get absolute base directory incl. ending slash.
      */
     public function getAbsoluteBaseDirectory(): string
     {
         $relativeDirectory = 'typo3temp/tx_staticfilecache/';
-        $overrideDirectory = trim((string)GeneralUtility::makeInstance(ConfigurationService::class)->get('overrideCacheDirectory'));
-        if ($overrideDirectory !== '') {
-            $relativeDirectory = rtrim($overrideDirectory, '/') . '/';
+        $overrideDirectory = trim((string) GeneralUtility::makeInstance(ConfigurationService::class)->get('overrideCacheDirectory'));
+        if ('' !== $overrideDirectory) {
+            $relativeDirectory = rtrim($overrideDirectory, '/').'/';
         }
 
-        $absolutePath = Environment::getPublicPath() . '/' . $relativeDirectory;
+        $absolutePath = Environment::getPublicPath().'/'.$relativeDirectory;
+
         return GeneralUtility::resolveBackPath($absolutePath);
     }
 
     /**
-     * Flush the cache
+     * Flush the cache.
      *
-     * @param bool $includeBoostQueue
      * @throws NoSuchCacheException
-     *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException
      */
-    public function flush(bool $includeBoostQueue = false)
+    public function flush(bool $includeBoostQueue = false): void
     {
         if ($includeBoostQueue) {
             $configuration = GeneralUtility::makeInstance(ConfigurationService::class);

@@ -34,48 +34,40 @@ trait CacheTrait
     /**
      * Cache run time.
      *
-     * @param string   $entryIdentifier
-     * @param callable $callback
-     *
      * @return mixed
      */
     protected function cacheRunTime(string $entryIdentifier, callable $callback)
     {
-        return $this->cacheViaTrait($entryIdentifier, $callback, 'cache_runtime');
+        return $this->cacheViaTrait($entryIdentifier, $callback, 'runtime');
     }
 
     /**
      * Cache long time.
      *
-     * @param string   $entryIdentifier
-     * @param callable $callback
-     * @param int      $lifetime        Default 60 Minutes (3.600 seconds)
-     * @param array    $tags
+     * @param int $lifetime Default 60 Minutes (3.600 seconds)
      *
      * @return mixed
      */
     protected function cacheLongTime(string $entryIdentifier, callable $callback, int $lifetime = 3600, array $tags = [])
     {
-        return $this->cacheViaTrait('sfc_' . $entryIdentifier, $callback, 'cache_pagesection', $lifetime, $tags);
+        return $this->cacheViaTrait('sfc_'.$entryIdentifier, $callback, 'pagesection', $lifetime, $tags);
     }
 
     /**
      * Cache remote file time.
      *
-     * @param string $entryIdentifier
-     * @param int    $lifetime        Default 60 Minutes (3.600 seconds)
-     * @param array  $tags
+     * @param int $lifetime Default 60 Minutes (3.600 seconds)
      *
      * @return mixed
      */
     protected function cacheRemoteUri(string $entryIdentifier, int $lifetime = 3600, array $tags = [])
     {
-        $result = $this->cacheViaTrait($entryIdentifier, function () {
+        $result = $this->cacheViaTrait($entryIdentifier, function (): void {
         }, 'remote_file', $lifetime, $tags);
         if (null === $result) {
             // call two times, because the anonym function is not the real result.
             // The result is output by the get method of the remote_file backend.
-            $result = $this->cacheViaTrait($entryIdentifier, function () {
+            $result = $this->cacheViaTrait($entryIdentifier, function (): void {
             }, 'remote_file', $lifetime, $tags);
         }
 
@@ -84,12 +76,6 @@ trait CacheTrait
 
     /**
      * Cache via Trait logic.
-     *
-     * @param string   $entryIdentifier
-     * @param callable $callback
-     * @param string   $cacheIdentifier
-     * @param int      $lifetime
-     * @param array    $tags
      *
      * @return mixed
      */

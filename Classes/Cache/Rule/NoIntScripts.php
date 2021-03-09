@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Cache\Rule;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * No _INT scripts.
@@ -18,17 +17,12 @@ class NoIntScripts extends AbstractRule
 {
     /**
      * Check if there are no _INT scripts.
-     *
-     * @param TypoScriptFrontendController $frontendController
-     * @param ServerRequestInterface $request
-     * @param array                        $explanation
-     * @param bool                         $skipProcessing
      */
-    public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
+    public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
-        if (is_object($frontendController) && $frontendController->isINTincScript()) {
-            foreach ((array)$frontendController->config['INTincScript'] as $key => $configuration) {
-                $explanation[__CLASS__ . ':' . $key] = 'The page has a INTincScript: ' . \implode(', ', $this->getInformation($configuration));
+        if (\is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->isINTincScript()) {
+            foreach ((array) $GLOBALS['TSFE']->config['INTincScript'] as $key => $configuration) {
+                $explanation[__CLASS__.':'.$key] = 'The page has a INTincScript: '.implode(', ', $this->getInformation($configuration));
             }
         }
     }
@@ -37,14 +31,12 @@ class NoIntScripts extends AbstractRule
      * Get the debug information.
      *
      * @param array $configuration
-     *
-     * @return array
      */
     protected function getInformation($configuration): array
     {
         $info = [];
         if (isset($configuration['type'])) {
-            $info[] = 'type: ' . $configuration['type'];
+            $info[] = 'type: '.$configuration['type'];
         }
         $check = [
             'userFunc',
@@ -54,7 +46,7 @@ class NoIntScripts extends AbstractRule
         ];
         foreach ($check as $value) {
             if (isset($configuration['conf'][$value])) {
-                $info[] = $value . ': ' . $configuration['conf'][$value];
+                $info[] = $value.': '.$configuration['conf'][$value];
             }
         }
 

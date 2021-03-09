@@ -16,8 +16,6 @@ class TypoScriptFrontendService extends AbstractService
 {
     /**
      * Get the tags and respect the configuration.
-     *
-     * @return array
      */
     public function getTags(): array
     {
@@ -26,7 +24,7 @@ class TypoScriptFrontendService extends AbstractService
             return [];
         }
 
-        return \array_unique((array)$tsfe->getPageCacheTags());
+        return array_unique((array) $tsfe->getPageCacheTags());
     }
 
     /**

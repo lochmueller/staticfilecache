@@ -21,13 +21,8 @@ class NoUserOrGroupSet extends AbstractRule
 {
     /**
      * Check if no user or group is set.
-     *
-     * @param TypoScriptFrontendController $frontendController
-     * @param ServerRequestInterface $request
-     * @param array                        $explanation
-     * @param bool                         $skipProcessing
      */
-    public function checkRule(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request, array &$explanation, bool &$skipProcessing)
+    public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
         if ($this->isUserOrGroupSet()) {
             $explanation[__CLASS__] = 'User or group are set';
@@ -46,8 +41,8 @@ class NoUserOrGroupSet extends AbstractRule
         $context = GeneralUtility::makeInstance(Context::class);
 
         try {
-            $userIsLoggedIn = (bool)$context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
-            $groupIds = (array)$context->getPropertyFromAspect('frontend.user', 'groupIds');
+            $userIsLoggedIn = (bool) $context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
+            $groupIds = (array) $context->getPropertyFromAspect('frontend.user', 'groupIds');
         } catch (AspectNotFoundException $e) {
             return false;
         }

@@ -18,28 +18,20 @@ class BrotliGenerator extends AbstractGenerator
 {
     /**
      * Generate file.
-     *
-     * @param string $entryIdentifier
-     * @param string $fileName
-     * @param ResponseInterface $response
-     * @param int $lifetime
      */
-    public function generate(string $entryIdentifier, string $fileName, ResponseInterface &$response, int $lifetime): void
+    public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
     {
         if (!$this->checkAvailable()) {
             return;
         }
-        $contentCompress = \brotli_compress((string)$response->getBody());
+        $contentCompress = brotli_compress((string) $response->getBody());
         if ($contentCompress) {
-            GeneralUtility::writeFile($fileName . '.br', $contentCompress);
+            GeneralUtility::writeFile($fileName.'.br', $contentCompress);
         }
     }
 
     /**
      * Remove file.
-     *
-     * @param string $entryIdentifier
-     * @param string $fileName
      */
     public function remove(string $entryIdentifier, string $fileName): void
     {
@@ -47,13 +39,11 @@ class BrotliGenerator extends AbstractGenerator
             return;
         }
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->file($fileName . '.br');
+        $removeService->file($fileName.'.br');
     }
 
     /**
      * Check if Brotli is available.
-     *
-     * @return bool
      */
     protected function checkAvailable(): bool
     {

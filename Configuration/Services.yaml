@@ -1,0 +1,68 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  SFC\Staticfilecache\:
+    resource: '../Classes/*'
+
+  SFC\Staticfilecache\Command\BoostQueueCommand:
+    tags:
+      - name: 'console.command'
+        command: 'staticfilecache:boostQueue'
+
+  SFC\Staticfilecache\EventListener\AfterPackageDeactivationListener:
+    tags:
+      - name: event.listener
+        identifier: 'SfcAfterPackageDeactivationListener'
+        event: TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent
+        before: 'SfcCacheRuleForceStaticCacheListener'
+
+  SFC\Staticfilecache\Cache\Listener\PageCacheableListener:
+    tags:
+      - name: event.listener
+        identifier: 'SfcCacheRulePageCacheableListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+        before: 'SfcCacheRuleForceStaticCacheListener'
+
+  SFC\Staticfilecache\Cache\Listener\ValidUriListener:
+    tags:
+      - name: event.listener
+        identifier: 'SfcCacheRuleValidUriListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+        before: 'SfcCacheRuleForceStaticCacheListener'
+      - name: event.listener
+        identifier: 'SfcCacheRuleValidUriListenerFallback'
+        event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
+
+  SFC\Staticfilecache\Cache\Listener\SolrIndexingProcessListener:
+    tags:
+      - name: event.listener
+        identifier: 'SfcSolrIndexingProcessListenerFallback'
+        event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
+
+  SFC\Staticfilecache\Cache\Listener\ValidRequestMethodListener:
+    tags:
+      - name: event.listener
+        identifier: 'SfcCacheRuleValidRequestMethodListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+        before: 'SfcCacheRuleForceStaticCacheListener'
+      - name: event.listener
+        identifier: 'SfcCacheRuleValidRequestMethodListenerFallback'
+        event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
+
+  SFC\Staticfilecache\Cache\Listener\NoBackendUserCookieListener:
+    tags:
+      - name: event.listener
+        identifier: 'SfcCacheRuleNoBackendUserCookieListenerFallback'
+        event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
+
+  SFC\Staticfilecache\Cache\Listener\ForceStaticCacheListener:
+    tags:
+      - name: event.listener
+        identifier: 'SfcCacheRuleForceStaticCacheListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+
+
+

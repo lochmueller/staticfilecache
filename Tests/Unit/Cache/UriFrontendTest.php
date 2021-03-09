@@ -18,12 +18,12 @@ use TYPO3\CMS\Core\Cache\Backend\NullBackend;
  * @internal
  * @coversNothing
  */
-class UriFrontendTest extends AbstractTest
+final class UriFrontendTest extends AbstractTest
 {
     /**
-     * Test a valid path
+     * Test a valid path.
      */
-    public function testCheckValidPath()
+    public function testCheckValidPath(): void
     {
         $this->resetSingletonInstances = true;
 
@@ -34,14 +34,14 @@ class UriFrontendTest extends AbstractTest
         ];
 
         foreach ($validUris as $uri) {
-            self::assertTrue($this->getCacheFrontend()->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be valid!');
+            static::assertTrue($this->getCacheFrontend()->isValidEntryIdentifier($uri), 'The URI "'.$uri.'" should be valid!');
         }
     }
 
     /**
-     * Test check invalid path
+     * Test check invalid path.
      */
-    public function testCheckInValidPath()
+    public function testCheckInValidPath(): void
     {
         $this->resetSingletonInstances = true;
 
@@ -50,7 +50,7 @@ class UriFrontendTest extends AbstractTest
         ];
 
         foreach ($invalidUris as $uri) {
-            self::assertFalse($this->getCacheFrontend()->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be invalid!');
+            static::assertFalse($this->getCacheFrontend()->isValidEntryIdentifier($uri), 'The URI "'.$uri.'" should be invalid!');
         }
     }
 

@@ -18,22 +18,22 @@ class CookieService extends AbstractService
     /**
      * The name of the cookie.
      */
-    const FE_COOKIE_NAME = 'staticfilecache';
+    public const FE_COOKIE_NAME = 'staticfilecache';
 
     /**
      * Set the Cookie.
      *
      * @param $lifetime
      */
-    public function setCookie(int $lifetime)
+    public function setCookie(int $lifetime): void
     {
-        \setcookie(self::FE_COOKIE_NAME, 'typo_user_logged_in', $lifetime, '/', $this->getCookieDomain(), GeneralUtility::getIndpEnv('TYPO3_SSL'));
+        setcookie(self::FE_COOKIE_NAME, 'typo_user_logged_in', $lifetime, '/', $this->getCookieDomain(), GeneralUtility::getIndpEnv('TYPO3_SSL'));
     }
 
     /**
      * Unset the Cookie.
      */
-    public function unsetCookie()
+    public function unsetCookie(): void
     {
         $this->setCookie(time() - 3600);
     }
@@ -58,16 +58,16 @@ class CookieService extends AbstractService
         if ($cookieDomain) {
             if ('/' === $cookieDomain[0]) {
                 $match = [];
-                $matchCnt = \preg_match($cookieDomain, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
+                $matchCnt = preg_match($cookieDomain, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
                 if (false === $matchCnt) {
-                    $message = 'The regular expression for the cookie domain (' . $cookieDomain . ') contains errors.';
+                    $message = 'The regular expression for the cookie domain ('.$cookieDomain.') contains errors.';
                     $message .= 'The session is not shared across sub-domains.';
                     $this->logger->warning($message);
                 } elseif ($matchCnt) {
-                    $result = trim((string)$match[0]);
+                    $result = trim((string) $match[0]);
                 }
             } else {
-                $result = trim((string)$cookieDomain);
+                $result = trim((string) $cookieDomain);
             }
         }
 

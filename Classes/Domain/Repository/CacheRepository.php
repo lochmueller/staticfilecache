@@ -11,7 +11,6 @@ namespace SFC\Staticfilecache\Domain\Repository;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * CacheRepository.
@@ -20,8 +19,6 @@ class CacheRepository extends AbstractRepository
 {
     /**
      * Get the expired cache identifiers.
-     *
-     * @return array
      */
     public function findExpiredIdentifiers(): array
     {
@@ -34,7 +31,8 @@ class CacheRepository extends AbstractRepository
             ))
             ->groupBy('identifier')
             ->execute()
-            ->fetchAll();
+            ->fetchAll()
+        ;
 
         $cacheIdentifiers = [];
         foreach ($rows as $row) {
@@ -46,8 +44,6 @@ class CacheRepository extends AbstractRepository
 
     /**
      * Get all the cache identifiers.
-     *
-     * @return array
      */
     public function findAllIdentifiers(): array
     {
@@ -56,7 +52,8 @@ class CacheRepository extends AbstractRepository
             ->from($this->getTableName())
             ->groupBy('identifier')
             ->execute()
-            ->fetchAll();
+            ->fetchAll()
+        ;
 
         $cacheIdentifiers = [];
         foreach ($rows as $row) {
@@ -68,21 +65,15 @@ class CacheRepository extends AbstractRepository
 
     /**
      * Get the table name.
-     *
-     * @return string
      */
     protected function getTableName(): string
     {
-        $prefix = 'cf_';
-        if (VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getNumericTypo3Version()) >= 10003000) {
-            $prefix = 'cache_';
-        }
-
+        $prefix = 'cache_';
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
         if ($configuration->isBool('renameTablesToOtherPrefix')) {
             $prefix = 'sfc_';
         }
 
-        return $prefix . 'staticfilecache';
+        return $prefix.'staticfilecache';
     }
 }

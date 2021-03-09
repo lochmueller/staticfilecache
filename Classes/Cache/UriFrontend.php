@@ -28,6 +28,7 @@ class UriFrontend extends VariableFrontend
     {
         try {
             $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
+
             return $identifierBuilder->isValidEntryIdentifier($identifier);
         } catch (\Exception $exception) {
             return false;
@@ -48,14 +49,14 @@ class UriFrontend extends VariableFrontend
     public function getByTag($tag)
     {
         if (!$this->isValidTag($tag)) {
-            throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233058312);
+            throw new \InvalidArgumentException('"'.$tag.'" is not a valid tag for a cache entry.', 1233058312);
         }
         $entries = [];
         $identifiers = $this->backend->findIdentifiersByTag($tag);
         foreach ($identifiers as $identifier) {
             $rawResult = $this->backend->get($identifier);
             if (false !== $rawResult) {
-                $entries[$identifier] = $this->backend instanceof TransientBackendInterface ? $rawResult : \unserialize($rawResult);
+                $entries[$identifier] = $this->backend instanceof TransientBackendInterface ? $rawResult : unserialize($rawResult);
             }
         }
 

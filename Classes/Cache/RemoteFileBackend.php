@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use SFC\Staticfilecache\Exception;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
 use TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface;
@@ -16,7 +17,6 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * RemoteFileBackend.
@@ -26,22 +26,22 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     /**
      * Relative folder name.
      */
-    const RELATIVE_STORAGE_FOLDER = 'typo3temp/remote/';
+    public const RELATIVE_STORAGE_FOLDER = 'typo3temp/remote/';
 
     /**
      * File extension for tag files.
      */
-    const FILE_EXTENSION_TAG = '.cache.tags';
+    public const FILE_EXTENSION_TAG = '.cache.tags';
 
     /**
      * File extension for lifetime files.
      */
-    const FILE_EXTENSION_LIFETIME = '.cache.lifetime';
+    public const FILE_EXTENSION_LIFETIME = '.cache.lifetime';
 
     /**
      * File extension for lifetime files.
      */
-    const FILE_EXTENSION_IDENTIFIER = '.cache.ident';
+    public const FILE_EXTENSION_IDENTIFIER = '.cache.ident';
 
     /**
      * Is freezed?
@@ -51,16 +51,14 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     protected $freeze = false;
 
     /**
-     * Hash length
+     * Hash length.
      *
      * @var int
      */
     protected $hashLength = 3;
 
     /**
-     * Set hash length
-     *
-     * @param int $hashLength
+     * Set hash length.
      */
     public function setHashLength(int $hashLength): void
     {
@@ -77,14 +75,14 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set
      * @throws InvalidDataException            if the data is not a string
-     * @throws \Exception            If thee backend is frozen
+     * @throws \Exception                      If thee backend is frozen
      *
      * @api
      */
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
     {
         if ($this->freeze) {
-            throw new \Exception('Backend is frozen!', 123789);
+            throw new Exception('Backend is frozen!', 123789);
         }
         $this->remove($entryIdentifier);
         $fileName = $this->getFileName($entryIdentifier);
@@ -94,24 +92,24 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         } else {
             $content = GeneralUtility::getUrl($entryIdentifier);
             if (false === $content) {
-                throw new InvalidDataException('Could not fetch URL: ' . $entryIdentifier, 56757677);
+                throw new InvalidDataException('Could not fetch URL: '.$entryIdentifier, 56757677);
             }
         }
 
         // Check cache dir
         $absoluteCacheDir = GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER);
-        if (!\is_dir(PathUtility::dirname($absoluteCacheDir . $fileName))) {
-            GeneralUtility::mkdir_deep(PathUtility::dirname($absoluteCacheDir . $fileName));
+        if (!is_dir(PathUtility::dirname($absoluteCacheDir.$fileName))) {
+            GeneralUtility::mkdir_deep(PathUtility::dirname($absoluteCacheDir.$fileName));
         }
 
         // create files
-        if (false === GeneralUtility::writeFile($absoluteCacheDir . $fileName, $content, true)) {
+        if (false === GeneralUtility::writeFile($absoluteCacheDir.$fileName, $content, true)) {
             throw new InvalidDataException('Could not write local cache file', 7324892);
         }
 
-        GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_TAG, '|' . \implode('|', $tags) . '|');
-        GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_LIFETIME, $this->calculateExpiryTime($lifetime)->getTimestamp());
-        GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_IDENTIFIER, $entryIdentifier);
+        GeneralUtility::writeFile($absoluteCacheDir.$fileName.self::FILE_EXTENSION_TAG, '|'.implode('|', $tags).'|');
+        GeneralUtility::writeFile($absoluteCacheDir.$fileName.self::FILE_EXTENSION_LIFETIME, $this->calculateExpiryTime($lifetime)->getTimestamp());
+        GeneralUtility::writeFile($absoluteCacheDir.$fileName.self::FILE_EXTENSION_IDENTIFIER, $entryIdentifier);
     }
 
     /**
@@ -129,7 +127,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
             return false;
         }
 
-        return self::RELATIVE_STORAGE_FOLDER . $this->getFileName($entryIdentifier);
+        return self::RELATIVE_STORAGE_FOLDER.$this->getFileName($entryIdentifier);
     }
 
     /**
@@ -145,15 +143,15 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     {
         $folder = GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER);
         $fileName = $this->getFileName($entryIdentifier);
-        if (!\is_file($folder . $fileName)) {
+        if (!is_file($folder.$fileName)) {
             return false;
         }
         if ($this->freeze) {
             return true;
         }
-        $validUntil = (int)\file_get_contents($folder . $fileName . self::FILE_EXTENSION_LIFETIME);
+        $validUntil = (int) file_get_contents($folder.$fileName.self::FILE_EXTENSION_LIFETIME);
 
-        return $validUntil > \time();
+        return $validUntil > time();
     }
 
     /**
@@ -172,20 +170,20 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     public function remove($entryIdentifier)
     {
         if ($this->freeze) {
-            throw new \Exception('Backend is frozen!', 123789);
+            throw new Exception('Backend is frozen!', 123789);
         }
         $folder = GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER);
         $fileName = $this->getFileName($entryIdentifier);
-        if (!\is_file($folder . $fileName)) {
+        if (!is_file($folder.$fileName)) {
             return false;
         }
 
         // Remove files
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->file($folder . $fileName);
-        $removeService->file($folder . $fileName . self::FILE_EXTENSION_TAG);
-        $removeService->file($folder . $fileName . self::FILE_EXTENSION_LIFETIME);
-        $removeService->file($folder . $fileName . self::FILE_EXTENSION_IDENTIFIER);
+        $removeService->file($folder.$fileName);
+        $removeService->file($folder.$fileName.self::FILE_EXTENSION_TAG);
+        $removeService->file($folder.$fileName.self::FILE_EXTENSION_LIFETIME);
+        $removeService->file($folder.$fileName.self::FILE_EXTENSION_IDENTIFIER);
 
         return true;
     }
@@ -195,7 +193,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      *
      * @api
      */
-    public function flush()
+    public function flush(): void
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
         $removeService->directory(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER));
@@ -209,19 +207,19 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      *
      * @throws \Exception If the backend is frozen
      */
-    public function collectGarbage()
+    public function collectGarbage(): void
     {
         if ($this->freeze) {
             throw new \Exception('Backend is frozen!', 123789);
         }
 
-        $lifetimeFiles = \glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*/*/*' . self::FILE_EXTENSION_LIFETIME);
+        $lifetimeFiles = glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER).'*/*/*'.self::FILE_EXTENSION_LIFETIME);
 
         $identifiers = [];
 
         foreach ($lifetimeFiles as $lifetimeFile) {
-            if ((int)\file_get_contents($lifetimeFile) < \time()) {
-                $identifiers[] = \file_get_contents(\str_replace(self::FILE_EXTENSION_LIFETIME, self::FILE_EXTENSION_IDENTIFIER, $lifetimeFile));
+            if ((int) file_get_contents($lifetimeFile) < time()) {
+                $identifiers[] = file_get_contents(str_replace(self::FILE_EXTENSION_LIFETIME, self::FILE_EXTENSION_IDENTIFIER, $lifetimeFile));
             }
         }
 
@@ -239,7 +237,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      *
      * @throws \Exception
      */
-    public function flushByTag($tag)
+    public function flushByTag($tag): void
     {
         if ($this->freeze) {
             throw new \Exception('Backend is frozen!', 123789);
@@ -262,11 +260,11 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      */
     public function findIdentifiersByTag($tag)
     {
-        $tagsFiles = \glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*/*/*' . self::FILE_EXTENSION_TAG);
+        $tagsFiles = glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER).'*/*/*'.self::FILE_EXTENSION_TAG);
         $identifiers = [];
         foreach ($tagsFiles as $tagsFile) {
-            if (false !== \mb_strpos(\file_get_contents($tagsFile), '|' . $tag . '|')) {
-                $identifiers[] = \file_get_contents(\str_replace(self::FILE_EXTENSION_TAG, self::FILE_EXTENSION_IDENTIFIER, $tagsFile));
+            if (false !== mb_strpos(file_get_contents($tagsFile), '|'.$tag.'|')) {
+                $identifiers[] = file_get_contents(str_replace(self::FILE_EXTENSION_TAG, self::FILE_EXTENSION_IDENTIFIER, $tagsFile));
             }
         }
 
@@ -283,7 +281,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      * On the positive side, a frozen cache backend is much faster on read access.
      * A frozen backend can only be thawn by calling the flush() method.
      */
-    public function freeze()
+    public function freeze(): void
     {
         $this->freeze = true;
     }
@@ -301,39 +299,36 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     /**
      * Get filename.
      *
-     * @param string $entryIdentifier
-     *
      * @throws \Exception
-     * @return string
      */
     protected function getFileName(string $entryIdentifier): string
     {
-        $urlParts = \parse_url($entryIdentifier);
+        $urlParts = parse_url($entryIdentifier);
         if (isset($urlParts['path'])) {
             $pathInfo = PathUtility::pathinfo($urlParts['path']);
             if (isset($pathInfo['basename'])) {
-                $baseName = \urldecode($pathInfo['basename']);
+                $baseName = urldecode($pathInfo['basename']);
             } elseif (isset($pathInfo['filename'])) {
-                $baseName = \urldecode($pathInfo['filename']);
+                $baseName = urldecode($pathInfo['filename']);
             } else {
-                throw new \Exception('Could not fetch basename or filename of ' . $entryIdentifier, 123678);
+                throw new Exception('Could not fetch basename or filename of '.$entryIdentifier, 123678);
             }
         } else {
-            throw new \Exception('Could not fetch a valid path from identifier ' . $entryIdentifier, 23478);
+            throw new Exception('Could not fetch a valid path from identifier '.$entryIdentifier, 23478);
         }
 
         try {
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $resourceFactory = $objectManager->get(ResourceFactory::class);
+            $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
             $storage = $resourceFactory->getDefaultStorage();
-            $baseName = (string)$storage->sanitizeFileName($baseName);
+            $baseName = (string) $storage->sanitizeFileName($baseName);
         } catch (\Exception $exception) {
-            $this->logger->warning('Could not sanitize the filename for remote_file backend: ' . $exception->getMessage(), ['uri' => $entryIdentifier]);
+            $this->logger->warning('Could not sanitize the filename for remote_file backend: '.$exception->getMessage(), ['uri' => $entryIdentifier]);
         }
 
         // Hash
-        $hash = (string)GeneralUtility::shortMD5($entryIdentifier, $this->hashLength);
-        $remoteStructure = \implode('/', str_split($hash));
-        return $remoteStructure . '/' . $baseName;
+        $hash = (string) GeneralUtility::shortMD5($entryIdentifier, $this->hashLength);
+        $remoteStructure = implode('/', str_split($hash));
+
+        return $remoteStructure.'/'.$baseName;
     }
 }

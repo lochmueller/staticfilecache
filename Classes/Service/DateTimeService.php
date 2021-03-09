@@ -18,8 +18,6 @@ class DateTimeService extends AbstractService
     /**
      * Get current time
      * Same time for the complete request.
-     *
-     * @return int
      */
     public function getCurrentTime(): int
     {
@@ -27,11 +25,13 @@ class DateTimeService extends AbstractService
         if (0 !== $time) {
             return $time;
         }
+
         try {
-            $time = (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
+            $time = (int) GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
         } catch (\Exception $exception) {
             $time = time();
         }
+
         return $time;
     }
 }

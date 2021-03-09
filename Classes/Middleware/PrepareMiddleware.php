@@ -13,6 +13,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\Rule\AbstractRule;
+use SFC\Staticfilecache\Event\CacheRuleEvent;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\HttpPushService;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
 use SFC\Staticfilecache\Service\TypoScriptFrontendService;
@@ -24,17 +26,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PrepareMiddleware implements MiddlewareInterface
 {
     /**
+     * @var \Psr\EventDispatcher\EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * PrepareMiddleware constructor.
+     */
+    public function __construct(\Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
      * Process an incoming server request.
      *
      * Processes an incoming server request in order to produce a response.
      * If unable to produce the response itself, it may delegate to the provided
      * request handler to do so.
-     *
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -43,31 +52,38 @@ class PrepareMiddleware implements MiddlewareInterface
         $explanation = [];
         $skipProcessing = false;
         foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('CacheRule') as $rule) {
-            /** @var $rule AbstractRule */
-            $rule->checkRule($GLOBALS['TSFE'], $request, $explanation, $skipProcessing);
+            // @var $rule AbstractRule
+            $rule->checkRule($request, $explanation, $skipProcessing);
         }
 
-        if (!$skipProcessing) {
-            $cacheTags = GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getTags();
-            $cacheTags[] = 'sfc_pageId_' . $GLOBALS['TSFE']->page['uid'];
-            $cacheTags[] = 'sfc_domain_' . \str_replace('.', '_', $request->getUri()->getHost());
+        $event = new CacheRuleEvent($request, $explanation, $skipProcessing);
+        $this->eventDispatcher->dispatch($event);
 
-            if (empty($explanation)) {
+        if (!$event->isSkipProcessing()) {
+            $cacheTags = GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getTags();
+            $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+            if (false === (bool) $configuration->get('clearCacheForAllDomains')) {
+                $cacheTags[] = 'sfc_domain_'.str_replace('.', '_', $event->getRequest()->getUri()->getHost());
+            }
+
+            if (empty($event->getExplanation())) {
                 $response = $response->withHeader('X-SFC-Cachable', '1');
             } else {
                 $cacheTags[] = 'explanation';
                 $response = $response->withHeader('X-SFC-Cachable', '0');
-                foreach ($explanation as $item) {
+                foreach ($event->getExplanation() as $item) {
                     $response = $response->withAddedHeader('X-SFC-Explanation', $item);
                 }
             }
 
-            $response = $response->withHeader('X-SFC-Tags', $cacheTags);
+            if (!empty($cacheTags)) {
+                $response = $response->withHeader('X-SFC-Tags', $cacheTags);
+            }
         }
 
-        $pushHeaders = (array)GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders((string)$response->getBody());
+        $pushHeaders = (array) GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders((string) $response->getBody());
         foreach ($pushHeaders as $pushHeader) {
-            $response = $response->withAddedHeader('Link', '<' . $pushHeader['path'] . '>; rel=preload; as=' . $pushHeader['type']);
+            $response = $response->withAddedHeader('Link', '<'.$pushHeader['path'].'>; rel=preload; as='.$pushHeader['type']);
         }
 
         return $response;

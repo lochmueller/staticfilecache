@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -28,9 +29,20 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 class BackendController extends ActionController
 {
     /**
+     * @var QueueService
+     */
+    protected $queueService;
+
+    /**
+     * BackendController constructor.
+     */
+    public function __construct(QueueService $queueService)
+    {
+        $this->queueService = $queueService;
+    }
+
+    /**
      * MAIN function for static publishing information.
-     *
-     * @param string $filter
      */
     public function listAction(string $filter = ''): void
     {
@@ -50,23 +62,23 @@ class BackendController extends ActionController
      */
     public function boostAction($run = false): void
     {
-        $configurationService = $this->objectManager->get(ConfigurationService::class);
-        $queueRepository = $this->objectManager->get(QueueRepository::class);
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
         if ($run) {
             $items = $queueRepository->findOpen(10);
-            $queueService = GeneralUtility::makeInstance(QueueService::class);
+
             try {
                 foreach ($items as $item) {
-                    $queueService->runSingleRequest($item);
+                    $this->queueService->runSingleRequest($item);
                 }
             } catch (\Exception $exception) {
-                $this->addFlashMessage('Error in run: ' . $exception->getMessage(), 'Runner', FlashMessage::ERROR, true);
+                $this->addFlashMessage('Error in run: '.$exception->getMessage(), 'Runner', FlashMessage::ERROR, true);
             }
 
-            $this->addFlashMessage('Run ' . \count($items) . ' entries', 'Runner', FlashMessage::OK, true);
+            $this->addFlashMessage('Run '.\count($items).' entries', 'Runner', FlashMessage::OK, true);
         }
         $this->view->assignMultiple([
-            'enable' => (bool)$configurationService->get('boostMode'),
+            'enable' => (bool) $configurationService->get('boostMode'),
             'open' => \count($queueRepository->findOpen(99999999)),
             'old' => \count($queueRepository->findOld()),
         ]);
@@ -82,24 +94,21 @@ class BackendController extends ActionController
         $this->view->assignMultiple([
             'foundHtaccess' => $htaccessConfigurationService->foundConfigurationInHtaccess(),
             'missingModules' => $htaccessConfigurationService->getMissingApacheModules(),
+            'useCrawler' => ExtensionManagementUtility::isLoaded('crawler'),
             'envInfoLink' => $environmentService->getLink(),
             'envInfoMarkdown' => $environmentService->getMarkdown(),
         ]);
     }
 
     /**
-     * Set filter
-     *
-     * @param string $filter
-     *
-     * @return string
+     * Set filter.
      */
     protected function setFilter(string $filter): string
     {
         $user = $this->getBackendUser();
         $validFilter = ['all', 'cached', 'notCached'];
         if ('' === $filter) {
-            $filter = (string)$user->getSessionData('sfc_filter');
+            $filter = (string) $user->getSessionData('sfc_filter');
         }
         if (!\in_array($filter, $validFilter, true)) {
             $filter = 'all';
@@ -111,9 +120,7 @@ class BackendController extends ActionController
     }
 
     /**
-     * Get backend user
-     *
-     * @return BackendUserAuthentication
+     * Get backend user.
      */
     protected function getBackendUser(): BackendUserAuthentication
     {
@@ -122,18 +129,16 @@ class BackendController extends ActionController
 
     /**
      * Get cache pages entries.
-     *
-     * @param string $filter
-     * @return array
      */
     protected function getCachePagesEntries(string $filter): array
     {
         $rows = [];
+
         try {
             $cache = GeneralUtility::makeInstance(CacheService::class)->get();
         } catch (\Exception $exception) {
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-            $logger->error('Problems by fetching the cache: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
+            $logger->error('Problems by fetching the cache: '.$exception->getMessage().' / '.$exception->getFile().':'.$exception->getLine());
 
             return $rows;
         }
@@ -141,7 +146,7 @@ class BackendController extends ActionController
         $dbRows = GeneralUtility::makeInstance(PageRepository::class)->findForBackend($this->getCurrentUid(), $this->getDisplayMode());
 
         foreach ($dbRows as $row) {
-            $cacheEntries = $cache->getByTag('sfc_pageId_' . $row['uid']);
+            $cacheEntries = $cache->getByTag('pageId_'.$row['uid']);
             foreach ($cacheEntries as $identifier => $info) {
                 $rows[] = [
                     'uid' => $row['uid'],
@@ -150,7 +155,7 @@ class BackendController extends ActionController
                         $row,
                         true
                     ),
-                    'cached' => !is_array($info['explanation']) || empty($info['explanation']),
+                    'cached' => !\is_array($info['explanation']) || empty($info['explanation']),
                     'identifier' => $identifier,
                     'info' => $info,
                 ];
@@ -158,17 +163,16 @@ class BackendController extends ActionController
         }
 
         return array_filter($rows, function ($row) use ($filter) {
-            if ($filter === 'all') {
+            if ('all' === $filter) {
                 return true;
             }
+
             return ('cached' === $filter && $row['cached']) || ('notCached' === $filter && !$row['cached']);
         });
     }
 
     /**
      * Get display mode.
-     *
-     * @return string
      */
     protected function getDisplayMode(): string
     {
@@ -179,11 +183,9 @@ class BackendController extends ActionController
 
     /**
      * Get the current UID.
-     *
-     * @return int
      */
     protected function getCurrentUid(): int
     {
-        return (int)GeneralUtility::_GET('id');
+        return (int) GeneralUtility::_GET('id');
     }
 }

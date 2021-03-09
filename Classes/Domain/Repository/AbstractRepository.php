@@ -21,8 +21,6 @@ abstract class AbstractRepository extends StaticFileCacheObject
 {
     /**
      * Delete records.
-     *
-     * @param array $identifiers
      */
     public function delete(array $identifiers): void
     {
@@ -30,17 +28,15 @@ abstract class AbstractRepository extends StaticFileCacheObject
     }
 
     /**
-     * Truncate the table
+     * Truncate the table.
      */
-    public function truncate()
+    public function truncate(): void
     {
         $this->getConnection()->truncate($this->getTableName());
     }
 
     /**
      * Insert record.
-     *
-     * @param array $data
      */
     public function insert(array $data): void
     {
@@ -49,9 +45,6 @@ abstract class AbstractRepository extends StaticFileCacheObject
 
     /**
      * Update records.
-     *
-     * @param array $data
-     * @param array $identifiers
      */
     public function update(array $data, array $identifiers): void
     {
@@ -64,15 +57,11 @@ abstract class AbstractRepository extends StaticFileCacheObject
 
     /**
      * Get the table name.
-     *
-     * @return string
      */
     abstract protected function getTableName(): string;
 
     /**
      * Create query.
-     *
-     * @return QueryBuilder
      */
     protected function createQuery(): QueryBuilder
     {
@@ -81,8 +70,6 @@ abstract class AbstractRepository extends StaticFileCacheObject
 
     /**
      * Get connection.
-     *
-     * @return Connection
      */
     protected function getConnection(): Connection
     {

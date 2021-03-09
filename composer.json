@@ -30,11 +30,11 @@
 		}
 	],
 	"require": {
-		"php": "^7.2||^7.3||^7.4",
+		"php": "^7.3||^7.4||^8.0",
 		"ext-pdo": "*",
 		"ext-zlib": "*",
-		"typo3/cms-core": "^9.5||^10.4",
-		"typo3/cms-extensionmanager": "^9.5||^10.4"
+		"typo3/cms-core": "^10.4.6||^11.1",
+		"typo3/cms-extensionmanager": "^10.4.6||^11.1"
 	},
 	"replace": {
 		"typo3-ter/staticfilecache": "self.version"
@@ -45,14 +45,9 @@
 		"issues": "https://github.com/lochmueller/staticfilecache/issues"
 	},
 	"require-dev": {
-		"namelesscoder/typo3-repository-client": "^2.0",
 		"typo3/testing-framework": "^6.1",
-		"squizlabs/php_codesniffer": "^3.5",
-		"phpmd/phpmd": "^2.6",
-		"scrutinizer/ocular": "^1.7",
 		"friendsofphp/php-cs-fixer": "^2.16",
-		"phpmetrics/phpmetrics": "^2.5",
-		"rector/rector": "^0.6"
+		"phpmetrics/phpmetrics": "^2.5"
 	},
 	"suggest": {
 		"lochmueller/seocli": "Scan websites against SEO criteria and/or trigger the indexing process and cache warming in deployment scripts",
@@ -74,22 +69,11 @@
 			"@code:php-cs-fixer",
 			"@code:metrics"
 		],
-		"code:rector": [
-			"rector process Classes/ --config=Resources/Private/Build/Rector.yaml",
-			"rector process Tests/ --config=Resources/Private/Build/Rector.yaml",
-			"rector process Configuration/TCA/ --config=Resources/Private/Build/Rector.yaml"
-		],
 		"code:metrics": [
 			"phpmetrics --report-html=.Build/PhpMetrics . --exclude='.Build,Tests'"
 		],
-		"code:phpmd": [
-			"phpmd Classes/ text cleancode,codesize,controversial,design,naming,unusedcode"
-		],
 		"code:phpdoc": [
 			"docker run --rm -v $(pwd):/data phpdoc/phpdoc -d Classes -t .Build/phpdoc"
-		],
-		"code:phpstan": [
-			"phpstan analyse Classes"
 		],
 		"code:php-cs-fixer": [
 			"php-cs-fixer fix --config Resources/Private/Build/PhpCsFixer.php --cache-file=.Build/phpcs.cache"
