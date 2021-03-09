@@ -32,6 +32,7 @@ class GeneratorService extends AbstractService
      */
     public function remove(string $entryIdentifier, string $fileName): void
     {
+
         foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('Generator') as $implementation) {
             // @var $implementation AbstractGenerator
             $implementation->remove($entryIdentifier, $fileName);
