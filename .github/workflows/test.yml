@@ -10,9 +10,7 @@ jobs:
         with:
           php-version: '7.4'
           extensions: imagick
-      - uses: pxgamer/composer-action@master
-        with:
-          command: install --optimize-autoloader --prefer-dist
-      - uses: pxgamer/composer-action@master
-        with:
-          command: test
+      - name: Composer install
+        run: composer install --optimize-autoloader --prefer-dist
+      - name: Composer test
+        run: composer test
