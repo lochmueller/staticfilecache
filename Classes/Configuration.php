@@ -52,7 +52,7 @@ use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
  */
 class Configuration extends StaticFileCacheObject
 {
-    const EXTENSION_KEY = 'staticfilecache';
+    public const EXTENSION_KEY = 'staticfilecache';
 
     /**
      * @var array

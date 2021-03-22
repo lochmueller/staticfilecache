@@ -7,7 +7,7 @@ namespace SFC\Staticfilecache\Cache\Listener;
 use SFC\Staticfilecache\Event\CacheRuleFallbackEvent;
 
 /**
- * Solr Indexing process
+ * Solr Indexing process.
  */
 class SolrIndexingProcessListener
 {

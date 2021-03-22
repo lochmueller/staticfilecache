@@ -92,11 +92,6 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         }
     }
 
-    protected function hash(string $entryIdentifier): string
-    {
-        return hash('sha256', $entryIdentifier);
-    }
-
     /**
      * Loads data from the cache (DB).
      *
@@ -274,6 +269,11 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         }
     }
 
+    protected function hash(string $entryIdentifier): string
+    {
+        return hash('sha256', $entryIdentifier);
+    }
+
     /**
      * Get prority.
      *
@@ -311,6 +311,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
             $url = $entry['url'];
         }
         $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
+
         return $identifierBuilder->getFilepath($url);
     }
 

@@ -30,7 +30,7 @@ class HtaccessGenerator extends AbstractGenerator
 
         $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME).'/.htaccess';
         $accessTimeout = (int) $configuration->get('htaccessTimeout');
-        $lifetime = $accessTimeout ? $accessTimeout : $lifetime;
+        $lifetime = $accessTimeout ?: $lifetime;
 
         $headers = $this->getReponseHeaders($response);
         if ($configuration->isBool('debugHeaders')) {

@@ -6,5 +6,4 @@ namespace SFC\Staticfilecache;
 
 class Exception extends \Exception
 {
-
 }

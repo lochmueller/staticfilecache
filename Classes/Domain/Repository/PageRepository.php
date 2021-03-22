@@ -24,15 +24,18 @@ class PageRepository extends AbstractRepository
         $queryBuilder = $this->createQuery();
 
         $where = [];
+
         switch ($displayMode) {
             case 'current':
                 $where[] = $queryBuilder->expr()->eq('uid', $pageId);
 
                 break;
+
             case 'childs':
                 $where[] = $queryBuilder->expr()->eq('pid', $pageId);
 
                 break;
+
             case 'both':
             default:
                 $where[] = $queryBuilder->expr()->eq('uid', $pageId);

@@ -109,9 +109,9 @@ class GenerateMiddleware implements MiddlewareInterface
     {
         $entry = $this->cache->get($uri);
 
-        return false !== $entry &&
-            empty($entry['explanation']) &&
-            $entry['expires'] >= (new DateTimeService())->getCurrentTime();
+        return false !== $entry
+            && empty($entry['explanation'])
+            && $entry['expires'] >= (new DateTimeService())->getCurrentTime();
     }
 
     /**
