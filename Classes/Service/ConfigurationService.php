@@ -18,17 +18,13 @@ class ConfigurationService extends AbstractService
 {
     /**
      * Current configuration.
-     *
-     * @var array
      */
-    protected $configuration = [];
+    protected array $configuration = [];
 
     /**
      * Overrides.
-     *
-     * @var array
      */
-    protected $overrides = [];
+    protected array $overrides = [];
 
     /**
      * Build up the configuration.

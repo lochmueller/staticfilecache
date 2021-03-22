@@ -28,10 +28,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class BackendController extends ActionController
 {
-    /**
-     * @var QueueService
-     */
-    protected $queueService;
+    protected QueueService $queueService;
 
     /**
      * BackendController constructor.

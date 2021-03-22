@@ -54,10 +54,7 @@ class Configuration extends StaticFileCacheObject
 {
     public const EXTENSION_KEY = 'staticfilecache';
 
-    /**
-     * @var array
-     */
-    protected $configuration = [];
+    protected array $configuration = [];
 
     /**
      * Configuration constructor.

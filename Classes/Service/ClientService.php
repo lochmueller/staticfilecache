@@ -12,6 +12,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\HandlerStack;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use SFC\Staticfilecache\Event\BuildClientEvent;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,15 +22,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ClientService extends AbstractService
 {
-    /**
-     * @var \Psr\EventDispatcher\EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
     /**
      * PrepareMiddleware constructor.
      */
-    public function __construct(\Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }

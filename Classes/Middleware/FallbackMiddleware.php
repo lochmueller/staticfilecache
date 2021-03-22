@@ -27,15 +27,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FallbackMiddleware implements MiddlewareInterface
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface$eventDispatcher;
 
-    /**
-     * @var ConfigurationService
-     */
-    protected $configurationService;
+    protected ConfigurationService $configurationService;
 
     public function __construct(EventDispatcherInterface $eventDispatcher, ConfigurationService $configurationService)
     {

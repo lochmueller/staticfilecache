@@ -16,10 +16,8 @@ class RemoveService extends AbstractService
 {
     /**
      * Dirs that are created with "softRemoveDir" and dropped with "runRemoveDir".
-     *
-     * @var array
      */
-    protected $removeDirs = [];
+    protected array $removeDirs = [];
 
     /**
      * Finally remove the dirs.

@@ -15,8 +15,6 @@ class FontHttpPush extends AbstractHttpPush
 {
     /**
      * Check if the class can handle the file extension.
-     *
-     * @param $fileExtension
      */
     public function canHandleExtension(string $fileExtension): bool
     {

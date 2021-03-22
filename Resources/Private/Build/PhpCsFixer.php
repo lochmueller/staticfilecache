@@ -20,8 +20,9 @@ return PhpCsFixer\Config::create()
         '@DoctrineAnnotation' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
-        '@PHP73Migration' => true,
-        '@PHP71Migration:risky' => true,
+        '@PHP74Migration' => true,
+        '@PHP74Migration:risky' => true,
+        'no_superfluous_phpdoc_tags' => true,
     ])
     ->setFinder($finder)
 ;

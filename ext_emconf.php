@@ -10,7 +10,7 @@ $EM_CONF[$_EXTKEY] = [
     'constraints' => [
         'depends' => [
             'typo3' => '10.4.6-11.5.99',
-            'php' => '7.3.0-8.0.99',
+            'php' => '7.4.0-8.0.99',
         ],
     ],
     'state' => 'stable',

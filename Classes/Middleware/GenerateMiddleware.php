@@ -25,12 +25,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class GenerateMiddleware implements MiddlewareInterface
 {
-    /**
-     * Cache.
-     *
-     * @var UriFrontend
-     */
-    protected $cache;
+    protected UriFrontend $cache;
 
     /**
      * Process an incoming server request.
