@@ -11,7 +11,6 @@ namespace SFC\Staticfilecache;
 use SFC\Staticfilecache\Cache\RemoteFileBackend;
 use SFC\Staticfilecache\Cache\Rule\Enable;
 use SFC\Staticfilecache\Cache\Rule\LoginDeniedConfiguration;
-use SFC\Staticfilecache\Cache\Rule\NoBackendUser;
 use SFC\Staticfilecache\Cache\Rule\NoCrawlerCall;
 use SFC\Staticfilecache\Cache\Rule\NoFakeFrontend;
 use SFC\Staticfilecache\Cache\Rule\NoIntScripts;
@@ -20,7 +19,6 @@ use SFC\Staticfilecache\Cache\Rule\NoNoCache;
 use SFC\Staticfilecache\Cache\Rule\NoUserOrGroupSet;
 use SFC\Staticfilecache\Cache\Rule\NoWorkspacePreview;
 use SFC\Staticfilecache\Cache\Rule\SiteCacheable;
-use SFC\Staticfilecache\Cache\Rule\StaticCacheable;
 use SFC\Staticfilecache\Cache\Rule\ValidDoktype;
 use SFC\Staticfilecache\Cache\Rule\ValidPageInformation;
 use SFC\Staticfilecache\Cache\StaticFileBackend;
@@ -130,7 +128,6 @@ class Configuration extends StaticFileCacheObject
     protected function registerRules(): self
     {
         GeneralUtility::makeInstance(ObjectFactoryService::class)->set('CacheRule', [
-            'staticCacheable' => StaticCacheable::class,
             'siteCacheable' => SiteCacheable::class,
             'validDoktype' => ValidDoktype::class,
             'noWorkspacePreview' => NoWorkspacePreview::class,
@@ -138,7 +135,6 @@ class Configuration extends StaticFileCacheObject
             'noIntScripts' => NoIntScripts::class,
             'loginDeniedConfiguration' => LoginDeniedConfiguration::class,
             'noNoCache' => NoNoCache::class,
-            'noBackendUser' => NoBackendUser::class,
             'enable' => Enable::class,
             'validPageInformation' => ValidPageInformation::class,
             'noFakeFrontend' => NoFakeFrontend::class,

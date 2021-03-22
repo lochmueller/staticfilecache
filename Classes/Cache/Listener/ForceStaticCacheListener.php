@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Force the cache for special pages.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache\Listener;
