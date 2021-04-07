@@ -25,12 +25,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class GenerateMiddleware implements MiddlewareInterface
 {
-    /**
-     * Cache.
-     *
-     * @var UriFrontend
-     */
-    protected $cache;
+    protected UriFrontend $cache;
 
     /**
      * Process an incoming server request.
@@ -109,9 +104,9 @@ class GenerateMiddleware implements MiddlewareInterface
     {
         $entry = $this->cache->get($uri);
 
-        return false !== $entry &&
-            empty($entry['explanation']) &&
-            $entry['expires'] >= (new DateTimeService())->getCurrentTime();
+        return false !== $entry
+            && empty($entry['explanation'])
+            && $entry['expires'] >= (new DateTimeService())->getCurrentTime();
     }
 
     /**

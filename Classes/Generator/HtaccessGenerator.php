@@ -30,7 +30,7 @@ class HtaccessGenerator extends AbstractGenerator
 
         $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME).'/.htaccess';
         $accessTimeout = (int) $configuration->get('htaccessTimeout');
-        $lifetime = $accessTimeout ? $accessTimeout : $lifetime;
+        $lifetime = $accessTimeout ?: $lifetime;
 
         $headers = $this->getReponseHeaders($response);
         if ($configuration->isBool('debugHeaders')) {
@@ -42,9 +42,7 @@ class HtaccessGenerator extends AbstractGenerator
             $contentType = $matches[0];
         }
 
-        $headers = array_map(function ($item) {
-            return str_replace('"', '\"', $item);
-        }, $headers);
+        $headers = array_map(fn ($item) => str_replace('"', '\"', $item), $headers);
 
         $sendCacheControlHeader = isset($GLOBALS['TSFE']->config['config']['sendCacheHeaders']) ? (bool) $GLOBALS['TSFE']->config['config']['sendCacheHeaders'] : false;
 

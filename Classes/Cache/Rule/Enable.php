@@ -19,8 +19,6 @@ class Enable extends AbstractRule
 {
     /**
      * Enable.
-     *
-     * @param ServerRequestInterface $requesti
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {

@@ -6,15 +6,9 @@ namespace SFC\Staticfilecache\Event;
 
 class BuildClientEvent
 {
-    /**
-     * @var array
-     */
-    protected $options;
+    protected array $options;
 
-    /**
-     * @var array
-     */
-    protected $httpOptions;
+    protected array $httpOptions;
 
     public function __construct(array $options, array $httpOptions)
     {

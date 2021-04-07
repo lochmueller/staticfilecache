@@ -15,22 +15,16 @@ class ImageHttpPush extends AbstractHttpPush
 {
     /**
      * Image extensions.
-     *
-     * @var array
      */
-    protected $imageExtensions = ['png', 'jpg', 'jpeg'];
+    protected array $imageExtensions = ['png', 'jpg', 'jpeg'];
 
     /**
      * Last checked extension.
-     *
-     * @var string
      */
-    protected $lastExtension;
+    protected ?string $lastExtension;
 
     /**
      * Check if the class can handle the file extension.
-     *
-     * @param $fileExtension
      */
     public function canHandleExtension(string $fileExtension): bool
     {

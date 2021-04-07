@@ -5,9 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: pxgamer/composer-action@master
+      - name: Setup PHP with PECL extension
+        uses: shivammathur/setup-php@v2
         with:
-          command: install --optimize-autoloader --prefer-dist
-      - uses: pxgamer/composer-action@master
-        with:
-          command: test
+          php-version: '7.4'
+          extensions: imagick
+      - name: Composer install
+        run: composer install --optimize-autoloader --prefer-dist
+      - name: Composer test
+        run: composer test

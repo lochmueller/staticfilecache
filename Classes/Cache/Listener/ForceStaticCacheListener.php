@@ -1,13 +1,10 @@
 <?php
 
-/**
- * Force the cache for special pages.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache\Listener;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Event\CacheRuleEvent;
 use SFC\Staticfilecache\Event\ForceStaticFileCacheEvent;
@@ -18,15 +15,12 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class ForceStaticCacheListener
 {
-    /**
-     * @var \Psr\EventDispatcher\EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
     /**
      * PrepareMiddleware constructor.
      */
-    public function __construct(\Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }

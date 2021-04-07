@@ -64,5 +64,15 @@ services:
         identifier: 'SfcCacheRuleForceStaticCacheListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
 
+  SFC\Staticfilecache\Cache\Listener\StaticCacheableListener:
+    tags:
+      - name: event.listener
+        identifier: 'SfcCacheRuleStaticCacheableListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
 
+  SFC\Staticfilecache\Cache\Listener\NoBackendUserListener:
+    tags:
+      - name: event.listener
+        identifier: 'SfcCacheRuleNoBackendUserListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
 

@@ -8,11 +8,11 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class CacheRuleEvent
 {
-    protected $request;
+    protected ServerRequestInterface $request;
 
-    protected $explanation;
+    protected array $explanation;
 
-    protected $skipProcessing;
+    protected bool $skipProcessing;
 
     public function __construct(ServerRequestInterface $request, array $explanation, bool $skipProcessing)
     {

@@ -16,10 +16,8 @@ class RemoveService extends AbstractService
 {
     /**
      * Dirs that are created with "softRemoveDir" and dropped with "runRemoveDir".
-     *
-     * @var array
      */
-    protected $removeDirs = [];
+    protected array $removeDirs = [];
 
     /**
      * Finally remove the dirs.
@@ -74,7 +72,7 @@ class RemoveService extends AbstractService
     public function directory(string $absoluteDirName): self
     {
         if (is_dir($absoluteDirName)) {
-            $tempAbsoluteDir = rtrim($absoluteDirName, '/') . '_' . round(microtime(true) * 1000) . '/';
+            $tempAbsoluteDir = rtrim($absoluteDirName, '/').'_'.round(microtime(true) * 1000).'/';
             rename($absoluteDirName, $tempAbsoluteDir);
             $this->removeDirs[] = $tempAbsoluteDir;
         }

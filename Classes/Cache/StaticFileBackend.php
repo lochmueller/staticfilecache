@@ -62,7 +62,9 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         }
 
         $this->logger->debug('SFC Set', [$entryIdentifier, $tags, $lifetime]);
-        $fileName = $this->getFilepath($entryIdentifier);
+
+        $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
+        $fileName = $identifierBuilder->getFilepath($entryIdentifier);
 
         try {
             // Create dir
@@ -71,9 +73,16 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
                 GeneralUtility::mkdir_deep($cacheDir);
             }
 
+            if ($this->isHashedIdentifier()) {
+                $databaseData['url'] = $entryIdentifier;
+                $entryIdentifierForDatabase = $this->hash($entryIdentifier);
+            } else {
+                $entryIdentifierForDatabase = $entryIdentifier;
+            }
+
             // call set in front of the generation, because the set method
             // of the DB backend also call remove (this remove do not remove the folder already created above)
-            parent::set($entryIdentifier, serialize($databaseData), $tags, $realLifetime);
+            parent::set($entryIdentifierForDatabase, serialize($databaseData), $tags, $realLifetime);
 
             $this->removeStaticFiles($entryIdentifier);
 
@@ -260,6 +269,11 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         }
     }
 
+    protected function hash(string $entryIdentifier): string
+    {
+        return hash('sha256', $entryIdentifier);
+    }
+
     /**
      * Get prority.
      *
@@ -287,19 +301,18 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     protected function getFilepath(string $entryIdentifier): string
     {
+        $url = $entryIdentifier;
         if ($this->isHashedIdentifier()) {
             $data = parent::get($entryIdentifier);
             if (!$data) {
                 return '';
             }
             $entry = unserialize($data);
-
-            return $entry['url'];
+            $url = $entry['url'];
         }
-
         $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
 
-        return $identifierBuilder->getFilepath($entryIdentifier);
+        return $identifierBuilder->getFilepath($url);
     }
 
     /**

@@ -24,25 +24,14 @@ class QueueService extends AbstractService
 
     /**
      * Queue repository.
-     *
-     * @var QueueRepository
      */
-    protected $queueRepository;
+    protected QueueRepository $queueRepository;
 
-    /**
-     * @var ConfigurationService
-     */
-    protected $configurationService;
+    protected ConfigurationService $configurationService;
 
-    /**
-     * @var ClientService
-     */
-    protected $clientService;
+    protected ClientService $clientService;
 
-    /**
-     * @var CacheService
-     */
-    protected $cacheService;
+    protected CacheService $cacheService;
 
     /**
      * QueueService constructor.

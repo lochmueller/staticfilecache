@@ -16,7 +16,7 @@ validHtaccessHeaders = Content-Type,Content-Language,Link,X-SFC-Tags
 # cat=basic; type=boolean; label=Disable StaticFileCache in development: When checked, the StaticFileCache won't be generated if in development application context.
 disableInDevelopment = 0
 
-# cat=basic; type=boolean; label=Rename caching tables from cf_* to sfc_*: When checked, the caching tables of the DB layer are not prefixed with cf_* anymore. If you truncate the cf_* tables (typo3_console clear cache force) without the implementation, the cache has files but no DB representation. You could rename the tables with this options (run DB compare!!)
+# cat=basic; type=boolean; label=Rename caching tables from cache_* to sfc_*: When checked, the caching tables of the DB layer are not prefixed with cache_* anymore. If you truncate the cache_* tables (typo3_console clear cache force) without the implementation, the cache has files but no DB representation. You could rename the tables with this options (run DB compare!!)
 renameTablesToOtherPrefix = 0
 
 # cat=basic; type=boolean; label=Use reverse URI length in priority: Add "1000-URILENGTH" to the priority so the home page is much more important than deeplinks
