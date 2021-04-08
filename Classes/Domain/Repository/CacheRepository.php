@@ -44,11 +44,14 @@ class CacheRepository extends AbstractRepository
 
     /**
      * Get all the cache identifiers.
+     *
+     * @param bool $hashedIdentifier
+     * @return array<string>
      */
-    public function findAllIdentifiers(): array
+    public function findAllIdentifiers(bool $hashedIdentifier): array
     {
         $queryBuilder = $this->createQuery();
-        $rows = $queryBuilder->select('identifier')
+        $rows = $queryBuilder->select('*')
             ->from($this->getTableName())
             ->groupBy('identifier')
             ->execute()
@@ -57,7 +60,18 @@ class CacheRepository extends AbstractRepository
 
         $cacheIdentifiers = [];
         foreach ($rows as $row) {
-            $cacheIdentifiers[] = $row['identifier'];
+            if ($hashedIdentifier) {
+                $content = unserialize($row['content'], ['allowed_classes' => false]);
+                $url = $content['url'] ?? '';
+                if (!$url) {
+                    var_dump("no url");
+                    continue;
+                }
+            } else {
+                $url = $row['identifier'];
+            }
+
+            $cacheIdentifiers[] = $url;
         }
 
         return $cacheIdentifiers;

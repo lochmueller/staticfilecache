@@ -172,7 +172,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         $this->logger->debug('SFC Flush');
 
         if ($this->isBoostMode()) {
-            $identifiers = GeneralUtility::makeInstance(CacheRepository::class)->findAllIdentifiers();
+            $identifiers = GeneralUtility::makeInstance(CacheRepository::class)->findAllIdentifiers($this->isHashedIdentifier());
             $this->getQueue()->addIdentifiers($identifiers);
 
             return;

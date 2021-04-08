@@ -56,7 +56,8 @@ class ClientService extends AbstractService
     /**
      * Get a cllable client.
      *
-     * @throws \Exception
+     * @param string $domain
+     * @return \GuzzleHttp\Client
      */
     protected function getCallableClient(string $domain): Client
     {
