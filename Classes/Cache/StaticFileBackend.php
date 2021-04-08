@@ -308,7 +308,9 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
                 return '';
             }
             $entry = unserialize($data);
-            $url = $entry['url'];
+            if (!empty($entry['url'])) {
+                $url = $entry['url'];
+            }
         }
         $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
 
