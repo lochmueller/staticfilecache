@@ -308,7 +308,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
                 return '';
             }
             $entry = unserialize($data);
-            if (empty($entry['url'])) {
+            if (!empty($entry['url'])) {
                 $url = $entry['url'];
             }
         }
