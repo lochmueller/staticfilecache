@@ -64,7 +64,6 @@ class CacheRepository extends AbstractRepository
                 $content = unserialize($row['content'], ['allowed_classes' => false]);
                 $url = $content['url'] ?? '';
                 if (!$url) {
-                    var_dump("no url");
                     continue;
                 }
             } else {
