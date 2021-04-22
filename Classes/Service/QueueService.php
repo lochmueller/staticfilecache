@@ -9,7 +9,9 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Service;
 
 use SFC\Staticfilecache\Command\BoostQueueCommand;
+use SFC\Staticfilecache\Domain\Repository\CacheRepository;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Queue service.
@@ -44,52 +46,46 @@ class QueueService extends AbstractService
         $this->cacheService = $cacheService;
     }
 
+
     /**
      * Add identifiers to Queue.
      */
     public function addIdentifiers(array $identifiers, int $overridePriority = self::PRIORITY_LOW): void
     {
-        foreach ($identifiers as $identifier) {
-            $this->addIdentifier($identifier, $overridePriority);
-        }
-    }
-
-    /**
-     * Add identifier to Queue.
-     */
-    public function addIdentifier(string $identifier, int $overridePriority = self::PRIORITY_LOW): void
-    {
-        $count = $this->queueRepository->countOpenByIdentifier($identifier);
-        if ($count > 0) {
-            return;
-        }
-
-        $this->logger->debug('SFC Queue add', [$identifier]);
-
-        if ($overridePriority) {
-            $priority = $overridePriority;
-        } else {
-            $priority = self::PRIORITY_LOW;
-
-            try {
-                $cache = $this->cacheService->get();
-                $infos = $cache->get($identifier);
-                if (isset($infos['priority'])) {
-                    $priority = (int) $infos['priority'];
-                }
-            } catch (\Exception $exception) {
+        $identifiers = GeneralUtility::makeInstance(CacheRepository::class)->findUrlsByIdentifiers($identifiers);
+        foreach ($identifiers as $identifier => $url) {
+            $count = $this->queueRepository->countOpenByIdentifier($identifier);
+            if ($count > 0) {
+                return;
             }
+
+            $this->logger->debug('SFC Queue add', [$identifier]);
+
+            if ($overridePriority) {
+                $priority = $overridePriority;
+            } else {
+                $priority = self::PRIORITY_LOW;
+                try {
+                    $cache = $this->cacheService->get();
+                    $infos = $cache->get($identifier);
+                    if (isset($infos['priority'])) {
+                        $priority = (int) $infos['priority'];
+                    }
+                } catch (\Exception $exception) {
+                }
+            }
+
+            $data = [
+                'identifier' => $identifier,
+                'url' => $url,
+                'page_uid' => 0,
+                'invalid_date' => time(),
+                'call_result' => '',
+                'cache_priority' => $priority,
+            ];
+
+            $this->queueRepository->insert($data);
         }
-
-        $data = [
-            'cache_url' => $identifier,
-            'page_uid' => 0,
-            'invalid_date' => time(),
-            'call_result' => '',
-            'cache_priority' => $priority,
-        ];
-
-        $this->queueRepository->insert($data);
     }
 
     /**
@@ -102,13 +98,13 @@ class QueueService extends AbstractService
         $this->configurationService->override('boostMode', '0');
         $cache = $this->cacheService->get();
 
-        if ($cache->has($runEntry['cache_url'])) {
-            $cache->remove($runEntry['cache_url']);
+        if ($cache->has($runEntry['url'])) {
+            $cache->remove($runEntry['url']);
         }
 
         $this->logger->debug('SFC Queue run', $runEntry);
 
-        $statusCode = $this->clientService->runSingleRequest($runEntry['cache_url']);
+        $statusCode = $this->clientService->runSingleRequest($runEntry['url']);
 
         $data = [
             'call_date' => time(),

@@ -20,19 +20,42 @@ class UriFrontend extends VariableFrontend
     /**
      * Check if the identifier is a valid URI incl. host and path.
      *
-     * @param string $identifier
+     * @param string $requestUri
      *
      * @return bool
      */
-    public function isValidEntryIdentifier($identifier)
+    public function isValidEntryIdentifier($requestUri)
     {
         try {
             $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
-
-            return $identifierBuilder->isValidEntryIdentifier($identifier);
+            return $identifierBuilder->isValidEntryUri($requestUri);
         } catch (\Exception $exception) {
             return false;
         }
+    }
+
+    /**
+     * Finds and returns a variable value from the cache.
+     *
+     * @param string $entryIdentifier Identifier of the cache entry to fetch
+     *
+     * @return mixed The value
+     * @throws \InvalidArgumentException if the identifier is not valid
+     */
+    public function get($entryIdentifier)
+    {
+        $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
+        if (!$identifierBuilder->isValidEntryIdentifier($entryIdentifier)) {
+            throw new \InvalidArgumentException(
+                $entryIdentifier . '" is not a valid cache entry identifier.',
+                1233058294
+            );
+        }
+        $rawResult = $this->backend->get($entryIdentifier);
+        if ($rawResult === false) {
+            return false;
+        }
+        return $this->backend instanceof TransientBackendInterface ? $rawResult : unserialize($rawResult, ['allowed_classes' => false]);
     }
 
     /**

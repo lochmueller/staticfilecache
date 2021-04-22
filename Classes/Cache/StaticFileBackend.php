@@ -73,12 +73,8 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
                 GeneralUtility::mkdir_deep($cacheDir);
             }
 
-            if ($this->isHashedIdentifier()) {
-                $databaseData['url'] = $entryIdentifier;
-                $entryIdentifierForDatabase = $this->hash($entryIdentifier);
-            } else {
-                $entryIdentifierForDatabase = $entryIdentifier;
-            }
+            $databaseData['url'] = $entryIdentifier;
+            $entryIdentifierForDatabase = $this->hash($entryIdentifier);
 
             // call set in front of the generation, because the set method
             // of the DB backend also call remove (this remove do not remove the folder already created above)
@@ -109,7 +105,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
             return false;
         }
 
-        return unserialize($result);
+        return unserialize($result, ['allowed_classes' => false]);
     }
 
     /**
@@ -121,7 +117,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     public function has($entryIdentifier)
     {
-        return is_file($this->getFilepath($entryIdentifier)) || parent::has($entryIdentifier);
+        return $entryIdentifier && (is_file($this->getFilepath($entryIdentifier)) || parent::has($entryIdentifier));
     }
 
     /**
@@ -143,7 +139,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
         if ($this->isBoostMode()) {
             $this->getQueue()
-                ->addIdentifier($entryIdentifier)
+                ->addIdentifiers([$entryIdentifier])
             ;
 
             return true;
@@ -172,7 +168,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         $this->logger->debug('SFC Flush');
 
         if ($this->isBoostMode()) {
-            $identifiers = GeneralUtility::makeInstance(CacheRepository::class)->findAllIdentifiers($this->isHashedIdentifier());
+            $identifiers = GeneralUtility::makeInstance(CacheRepository::class)->findAllIdentifiers();
             $this->getQueue()->addIdentifiers($identifiers);
 
             return;
@@ -242,6 +238,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         if ($this->isBoostMode()) {
             $this->getQueue()->addIdentifiers($identifiers);
 
+
             return;
         }
 
@@ -294,24 +291,19 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         return $priority;
     }
 
-    /**
-     * Get the cache folder for the given entry.
-     *
-     * @param $entryIdentifier
-     */
     protected function getFilepath(string $entryIdentifier): string
     {
-        $url = $entryIdentifier;
-        if ($this->isHashedIdentifier()) {
-            $data = parent::get($entryIdentifier);
-            if (!$data) {
-                return '';
-            }
-            $entry = unserialize($data);
-            if (!empty($entry['url'])) {
-                $url = $entry['url'];
-            }
+        $data = parent::get($entryIdentifier);
+        if (!$data) {
+            return '';
         }
+
+        $entry = unserialize($data, ['allowed_classes' => false]);
+        if (empty($entry['url'])) {
+            return '';
+        }
+
+        $url = $entry['url'];
         $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);
 
         return $identifierBuilder->getFilepath($url);
@@ -359,13 +351,5 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     protected function isBoostMode(): bool
     {
         return (bool) $this->configuration->get('boostMode');
-    }
-
-    /**
-     * Check if the "hashUriInCache" feature is enabled.
-     */
-    protected function isHashedIdentifier(): bool
-    {
-        return (bool) $this->configuration->isBool('hashUriInCache');
     }
 }

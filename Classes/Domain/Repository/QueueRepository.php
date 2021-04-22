@@ -33,6 +33,8 @@ class QueueRepository extends AbstractRepository
     }
 
     /**
+     *
+     *
      * Find open by identnfier.
      *
      * @param string $identifier
@@ -41,7 +43,7 @@ class QueueRepository extends AbstractRepository
     {
         $queryBuilder = $this->createQuery();
         $where = $queryBuilder->expr()->andX(
-            $queryBuilder->expr()->eq('cache_url', $queryBuilder->createNamedParameter($identifier)),
+            $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($identifier)),
             $queryBuilder->expr()->eq('call_date', 0)
         );
 

@@ -25,52 +25,19 @@ class CacheRepository extends AbstractRepository
         $queryBuilder = $this->createQuery();
         $rows = $queryBuilder->select('identifier')
             ->from($this->getTableName())
-            ->where($queryBuilder->expr()->lt(
-                'expires',
-                $queryBuilder->createNamedParameter((new DateTimeService())->getCurrentTime(), \PDO::PARAM_INT)
-            ))
+            ->where(
+                $queryBuilder->expr()->lt(
+                    'expires',
+                    $queryBuilder->createNamedParameter((new DateTimeService())->getCurrentTime(), \PDO::PARAM_INT)
+                )
+            )
             ->groupBy('identifier')
             ->execute()
-            ->fetchAll()
-        ;
+            ->fetchAll();
 
         $cacheIdentifiers = [];
         foreach ($rows as $row) {
             $cacheIdentifiers[] = $row['identifier'];
-        }
-
-        return $cacheIdentifiers;
-    }
-
-    /**
-     * Get all the cache identifiers.
-     *
-     * @param bool $hashedIdentifier
-     * @return array<string>
-     */
-    public function findAllIdentifiers(bool $hashedIdentifier): array
-    {
-        $queryBuilder = $this->createQuery();
-        $rows = $queryBuilder->select('*')
-            ->from($this->getTableName())
-            ->groupBy('identifier')
-            ->execute()
-            ->fetchAll()
-        ;
-
-        $cacheIdentifiers = [];
-        foreach ($rows as $row) {
-            if ($hashedIdentifier) {
-                $content = unserialize($row['content'], ['allowed_classes' => false]);
-                $url = $content['url'] ?? '';
-                if (!$url) {
-                    continue;
-                }
-            } else {
-                $url = $row['identifier'];
-            }
-
-            $cacheIdentifiers[] = $url;
         }
 
         return $cacheIdentifiers;
@@ -87,6 +54,58 @@ class CacheRepository extends AbstractRepository
             $prefix = 'sfc_';
         }
 
-        return $prefix.'staticfilecache';
+        return $prefix . 'staticfilecache';
+    }
+
+    public function findAllIdentifiers(): array
+    {
+        $queryBuilder = $this->createQuery();
+        $identifiers = [];
+
+        $result = $queryBuilder->select('identifier')
+            ->from($this->getTableName())
+            ->groupBy('identifier')
+            ->execute();
+        while ($row = $result->fetchAssociative()) {
+            $identifiers[] = $row['identifier'];
+        }
+        return $identifiers;
+    }
+
+    /**
+     * @param array $identifiers
+     * @return array<string, string>
+     */
+    public function findUrlsByIdentifiers(array $identifiers): array
+    {
+        if (!$identifiers) {
+            return [];
+        }
+
+        $queryBuilder = $this->createQuery();
+        foreach ($identifiers as &$identifier) {
+            $identifier = $queryBuilder->createNamedParameter($identifier);
+        }
+        unset($identifier);
+
+        $result = $queryBuilder->select('*')
+            ->from($this->getTableName())
+            ->where(
+                $queryBuilder->expr()->in('identifier', $identifiers),
+            )
+            ->execute();
+
+        $cacheIdentifiers = [];
+        while ($row = $result->fetchAssociative()) {
+            $content = unserialize($row['content'], ['allowed_classes' => false]);
+            $url = $content['url'] ?? '';
+            if (!$url) {
+                continue;
+            }
+
+            $cacheIdentifiers[$row['identifier']] = $url;
+        }
+
+        return $cacheIdentifiers;
     }
 }

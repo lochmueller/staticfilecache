@@ -40,7 +40,7 @@ class ClientService extends AbstractService
         try {
             $host = parse_url($url, PHP_URL_HOST);
             if (false === $host) {
-                throw new \Exception('No host in cache_url', 1263782);
+                throw new \Exception('No host in url', 1263782);
             }
             $client = $this->getCallableClient($host);
             $response = $client->get($url);

@@ -27,7 +27,7 @@ class IdentifierBuilder extends StaticFileCacheObject
      */
     public function getFilepath(string $requestUri): string
     {
-        if (!$this->isValidEntryIdentifier($requestUri)) {
+        if (!$this->isValidEntryUri($requestUri)) {
             throw new \Exception('Invalid RequestUri as cache identifier: '.$requestUri, 2346782);
         }
         $urlParts = parse_url($requestUri);
@@ -59,7 +59,12 @@ class IdentifierBuilder extends StaticFileCacheObject
     /**
      * Check if the $requestUri is a valid base for cache identifier.
      */
-    public function isValidEntryIdentifier(string $requestUri): bool
+    public function isValidEntryIdentifier(string $identifier): bool
+    {
+        return preg_replace('/[a-z0-9]{64}/', '', $identifier) === '';
+    }
+
+    public function isValidEntryUri(string $requestUri): bool
     {
         if (false === GeneralUtility::isValidUrl($requestUri)) {
             return false;

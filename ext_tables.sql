@@ -13,12 +13,13 @@ CREATE TABLE pages (
 #
 CREATE TABLE tx_staticfilecache_queue (
 	uid int(11) NOT NULL auto_increment,
-	cache_url varchar(500) NOT NULL,
+	identifier varchar(64) NOT NULL,
+	url mediumtext,
 	cache_priority int(11) DEFAULT '0' NOT NULL,
 	page_uid int(11) DEFAULT '0' NOT NULL,
 	invalid_date int(11) DEFAULT '0' NOT NULL,
 	call_date int(11) DEFAULT '0' NOT NULL,
 	call_result varchar(255) NOT NULL,
 	PRIMARY KEY (uid),
-	INDEX call_date (call_date, cache_url(100))
+	INDEX call_date (call_date, url(100))
 );
