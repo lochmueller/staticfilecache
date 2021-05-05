@@ -8,9 +8,12 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Domain\Repository\CacheRepository;
+use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use SFC\Staticfilecache\Service\CacheService;
+use SFC\Staticfilecache\Service\ClientService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\GeneratorService;
@@ -350,7 +353,18 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     protected function getQueue(): QueueService
     {
-        return GeneralUtility::makeInstance(QueueService::class);
+        static $queueService;
+        if ($queueService === null) {
+            // Build Queue Service manually, because here is no DI
+            $queueService = GeneralUtility::makeInstance(
+                QueueService::class,
+                GeneralUtility::makeInstance(QueueRepository::class),
+                GeneralUtility::makeInstance(ConfigurationService::class),
+                GeneralUtility::makeInstance(ClientService::class, GeneralUtility::makeInstance(EventDispatcherInterface::class)),
+                GeneralUtility::makeInstance(CacheService::class)
+            );
+        }
+        return $queueService;
     }
 
     /**
