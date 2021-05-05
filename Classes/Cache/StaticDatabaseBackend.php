@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
@@ -19,16 +20,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * General Cache functions for StaticFileCache.
  */
-abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
+abstract class StaticDatabaseBackend extends Typo3DatabaseBackend implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     /**
      * Configuration.
-     *
-     * @var ConfigurationService
      */
-    protected $configuration;
+    protected ConfigurationService $configuration;
 
     /**
      * Constructs this backend.
@@ -40,7 +39,6 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend
     {
         parent::__construct($context, $options);
         $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $this->setLogger(GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__));
     }
 
     /**
