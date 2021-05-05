@@ -358,6 +358,10 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     protected function isBoostMode(): bool
     {
+        $ignoreBoostQueue = (bool) getenv('STATIC_FILE_CACHE_IGNORE_BOOST_QUEUE');
+        if ($ignoreBoostQueue) {
+            return false;
+        }
         return (bool) $this->configuration->get('boostMode');
     }
 
