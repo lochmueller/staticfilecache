@@ -21,14 +21,28 @@ class HtaccessConfigurationService extends AbstractService
      */
     public function foundConfigurationInHtaccess(): bool
     {
-        $htacessFile = Environment::getPublicPath().'/.htaccess';
-        if (!is_file($htacessFile)) {
-            return false;
+        foreach ($this->getHtaccessPaths() as $path) {
+            if (is_file($path)) {
+                $content = GeneralUtility::getUrl($htacessFile);
+                if ((bool) strpos($content, 'SFC_FULLPATH')) {
+                    return true;
+                }
+            }
         }
 
-        $content = GeneralUtility::getUrl($htacessFile);
+        return false;
+    }
 
-        return (bool) strpos($content, 'SFC_FULLPATH');
+    /**
+     * Get all relevant htaccess paths.
+     *
+     * @todo check if we add another path, if typo3-secure-web is installed?!
+     */
+    public function getHtaccessPaths(): array
+    {
+        return [
+            Environment::getPublicPath().'/.htaccess',
+        ];
     }
 
     /**

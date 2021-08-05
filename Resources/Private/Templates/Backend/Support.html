@@ -13,7 +13,16 @@
 			<div class="alert alert-info" role="alert">We found StaticFileCache information in the htaccess file. If the configuration is the most current you have to check by youself.</div>
 		</f:then>
 		<f:else>
-			<div class="alert alert-warning" role="alert">We couldn't find the StaticFileCache configuration in the htaccess file. Perhaps you configure the rules in the Webserver, you do not use an Apache webserver or you are using composer packages like typo3-secure-web (move the public folder away). But: In most cases the configuration is missing!! (Note: We search for "SFC_FULLPATH" in this file)</div>
+			<div class="alert alert-warning" role="alert">
+				<p>
+					The backend module couldn't find the StaticFileCache configuration in the htaccess files (paths below). Perhaps you configure the rules in the Webserver, you do not use an Apache webserver or you are using composer packages like typo3-secure-web (move the public folder away). But: In most cases the configuration is missing (note: We search for "SFC_FULLPATH" in the .htaccess file). Mind that this check is informative: to make sure StaticFileCache works, enable basic.debugHeaders and check for the x-sfc headers on your pages. x-sfc-status: TYPO3 - already in cache means that the .htaccess rewrite works as expected.
+				</p>
+				<ul>
+					<f:for each="{htaccessPaths}" as="path">
+						<li>{path}</li>
+					</f:for>
+				</ul>
+			</div>
 		</f:else>
 	</f:if>
 

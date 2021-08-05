@@ -90,6 +90,7 @@ class BackendController extends ActionController
         $environmentService = GeneralUtility::makeInstance(EnvironmentService::class);
         $this->view->assignMultiple([
             'foundHtaccess' => $htaccessConfigurationService->foundConfigurationInHtaccess(),
+            'htaccessPaths' => $htaccessConfigurationService->getHtaccessPaths(),
             'missingModules' => $htaccessConfigurationService->getMissingApacheModules(),
             'useCrawler' => ExtensionManagementUtility::isLoaded('crawler'),
             'envInfoLink' => $environmentService->getLink(),

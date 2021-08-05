@@ -354,7 +354,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     protected function getQueue(): QueueService
     {
         static $queueService;
-        if ($queueService === null) {
+        if (null === $queueService) {
             // Build Queue Service manually, because here is no DI
             $queueService = GeneralUtility::makeInstance(
                 QueueService::class,
@@ -364,6 +364,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
                 GeneralUtility::makeInstance(CacheService::class)
             );
         }
+
         return $queueService;
     }
 
@@ -376,6 +377,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         if ($ignoreBoostQueue) {
             return false;
         }
+
         return (bool) $this->configuration->get('boostMode');
     }
 

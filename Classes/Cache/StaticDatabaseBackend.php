@@ -13,7 +13,6 @@ use Psr\Log\LoggerAwareTrait;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
