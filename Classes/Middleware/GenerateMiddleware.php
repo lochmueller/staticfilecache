@@ -8,11 +8,13 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Middleware;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\UriFrontend;
+use SFC\Staticfilecache\Event\PreGenerateEvent;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\CookieService;
@@ -26,6 +28,16 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class GenerateMiddleware implements MiddlewareInterface
 {
     protected UriFrontend $cache;
+
+    protected EventDispatcherInterface $eventDispatcher;
+
+    /**
+     * GenerateMiddleware constructor.
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * Process an incoming server request.
@@ -52,7 +64,10 @@ class GenerateMiddleware implements MiddlewareInterface
             return $this->removeSfcHeaders($response);
         }
 
-        $uri = (string) $request->getUri();
+        $event = new PreGenerateEvent((string) $request->getUri(), $request, $response);
+        $this->eventDispatcher->dispatch($event);
+        $uri = $event->getUri();
+        $response = $event->getResponse();
         if (!$response->hasHeader('X-SFC-Explanation')) {
             if ($this->hasValidCacheEntry($uri) && !isset($_COOKIE[CookieService::FE_COOKIE_NAME])) {
                 $response = $response->withHeader('X-SFC-State', 'TYPO3 - already in cache');
