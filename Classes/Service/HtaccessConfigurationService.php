@@ -23,7 +23,7 @@ class HtaccessConfigurationService extends AbstractService
     {
         foreach ($this->getHtaccessPaths() as $path) {
             if (is_file($path)) {
-                $content = GeneralUtility::getUrl($htacessFile);
+                $content = GeneralUtility::getUrl($path);
                 if ((bool) strpos($content, 'SFC_FULLPATH')) {
                     return true;
                 }
