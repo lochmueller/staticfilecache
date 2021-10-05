@@ -39,7 +39,7 @@ class ConfigurationService extends AbstractService
         }
         $this->configuration = array_merge($this->configuration, $extensionConfig);
 
-        if (\is_object($GLOBALS['TSFE']) && isset($GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.']) && \is_array($GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.'])) {
+        if (\is_object($GLOBALS['TSFE'] ?? null) && isset($GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.']) && \is_array($GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.'])) {
             $this->configuration = array_merge(
                 $this->configuration,
                 $GLOBALS['TSFE']->tmpl->setup['tx_staticfilecache.']
