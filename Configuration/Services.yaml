@@ -10,6 +10,7 @@ services:
   SFC\Staticfilecache\Command\BoostQueueCommand:
     tags:
       - name: 'console.command'
+        description: 'Run (work on) the cache boost queue. Call this task every 5 minutes.'
         command: 'staticfilecache:boostQueue'
 
   SFC\Staticfilecache\EventListener\AfterPackageDeactivationListener:
