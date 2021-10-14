@@ -33,7 +33,7 @@ class BoostQueueCommand extends AbstractCommand
     {
         $this->queueRepository = $queueRepository;
         $this->queueService = $queueService;
-        parent::__construct('staticfilecache:boostQueue');
+        parent::__construct();
     }
 
     /**
@@ -42,6 +42,7 @@ class BoostQueueCommand extends AbstractCommand
     protected function configure(): void
     {
         parent::configure();
+        // @todo When compatibility is set to TYPO3 v11+ only, the description can be removed as it is defined in Services.yaml
         $this->setDescription('Run (work on) the cache boost queue. Call this task every 5 minutes.')
             ->addOption('limit-items', null, InputOption::VALUE_REQUIRED, 'Limit the items that are crawled. 0 => all', 500)
             ->addOption('stop-processing-after', null, InputOption::VALUE_REQUIRED, 'Stop crawling new items after N seconds since scheduler task started. 0 => infinite', 240)
