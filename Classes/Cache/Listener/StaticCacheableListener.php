@@ -19,7 +19,7 @@ class StaticCacheableListener
      */
     public function __invoke(CacheRuleEvent $event): void
     {
-        if (\is_object($GLOBALS['TSFE']) && !$GLOBALS['TSFE']->isStaticCacheble()) {
+        if (\is_object($GLOBALS['TSFE'] ?? null) && !$GLOBALS['TSFE']->isStaticCacheble()) {
             $event->addExplanation(__CLASS__, 'The page is not static cacheable via TypoScriptFrontend. Check the first Question on: https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Faq/Index.rst');
         }
     }
