@@ -20,7 +20,7 @@ class NoIntScripts extends AbstractRule
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
-        if (\is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->isINTincScript()) {
+        if (\is_object($GLOBALS['TSFE'] ?? null) && $GLOBALS['TSFE']->isINTincScript()) {
             foreach ((array) $GLOBALS['TSFE']->config['INTincScript'] as $key => $configuration) {
                 $explanation[__CLASS__.':'.$key] = 'The page has a INTincScript: '.implode(', ', $this->getInformation($configuration));
             }
