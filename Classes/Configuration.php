@@ -11,7 +11,6 @@ namespace SFC\Staticfilecache;
 use SFC\Staticfilecache\Cache\RemoteFileBackend;
 use SFC\Staticfilecache\Cache\Rule\Enable;
 use SFC\Staticfilecache\Cache\Rule\LoginDeniedConfiguration;
-use SFC\Staticfilecache\Cache\Rule\NoCrawlerCall;
 use SFC\Staticfilecache\Cache\Rule\NoFakeFrontend;
 use SFC\Staticfilecache\Cache\Rule\NoIntScripts;
 use SFC\Staticfilecache\Cache\Rule\NoLongPathSegment;
@@ -139,7 +138,6 @@ class Configuration extends StaticFileCacheObject
             'validPageInformation' => ValidPageInformation::class,
             'noFakeFrontend' => NoFakeFrontend::class,
             'noLongPathSegment' => NoLongPathSegment::class,
-            'noCrawlerCall' => NoCrawlerCall::class,
         ]);
 
         return $this;

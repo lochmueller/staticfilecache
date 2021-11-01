@@ -53,6 +53,9 @@
 		"lochmueller/seocli": "Scan websites against SEO criteria and/or trigger the indexing process and cache warming in deployment scripts",
 		"friendsofsymfony/http-cache": "For HTTP proxy cache services like Varnish"
 	},
+	"conflict": {
+		"tomasnorre/crawler": "<11.0.1"
+	},
 	"config": {
 		"vendor-dir": ".Build/vendor",
 		"bin-dir": ".Build/bin"
