@@ -27,7 +27,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class GenerateMiddleware implements MiddlewareInterface
 {
-    protected UriFrontend $cache;
+    protected UriFrontend ?$cache = null;
 
     protected EventDispatcherInterface $eventDispatcher;
 
