@@ -27,17 +27,19 @@ class ForceStaticCacheListener
 
     public function __invoke(CacheRuleEvent $event): void
     {
-        if ($event->isSkipProcessing() && $this->isForceCacheUri($GLOBALS['TSFE'], $event->getRequest())) {
+        if ($event->isSkipProcessing() && $this->isForceCacheUri($GLOBALS['TSFE'] ?? null, $event->getRequest())) {
             $event->setSkipProcessing(false);
             $event->truncateExplanations();
 
-            if (!\is_array($GLOBALS['TSFE']->config['INTincScript'])) {
-                // Avoid exceptions in recursivelyReplaceIntPlaceholdersInContent
-                $GLOBALS['TSFE']->config['INTincScript'] = [];
-            }
+            if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+                if (!\is_array($GLOBALS['TSFE']->config['INTincScript'])) {
+                    // Avoid exceptions in recursivelyReplaceIntPlaceholdersInContent
+                    $GLOBALS['TSFE']->config['INTincScript'] = [];
+                }
 
-            // render the plugins in the output
-            $GLOBALS['TSFE']->INTincScript();
+                // render the plugins in the output
+                $GLOBALS['TSFE']->INTincScript();
+            }
         }
     }
 

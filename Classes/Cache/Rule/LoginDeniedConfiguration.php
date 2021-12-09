@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Cache\Rule;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * LoginDeniedConfiguration.
@@ -20,7 +21,7 @@ class LoginDeniedConfiguration extends AbstractRule
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
-        if (!\is_object($GLOBALS['TSFE'] ?? null)) {
+        if (!($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
             return;
         }
         $name = 'sendCacheHeaders_onlyWhenLoginDeniedInBranch';

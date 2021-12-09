@@ -39,7 +39,7 @@ class LogoffFrontendUser extends AbstractHook
 
     private function isNewSession(AbstractUserAuthentication $parentObject): bool
     {
-        if ((new Typo3Version())->getMajorVersion() === 10) {
+        if (10 === (new Typo3Version())->getMajorVersion()) {
             return true === $parentObject->newSessionID;
         }
 
