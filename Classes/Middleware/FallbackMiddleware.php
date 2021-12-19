@@ -106,6 +106,13 @@ class FallbackMiddleware implements MiddlewareInterface
             $headers['X-SFC-State'] = 'StaticFileCache - via Fallback Middleware';
         }
         foreach ($request->getHeader('accept-encoding') as $acceptEncoding) {
+            if (false !== strpos($acceptEncoding, 'br')) {
+                if (is_file($possibleStaticFile . '.br') && is_readable($possibleStaticFile . '.br')) {
+                    $headers['Content-Encoding'] = 'br';
+                    $possibleStaticFile .= '.br';
+                }
+                break;
+            }
             if (false !== strpos($acceptEncoding, 'gzip')) {
                 if (is_file($possibleStaticFile.'.gz') && is_readable($possibleStaticFile.'.gz')) {
                     $headers['Content-Encoding'] = 'gzip';
