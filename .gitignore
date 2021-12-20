@@ -2,3 +2,4 @@
 /.Build/
 /var
 /Tests/.phpunit.result.cache
+.DS_Store
