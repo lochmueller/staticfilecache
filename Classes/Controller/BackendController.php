@@ -146,6 +146,7 @@ class BackendController extends ActionController
         foreach ($dbRows as $row) {
             $cacheEntries = $cache->getByTag('pageId_'.$row['uid']);
             foreach ($cacheEntries as $identifier => $info) {
+                $explanation = $info['explanation'] ?? [];
                 $rows[] = [
                     'uid' => $row['uid'],
                     'title' => BackendUtility::getRecordTitle(
@@ -153,7 +154,7 @@ class BackendController extends ActionController
                         $row,
                         true
                     ),
-                    'cached' => !\is_array($info['explanation']) || empty($info['explanation']),
+                    'cached' => !\is_array($explanation) || empty($explanation),
                     'identifier' => $identifier,
                     'info' => $info,
                 ];
