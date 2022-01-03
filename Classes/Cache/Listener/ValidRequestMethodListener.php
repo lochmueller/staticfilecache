@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache\Listener;
 
-use SFC\Staticfilecache\Event\CacheRuleEvent;
+use SFC\Staticfilecache\Event\CacheRuleEventInterface;
 
 /**
  * ValidRequestMethod.
  */
 class ValidRequestMethodListener
 {
-    public function __invoke(CacheRuleEvent $event): void
+    public function __invoke(CacheRuleEventInterface $event): void
     {
         if ('GET' !== $event->getRequest()->getMethod()) {
             $event->addExplanation(__CLASS__, 'The request methode has to be GET');

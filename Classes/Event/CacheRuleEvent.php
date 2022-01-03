@@ -6,7 +6,7 @@ namespace SFC\Staticfilecache\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-class CacheRuleEvent
+final class CacheRuleEvent implements CacheRuleEventInterface
 {
     protected ServerRequestInterface $request;
 

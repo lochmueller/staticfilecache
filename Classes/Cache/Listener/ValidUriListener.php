@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache\Listener;
 
-use SFC\Staticfilecache\Event\CacheRuleEvent;
+use SFC\Staticfilecache\Event\CacheRuleEventInterface;
 
 /**
  * Check if the URI is valid
@@ -12,7 +12,7 @@ use SFC\Staticfilecache\Event\CacheRuleEvent;
  */
 class ValidUriListener
 {
-    public function __invoke(CacheRuleEvent $event): void
+    public function __invoke(CacheRuleEventInterface $event): void
     {
         $uri = (string) $event->getRequest()->getUri();
         if (false !== mb_strpos($uri, '?')) {

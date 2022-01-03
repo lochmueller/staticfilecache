@@ -290,7 +290,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
             $priority += (QueueService::PRIORITY_MEDIUM - \strlen($uri));
         }
 
-        if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+        if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
             $priority += (int) $GLOBALS['TSFE']->page['tx_staticfilecache_cache_priority'];
         }
 

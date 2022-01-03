@@ -7,7 +7,7 @@ namespace SFC\Staticfilecache\Event;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
-class ForceStaticFileCacheEvent
+final class ForceStaticFileCacheEvent
 {
     protected bool $forceStatic;
 

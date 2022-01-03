@@ -7,7 +7,7 @@ namespace SFC\Staticfilecache\Event;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class PreGenerateEvent
+final class PreGenerateEvent
 {
     protected string $uri;
 

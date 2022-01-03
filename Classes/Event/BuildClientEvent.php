@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Event;
 
-class BuildClientEvent
+final class BuildClientEvent
 {
     protected array $options;
 
