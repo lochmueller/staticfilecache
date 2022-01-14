@@ -53,11 +53,11 @@ abstract class AbstractHttpPush extends AbstractService
      */
     protected function mapPathsWithType(array $paths, string $type): array
     {
-        return array_values(array_map(function ($item) use ($type) {
+        return \array_values(array_map(function ($item) use ($type) {
             return [
                 'path' => $item,
                 'type' => $type,
             ];
-        }, array_unique($paths)));
+        }, \array_unique($paths)));
     }
 }
