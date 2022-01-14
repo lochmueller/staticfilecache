@@ -206,7 +206,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
         $identifiers = [];
         foreach ($tags as $tag) {
-            $identifiers = array_merge($identifiers, $this->findIdentifiersByTagIncludingExpired($tag));
+            $identifiers = \array_merge($identifiers, $this->findIdentifiersByTagIncludingExpired($tag));
         }
 
         if ($this->isBoostMode()) {
