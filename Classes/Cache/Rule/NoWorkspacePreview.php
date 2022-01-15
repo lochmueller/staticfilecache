@@ -21,7 +21,8 @@ class NoWorkspacePreview extends AbstractRule
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
-        if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController && $GLOBALS['TSFE']->doWorkspacePreview()) {
+        $tsfe = $GLOBALS['TSFE'] ?? null;
+        if ($tsfe instanceof TypoScriptFrontendController && $tsfe->doWorkspacePreview()) {
             $explanation[__CLASS__] = 'The page is in workspace preview mode';
         }
     }
