@@ -21,11 +21,12 @@ class LoginDeniedConfiguration extends AbstractRule
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
-        if (!($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
+		$tsfe = $GLOBALS['TSFE'] ?? null;
+        if (!($tsfe instanceof TypoScriptFrontendController)) {
             return;
         }
         $name = 'sendCacheHeaders_onlyWhenLoginDeniedInBranch';
-        $loginDeniedCfg = (!($GLOBALS['TSFE']->config['config'][$name] ?? false) || !$GLOBALS['TSFE']->checkIfLoginAllowedInBranch());
+        $loginDeniedCfg = (!($tsfe->config['config'][$name] ?? false) || !$tsfe->checkIfLoginAllowedInBranch());
         if (!$loginDeniedCfg) {
             $explanation[__CLASS__] = 'LoginDeniedCfg is true';
         }
