@@ -59,6 +59,6 @@ class HtaccessConfigurationService extends AbstractService
             'mod_expires',
         ];
 
-        return \array_diff($required, apache_get_modules());
+        return array_diff($required, apache_get_modules());
     }
 }

@@ -9,11 +9,11 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class PreGenerateEvent
 {
-    protected string $uri;
+    private string $uri;
 
-    protected ServerRequestInterface $request;
+    private ServerRequestInterface $request;
 
-    protected ResponseInterface $response;
+    private ResponseInterface $response;
 
     public function __construct(string $uri, ServerRequestInterface $request, ResponseInterface $response)
     {

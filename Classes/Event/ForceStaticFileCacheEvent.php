@@ -9,11 +9,11 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 final class ForceStaticFileCacheEvent
 {
-    protected bool $forceStatic;
+    private bool $forceStatic;
 
-    protected ?TypoScriptFrontendController $frontendController;
+    private ?TypoScriptFrontendController $frontendController;
 
-    protected ServerRequestInterface $request;
+    private ServerRequestInterface $request;
 
     /**
      * ForceStaticFileCacheEvent constructor.

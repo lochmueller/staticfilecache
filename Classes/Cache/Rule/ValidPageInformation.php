@@ -23,7 +23,7 @@ class ValidPageInformation extends AbstractRule
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
-		$tsfe = $GLOBALS['TSFE'] ?? null;
+        $tsfe = $GLOBALS['TSFE'] ?? null;
         if (!$tsfe instanceof TypoScriptFrontendController || !\is_array($tsfe->page) || !$tsfe->page['uid']) {
             $skipProcessing = true;
             $explanation[__CLASS__] = 'There is no valid page in the TSFE';

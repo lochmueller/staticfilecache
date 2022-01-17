@@ -21,7 +21,7 @@ class NoIntScripts extends AbstractRule
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
-		$tsfe = $GLOBALS['TSFE'] ?? null;
+        $tsfe = $GLOBALS['TSFE'] ?? null;
         if ($tsfe instanceof TypoScriptFrontendController && $tsfe->isINTincScript()) {
             foreach ((array) $tsfe->config['INTincScript'] as $key => $configuration) {
                 $explanation[__CLASS__.':'.$key] = 'The page has a INTincScript: '.implode(', ', $this->getInformation($configuration));

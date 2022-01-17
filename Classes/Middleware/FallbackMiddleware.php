@@ -107,10 +107,11 @@ class FallbackMiddleware implements MiddlewareInterface
         }
         foreach ($request->getHeader('accept-encoding') as $acceptEncoding) {
             if (false !== strpos($acceptEncoding, 'br')) {
-                if (is_file($possibleStaticFile . '.br') && is_readable($possibleStaticFile . '.br')) {
+                if (is_file($possibleStaticFile.'.br') && is_readable($possibleStaticFile.'.br')) {
                     $headers['Content-Encoding'] = 'br';
                     $possibleStaticFile .= '.br';
                 }
+
                 break;
             }
             if (false !== strpos($acceptEncoding, 'gzip')) {

@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Event;
 
-
 use Psr\Http\Message\ServerRequestInterface;
 
 final class CacheRuleFallbackEvent implements CacheRuleEventInterface
 {
-    protected ServerRequestInterface $request;
+    private ServerRequestInterface $request;
 
-    protected array $explanation;
+    private array $explanation;
 
-    protected bool $skipProcessing;
+    private bool $skipProcessing;
 
     public function __construct(ServerRequestInterface $request, array $explanation, bool $skipProcessing)
     {

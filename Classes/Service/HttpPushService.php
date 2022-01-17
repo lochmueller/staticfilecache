@@ -22,6 +22,7 @@ class HttpPushService extends AbstractService
     public function getHttpPushHeaders(string $content): array
     {
         $headers = [];
+
         /** @var ConfigurationService $configurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         if ($configurationService->isBool('sendHttp2PushEnable')) {
@@ -42,7 +43,7 @@ class HttpPushService extends AbstractService
                 foreach ($extensions as $extension) {
                     /** @var AbstractHttpPush $handler */
                     if ($handler->canHandleExtension($extension)) {
-                        $headers = \array_merge($headers, $handler->getHeaders($content));
+                        $headers = array_merge($headers, $handler->getHeaders($content));
                     }
                 }
             }

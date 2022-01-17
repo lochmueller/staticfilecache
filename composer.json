@@ -46,7 +46,7 @@
 	},
 	"require-dev": {
 		"typo3/testing-framework": "^6.1",
-		"friendsofphp/php-cs-fixer": "^2.16",
+		"friendsofphp/php-cs-fixer": "^3.5",
 		"phpmetrics/phpmetrics": "^2.5"
 	},
 	"suggest": {
@@ -58,7 +58,11 @@
 	},
 	"config": {
 		"vendor-dir": ".Build/vendor",
-		"bin-dir": ".Build/bin"
+		"bin-dir": ".Build/bin",
+		"allow-plugins": {
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
+		}
 	},
 	"extra": {
 		"typo3/cms": {

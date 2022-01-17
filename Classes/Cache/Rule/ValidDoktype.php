@@ -20,7 +20,7 @@ class ValidDoktype extends AbstractRule
      */
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
-		$tsfe = $GLOBALS['TSFE'] ?? null;
+        $tsfe = $GLOBALS['TSFE'] ?? null;
         if (!($tsfe instanceof TypoScriptFrontendController) || !isset($GLOBALS['TSFE']->page)) {
             $explanation[__CLASS__] = 'There is no valid page in the frontendController object';
             $skipProcessing = true;

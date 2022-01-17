@@ -25,7 +25,7 @@ class EnvironmentService
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
 
-        return \array_merge([
+        return array_merge([
             'TYPO3 Version' => VersionNumberUtility::getCurrentTypo3Version(),
             'SFC Version' => ExtensionManagementUtility::getExtensionVersion('staticfilecache'),
             'PHP Version' => PHP_VERSION,

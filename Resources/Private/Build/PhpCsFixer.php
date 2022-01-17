@@ -14,7 +14,7 @@ $finder = PhpCsFixer\Finder::create()
     ->in($baseDir.'/Resources/Private/Build')
 ;
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@DoctrineAnnotation' => true,
