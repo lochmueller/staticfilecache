@@ -53,12 +53,18 @@ By the following configuration:
        if ($cookie_staticfilecache = 'typo_user_logged_in') {
            return 405;
        }
+
        if ($cookie_be_typo_user != '') {
            return 405;
        }
 
        # Ensure we redirect to TYPO3 for non GET/HEAD requests
        if ($request_method !~ ^(GET|HEAD)$ ) {
+           return 405;
+       }
+
+       # Disable cache for EXT:solr indexing requests
+       if ($http_x_tx_solr_iq) {
            return 405;
        }
 
