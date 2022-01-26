@@ -28,7 +28,7 @@ class NoFakeFrontend extends AbstractRule
         ];
         foreach ($ignorePaths as $ignorePath) {
             foreach ($this->getCallPaths() as $path) {
-                if (StringUtility::endsWith($path, $ignorePath)) {
+                if (str_ends_with($path, $ignorePath)) {
                     $skipProcessing = true;
                     $explanation[__CLASS__] = 'Fake frontend';
 
