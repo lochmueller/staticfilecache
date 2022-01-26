@@ -326,7 +326,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         }
 
         // Hash
-        $hash = (string) GeneralUtility::shortMD5($entryIdentifier, $this->hashLength);
+        $hash = substr(md5($entryIdentifier), 0, $this->hashLength);
         $remoteStructure = implode('/', str_split($hash));
 
         return $remoteStructure.'/'.$baseName;
