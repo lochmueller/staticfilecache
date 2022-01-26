@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Cache\Rule;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * No fake frontend.

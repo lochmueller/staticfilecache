@@ -13,7 +13,6 @@ use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\StaticFileCacheObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * IdentifierBuilder.
@@ -49,7 +48,7 @@ class IdentifierBuilder extends StaticFileCacheObject
         $absoluteBasePath = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory();
         $resultPath = GeneralUtility::resolveBackPath($absoluteBasePath.implode('/', $parts));
 
-        if (!StringUtility::beginsWith($resultPath, $absoluteBasePath)) {
+        if (!str_starts_with($resultPath, $absoluteBasePath)) {
             throw new Exception('The generated filename "'.$resultPath.'" should start with the cache directory "'.$absoluteBasePath.'"', 123781);
         }
 

@@ -22,7 +22,6 @@ use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -212,7 +211,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         if ($this->isBoostMode()) {
             $priority = QueueService::PRIORITY_LOW;
 
-            if (1 === \count($tags) && StringUtility::beginsWith($tags[0], 'pageId_')) {
+            if (1 === \count($tags) && str_starts_with($tags[0], 'pageId_')) {
                 $priority = QueueService::PRIORITY_HIGH;
             }
 
