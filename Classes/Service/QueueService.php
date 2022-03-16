@@ -121,5 +121,6 @@ class QueueService extends AbstractService
         }
 
         $this->queueRepository->update($data, ['uid' => (int) $runEntry['uid']]);
+        $this->configurationService->reset('boostMode');
     }
 }
