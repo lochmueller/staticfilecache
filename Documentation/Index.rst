@@ -1,26 +1,52 @@
-======================================
-StaticFileCache: Speed up TYPO3 CMS FE
-======================================
+.. include:: /Includes.rst.txt
 
-:Rendered:
-      |today|
+==========================================
+Static File Cache: Speed up TYPO3 Frontend
+==========================================
 
-:Classification:
-      staticfilecache
+:Extension key:
+   staticfilecache
 
-:Keywords:
-      forEditors, forAdmins, forBeginners, forIntermediates
+:Package name:
+   lochmueller/staticfilecache
 
-:Author:
-      StaticFileCache Team
-
-:Email:
-      none@nonenonenone.de
+:Version:
+   |release|
 
 :Language:
-      en
+   en
+
+:Author:
+   Tim Lochmüller & Contributors
+
+:License:
+   This document is published under the
+   `Creative Commons BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
+   license.
+
+:Rendered:
+   |today|
+
+----
+
+This extension brings a very flexible and very, very, very fast cache to TYPO3.
+It creates temporary HTML files from static pages and redirects the visitor to
+the HTML file without loading TYPO3 at all. Your server, whether Apache or Nginx,
+has less work and consumes less power as a result.
+
+Have fun with the extension!
+
+*Note:* This extension is a fork of `EXT:nc_staticfilecache` (before
+`EXT:fl_staticfilecache`) and has a lot of improvements. Replace the previous
+one with this one if possible.
+
+----
+
+**Table of Contents:**
 
 .. toctree::
+   :maxdepth: 1
+   :titlesonly:
 
    Introduction/Index
    Installation/Index
@@ -32,3 +58,11 @@ StaticFileCache: Speed up TYPO3 CMS FE
    News/Index
    KnownProblems/Index
    ChangeLog/Index
+
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
+   Sitemap
+   genindex

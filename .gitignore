@@ -3,3 +3,4 @@
 /var
 /Tests/.phpunit.result.cache
 .DS_Store
+/Documentation-GENERATED-temp/
