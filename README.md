@@ -3,7 +3,7 @@
 [![TYPO3 10](https://img.shields.io/badge/TYPO3-10-orange.svg)](https://get.typo3.org/version/10)
 [![Total Downloads](https://poser.pugx.org/lochmueller/staticfilecache/d/total)](https://packagist.org/packages/lochmueller/staticfilecache)
 [![Monthly Downloads](https://poser.pugx.org/lochmueller/staticfilecache/d/monthly)](https://packagist.org/packages/lochmueller/staticfilecache)
-[![Test](https://github.com/lochmueller/staticfilecache/workflows/Test/badge.svg)
+![Test](https://github.com/lochmueller/staticfilecache/workflows/Test/badge.svg)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/lochmueller/staticfilecache.svg)](http://isitmaintained.com/project/lochmueller/staticfilecache "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/lochmueller/staticfilecache.svg)](http://isitmaintained.com/project/lochmueller/staticfilecache "Percentage of issues still open")
 
