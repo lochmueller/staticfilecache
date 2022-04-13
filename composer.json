@@ -39,10 +39,12 @@
 	"replace": {
 		"typo3-ter/staticfilecache": "self.version"
 	},
-	"homepage": "https://github.com/lochmueller/staticfilecache",
 	"license": "GPL-2.0-or-later",
+	"homepage": "https://extensions.typo3.org/extension/staticfilecache",
 	"support": {
-		"issues": "https://github.com/lochmueller/staticfilecache/issues"
+		"docs": "https://docs.typo3.org/p/lochmueller/staticfilecache/main/en-us/",
+		"issues": "https://github.com/lochmueller/staticfilecache/issues",
+		"source": "https://github.com/lochmueller/staticfilecache"
 	},
 	"require-dev": {
 		"typo3/testing-framework": "^6.1",
