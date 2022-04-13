@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 Known problems
---------------
+==============
 
 Apache 2.4.7 has a bug in the mod_dir-mod_rewrite combination. This is the reason why the homepage (just "/") could not be redirected to the generated static file (all other links should work). More information in this bugreport:
 https://bz.apache.org/bugzilla/show_bug.cgi?id=56434
@@ -15,7 +15,8 @@ In order to solve the problem, the following should be added to .htaccess file o
    RewriteCond %{HTTP:X-TYPO3-mnogosearch} ^$
 
 
-If you find any other problems, please report them over at github: https://github.com/lochmueller/staticfilecache/issues
+If you find any other problems, please create an according
+`GitHub issue <https://github.com/lochmueller/staticfilecache/issues>`__.
 
 Please take some time and make a proper report stating at least:
 
@@ -38,9 +39,12 @@ There are situations, where the page is created with a new URL, but TYPO3 could 
        L = 0
    }
 
-In this configuration example you get two pages like http://www.domain.org/ and http://www.domain.org/en/ but TYPO3 call the hook only once.
+In this configuration example you get two pages like :samp:`http://www.domain.org/`
+and :samp:`http://www.domain.org/en/` but TYPO3 call the hook only once.
 
-More details and a workaround of this problem: https://github.com/lochmueller/staticfilecache/issues/7#issuecomment-317096513
+Find more details and a workaround of this problem in this
+`comment <https://github.com/lochmueller/staticfilecache/issues/7#issuecomment-317096513>`__
+of GitHub issue #7.
 
 Caching Framework with none-DB-backends
 ---------------------------------------
@@ -63,5 +67,7 @@ If you are using such mechanism, please use the "renameTablesToOtherPrefix" conf
 Using Garbage Collection
 ------------------------
 
-By using the garbage collection of the core. Please select the right backend. The Typo3DatabaseBackend should only slected in combination with the StaticFileCacheBackend to avoid problems in the cache structure.
+By using the garbage collection of the core. Please select the right backend.
+The Typo3DatabaseBackend should only selected in combination with the
+StaticFileCacheBackend to avoid problems in the cache structure.
 

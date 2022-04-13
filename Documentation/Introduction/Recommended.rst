@@ -4,7 +4,7 @@ Recommended
 ^^^^^^^^^^^
 
 - Apache mod_expires
-- TYPO3 Routing configuration or TYPO3 realurl (current version >= 2.3.1) or any other speaking URL mechanism
+- TYPO3 routing configuration or TYPO3 realurl (current version >= 2.3.1) or any other speaking URL mechanism
 
 You have to create a smart strategy to avoid editors from hitting the clear cache button all the time (more important in Boost-Mode):
 I suggest this UserTsConfig:

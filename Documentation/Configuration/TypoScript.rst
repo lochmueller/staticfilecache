@@ -9,11 +9,11 @@ You can disable the StaticFileCache by adding one line of TS:
 
    config.tx_staticfilecache.disableCache = 1
 
-This is also useful, if you want to disable StaticFileCache for specific page types or other conditions.
-https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Conditions/Index.html#gettsfe
+This is also useful, if you want to disable StaticFileCache for specific page
+types or other :ref:`conditions <t3tsref:conditions>`, for example:
 
 .. code-block:: typoscript
 
-   [getTSFE().type == YOUR_TYPE_HERE]
+   [getTSFE().type == <type>]
    config.tx_staticfilecache.disableCache = 1
    [global]

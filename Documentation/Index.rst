@@ -38,7 +38,7 @@ Have fun with the extension!
 
 *Note:* This extension is a fork of `EXT:nc_staticfilecache` (before
 `EXT:fl_staticfilecache`) and has a lot of improvements. Replace the previous
-one with this one if possible.
+ones with this one if possible.
 
 ----
 
