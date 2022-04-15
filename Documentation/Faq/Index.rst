@@ -1,3 +1,5 @@
+.. include:: /Includes.rst.txt
+
 FAQ
 ---
 
@@ -7,11 +9,10 @@ This could be any plugin, content element, TypoScript configuration or cHash cal
 Please do not create GitHub issues related to this message and search here on Github or check the Slack channel for many answers.
 
 *Q: My page is not cachable and I am using EXT:form incl. Honeypot?*
-A: This is the reason: https://docs.typo3.org/c/typo3/cms-form/master/en-us/I/FAQ/Index.html#the-honeypot-does-not-work-with-static-site-caching-what-can-i-do
+A: This is the reason: ":ref:`ext_form:faq-honeypt-session`".
 
 *Q: Tell me about caching*
-A: Here's a nice writeup on caching I found:
-http://www.port80software.com/products/cacheright/cachingandcachecontrol
+A: Here's a nice writeup on caching I found: "`Port80 Software has sunset its line of top-tier IIS server security products <https://www.port80software.com/products/cacheright/cachingandcachecontrol>`__".
 
 *Q: Ok, I did everything by the book, but no static pages are being generated, what's up?*
 A: You are logged into the backend, no pages are cached if you are logged into the backend, just like normal cache. Either logout of the backend (clear your be_typo_user cookie!) or use a different browser to generate frontend hits.
@@ -24,4 +25,4 @@ If none of the conditions are met, mod_rewrite will fall through to the next rul
 A: Hum ... although you have logged out of the backend, your be_typo_user is still in the browser. The cookie is set by default to expire at the end of the browser session. You need to either restart your browser or go to your browsers cookie management tool and drop the cookie manually.
 
 *Q: I use 'helhum/typo3-secure-web' and the files are not in the public directory. Any hints?*
-A: Yes. The problem was discussed in https://github.com/lochmueller/staticfilecache/issues/180 - Easies way is, to set the caching directory via extension configuration to "../private/typo3temp/tx_staticfilecache/".
+A: Yes. The problem was discussed in the `GitHub issue #180 <https://github.com/lochmueller/staticfilecache/issues/180>`__ - Easies way is, to set the caching directory via extension configuration to "../private/typo3temp/tx_staticfilecache/".

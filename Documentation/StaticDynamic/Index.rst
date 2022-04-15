@@ -1,10 +1,12 @@
+.. include:: /Includes.rst.txt
+
 Static dynamic extensions
 -------------------------
 
 
 You can write static-dynamic extensions. These are set to USER, but still display 'dynamic' data (. . . like most visited pages, news, rss feeds etc.). The TYPO3 and static cache will have to be cleared actively as soon as the content of the page changes.
 
-In the case of a news page this may be done using the page TSConfig clearCacheCmd setting for example (http://typo3.org/documentation/document-library/references/doc_core_tsconfig/4.0.0/view/1/3/). You can set the page TSConfig on your news folder so it will automagically clear the cache (and the static page) of your news page.
+In the case of a news page this may be done using the page TSConfig :ref:`clearCacheCmd <t3tsconfig:pagetcemain-clearcachecmd>` setting for example. You can set the page TSConfig on your news folder so it will automagically clear the cache (and the static page) of your news page.
 
 In the case of a 'random css background' or list of 'most visited' pages this can not be done using the clearCacheCmd. In such a case you can set up the cleaner script. It clears the static files and TYPO3 cache for pages that have been cached and that have 'expired' (static files are older than the cache timeout value).
 

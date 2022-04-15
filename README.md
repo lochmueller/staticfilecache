@@ -1,58 +1,32 @@
-# EXT:staticfilecache
-
-[![Latest Stable Version](https://poser.pugx.org/lochmueller/staticfilecache/v/stable)](https://packagist.org/packages/lochmueller/staticfilecache)
-[![Test](https://github.com/lochmueller/staticfilecache/workflows/Test/badge.svg)
-[![Total Downloads](https://poser.pugx.org/lochmueller/staticfilecache/downloads)](https://packagist.org/packages/lochmueller/staticfilecache)
-[![License](https://poser.pugx.org/lochmueller/staticfilecache/license)](https://packagist.org/packages/lochmueller/staticfilecache)
-[![TYPO3](https://img.shields.io/badge/TYPO3-9-orange.svg)](https://typo3.org/)
-[![TYPO3](https://img.shields.io/badge/TYPO3-10-orange.svg)](https://typo3.org/)
+[![Latest Stable Version](https://poser.pugx.org/lochmueller/staticfilecache/v/stable)](https://extensions.typo3.org/extension/staticfilecache)
+[![TYPO3 11](https://img.shields.io/badge/TYPO3-11-orange.svg)](https://get.typo3.org/version/11)
+[![TYPO3 10](https://img.shields.io/badge/TYPO3-10-orange.svg)](https://get.typo3.org/version/10)
+[![Total Downloads](https://poser.pugx.org/lochmueller/staticfilecache/d/total)](https://packagist.org/packages/lochmueller/staticfilecache)
+[![Monthly Downloads](https://poser.pugx.org/lochmueller/staticfilecache/d/monthly)](https://packagist.org/packages/lochmueller/staticfilecache)
+![Test](https://github.com/lochmueller/staticfilecache/workflows/Test/badge.svg)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/lochmueller/staticfilecache.svg)](http://isitmaintained.com/project/lochmueller/staticfilecache "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/lochmueller/staticfilecache.svg)](http://isitmaintained.com/project/lochmueller/staticfilecache "Percentage of issues still open")
 
-StaticFileCache for TYPO3. Very flexible and very, very, very fast cache ;)
+# TYPO3 extension `staticfilecache`
 
-It is recommended to install the extension in composer mode. If your TYPO3 installation is not in composer mode, you should change that (!!) or you could also copy-paste the extension manually or install it via TER (ExtensionKey: staticfilecache).
-
-> Note: EXT:staticfilecache is a fork of EXT:nc_staticfilecache (EXT:fl_staticfilecache before) and has a lots of improvements. If it possible use EXT:staticfilecache instead of one of the old ones.
-
-# Support the development of the extension
-
-- [Amazon](https://www.amazon.de/hz/wishlist/ls/SWHV1AQPUTH9)
-- [PayPal](https://www.paypal.me/lochmueller/100)
-
-# Important documentations
-
-## Introduction
-- [What does it do?](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Introduction/WhatDoesItDo.rst)
-- [What does it not do?](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Introduction/WhatDoesItNotDo.rst)
-- [Requirements](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Introduction/Requirements.rst)
-- [Recommended](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Introduction/Recommended.rst)
-- [Credits](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Introduction/Credits.rst)
-
-## Installation
-- [Installation](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Installation/Index.rst)
-
-## Configuration
-- [Overview](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Configuration/Index.rst)
-- [Page configuration](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Configuration/PageConfiguration.rst)
-- [Global configuration](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Configuration/Global.rst)
-- [htaccess file](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Configuration/Htaccess.rst)
-- [Nginx configuration](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Configuration/Nginx.rst)
-
-## More topics
-- [Monitoring](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Monitoring/Index.rst)
-- [Static dynamic extensions](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/StaticDynamic/Index.rst)
-- [The need for speed](https://github.com/lochmueller/staticfilecache/blob/master/Documentation/NeedSpeed/Index.rst)
+This extension brings a very flexible and very, very, very fast cache to TYPO3.
+It creates temporary HTML files from static pages and redirects the visitor to
+the HTML file without loading TYPO3 at all. Your server, whether Apache or Nginx,
+has less work and consumes less power as a result.
 
 Have fun with the extension!
 
+*Note:* This extension is a fork of `EXT:nc_staticfilecache` (before
+`EXT:fl_staticfilecache`) and has a lot of improvements. Replace the previous
+ones with this one if possible.
 
+|                  | URL                                                              |
+|------------------|------------------------------------------------------------------|
+| **Repository:**  | https://github.com/lochmueller/staticfilecache                   |
+| **Read online:** | https://docs.typo3.org/p/lochmueller/staticfilecache/main/en-us/ |
+| **TER:**         | https://extensions.typo3.org/extension/staticfilecache/          |
 
-##  ToDos:
-https://forge.typo3.org/attachments/download/35200/TYPO3-v10-LTS-whats-new.pdf
-- Dashboard Info
-https://docs.typo3.org/c/typo3/cms-dashboard/master/en-us/Configuration/WidgetRegistration.html
-Cache via DI
-Client nach PSR-18
-Remove SignalSlot Dispatcher
-Issues
+Support the development of the extension:
+
+- [Amazon wishlist](https://www.amazon.de/hz/wishlist/ls/SWHV1AQPUTH9)
+- [PayPal donation](https://www.paypal.me/lochmueller/100)

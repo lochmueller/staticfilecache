@@ -1,3 +1,5 @@
+.. include:: /Includes.rst.txt
+
 Static tt_news setup
 --------------------
 
