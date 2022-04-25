@@ -26,8 +26,8 @@ class StyleHttpPush extends AbstractHttpPush
      */
     public function getHeaders(string $content): array
     {
-        preg_match_all('/(?<=["\'])[^="\'\\\\]*\.css(\.gzi?p?)?(\?\d*)?(?=["\'])/', $content, $cssFiles);
-        $paths = $this->streamlineFilePaths((array) $cssFiles[0]);
+        preg_match_all('/href=(["\'])(?<href>.+?\.css(\.gzi?p?)?(\?\d*)?)\1(?!\smedia=\1print\1)/', $content, $cssFiles);
+        $paths = $this->streamlineFilePaths((array) $cssFiles['href']);
 
         return $this->mapPathsWithType($paths, 'style');
     }
