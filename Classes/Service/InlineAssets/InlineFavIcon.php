@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Service\InlineAssets;
 
 /**
- * Class inlineFavIcon.
+ * Class InlineFavIcon.
  *
  * @author Marcus Förster ; https://github.com/xerc
  */
-class inlineFavIcon extends AbstractInlineAssets
+class InlineFavIcon extends AbstractInlineAssets
 {
     /**
      * FavIcon extensions.
      */
-    private $fileExtensions = ['svg', 'ico', 'png'];
+    private $favIconExtensions = ['svg', 'ico', 'png'];
 
     /**
      * Check if the class can handle the file extension.
      */
     public function canHandleExtension(string $fileExtension): bool
     {
-        return in_array($fileExtension, $this->$fileExtensions, true);
+        return \in_array($fileExtension, $this->favIconExtensions, true);
     }
 
     public function replaceInline(string $content): string

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Service\InlineAssets;
 
 /**
- * Class inlineImages.
+ * Class InlineImages.
  *
  * @author Marcus Förster ; https://github.com/xerc
  */
-class inlineImages extends AbstractInlineAssets
+class InlineImages extends AbstractInlineAssets
 {
     /**
      * Assets extensions.
@@ -21,7 +21,7 @@ class inlineImages extends AbstractInlineAssets
      */
     public function canHandleExtension(string $fileExtension): bool
     {
-        return in_array($fileExtension, $this->$fileExtensions, true);
+        return \in_array($fileExtension, $this->imageExtensions, true);
     }
 
     public function replaceInline(string $content): string

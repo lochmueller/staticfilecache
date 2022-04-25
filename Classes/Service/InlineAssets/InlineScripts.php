@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Service\InlineAssets;
 
 /**
- * Class inlineStyles.
+ * Class InlineStyles.
  *
  * @author Marcus Förster ; https://github.com/xerc
  */
-class inlineStyles extends AbstractInlineAssets
+class InlineStyles extends AbstractInlineAssets
 {
     /**
      * Check if the class can handle the file extension.

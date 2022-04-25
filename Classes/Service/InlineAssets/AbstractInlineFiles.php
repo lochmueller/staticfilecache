@@ -11,8 +11,8 @@ abstract class AbstractInlineAssets extends SFC\Staticfilecache\Service\HttpPush
 {
     public function __construct()
     {
-      /** @var ConfigurationService $configurationService */
-      $this->configurationService = GeneralUtility::makeInstance(\SFC\Staticfilecache\Service\ConfigurationService::class);// CHECK ; src-location?!
+        /** @var ConfigurationService $configurationService */
+        $this->configurationService = GeneralUtility::makeInstance(\SFC\Staticfilecache\Service\ConfigurationService::class);// CHECK ; src-location?!
     }
 
     protected function includeAssets(string $regex, string $content) {
