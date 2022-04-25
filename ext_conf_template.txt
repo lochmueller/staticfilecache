@@ -66,3 +66,15 @@ sendHttp2PushFileLimit = 10
 
 # cat=HttpPush; type=options[No Limit=,<head> tag=head,<body> tag=body]; label=Limit the pushes to specific areas: You can select from either '<head>' or '<body>', which pushes only the assets from the named area. Otherwise, and as default, the whole '<html>' tag is taken.
 sendHttp2PushLimitToArea =
+
+# cat=InlineFiles; type=boolean; label=Inline FavIcon (experimental)
+inlineFavIcon = 0
+
+# cat=InlineFiles; type=boolean; label=Inline JS (experimental)
+inlineScripts = 0
+
+# cat=InlineFiles; type=boolean; label=Inline CSS (experimental)
+inlineStyles = 0
+
+# cat=InlineFiles; type=boolean; label=Inline CSS+Fonts (very experimental)
+inlineStyleFonts = 0
