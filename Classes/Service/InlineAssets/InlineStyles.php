@@ -14,7 +14,7 @@ class InlineStyles extends AbstractInlineAssets
     /**
      * Image extensions.
      */
-    private $imageExtensions = ['svg', 'ico', 'png', 'jpg', 'jpeg'];
+    private $imageExtensions = ['ico', 'png', 'jpg', 'jpeg'];
 
     /**
      * Fonts extensions.
@@ -43,7 +43,7 @@ class InlineStyles extends AbstractInlineAssets
 
             if($this->configurationService->get('inlineStyleAssets'))
             {
-                $file = $this->includeAssets('/(?<=url\()(["\']?)(?<src>[^\)]+?\.(?<ext>'.implode('|',$this->imageExtensions+$this->fontExtensions).'))\1(?=\))/', $file);
+                $file = $this->includeAssets('/(?<=url\()(["\']?)(?<src>[^\)]+?\.(?<ext>'.implode('|',array_merge($this->imageExtensions,$this->fontExtensions)).'))\1(?=\))/', $file);
             }
 
             $content = str_replace($matches[0][$index],'<style>'.$file.'</style>',$content);

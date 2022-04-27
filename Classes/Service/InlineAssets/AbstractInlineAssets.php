@@ -71,10 +71,11 @@ abstract class AbstractInlineAssets extends \SFC\Staticfilecache\Service\HttpPus
           break;
           case 'woff':
           case 'woff2':
-              $type = 'font/'.$match['ext'][0].';base64';
+              $type = 'font/'.$match['ext'].';base64';
               $file = base64_encode($file);
+          break;
           default:
-              $type = 'image/'.$match['ext'][0].';base64';
+              $type = 'image/'.$match['ext'].';base64';
               $file = base64_encode($file);
           break;
         }
