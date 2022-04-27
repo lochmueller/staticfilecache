@@ -80,12 +80,12 @@ class PrepareMiddleware implements MiddlewareInterface
             }
         }
 
-        $processedHtml = GeneralUtility::makeInstance(InlineAssetsService::class)->replaceInlineContent((string) $response->getBody()->__toString()));
+        $processedHtml = (string) GeneralUtility::makeInstance(InlineAssetsService::class)->replaceInlineContent((string) $response->getBody()->__toString());
         $responseBody = new Stream('php://temp', 'rw');
         $responseBody->write($processedHtml);
         $response = $response->withBody($responseBody);
 
-        $pushHeaders = (array) GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders((string) $response->getBody()__toString());
+        $pushHeaders = (array) GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders((string) $response->getBody()->__toString());
         foreach ($pushHeaders as $pushHeader) {
             $response = $response->withAddedHeader('Link', '<'.$pushHeader['path'].'>; rel=preload; as='.$pushHeader['type']);
         }
