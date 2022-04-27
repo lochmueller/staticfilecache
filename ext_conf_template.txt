@@ -71,13 +71,13 @@ sendHttp2PushLimitToArea =
 inlineFileSize = 50000
 
 # cat=InlineAssets; type=boolean; label=Inline HEAD:FavIcon (experimental)
-inlineFavIcon = 0
+inlineServiceFavIcon = 0
 
 # cat=InlineAssets; type=boolean; label=Inline HTML:JS (experimental)
-inlineScripts = 0
+inlineServiceScripts = 0
 
 # cat=InlineAssets; type=boolean; label=Inline HTML:CSS (experimental)
-inlineStyles = 0
+inlineServiceStyles = 0
 
 # cat=InlineAssets; type=boolean; label=Inline HTML:CSS:Assets (very experimental)
 inlineStyleAssets = 0

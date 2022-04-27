@@ -31,14 +31,16 @@ class InlineStyles extends AbstractInlineAssets
 
     public function replaceInline(string $content): string
     {
-        if(false === preg_match_all('/<link rel="stylesheet" href=(["\'])(?<path>.+?\.css)(\.gzi?p?)?(\?\d*)?\1(?!\smedia=\1print\1)[^>]*>/', $content, $matches)) {
+        if(false === preg_match_all('/<link rel="stylesheet" href=(["\'])(?<path>.+?\.css)(\.gzi?p?)?(\?\d*)?\1(?!\smedia=\1print\1)[^>]*>/', $content, $matches))
+        {
             return $content;
         }
 
         $paths = $this->streamlineFilePaths((array) $matches['path']);
-        foreach($paths as $index => $path) {
-
-            if($this->configurationService->get('inlineStyleAssets')) {
+        foreach($paths as $index => $path)
+        {
+            if($this->configurationService->get('inlineStyleAssets'))
+            {
                 $file = $this->includeAssets('/(?<=url\()(["\']?)(?<src>[^\)]+?\.(?<ext>'.implode('|',$this->imageExtensions+$this->fontExtensions).'))\1(?=\))/', $file);
             }
 
@@ -47,5 +49,4 @@ class InlineStyles extends AbstractInlineAssets
 
         return preg_replace('/<\/style>\s*<style>/','',$content);// cleanup
     }
-
 }

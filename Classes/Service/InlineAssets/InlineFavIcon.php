@@ -26,7 +26,8 @@ class InlineFavIcon extends AbstractInlineAssets
 
     public function replaceInline(string $content): string
     {
-        if(false === preg_match('/<link.+?rel=(").*?icon.*?\1\shref=\1(?<src>.+?\.(?<ext>'.implode('|',$fileExtensions).')))\1[^>]*>/', $content, $match)) {
+        if(false === preg_match('/<link.+?rel=(").*?icon.*?\1\shref=\1(?<src>.+?\.(?<ext>'.implode('|',$fileExtensions).')))\1[^>]*>/', $content, $match))
+        {
             return $content;
         }
 

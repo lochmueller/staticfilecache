@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service\InlineAssets;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class AbstractInlineFiles.
  *
@@ -17,30 +19,36 @@ abstract class AbstractInlineAssets extends SFC\Staticfilecache\Service\HttpPush
         $this->configurationService = GeneralUtility::makeInstance(\SFC\Staticfilecache\Service\ConfigurationService::class);// CHECK ; src-location?!
     }
 
-    protected function includeAssets(string $regex, string $content) {
-
-        return preg_replace_callback($regex, function (array $match): string {
+    protected function includeAssets(string $regex, string $content): string
+    {
+        return preg_replace_callback($regex, function (array $match): string
+        {
             return $this->parseAsset($match);
+
         }, $content);
     }
 
-    protected function parseAsset(array $match) {
-
+    protected function parseAsset(array $match): string
+    {
         $path = $this->streamlineFilePaths((array) $match['src'])[0];
-        if(!file_exists($path)) {
+        if(!file_exists($path))
+        {
             return $match[0];
         }
 
-        if(filesize($path) > $this->configurationService->get('inlineFileSize')) {
+        if(filesize($path) > $this->configurationService->get('inlineFileSize'))
+        {
           return $match[0];
         }
 
         $file = file_get_contents($path);
-        if(empty($file)) {// TODO ; needet?!
+        if(empty($file))
+        {
             return $match[0];
         }
 
-        switch($match['ext'][0]) {
+        switch($match['ext'][0])
+        {
           case 'svg':// TODO ; https://github.com/peteboere/css-crush/commit/7cd5d73f67212dfc7ec0f85e4a84932a32ce95d8
               $type = 'svg+xml;utf8';
               $file = str_replace('"','\'',$file);// quotes
@@ -61,6 +69,7 @@ abstract class AbstractInlineAssets extends SFC\Staticfilecache\Service\HttpPush
               $file = base64_encode($file);
           break;
         }
+
         return "data:$type,$file";
     }
 }

@@ -21,13 +21,14 @@ class InlineStyles extends AbstractInlineAssets
 
     public function replaceInline(string $content): string
     {
-        if(false === preg_match_all('/<script.*?src=(["\'])(?<path>.+?\.js)(\.gzi?p?)?(\?\d*)?\1[^>]*>(?=<\/script>)/', $content, $matches)) {
+        if(false === preg_match_all('/<script.*?src=(["\'])(?<path>.+?\.js)(\.gzi?p?)?(\?\d*)?\1[^>]*>(?=<\/script>)/', $content, $matches))
+        {
             return $content;
         }
 
         $paths = $this->streamlineFilePaths((array) $matches['path']);
-        foreach($paths as $index => $path) {
-
+        foreach($paths as $index => $path)
+        {
             $content = str_replace($matches[0][$index],'<script>'.$file,$content);
         }
 

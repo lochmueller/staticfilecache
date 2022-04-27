@@ -26,8 +26,8 @@ class InlineImages extends AbstractInlineAssets
 
     public function replaceInline(string $content): string
     {
-        $content = preg_replace_callback('/(?<=<img\ssrc=(["\']))(?<src>.+?\.(?<ext>'.implode('|',$this->imageExtensions).'))(?=\1)/', function (array $match): string {
-
+        $content = preg_replace_callback('/(?<=<img\ssrc=(["\']))(?<src>.+?\.(?<ext>'.implode('|',$this->imageExtensions).'))(?=\1)/', function (array $match): string
+        {
             return $this->parseAsset($match);
 
         }, $content);
