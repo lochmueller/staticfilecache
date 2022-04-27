@@ -14,12 +14,12 @@ class InlineStyles extends AbstractInlineAssets
     /**
      * Image extensions.
      */
-    private $imagesExtensions = ['svg', 'ico', 'png', 'jpg', 'jpeg'];
+    private $imageExtensions = ['svg', 'ico', 'png', 'jpg', 'jpeg'];
 
     /**
      * Fonts extensions.
      */
-    private $fontsExtensions  = ['woff', 'woff2'];
+    private $fontExtensions  = ['woff', 'woff2'];
 
     /**
      * Check if the class can handle the file extension.
@@ -38,22 +38,14 @@ class InlineStyles extends AbstractInlineAssets
         $paths = $this->streamlineFilePaths((array) $matches['path']);
         foreach($paths as $index => $path) {
 
-            if(!file_exists($path)) {// CHECK @ streamlineFilePaths ?!
-                continue;
-            }
-            $file = file_get_contents($path);
-            if(empty($file)) {// CHECK ; needet?!
-                continue;
-            }
-
             if($this->configurationService->get('inlineStyleAssets')) {
-                $file = $this->includeAssets('/(?<=url\()(["\']?)(?<src>[^\)]+?\.(?<ext>'.implode('|',$this->imagesExtensions+$this->fontsExtensions).'))\1(?=\))/', $file);
+                $file = $this->includeAssets('/(?<=url\()(["\']?)(?<src>[^\)]+?\.(?<ext>'.implode('|',$this->imageExtensions+$this->fontExtensions).'))\1(?=\))/', $file);
             }
 
             $content = str_replace($matches[0][$index],'<style>'.$file.'</style>',$content);
         }
 
-        return preg_replace('/</style>\s*<style>/','',$content);// cleanup
+        return preg_replace('/<\/style>\s*<style>/','',$content);// cleanup
     }
 
 }

@@ -30,16 +30,6 @@ class InlineFavIcon extends AbstractInlineAssets
             return $content;
         }
 
-        $path = $this->streamlineFilePaths((array) $match['src'])[0];
-        if(!file_exists($path)) {// CHECK @ streamlineFilePaths ?!
-            return $content;
-        }
-
-        $file = file_get_contents($path);
-        if(empty($match)) {// CHECK ; needet?!
-            return $content;
-        }
-
         return str_replace($match['src'],$this->parseAsset($match),$content);
     }
 }

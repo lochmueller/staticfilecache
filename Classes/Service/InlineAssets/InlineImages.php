@@ -14,7 +14,7 @@ class InlineImages extends AbstractInlineAssets
     /**
      * Assets extensions.
      */
-    private $fileExtensions = ['png', 'jpg', 'jpeg'];
+    private $imageExtensions = ['png', 'jpg', 'jpeg'];
 
     /**
      * Check if the class can handle the file extension.
@@ -26,21 +26,7 @@ class InlineImages extends AbstractInlineAssets
 
     public function replaceInline(string $content): string
     {
-        $content = preg_replace_callback('/(?<=<img\ssrc=(["\']))(?<src>.+?\.(?<ext>'.implode('|',$this->fileExtensions).'))(?=\1)/', function (array $match): string {
-
-            $path = $this->streamlineFilePaths((array) $match['path'])[0];
-            if(!file_exists($path)) {// CHECK @ streamlineFilePaths ?!
-                return $match[0];
-            }
-
-            if(filesize($path) >= $configurationService->get('inlineImages')) {
-              return $match[0];
-            }
-
-            $file = file_get_contents($path);
-            if(empty($file)) {// CHECK ; needet?!
-                return $match[0];
-            }
+        $content = preg_replace_callback('/(?<=<img\ssrc=(["\']))(?<src>.+?\.(?<ext>'.implode('|',$this->imageExtensions).'))(?=\1)/', function (array $match): string {
 
             return $this->parseAsset($match);
 

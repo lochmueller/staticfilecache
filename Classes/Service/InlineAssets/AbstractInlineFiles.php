@@ -6,6 +6,8 @@ namespace SFC\Staticfilecache\Service\InlineAssets;
 
 /**
  * Class AbstractInlineFiles.
+ *
+ * @author Marcus Förster ; https://github.com/xerc
  */
 abstract class AbstractInlineAssets extends SFC\Staticfilecache\Service\HttpPush\AbstractHttpPush
 {
@@ -28,10 +30,16 @@ abstract class AbstractInlineAssets extends SFC\Staticfilecache\Service\HttpPush
         if(!file_exists($path)) {
             return $match[0];
         }
+
+        if(filesize($path) > $this->configurationService->get('inlineFileSize')) {
+          return $match[0];
+        }
+
         $file = file_get_contents($path);
         if(empty($file)) {// TODO ; needet?!
             return $match[0];
         }
+
         switch($match['ext'][0]) {
           case 'svg':// TODO ; https://github.com/peteboere/css-crush/commit/7cd5d73f67212dfc7ec0f85e4a84932a32ce95d8
               $type = 'svg+xml;utf8';

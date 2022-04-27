@@ -27,16 +27,10 @@ class InlineStyles extends AbstractInlineAssets
 
         $paths = $this->streamlineFilePaths((array) $matches['path']);
         foreach($paths as $index => $path) {
-            if(!file_exists($path)) {// CHECK @ streamlineFilePaths ?!
-                continue;
-            }
-            $file = file_get_contents($path);
-            if(empty($file)) {// CHECK ; needet?!
-                continue;
-            }
+
             $content = str_replace($matches[0][$index],'<script>'.$file,$content);
         }
 
-        return preg_replace('<\/script>\s*<script>','',$content);// cleanup
+        return preg_replace('/<\/script>\s*<script>/','',$content);// cleanup
     }
 }
