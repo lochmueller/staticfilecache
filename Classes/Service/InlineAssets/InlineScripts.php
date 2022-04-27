@@ -21,19 +21,17 @@ class InlineScripts extends AbstractInlineAssets
 
     public function replaceInline(string $content): string
     {
-        if(false === preg_match_all('/<script.*?src=(["\'])(?<path>.+?)(\.\d+)?\.js(\.gzi?p?)?(\?\d*)?\1[^>]*>(?=<\/script>)/', $content, $matches))
-        {
+        if (false === preg_match_all('/<script.*?src=(["\'])(?<path>.+?)(\.\d+)?\.js(\.gzi?p?)?(\?\d*)?\1[^>]*>(?=<\/script>)/', $content, $matches)) {
             return $content;
         }
 
         $paths = $this->streamlineFilePaths((array) $matches['path']);
-        foreach($paths as $index => $path)
-        {
+        foreach ($paths as $index => $path) {
             $file = file_get_contents($this->sitePath.$path.'.js');
 
-            $content = str_replace($matches[0][$index],'<script>'.rtrim($file),$content);
+            $content = str_replace($matches[0][$index], '<script>'.rtrim($file), $content);
         }
 
-        return preg_replace('/<\/script>\s*<script>/','',$content);// cleanup
+        return preg_replace('/<\/script>\s*<script>/', '', $content); // cleanup
     }
 }

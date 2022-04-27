@@ -18,11 +18,9 @@ class InlineAssetsService extends AbstractService
         /** @var ConfigurationService $configurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
 
-        foreach($configurationService->getAll() as $index => $value)
-        {
-            if('inlineService' == substr($index,0,13) && (boolean) $value)
-            {
-                $content = GeneralUtility::makeInstance('SFC\Staticfilecache\Service\InlineAssets\Inline'.substr($index,13))->replaceInline($content);
+        foreach ($configurationService->getAll() as $index => $value) {
+            if ('inlineService' === substr($index, 0, 13) && (bool) $value) {
+                $content = GeneralUtility::makeInstance('SFC\Staticfilecache\Service\InlineAssets\Inline'.substr($index, 13))->replaceInline($content);
             }
         }
 

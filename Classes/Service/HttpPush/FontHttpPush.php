@@ -14,14 +14,14 @@ namespace SFC\Staticfilecache\Service\HttpPush;
 class FontHttpPush extends AbstractHttpPush
 {
     /**
-     * Fonts extensions.
-     */
-    private $fontsExtensions = ['woff', 'woff2'];
-
-    /**
      * Last checked extension.
      */
     protected ?string $lastExtension;
+
+    /**
+     * Fonts extensions.
+     */
+    private $fontsExtensions = ['woff', 'woff2'];
 
     /**
      * Check if the class can handle the file extension.
@@ -44,7 +44,7 @@ class FontHttpPush extends AbstractHttpPush
         if (null === $this->lastExtension) {
             return [];
         }
-        
+
         preg_match_all('/(?<=["\'])[^="\']*\.woff2?\.*\d*\.*(?:gzi?p?)*(?=["\'])/', $content, $fontFiles);
         $paths = $this->streamlineFilePaths((array) $fontFiles[0]);
 
