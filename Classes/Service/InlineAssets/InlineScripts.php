@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Service\InlineAssets;
 
 /**
- * Class InlineStyles.
+ * Class InlineScripts.
  *
  * @author Marcus Förster ; https://github.com/xerc
  */
-class InlineStyles extends AbstractInlineAssets
+class InlineScripts extends AbstractInlineAssets
 {
     /**
      * Check if the class can handle the file extension.
@@ -21,7 +21,7 @@ class InlineStyles extends AbstractInlineAssets
 
     public function replaceInline(string $content): string
     {
-        if(false === preg_match_all('/<script.*?src=(["\'])(?<path>.+?\.js)(\.gzi?p?)?(\?\d*)?\1[^>]*>(?=<\/script>)/', $content, $matches))
+        if(false === preg_match_all('/<script.*?src=(["\'])(?<path>.+?)(\.\d+)?\.js(\.gzi?p?)?(\?\d*)?\1[^>]*>(?=<\/script>)/', $content, $matches))
         {
             return $content;
         }
@@ -29,6 +29,8 @@ class InlineStyles extends AbstractInlineAssets
         $paths = $this->streamlineFilePaths((array) $matches['path']);
         foreach($paths as $index => $path)
         {
+            $file = file_get_contents($this->sitePath.$path.'.js');
+
             $content = str_replace($matches[0][$index],'<script>'.$file,$content);
         }
 

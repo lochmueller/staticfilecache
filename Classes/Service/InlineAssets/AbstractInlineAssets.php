@@ -11,10 +11,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Marcus Förster ; https://github.com/xerc
  */
-abstract class AbstractInlineAssets extends SFC\Staticfilecache\Service\HttpPush\AbstractHttpPush
+abstract class AbstractInlineAssets extends \SFC\Staticfilecache\Service\HttpPush\AbstractHttpPush
 {
+    abstract public function replaceInline(string $content): string;
+
+    public function getHeaders(string $content): array
+    {
+      return [];// HACK
+    }
+
     public function __construct()
     {
+        $this->sitePath = \TYPO3\CMS\Core\Core\Environment::getPublicPath(); // [^/]$
+
         /** @var ConfigurationService $configurationService */
         $this->configurationService = GeneralUtility::makeInstance(\SFC\Staticfilecache\Service\ConfigurationService::class);// CHECK ; src-location?!
     }
@@ -30,7 +39,7 @@ abstract class AbstractInlineAssets extends SFC\Staticfilecache\Service\HttpPush
 
     protected function parseAsset(array $match): string
     {
-        $path = $this->streamlineFilePaths((array) $match['src'])[0];
+        $path = $this->sitePath.$this->streamlineFilePaths((array) $match['src'])[0];
         if(!file_exists($path))
         {
             return $match[0];
@@ -38,7 +47,7 @@ abstract class AbstractInlineAssets extends SFC\Staticfilecache\Service\HttpPush
 
         if(filesize($path) > $this->configurationService->get('inlineFileSize'))
         {
-          return $match[0];
+            return $match[0];
         }
 
         $file = file_get_contents($path);
@@ -47,11 +56,11 @@ abstract class AbstractInlineAssets extends SFC\Staticfilecache\Service\HttpPush
             return $match[0];
         }
 
-        switch($match['ext'][0])
+        switch($match['ext'])
         {
           case 'svg':// TODO ; https://github.com/peteboere/css-crush/commit/7cd5d73f67212dfc7ec0f85e4a84932a32ce95d8
-              $type = 'svg+xml;utf8';
-              $file = str_replace('"','\'',$file);// quotes
+              $type = 'image/svg+xml;utf8';
+              $file = str_replace('\'','"',$file);// quotes
 
               $file = preg_replace('/\s+/',' ',$file);// whitespace
               $file = preg_replace('/#([a-f0-9]{3,6})/','%23$1',$file);// MOD:color

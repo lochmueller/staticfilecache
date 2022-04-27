@@ -81,7 +81,7 @@ class PrepareMiddleware implements MiddlewareInterface
         }
 
         $processedHtml = (string) GeneralUtility::makeInstance(InlineAssetsService::class)->replaceInlineContent((string) $response->getBody()->__toString());
-        $responseBody = new Stream('php://temp', 'rw');
+        $responseBody = new \TYPO3\CMS\Core\Http\Stream('php://temp', 'rw');
         $responseBody->write($processedHtml);
         $response = $response->withBody($responseBody);
 
