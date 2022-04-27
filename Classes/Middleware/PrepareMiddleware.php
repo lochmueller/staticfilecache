@@ -17,6 +17,7 @@ use SFC\Staticfilecache\Cache\Rule\AbstractRule;
 use SFC\Staticfilecache\Event\CacheRuleEvent;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\HttpPushService;
+use SFC\Staticfilecache\Service\InlineAssetsService;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
 use SFC\Staticfilecache\Service\TypoScriptFrontendService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -79,7 +80,12 @@ class PrepareMiddleware implements MiddlewareInterface
             }
         }
 
-        $pushHeaders = (array) GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders((string) $response->getBody());
+        $processedHtml = (string) GeneralUtility::makeInstance(InlineAssetsService::class)->replaceInlineContent((string) $response->getBody()->__toString());
+        $responseBody = new \TYPO3\CMS\Core\Http\Stream('php://temp', 'rw');
+        $responseBody->write($processedHtml);
+        $response = $response->withBody($responseBody);
+
+        $pushHeaders = (array) GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders((string) $response->getBody()->__toString());
         foreach ($pushHeaders as $pushHeader) {
             $response = $response->withAddedHeader('Link', '<'.$pushHeader['path'].'>; rel=preload; as='.$pushHeader['type']);
         }
