@@ -31,7 +31,7 @@ class InlineScripts extends AbstractInlineAssets
         {
             $file = file_get_contents($this->sitePath.$path.'.js');
 
-            $content = str_replace($matches[0][$index],'<script>'.$file,$content);
+            $content = str_replace($matches[0][$index],'<script>'.rtrim($file),$content);
         }
 
         return preg_replace('/<\/script>\s*<script>/','',$content);// cleanup

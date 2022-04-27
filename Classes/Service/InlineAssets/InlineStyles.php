@@ -19,7 +19,7 @@ class InlineStyles extends AbstractInlineAssets
     /**
      * Fonts extensions.
      */
-    private $fontExtensions  = ['woff', 'woff2'];
+    private $fontExtensions  = ['woff2'];
 
     /**
      * Check if the class can handle the file extension.
@@ -46,7 +46,7 @@ class InlineStyles extends AbstractInlineAssets
                 $file = $this->includeAssets('/(?<=url\()(["\']?)(?<src>[^\)]+?\.(?<ext>'.implode('|',array_merge($this->imageExtensions,$this->fontExtensions)).'))\1(?=\))/', $file);
             }
 
-            $content = str_replace($matches[0][$index],'<style>'.$file.'</style>',$content);
+            $content = str_replace($matches[0][$index],'<style>'.rtrim($file).'</style>',$content);
         }
 
         return preg_replace('/<\/style>\s*<style>/','',$content);// cleanup
