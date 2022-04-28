@@ -58,7 +58,7 @@ cacheTagsEnable = 0
 # cat=HttpPush; type=boolean; label=Enable HTTP/2 Push: Enable sending HTTP/2 push headers (experimental)
 sendHttp2PushEnable = 0
 
-# cat=HttpPush; type=string; label=File extensions for HTTP/2 push: Different file extension for HTTP/2 push. Please take care, that there is a Handler for parsing the file extensions. Possible values are: css,js,png,jpg,jpeg,woff,woff2
+# cat=HttpPush; type=string; label=File extensions for HTTP/2 push: Different file extension for HTTP/2 push. Please take care, that there is a Handler for parsing the file extensions. Possible values are: css,js,svg,ico,png,jpg,jpeg,woff,woff2
 sendHttp2PushFileExtensions = css,js
 
 # cat=HttpPush; type=string; label=File limit for HTTP/2 push: The limit of files that are added as HTTP/2 push

@@ -45,8 +45,11 @@ class FontHttpPush extends AbstractHttpPush
             return [];
         }
 
-        preg_match_all('/(?<=["\'])[^="\']*\.woff2?\.*\d*\.*(?:gzi?p?)*(?=["\'])/', $content, $fontFiles);
-        $paths = $this->streamlineFilePaths((array) $fontFiles[0]);
+        if(!preg_match_all('/(?<=")(?<src>[^"]+?\.'.$this->lastExtension.')(?=")/', $content, $fontFiles)) {
+            return [];
+        }
+
+        $paths = $this->streamlineFilePaths((array) $fontFiles['src']);
 
         return $this->mapPathsWithType($paths, 'font');
     }
