@@ -38,7 +38,7 @@ class HtaccessGenerator extends AbstractGenerator
         }
 
         $contentType = 'text/html';
-        if (isset($headers['Content-Type']) && preg_match('/[a-z-]*\/[a-z-]*/', $headers['Content-Type'], $matches)) {
+        if (isset($headers['Content-Type']) && preg_match('/[a-z\-]+\/[a-z\-]+/', $headers['Content-Type'], $matches)) {
             $contentType = $matches[0];
         }
 

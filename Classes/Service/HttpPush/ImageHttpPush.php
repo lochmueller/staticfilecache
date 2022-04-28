@@ -14,14 +14,14 @@ namespace SFC\Staticfilecache\Service\HttpPush;
 class ImageHttpPush extends AbstractHttpPush
 {
     /**
-     * Image extensions.
-     */
-    protected array $imageExtensions = ['png', 'jpg', 'jpeg'];
-
-    /**
      * Last checked extension.
      */
     protected ?string $lastExtension;
+
+    /**
+     * Image extensions.
+     */
+    protected array $imageExtensions = ['ico', 'png', 'jpg', 'jpeg'];
 
     /**
      * Check if the class can handle the file extension.
@@ -45,8 +45,11 @@ class ImageHttpPush extends AbstractHttpPush
             return [];
         }
 
-        preg_match_all('/(?<=["\'])[^="\'\\\\]*\.('.$this->lastExtension.')\.*\d*\.*(?=["\'])/', $content, $imagesFiles);
-        $paths = $this->streamlineFilePaths((array) $imagesFiles[0]);
+        if(!preg_match_all('/(?<=")(?<src>[^"]+?\.'.$this->lastExtension.')(?=")/', $content, $imageFiles)) {
+            return [];
+        }
+
+        $paths = $this->streamlineFilePaths((array) $imageFiles['src']);
 
         return $this->mapPathsWithType($paths, 'image');
     }

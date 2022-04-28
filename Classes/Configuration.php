@@ -35,6 +35,7 @@ use SFC\Staticfilecache\Service\HttpPush\FontHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\ImageHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\ScriptHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\StyleHttpPush;
+use SFC\Staticfilecache\Service\HttpPush\SvgHttpPush;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -222,6 +223,7 @@ class Configuration extends StaticFileCacheObject
             'script' => ScriptHttpPush::class,
             'image' => ImageHttpPush::class,
             'font' => FontHttpPush::class,
+            'svg' => SvgHttpPush::class
         ]);
 
         return $this;
