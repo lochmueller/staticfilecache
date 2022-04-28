@@ -26,7 +26,7 @@ class StyleHttpPush extends AbstractHttpPush
      */
     public function getHeaders(string $content): array
     {
-        if(!preg_match_all('/(?<=href=")(?<src>[^"]+?\.css(\.gzi?p?)?(\?\d+)?)(?=")(?!media="print")/', $content, $cssFiles)) {
+        if(!preg_match_all('/(?<=href=")(?<src>[^"]+?\.css(\.gzi?p?)?(\?\d+)?)(?=")(?!\smedia="print")/', $content, $cssFiles)) {
             return [];
         }
 
