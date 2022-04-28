@@ -26,7 +26,7 @@ class ScriptHttpPush extends AbstractHttpPush
      */
     public function getHeaders(string $content): array
     {
-        if(!preg_match_all('/(?<=src=")(?<src>[^"]+?\.js(\.gzi?p?)?(\?\d+)?)(?=")/', $content, $jsFiles)) {
+        if (!preg_match_all('/(?<=src=")(?<src>[^"]+?\.js(\.gzi?p?)?(\?\d+)?)(?=")/', $content, $jsFiles)) {
             return [];
         }
 

@@ -223,7 +223,7 @@ class Configuration extends StaticFileCacheObject
             'script' => ScriptHttpPush::class,
             'image' => ImageHttpPush::class,
             'font' => FontHttpPush::class,
-            'svg' => SvgHttpPush::class
+            'svg' => SvgHttpPush::class,
         ]);
 
         return $this;

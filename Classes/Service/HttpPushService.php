@@ -31,7 +31,7 @@ class HttpPushService extends AbstractService
             $extensions = GeneralUtility::trimExplode(',', (string) $configurationService->get('sendHttp2PushFileExtensions'), true);
 
             $limitToAreaMatch = [];
-            if (!empty($limitToArea) && preg_match("/<{$limitToArea}[^>]*>.+(?=<\/{$limitToArea}>)/s", $content, $limitToAreaMatch)) {
+            if (!empty($limitToArea) && preg_match("/<{$limitToArea}[^>]*>.+(?=<\\/{$limitToArea}>)/s", $content, $limitToAreaMatch)) {
                 $content = (string) $limitToAreaMatch[0];
             }
 
