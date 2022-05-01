@@ -12,7 +12,7 @@ namespace SFC\Staticfilecache\Service\InlineAssets;
 class InlineImages extends AbstractInlineAssets
 {
     /**
-     * Assets extensions.
+     * Image extensions.
      */
     private $imageExtensions = ['png', 'jpg', 'jpeg'];
 
@@ -24,8 +24,11 @@ class InlineImages extends AbstractInlineAssets
         return \in_array($fileExtension, $this->imageExtensions, true);
     }
 
+    /**
+     * Replace all matching Files within given HTML
+     */
     public function replaceInline(string $content): string
     {
-        return preg_replace_callback('/(?<=<img\ssrc=(["\']))(?<src>.+?\.(?<ext>'.implode('|', $this->imageExtensions).'))(?=\1)/', fn (array $match): string => $this->parseAsset($match), $content);
+        return preg_replace_callback('/(?<=<img src=")(?<src>\/.+?\.(?<ext>'.implode('|', $this->imageExtensions).'))(?=")/', fn (array $match): string => $this->parseAsset($match), $content);
     }
 }

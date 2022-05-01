@@ -24,9 +24,12 @@ class InlineFavIcon extends AbstractInlineAssets
         return \in_array($fileExtension, $this->favIconExtensions, true);
     }
 
+    /**
+     * Replace all matching Files within given HTML
+     */
     public function replaceInline(string $content): string
     {
-        if (false === preg_match('/<link.+?rel=(").*?icon.*?\1\shref=\1(?<src>.+?\.(?<ext>'.implode('|', $this->favIconExtensions).'))\1[^>]*>/', $content, $match)) {
+        if (false === preg_match('/<link rel=".*?icon.*?" href="(?<src>\/.+?\.(?<ext>'.implode('|', $this->favIconExtensions).'))"[^>]*>/', $content, $match)) {
             return $content;
         }
 

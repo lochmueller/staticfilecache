@@ -17,9 +17,9 @@ class InlineStyles extends AbstractInlineAssets
     private $imageExtensions = ['ico', 'png', 'jpg', 'jpeg'];
 
     /**
-     * Fonts extensions.
+     * Font extensions.
      */
-    private $fontExtensions = ['woff2'];
+    private $fontExtensions = ['woff', 'woff2'];
 
     /**
      * Check if the class can handle the file extension.
@@ -29,21 +29,26 @@ class InlineStyles extends AbstractInlineAssets
         return 'css' === $fileExtension;
     }
 
+    /**
+     * Replace all matching Files within given HTML
+     */
     public function replaceInline(string $content): string
     {
-        if (false === preg_match_all('/<link rel="stylesheet" href=(["\'])(?<path>.+?)(\.\d+)?\.css(\.gzi?p?)?(\?\d*)?\1(?!\smedia=\1print\1)[^>]*>/', $content, $matches)) {
+        if (false === preg_match_all('/<link rel="stylesheet".+?href="(?<path>\/.+?)(\.\d+)?\.css(\.gzi?p?)?(\?\d*)?"(?!\smedia="print")[^>]*>/', $content, $matches)) {
             return $content;
         }
 
-        $paths = $this->streamlineFilePaths((array) $matches['path']);
-        foreach ($paths as $index => $path) {
-            $file = file_get_contents($this->sitePath.$path.'.css');
+        foreach ($matches['path'] as $index => $path) {
+            $fileSrc = file_get_contents($this->sitePath.$path.'.css');
 
-            if ($this->configurationService->get('inlineStyleAssets')) {
-                $file = $this->includeAssets('/(?<=url\()(["\']?)(?<src>[^\)]+?\.(?<ext>'.implode('|', array_merge($this->imageExtensions, $this->fontExtensions)).'))\1(?=\))/', $file);
+            if (!empty($this->configurationService->get('inlineStyleAssets'))) {
+                $fileExtensions = preg_grep('/'.str_replace(',', '|', $this->configurationService->get('inlineStyleAssets')).'/', array_merge($this->imageExtensions, $this->fontExtensions));
+                if(is_array($fileExtensions)) {
+                    $fileSrc = $this->includeAssets('/(?<=url\()(["\']?)(?<src>\/[^\)]+?\.(?<ext>'.implode('|', array_values($fileExtensions)).'))\1(?=\))/', $fileSrc);
+                }
             }
 
-            $content = str_replace($matches[0][$index], '<style>'.rtrim($file).'</style>', $content);
+            $content = str_replace($matches[0][$index], '<style>'.rtrim($fileSrc).'</style>', $content);
         }
 
         return preg_replace('/<\/style>\s*<style>/', '', $content); // cleanup
