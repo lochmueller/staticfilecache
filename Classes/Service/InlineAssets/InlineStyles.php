@@ -30,7 +30,7 @@ class InlineStyles extends AbstractInlineAssets
     }
 
     /**
-     * Replace all matching Files within given HTML
+     * Replace all matching Files within given HTML.
      */
     public function replaceInline(string $content): string
     {
@@ -43,7 +43,7 @@ class InlineStyles extends AbstractInlineAssets
 
             if (!empty($this->configurationService->get('inlineStyleAssets'))) {
                 $fileExtensions = preg_grep('/'.str_replace(',', '|', $this->configurationService->get('inlineStyleAssets')).'/', array_merge($this->imageExtensions, $this->fontExtensions));
-                if(is_array($fileExtensions)) {
+                if (\is_array($fileExtensions)) {
                     $fileSrc = $this->includeAssets('/(?<=url\()(["\']?)(?<src>\/[^\)]+?\.(?<ext>'.implode('|', array_values($fileExtensions)).'))\1(?=\))/', $fileSrc);
                 }
             }

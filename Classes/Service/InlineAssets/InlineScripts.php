@@ -20,7 +20,7 @@ class InlineScripts extends AbstractInlineAssets
     }
 
     /**
-     * Replace all matching Files within given HTML
+     * Replace all matching Files within given HTML.
      */
     public function replaceInline(string $content): string
     {

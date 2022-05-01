@@ -13,16 +13,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractInlineAssets extends \SFC\Staticfilecache\Service\AbstractService
 {
-    /**
-     * Check if the class can handle the file extension.
-     */
-    abstract public function canHandleExtension(string $fileExtension): bool;
-
-    /**
-     * Replace all matching Files within given HTML
-     */
-    abstract public function replaceInline(string $content): string;
-
     public function __construct()
     {
         $this->sitePath = \TYPO3\CMS\Core\Core\Environment::getPublicPath(); // [^/]$
@@ -30,6 +20,16 @@ abstract class AbstractInlineAssets extends \SFC\Staticfilecache\Service\Abstrac
         // @var ConfigurationService $configurationService
         $this->configurationService = GeneralUtility::makeInstance(\SFC\Staticfilecache\Service\ConfigurationService::class); // CHECK ; src-location?!
     }
+
+    /**
+     * Check if the class can handle the file extension.
+     */
+    abstract public function canHandleExtension(string $fileExtension): bool;
+
+    /**
+     * Replace all matching Files within given HTML.
+     */
+    abstract public function replaceInline(string $content): string;
 
     protected function includeAssets(string $regex, string $content): string
     {
