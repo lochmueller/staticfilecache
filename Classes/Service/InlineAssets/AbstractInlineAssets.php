@@ -11,21 +11,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Marcus Förster ; https://github.com/xerc
  */
-abstract class AbstractInlineAssets extends \SFC\Staticfilecache\Service\HttpPush\AbstractHttpPush
+abstract class AbstractInlineAssets extends \SFC\Staticfilecache\Service\AbstractService
 {
+    /**
+     * Check if the class can handle the file extension.
+     */
+    abstract public function canHandleExtension(string $fileExtension): bool;
+
+    /**
+     * Replace all matching Files within given HTML
+     */
+    abstract public function replaceInline(string $content): string;
+
     public function __construct()
     {
         $this->sitePath = \TYPO3\CMS\Core\Core\Environment::getPublicPath(); // [^/]$
 
         // @var ConfigurationService $configurationService
         $this->configurationService = GeneralUtility::makeInstance(\SFC\Staticfilecache\Service\ConfigurationService::class); // CHECK ; src-location?!
-    }
-
-    abstract public function replaceInline(string $content): string;
-
-    public function getHeaders(string $content): array
-    {
-        return []; // HACK
     }
 
     protected function includeAssets(string $regex, string $content): string
@@ -35,12 +38,12 @@ abstract class AbstractInlineAssets extends \SFC\Staticfilecache\Service\HttpPus
 
     protected function parseAsset(array $match): string
     {
-        $path = $this->sitePath.$this->streamlineFilePaths((array) $match['src'])[0];
+        $path = $this->sitePath.$match['src'];
         if (!file_exists($path)) {
             return $match[0];
         }
 
-        if (filesize($path) > $this->configurationService->get('inlineFileSize')) {
+        if (filesize($path) > $this->configurationService->get('inlineAssetsFileSize')) {
             return $match[0];
         }
 
