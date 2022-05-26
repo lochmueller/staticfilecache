@@ -60,7 +60,7 @@ class ManifestMiddleware implements MiddlewareInterface
             // var_dump($fileName);
         } catch (\Exception $exception) {
             // $this->lo
-            //$exception->getMessage()
+            // $exception->getMessage()
         }
     }
 

@@ -55,10 +55,10 @@ abstract class AbstractInlineAssets extends \SFC\Staticfilecache\Service\Abstrac
         switch ($match['ext']) {
           case 'svg':// TODO ; https://github.com/peteboere/css-crush/commit/7cd5d73f67212dfc7ec0f85e4a84932a32ce95d8
               $type = 'image/svg+xml;utf8';
-              $file = str_replace('\'', '"', $file); // quotes
-
-              $file = preg_replace('/\s+/', ' ', $file); // whitespace
-              $file = preg_replace('/#([a-f0-9]{3,6})/', '%23$1', $file); // MOD:color
+              $file = str_replace('\'', '"', $file); // change quotes
+              $file = preg_replace('/#([a-f0-9]{3,6})/', '%23$1', $file); // adapt hex-color
+              $file = preg_replace('/(?<=>)\s+|\s+(?=<)/', '', $file); // remove overhead
+              $file = preg_replace('/\h+/', ' ', $file); // shrink whitespace
 
           break;
 

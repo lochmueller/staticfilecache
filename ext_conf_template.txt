@@ -76,8 +76,14 @@ inlineServiceFavIcon = 0
 # cat=InlineAssets; type=boolean; label=Inline JS (experimental): excludes `defer`
 inlineServiceScripts = 0
 
+# cat=InlineAssets; type=boolean; label=Minify Inline JS (very experimental)
+inlineScriptMinify = 0
+
 # cat=InlineAssets; type=boolean; label=Inline CSS (experimental): excludes `media="print"`
 inlineServiceStyles = 0
+
+# cat=InlineAssets; type=boolean; label=Minify Inline CSS (very experimental)
+inlineStyleMinify = 0
 
 # cat=InlineAssets; type=string; label=Inline CSS Assets (experimental): possible ico,png,jpg,jpeg,woff,woff2
 inlineStyleAssets = ico,png,woff2

@@ -48,6 +48,15 @@ class InlineStyles extends AbstractInlineAssets
                 }
             }
 
+            if ($this->configurationService->get('inlineStyleMinify')) {
+                $fileSrc = preg_replace('/\v+/', '', $fileSrc); // remove line-breaks
+                $fileSrc = preg_replace('/\h+/', ' ', $fileSrc); // shrink whitespace
+
+                $fileSrc = preg_replace('/\/\*.*?\*\/', '', $fileSrc); // remove multi-line comments
+                $fileSrc = preg_replace('/ *([{;:>~}]) */', '$1', $fileSrc); // remove no-req. spaces
+                $fileSrc = preg_replace('/;(?=})/', '', $fileSrc); // shorten declaration endings
+            }
+
             $content = str_replace($matches[0][$index], '<style>'.rtrim($fileSrc).'</style>', $content);
         }
 
