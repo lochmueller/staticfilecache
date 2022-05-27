@@ -31,6 +31,17 @@ class InlineScripts extends AbstractInlineAssets
         foreach ($matches['path'] as $index => $path) {
             $fileSrc = file_get_contents($this->sitePath.$path.'.js');
 
+            if ($this->configurationService->get('inlineScriptMinify')) {
+                if (false === preg_match('/\/\//', $fileSrc)) {// NO one-line comments
+                    $fileSrc = preg_replace('/\v+/', '', $fileSrc); // remove line-breaks
+                }
+                $fileSrc = preg_replace('/\h+/', ' ', $fileSrc); // shrink whitespace
+
+                $fileSrc = preg_replace('/\/\*.*?\*\/s', '', $fileSrc); // remove multi-line comments
+                $fileSrc = preg_replace('/ *([({,;:<>=*+\-\/&?})]) */', '$1', $fileSrc); // remove no-req. spaces
+                $fileSrc = preg_replace('/;(?=})|(?<=});/', '', $fileSrc); // shorten function endings
+            }
+
             $content = str_replace($matches[0][$index], '<script>'.rtrim($fileSrc), $content);
         }
 
