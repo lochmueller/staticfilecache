@@ -1,10 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * DatamapHook.
  */
+
+declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Hook;
 
