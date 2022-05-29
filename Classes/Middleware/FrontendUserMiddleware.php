@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Init frontend user.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Middleware;

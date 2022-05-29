@@ -1,7 +1,4 @@
 <?php
-/**
- * TypoScriptFrontendService.
- */
 
 declare(strict_types=1);
 

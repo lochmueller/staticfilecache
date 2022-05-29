@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Abstract command.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Command;

@@ -1,9 +1,5 @@
 <?php
 
-/**
- * ValidPageInformation.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache\Rule;

@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Abstract rule test.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Tests\Unit\Cache\Rule;

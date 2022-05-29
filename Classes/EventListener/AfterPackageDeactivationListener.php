@@ -1,9 +1,5 @@
 <?php
 
-/**
- * AfterPackageDeactivationListener.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\EventListener;

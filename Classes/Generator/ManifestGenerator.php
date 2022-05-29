@@ -1,7 +1,4 @@
 <?php
-/**
- * ManifestGenerator.
- */
 
 declare(strict_types=1);
 

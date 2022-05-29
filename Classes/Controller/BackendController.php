@@ -1,9 +1,5 @@
 <?php
 
-/**
- * StaticFileCache backend module.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Controller;

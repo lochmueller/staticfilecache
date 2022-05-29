@@ -1,7 +1,4 @@
 <?php
-/**
- * RemoteFileBackend.
- */
 
 declare(strict_types=1);
 

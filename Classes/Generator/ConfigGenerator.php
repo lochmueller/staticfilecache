@@ -1,7 +1,4 @@
 <?php
-/**
- * ConfigGenerator.
- */
 
 declare(strict_types=1);
 

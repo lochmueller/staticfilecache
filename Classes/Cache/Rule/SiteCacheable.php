@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Check if the current site is static cacheable.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache\Rule;

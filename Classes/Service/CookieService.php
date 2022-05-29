@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Handle cookie related stuff.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;

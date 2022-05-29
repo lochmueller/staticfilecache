@@ -1,9 +1,5 @@
 <?php
 
-/**
- * General Cache functions for StaticFileCache.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;

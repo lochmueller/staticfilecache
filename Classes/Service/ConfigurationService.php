@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Handle extension and TS configuration.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
