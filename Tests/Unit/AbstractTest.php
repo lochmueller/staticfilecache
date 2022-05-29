@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Abstract test.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Tests\Unit;

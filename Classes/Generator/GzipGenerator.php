@@ -1,7 +1,4 @@
 <?php
-/**
- * GzipGenerator.
- */
 
 declare(strict_types=1);
 

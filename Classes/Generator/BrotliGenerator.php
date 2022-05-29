@@ -1,7 +1,4 @@
 <?php
-/**
- * BrotliGenerator.
- */
 
 declare(strict_types=1);
 

@@ -1,7 +1,4 @@
 <?php
-/**
- * PlainGenerator.
- */
 
 declare(strict_types=1);
 

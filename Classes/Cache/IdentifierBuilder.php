@@ -1,9 +1,5 @@
 <?php
 
-/**
- * IdentifierBuilder.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;

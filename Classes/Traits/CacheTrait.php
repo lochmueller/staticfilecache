@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Caching Trait.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Traits;

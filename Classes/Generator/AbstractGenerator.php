@@ -1,7 +1,4 @@
 <?php
-/**
- * AbstractGenerator.
- */
 
 declare(strict_types=1);
 

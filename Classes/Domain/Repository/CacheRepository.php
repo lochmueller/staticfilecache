@@ -1,9 +1,5 @@
 <?php
 
-/**
- * CacheRepository.
- */
-
 declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Domain\Repository;
