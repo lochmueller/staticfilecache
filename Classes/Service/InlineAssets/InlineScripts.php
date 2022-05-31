@@ -32,7 +32,8 @@ class InlineScripts extends AbstractInlineAssets
             $fileSrc = file_get_contents($this->sitePath.$path.'.js');
 
             if ($this->configurationService->get('inlineScriptMinify')) {
-                if (false === preg_match('/\/\//', $fileSrc)) {// NO one-line comments
+                $fileSrc = preg_replace('/^\s*\/\/.*$/m', '', $fileSrc); // remove single-line comments
+                if (false === preg_match('/(?<![\'":])\/\//', $fileSrc)) { // RISKY; https?://|"//|'//
                     $fileSrc = preg_replace('/\v+/', '', $fileSrc); // remove line-breaks
                 }
                 $fileSrc = preg_replace('/\h+/', ' ', $fileSrc); // shrink whitespace
