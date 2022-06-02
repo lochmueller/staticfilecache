@@ -39,8 +39,10 @@ class InlineScripts extends AbstractInlineAssets
                 $fileSrc = preg_replace('/\h+/', ' ', $fileSrc); // shrink whitespace
 
                 $fileSrc = preg_replace('/\/\*.*?\*\//s', '', $fileSrc); // remove multi-line comments
-                $fileSrc = preg_replace('/ *([({,;:<>=*+\-\/&?})]) */', '$1', $fileSrc); // remove no-req. spaces
-                $fileSrc = preg_replace('/;(?=})/', '', $fileSrc); // shorten function endings
+                $fileSrc = preg_replace('/ *([(?&:,=*+\-\/)]) */', '$1', $fileSrc); // remove no-req. spaces
+
+                $fileSrc = preg_replace('/(?<={)\s+|(?<=\)|>)\s+(?={)/', '', $fileSrc); // remove function "start"
+                $fileSrc = preg_replace('/;(?=})|(?<=});\s/', '', $fileSrc); // shorten function "end"
             }
 
             $content = str_replace($matches[0][$index], '<script>'.rtrim($fileSrc), $content);
