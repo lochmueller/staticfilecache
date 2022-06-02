@@ -24,7 +24,7 @@ class InlineScripts extends AbstractInlineAssets
      */
     public function replaceInline(string $content): string
     {
-        if (false === preg_match_all('/<script(\sasync)? src="(?<path>\/.+?)(\.\d+)?\.js(\.gzi?p?)?(\?\d*)?"[^>]*>(?=<\/script>)/', $content, $matches)) {
+        if (!preg_match_all('/<script(\sasync)? src="(?<path>\/.+?)(\.\d+)?\.js(\.gzi?p?)?(\?\d*)?"[^>]*>(?=<\/script>)/', $content, $matches)) {
             return $content;
         }
 
@@ -33,7 +33,7 @@ class InlineScripts extends AbstractInlineAssets
 
             if ($this->configurationService->get('inlineScriptMinify')) {
                 $fileSrc = preg_replace('/^\s*\/\/.*$/m', '', $fileSrc); // remove single-line comments
-                if (false === preg_match('/(?<![\'":])\/\//', $fileSrc)) { // RISKY; https?://|"//|'//
+                if (!preg_match('/(?<![\'":])\/\//', $fileSrc)) { // RISKY; https?://|"//|'//
                     $fileSrc = preg_replace('/\v+/', '', $fileSrc); // remove line-breaks
                 }
                 $fileSrc = preg_replace('/\h+/', ' ', $fileSrc); // shrink whitespace
