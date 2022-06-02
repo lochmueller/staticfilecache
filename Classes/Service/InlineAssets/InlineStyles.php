@@ -34,7 +34,7 @@ class InlineStyles extends AbstractInlineAssets
      */
     public function replaceInline(string $content): string
     {
-        if (false === preg_match_all('/<link rel="stylesheet".+?href="(?<path>\/.+?)(\.\d+)?\.css(\.gzi?p?)?(\?\d*)?"(?!\smedia="print")[^>]*>/', $content, $matches)) {
+        if (!preg_match_all('/<link rel="stylesheet".+?href="(?<path>\/.+?)(\.\d+)?\.css(\.gzi?p?)?(\?\d*)?"(?!\smedia="print")[^>]*>/', $content, $matches)) {
             return $content;
         }
 
