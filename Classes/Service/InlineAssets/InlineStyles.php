@@ -51,10 +51,10 @@ class InlineStyles extends AbstractInlineAssets
 
             if ($this->configurationService->get('inlineStyleMinify')) {
                 $fileSrc = mb_eregi_replace('/\v+/', '', $fileSrc); // remove line-breaks
-                $fileSrc = mb_eregi_replace('/\h+/', ' ', $fileSrc); // shrink whitespace
+                $fileSrc = preg_replace('/\s+/', ' ', $fileSrc); // shrink whitespace
 
                 $fileSrc = preg_replace('/\/\*.*?\*\//', '', $fileSrc); // remove multi-line comments
-                $fileSrc = preg_replace('/ *([{;:>~}]) */', '$1', $fileSrc); // remove no-req. spaces
+                $fileSrc = preg_replace('/ *([{,;:>~}]) */', '$1', $fileSrc); // remove no-req. spaces
                 $fileSrc = preg_replace('/;(?=})/', '', $fileSrc); // shorten declaration endings
             }
 
