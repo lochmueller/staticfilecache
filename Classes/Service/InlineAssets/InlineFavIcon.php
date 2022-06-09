@@ -33,6 +33,6 @@ class InlineFavIcon extends AbstractInlineAssets
             return $content;
         }
 
-        return str_replace($match[0], '<link rel="icon" href=\''.$this->parseAsset($match).'\'>', $content);
+        return str_replace($match[0], '<link rel="icon" href="'.$this->parseAsset($match).'">', $content);
     }
 }

@@ -36,7 +36,7 @@ class InlineScripts extends AbstractInlineAssets
                 // if (!preg_match('/(?<![\'":])\/\//', $fileSrc)) { // RISKY; https?://|"//|'//
                 //     $fileSrc = mb_eregi_replace('/\v+/', '', $fileSrc); // remove line-breaks
                 // }
-                $fileSrc = mb_eregi_replace('/\h+/', ' ', $fileSrc); // shrink whitespace
+                $fileSrc = preg_replace('/[ \t]+/', ' ', $fileSrc); // shrink whitespace
 
                 $fileSrc = preg_replace('/\/\*.*?\*\//s', '', $fileSrc); // remove multi-line comments
                 $fileSrc = preg_replace('/ *([(?&:,=*+\-\/)]) */', '$1', $fileSrc); // remove no-req. spaces
