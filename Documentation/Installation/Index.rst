@@ -36,7 +36,7 @@ Third Party Extensions
 helhum/typo3-secure-web
 -----------------------
 
--  `typo3-secure-web`` uses symlinks to move code out of the docroot. Therefore, it is important to make sure the statically cached pages are accessible for clients to ach One way is to move the `tx_staticfilecache` into a path that is already covered by `typo3-secure-web` redirects:
+-  `typo3-secure-web`` uses symlinks to move code out of the docroot. Therefore, it is important to make sure the statically cached pages are accessible for clients to reach. One way is to move the `tx_staticfilecache` into a path that is already covered by `typo3-secure-web` redirects:
 
 .htaccess:
 
