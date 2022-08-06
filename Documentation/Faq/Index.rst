@@ -25,4 +25,4 @@ If none of the conditions are met, mod_rewrite will fall through to the next rul
 A: Hum ... although you have logged out of the backend, your be_typo_user is still in the browser. The cookie is set by default to expire at the end of the browser session. You need to either restart your browser or go to your browsers cookie management tool and drop the cookie manually.
 
 *Q: I use 'helhum/typo3-secure-web' and the files are not in the public directory. Any hints?*
-A: Yes. The problem was discussed in the `GitHub issue #180 <https://github.com/lochmueller/staticfilecache/issues/180>`__ - Easies way is, to set the caching directory via extension configuration to "../private/typo3temp/tx_staticfilecache/".
+A: Yes. The problem was discussed in the `GitHub issue #180 <https://github.com/lochmueller/staticfilecache/issues/180>`__ - Easies way is, to set the caching directory via extension configuration to "../private/typo3temp/tx_staticfilecache/". See :ref:`here <thirdPartyExtensions>`.

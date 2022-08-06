@@ -29,6 +29,7 @@ Verify the functionality
 -  In your code, make sure there are no INT objects on pages you want to be cached. A single statically-uncacheable element will make the entire page statically-uncacheable.
 -  In the second browser, hard reload the pages you previously called and check for x-sfc headers. Loaded? Good! `x-sfc-state: StaticFileCache  via Fallback Middleware?` That is ok, but there's something missing in the .htaccess. `x-sfc-state: TYPO3 - already in cache` Perfect! You're set.
 
+.. _thirdPartyExtensions:
 
 Third Party Extensions
 ======================
