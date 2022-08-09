@@ -46,8 +46,7 @@ class CookieService extends AbstractService
     {
         $result = '';
         $cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'];
-        // If a specific cookie domain is defined for a given TYPO3_MODE,
-        // use that domain
+        // If a specific cookie domain is defined; use that domain
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['cookieDomain'])) {
             $cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieDomain'];
         }
