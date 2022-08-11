@@ -9,4 +9,6 @@ Introduction
 	WhatDoesItNotDo
 	Requirements
 	Recommended
+	Support
+	Sponsoring
 	Credits
