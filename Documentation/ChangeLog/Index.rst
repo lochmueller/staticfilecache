@@ -3,8 +3,9 @@
 ChangeLog
 ---------
 
-For newer log entries (since August 2016) take a look at the
-`git history <https://github.com/lochmueller/staticfilecache/commits/master>`__.
+.. hint::
+   For newer log entries (since August 2016) take a look at the
+   `git history <https://github.com/lochmueller/staticfilecache/commits/master>`__.
 
 2015-12-28 Tim Lochmüller <tim@fruit-lab.de>
 
