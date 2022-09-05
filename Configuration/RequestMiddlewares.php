@@ -1,5 +1,6 @@
 <?php
 
+use SFC\Staticfilecache\Middleware\BackendUserMiddleware;
 use SFC\Staticfilecache\Middleware\FallbackMiddleware;
 use SFC\Staticfilecache\Middleware\FrontendUserMiddleware;
 use SFC\Staticfilecache\Middleware\GenerateMiddleware;
@@ -35,6 +36,14 @@ return [
             ],
             'before' => [
                 'staticfilecache/generate',
+            ],
+        ],
+    ],
+    'backend' => [
+        'staticfilecache/backend-user' => [
+            'target' => BackendUserMiddleware::class,
+            'after' => [
+                'typo3/cms-backend/authentication',
             ],
         ],
     ],

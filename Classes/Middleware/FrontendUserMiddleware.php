@@ -9,8 +9,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Service\CookieService;
-use SFC\Staticfilecache\Service\DateTimeService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
@@ -18,6 +16,13 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 class FrontendUserMiddleware implements MiddlewareInterface
 {
+    protected CookieService $cookieService;
+
+    public function __construct(CookieService $cookieService)
+    {
+        $this->cookieService = $cookieService;
+    }
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         /** @var FrontendUserAuthentication $feUser */
@@ -31,15 +36,8 @@ class FrontendUserMiddleware implements MiddlewareInterface
 
         $started = $feUser->loginSessionStarted;
 
-        $cookieService = GeneralUtility::makeInstance(CookieService::class);
-        if (($started || $feUser->forceSetCookie) && 0 === $feUser->lifetime) {
-            // If new session and the cookie is a sessioncookie, we need to set it only once!
-            // // isSetSessionCookie()
-            $cookieService->setCookie(0);
-        } elseif (($started || isset($_COOKIE[CookieService::FE_COOKIE_NAME])) && $feUser->lifetime > 0) {
-            // If it is NOT a session-cookie, we need to refresh it.
-            // isRefreshTimeBasedCookie()
-            $cookieService->setCookie((new DateTimeService())->getCurrentTime() + $feUser->lifetime);
+        if (($started || $feUser->forceSetCookie) && $feUser->lifetime >= 0 && !$this->cookieService->hasCookie()) {
+            $this->cookieService->setCookie();
         }
 
         return $response;

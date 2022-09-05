@@ -19,9 +19,9 @@ class CookieService extends AbstractService
     /**
      * Set the Cookie.
      *
-     * @param $lifetime
+     * @param int $lifetime
      */
-    public function setCookie(int $lifetime): void
+    public function setCookie(int $lifetime = 0): void
     {
         setcookie(self::FE_COOKIE_NAME, 'typo_user_logged_in', $lifetime, '/', $this->getCookieDomain(), GeneralUtility::getIndpEnv('TYPO3_SSL'));
     }
@@ -31,7 +31,12 @@ class CookieService extends AbstractService
      */
     public function unsetCookie(): void
     {
-        $this->setCookie(time() - 3600);
+        $this->setCookie(-1);
+    }
+
+    public function hasCookie(): bool
+    {
+        return isset($_COOKIE[self::FE_COOKIE_NAME]);
     }
 
     /**
