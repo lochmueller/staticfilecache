@@ -27,12 +27,15 @@ class GenerateMiddleware implements MiddlewareInterface
 
     protected EventDispatcherInterface $eventDispatcher;
 
+    protected CookieService $cookieService;
+
     /**
      * GenerateMiddleware constructor.
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher, CookieService $cookieService)
     {
         $this->eventDispatcher = $eventDispatcher;
+        $this->cookieService = $cookieService;
     }
 
     /**
@@ -65,7 +68,7 @@ class GenerateMiddleware implements MiddlewareInterface
         $uri = $event->getUri();
         $response = $event->getResponse();
         if (!$response->hasHeader('X-SFC-Explanation')) {
-            if ($this->hasValidCacheEntry($uri) && !isset($_COOKIE[CookieService::FE_COOKIE_NAME])) {
+            if ($this->hasValidCacheEntry($uri) && !$this->cookieService->hasCookie()) {
                 $response = $response->withHeader('X-SFC-State', 'TYPO3 - already in cache');
 
                 return $this->removeSfcHeaders($response);

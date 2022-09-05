@@ -18,8 +18,6 @@ class CookieService extends AbstractService
 
     /**
      * Set the Cookie.
-     *
-     * @param $lifetime
      */
     public function setCookie(int $lifetime): void
     {
@@ -32,6 +30,11 @@ class CookieService extends AbstractService
     public function unsetCookie(): void
     {
         $this->setCookie(time() - 3600);
+    }
+
+    public function hasCookie(): bool
+    {
+        return isset($_COOKIE[self::FE_COOKIE_NAME]);
     }
 
     /**

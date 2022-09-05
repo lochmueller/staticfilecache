@@ -25,7 +25,7 @@ class LogoffFrontendUser extends AbstractHook
         if (('FE' === $parentObject->loginType || 'BE' === $parentObject->loginType) && $this->isNewSession($parentObject)) {
             $formData = $parentObject->getLoginFormData();
             if ('logout' !== $formData['status']) {
-                $service->setCookie(time() + 3600);
+                $service->setCookie(0);
 
                 return;
             }
