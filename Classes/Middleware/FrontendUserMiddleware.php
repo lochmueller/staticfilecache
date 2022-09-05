@@ -36,7 +36,7 @@ class FrontendUserMiddleware implements MiddlewareInterface
             // If new session and the cookie is a sessioncookie, we need to set it only once!
             // // isSetSessionCookie()
             $cookieService->setCookie(0);
-        } elseif (($started || isset($_COOKIE[CookieService::FE_COOKIE_NAME])) && $feUser->lifetime > 0) {
+        } elseif (($started || $cookieService->hasCookie()) && $feUser->lifetime > 0) {
             // If it is NOT a session-cookie, we need to refresh it.
             // isRefreshTimeBasedCookie()
             $cookieService->setCookie((new DateTimeService())->getCurrentTime() + $feUser->lifetime);

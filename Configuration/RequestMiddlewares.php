@@ -1,5 +1,6 @@
 <?php
 
+use SFC\Staticfilecache\Middleware\CookieCheckMiddleware;
 use SFC\Staticfilecache\Middleware\FallbackMiddleware;
 use SFC\Staticfilecache\Middleware\FrontendUserMiddleware;
 use SFC\Staticfilecache\Middleware\GenerateMiddleware;
@@ -35,6 +36,15 @@ return [
             ],
             'before' => [
                 'staticfilecache/generate',
+            ],
+        ],
+        'staticfilecache/cookie-check' => [
+            'target' => CookieCheckMiddleware::class,
+            'before' => [
+                'staticfilecache/generate',
+            ],
+            'after' => [
+                'staticfilecache/frontend-user',
             ],
         ],
     ],
