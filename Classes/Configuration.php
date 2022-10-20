@@ -24,6 +24,7 @@ use SFC\Staticfilecache\Generator\ConfigGenerator;
 use SFC\Staticfilecache\Generator\GzipGenerator;
 use SFC\Staticfilecache\Generator\HtaccessGenerator;
 use SFC\Staticfilecache\Generator\ManifestGenerator;
+use SFC\Staticfilecache\Generator\PhpGenerator;
 use SFC\Staticfilecache\Generator\PlainGenerator;
 use SFC\Staticfilecache\Hook\DatamapHook;
 use SFC\Staticfilecache\Hook\LogoffFrontendUser;
@@ -193,6 +194,10 @@ class Configuration extends StaticFileCacheObject
 
         if ($this->configuration['enableGeneratorManifest']) {
             $generator['manifest'] = ManifestGenerator::class;
+        }
+        if ($this->configuration['enableGeneratorPhp']) {
+            $generator['php'] = PhpGenerator::class;
+            unset($generator['htaccess']);
         }
         if ($this->configuration['enableGeneratorPlain']) {
             $generator['plain'] = PlainGenerator::class;

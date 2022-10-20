@@ -81,10 +81,27 @@ By the following configuration:
        deny all;
    }
 
+If you activate the php generator you need to use
+
+.. code-block:: nginx
+
+       try_files /typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/
+             =405;
+
+instead of
+
+.. code-block:: nginx
+
+       try_files /typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index
+             /typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}
+             =405;
+
 *Extension configuration*
 
-Nginx does not interpret .htaccess files, therefore you may want to disable the
-htaccess genrator to prevent .htaccess generation.
+Nginx does not support .htaccess files and therefore cannot transfer HTML headers
+for the statically cached files. You should therefore activate the PHP generator,
+so that the static content is written to a PHP file via which the correct HTML
+headers are set.
 
 .. _location: http://nginx.org/en/docs/http/ngx_http_core_module.html#location
 .. _try_files: http://nginx.org/en/docs/http/ngx_http_core_module.html#try_files
