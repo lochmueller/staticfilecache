@@ -40,6 +40,9 @@ overrideCacheDirectory =
 # cat=Generator; type=boolean; label=Enable Cache Manifest generator (BETA!!!): Create manifest files
 enableGeneratorManifest = 0
 
+# cat=Generator; type=boolean; label=Enable PHP generator: When checked, the php file including headers output will write to the cache. This will also disable the .htaccess file generation.
+enableGeneratorPhp = 0
+
 # cat=Generator; type=boolean; label=Enable Plain generator: When checked, the normal (default) file will write to the cache.
 enableGeneratorPlain = 0
 

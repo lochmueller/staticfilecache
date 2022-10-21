@@ -1,5 +1,6 @@
 /.idea/
 /.Build/
+/config
 /var
 /Tests/.phpunit.result.cache
 .DS_Store

@@ -49,7 +49,7 @@ variables (SFC_ROOT, SFC_GZIP) and read the comments carefully.
    # Full path for redirect
    RewriteRule .* - [E=SFC_FULLPATH:typo3temp/tx_staticfilecache/%{ENV:SFC_PROTOCOL}_%{ENV:SFC_HOST}_%{ENV:SFC_PORT}%{ENV:SFC_URI}/index]
 
-   # Extension (Order: br, gzip, default)
+   # Extension (Order: br, gzip, php, default)
    RewriteRule .* - [E=SFC_EXT:]
    RewriteCond %{HTTP:Accept-Encoding} br [NC]
    RewriteRule .* - [E=SFC_EXT:.br]
@@ -59,6 +59,10 @@ variables (SFC_ROOT, SFC_GZIP) and read the comments carefully.
    RewriteCond %{HTTP:Accept-Encoding} gzip [NC]
    RewriteRule .* - [E=SFC_EXT:.gz]
    RewriteCond %{ENV:SFC_EXT} ^\.gz$
+   RewriteCond %{ENV:SFC_ROOT}/%{ENV:SFC_FULLPATH}%{ENV:SFC_EXT} !-f
+   RewriteRule .* - [E=SFC_EXT:]
+   RewriteCond %{ENV:SFC_EXT} ^$
+   RewriteRule .* - [E=SFC_EXT:.php]
    RewriteCond %{ENV:SFC_ROOT}/%{ENV:SFC_FULLPATH}%{ENV:SFC_EXT} !-f
    RewriteRule .* - [E=SFC_EXT:]
 
