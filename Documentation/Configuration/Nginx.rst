@@ -81,17 +81,36 @@ By the following configuration:
        deny all;
    }
 
-If you activate the php generator you need to use
+If you activate the php generator you need to use this block accepting urls with trailing slashes only
 
 .. code-block:: nginx
 
-       try_files /typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/
-             =405;
+        if (!-f $document_root/typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}index.php) {
+            return 405;
+        }
+
+        include /etc/nginx/fastcgi_params;
+        fastcgi_pass unix:/var/run/php/php-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root/typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index.php;
+
+or this block accepting urls with or without trailing slashes
+
+.. code-block:: nginx
+
+        if (!-f $document_root/typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index.php) {
+            return 405;
+        }
+
+        include /etc/nginx/fastcgi_params;
+        fastcgi_pass unix:/var/run/php/php-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root/typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index.php;
 
 instead of
 
 .. code-block:: nginx
 
+       charset utf-8;
+       default_type text/html;
        try_files /typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index
              /typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}
              =405;
