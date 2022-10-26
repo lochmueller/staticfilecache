@@ -1,0 +1,14 @@
+{escaping off}
+<?php
+<f:spaceless>
+<f:if condition="{sendCacheControlHeaderRedirectAfterCacheTimeout}">
+/* expires on <f:format.date format="YmdHis">@{expires}</f:format.date> */
+if (time() > {expires}) {
+	unlink(__FILE__);
+	header('Location: {requestUri}');
+}
+</f:if>
+<f:if condition="{headers}"><f:for each="{headers}" as="value" key="header">header('{header}:{value}');
+</f:for></f:if>
+</f:spaceless>
+?>{body}
