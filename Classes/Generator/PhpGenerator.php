@@ -9,6 +9,7 @@ use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * PlainGenerator.
@@ -24,28 +25,27 @@ class PhpGenerator extends HtaccessGenerator
         $accessTimeout = (int) $configuration->get('htaccessTimeout');
         $lifetime = $accessTimeout ?: $lifetime;
 
+        $sendCacheControlHeader = isset($GLOBALS['TSFE']->config['config']['sendCacheHeaders']) ? (bool) $GLOBALS['TSFE']->config['config']['sendCacheHeaders'] : false;
         $headers = $this->getReponseHeaders($response);
         if ($configuration->isBool('debugHeaders')) {
             $headers['X-SFC-State'] = 'StaticFileCache - via htaccess';
             $headers['X-SFC-Generator'] = 'PhpGenerator';
         }
         $headers = array_map(fn ($item) => str_replace('"', '\"', $item), $headers);
-
-        $currentTime = (new DateTimeService())->getCurrentTime();
-        $expires = $currentTime + $lifetime;
         $requestUri = GeneralUtility::getIndpEnv('REQUEST_URI');
 
-        $methodCalls = [];
-        if ($configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout')) {
-            $methodCalls[] = "/* expires on " . date('Y-m-d H:i:s', $expires) . " */ if(time() > {$expires}) { unlink(__FILE__);header('Location: {$requestUri}'); };";
-        }
+        $variables = [
+            'lifetime' => $lifetime,
+            'TIME' => '{TIME}',
+            'expires' => (new DateTimeService())->getCurrentTime() + $lifetime,
+            'sendCacheControlHeader' => $sendCacheControlHeader,
+            'sendCacheControlHeaderRedirectAfterCacheTimeout' => $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout'),
+            'headers' => $headers,
+            'requestUri' => $requestUri,
+            'body' => (string) $response->getBody(),
+        ];
 
-        foreach ($headers as $header => $value) {
-            $methodCalls[] = "header('{$header}:{$value}');";
-        }
-
-        $php = '<?php /* generated on ' . date('r', $currentTime) . ' */ '. implode('', $methodCalls) . ' ?>';
-        GeneralUtility::writeFile($fileName.'.php', $php . (string) $response->getBody());
+        $this->renderTemplateToFile($this->getTemplateName(), $variables, $fileName.'.php');
     }
 
     /**
@@ -55,5 +55,19 @@ class PhpGenerator extends HtaccessGenerator
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
         $removeService->file($fileName.'.php');
+    }
+
+    /**
+     * Get the template name.
+     */
+    protected function getTemplateName(): string
+    {
+        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
+        $templateName = trim((string) $configuration->get('phpTemplateName'));
+        if ('' === $templateName) {
+            return 'EXT:staticfilecache/Resources/Private/Templates/Php.html';
+        }
+
+        return $templateName;
     }
 }
