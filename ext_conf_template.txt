@@ -34,6 +34,9 @@ rawurldecodeCacheFileName = 0
 # cat=basic; type=string; label=Htaccess Template name: The template path for the .htaccess file generation
 htaccessTemplateName = EXT:staticfilecache/Resources/Private/Templates/Htaccess.html
 
+# cat=basic; type=string; label=Php Template name: The template path for the php file generation
+phpTemplateName = EXT:staticfilecache/Resources/Private/Templates/Php.html
+
 # cat=basic; type=string; label=Override cache directory: If this config var is empty the default is "typo3temp/tx_staticfilecache/". If you change this value you HAVE TO adapt your rewrite configuration.
 overrideCacheDirectory =
 
