@@ -13,6 +13,12 @@ services:
         description: 'Run (work on) the cache boost queue. Call this task every 5 minutes.'
         command: 'staticfilecache:boostQueue'
 
+  SFC\Staticfilecache\Command\FlushCacheCommand:
+    tags:
+      - name: 'console.command'
+        description: 'Flush the cache. If the boost mode is active, all pages are added to the queue (you have to run the BoostQueueRun Command to recrawl the pages). If you use the force-boost-mode-flush argument, you directly drop the cache even the page is in Boostmode.'
+        command: 'staticfilecache:flushCache'
+
   SFC\Staticfilecache\EventListener\AfterPackageDeactivationListener:
     tags:
       - name: event.listener

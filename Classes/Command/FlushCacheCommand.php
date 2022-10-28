@@ -21,6 +21,7 @@ class FlushCacheCommand extends AbstractCommand
     protected function configure(): void
     {
         parent::configure();
+        // @todo When compatibility is set to TYPO3 v11+ only, the description can be removed as it is defined in Services.yaml
         $this->setDescription('Flush the cache. If the boost mode is active, all pages are added to the queue (you have to run the BoostQueueRun Command to recrawl the pages). If you use the force-boost-mode-flush argument, you directly drop the cache even the page is in Boostmode.')
             ->addOption('force-boost-mode-flush', null, InputOption::VALUE_NONE, 'Force a boost mode flush')
         ;
