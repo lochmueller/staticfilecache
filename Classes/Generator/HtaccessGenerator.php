@@ -24,7 +24,7 @@ class HtaccessGenerator extends AbstractGenerator
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
 
-        $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME).'/.htaccess';
+        $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess';
         $accessTimeout = (int) $configuration->get('htaccessTimeout');
         $lifetime = $accessTimeout ?: $lifetime;
 
@@ -38,8 +38,6 @@ class HtaccessGenerator extends AbstractGenerator
             $contentType = $matches[0];
         }
 
-        $headers = array_map(fn ($item) => str_replace('"', '\"', $item), $headers);
-
         $sendCacheControlHeader = isset($GLOBALS['TSFE']->config['config']['sendCacheHeaders']) ? (bool) $GLOBALS['TSFE']->config['config']['sendCacheHeaders'] : false;
 
         $variables = [
@@ -50,10 +48,23 @@ class HtaccessGenerator extends AbstractGenerator
             'expires' => (new DateTimeService())->getCurrentTime() + $lifetime,
             'sendCacheControlHeader' => $sendCacheControlHeader,
             'sendCacheControlHeaderRedirectAfterCacheTimeout' => $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout'),
-            'headers' => $headers,
+            'headers' => $this->cleanupHeaderValues($headers),
         ];
 
         $this->renderTemplateToFile($this->getTemplateName(), $variables, $htaccessFile);
+    }
+
+    protected function cleanupHeaderValues(array $headers): array
+    {
+        // respect max length
+        foreach ($headers as $key => $value) {
+            $headers[$key] = substr((string) $value, 0, 1024 * 8); // 8K Max header for Apache
+        }
+
+        // illegal chars
+        $headers = array_map(fn ($item) => str_replace('"', '\"', $item), $headers);
+
+        return $headers;
     }
 
     /**
@@ -61,7 +72,7 @@ class HtaccessGenerator extends AbstractGenerator
      */
     public function remove(string $entryIdentifier, string $fileName): void
     {
-        $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME).'/.htaccess';
+        $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess';
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
         $removeService->file($htaccessFile);
     }
@@ -72,7 +83,7 @@ class HtaccessGenerator extends AbstractGenerator
     protected function getReponseHeaders(ResponseInterface $response): array
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $validHeaders = GeneralUtility::trimExplode(',', $configuration->get('validHtaccessHeaders').',Content-Type', true);
+        $validHeaders = GeneralUtility::trimExplode(',', $configuration->get('validHtaccessHeaders') . ',Content-Type', true);
 
         $headers = $response->getHeaders();
         $result = [];
