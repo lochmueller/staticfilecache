@@ -57,14 +57,16 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend implements Log
      */
     public function getTableDefinitions()
     {
+        $large = $this->configuration->isBool('largeIdentifierInCacheTable') ? 'Large' : '';
+
         $cacheTableSql = file_get_contents(
             ExtensionManagementUtility::extPath('staticfilecache').
-            'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendCache.sql'
+            'Resources/Private/Sql/Cache/Backend/'.$large.'Typo3DatabaseBackendCache.sql'
         );
         $requiredTableStructures = str_replace('###CACHE_TABLE###', $this->cacheTable, $cacheTableSql).LF.LF;
         $tagsTableSql = file_get_contents(
             ExtensionManagementUtility::extPath('staticfilecache').
-            'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendTags.sql'
+            'Resources/Private/Sql/Cache/Backend/'.$large.'Typo3DatabaseBackendTags.sql'
         );
 
         return $requiredTableStructures.str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql).LF;
