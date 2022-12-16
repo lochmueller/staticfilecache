@@ -1,35 +1,35 @@
-<f:be.container>
-	<div class="module">
-		<div class="module-loading-indicator"></div>
-		<div class="module-docheader t3js-module-docheader">
-			<div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation row">
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
 
-				<div class="module-docheader-bar-column-left col-xs-12 col-sm-3">
-					<f:render section="Menu" optional="true"/>
-				</div>
+<div class="module">
+	<div class="module-loading-indicator"></div>
+	<div class="module-docheader t3js-module-docheader">
+		<div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation row">
 
-				<div class="module-docheader-bar-column-right col-xs-12 col-sm-9 text-right">
-					<f:be.pagePath/>
-					<strong>
-						<f:be.pageInfo/>
-					</strong>
-					<f:be.buttons.csh/>
-				</div>
+			<div class="module-docheader-bar-column-left col-xs-12 col-sm-3">
+				<f:render section="Menu" optional="true"/>
 			</div>
 
-			<div class="module-docheader-bar module-docheader-bar-buttons t3js-module-docheader-bar t3js-module-docheader-bar-buttons">
-				<div class="module-docheader-bar-column-left">
-					<f:render section="IconButtons" optional="true"/>
-				</div>
-				<div class="module-docheader-bar-column-right">
-					<f:be.buttons.shortcut/>
-				</div>
+			<div class="module-docheader-bar-column-right col-xs-12 col-sm-9 text-right">
+				<f:be.pagePath/>
+				<strong>
+					<f:be.pageInfo/>
+				</strong>
+				<f:be.buttons.csh/>
 			</div>
 		</div>
 
-		<div class="module-body">
-			<f:flashMessages/>
-			<f:render section="Content"/>
+		<div class="module-docheader-bar module-docheader-bar-buttons t3js-module-docheader-bar t3js-module-docheader-bar-buttons">
+			<div class="module-docheader-bar-column-left">
+				<f:render section="IconButtons" optional="true"/>
+			</div>
+			<div class="module-docheader-bar-column-right">
+				<be:moduleLayout.button.shortcutButton/>
+			</div>
 		</div>
 	</div>
-</f:be.container>
+
+	<div class="module-body">
+		<f:flashMessages/>
+		<f:render section="Content"/>
+	</div>
+</div>

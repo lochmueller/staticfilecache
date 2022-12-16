@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Domain\Repository\PageRepository;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use SFC\Staticfilecache\Service\CacheService;
@@ -11,8 +13,11 @@ use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\EnvironmentService;
 use SFC\Staticfilecache\Service\HtaccessConfigurationService;
 use SFC\Staticfilecache\Service\QueueService;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -25,20 +30,21 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 class BackendController extends ActionController
 {
     protected QueueService $queueService;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
     /**
      * BackendController constructor.
      */
-    public function __construct(QueueService $queueService)
+    public function __construct(QueueService $queueService, ModuleTemplateFactory $moduleTemplateFactory)
     {
         $this->queueService = $queueService;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
-    /**
-     * MAIN function for static publishing information.
-     */
-    public function listAction(string $filter = ''): void
+    public function listAction(ServerRequestInterface $request, string $filter = ''): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+
         $filter = $this->setFilter($filter);
         $this->view->assignMultiple([
             'rows' => $this->getCachePagesEntries($filter),
@@ -46,15 +52,15 @@ class BackendController extends ActionController
             'pageId' => $this->getCurrentUid(),
             'backendDisplayMode' => $this->getDisplayMode(),
         ]);
+
+        $moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
-    /**
-     * Boost action.
-     *
-     * @param bool $run
-     */
-    public function boostAction($run = false): void
+    public function boostAction(ServerRequestInterface $request, $run = false): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
         if ($run) {
@@ -75,13 +81,15 @@ class BackendController extends ActionController
             'open' => \count($queueRepository->findOpen(99999999)),
             'old' => \count($queueRepository->findOld()),
         ]);
+
+        $moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
-    /**
-     * Support action.
-     */
-    public function supportAction(): void
+    public function supportAction(ServerRequestInterface $request): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+
         $htaccessConfigurationService = GeneralUtility::makeInstance(HtaccessConfigurationService::class);
         $environmentService = GeneralUtility::makeInstance(EnvironmentService::class);
         $this->view->assignMultiple([
@@ -92,6 +100,9 @@ class BackendController extends ActionController
             'envInfoLink' => $environmentService->getLink(),
             'envInfoMarkdown' => $environmentService->getMarkdown(),
         ]);
+
+        $moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
