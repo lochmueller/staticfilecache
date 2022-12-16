@@ -28,6 +28,7 @@ use SFC\Staticfilecache\Generator\PhpGenerator;
 use SFC\Staticfilecache\Generator\PlainGenerator;
 use SFC\Staticfilecache\Hook\DatamapHook;
 use SFC\Staticfilecache\Hook\LogoffFrontendUser;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\HttpPush\FontHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\ImageHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\ScriptHttpPush;
@@ -35,7 +36,6 @@ use SFC\Staticfilecache\Service\HttpPush\StyleHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\SvgHttpPush;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -49,7 +49,7 @@ class Configuration extends StaticFileCacheObject
 {
     public const EXTENSION_KEY = 'staticfilecache';
 
-    protected array $configuration = [];
+    protected ConfigurationService $configurationService;
 
     /**
      * Configuration constructor.
@@ -59,7 +59,7 @@ class Configuration extends StaticFileCacheObject
      */
     public function __construct()
     {
-        $this->configuration = (array) GeneralUtility::makeInstance(ExtensionConfiguration::class)->get(self::EXTENSION_KEY);
+        $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
     }
 
     /**
@@ -146,7 +146,7 @@ class Configuration extends StaticFileCacheObject
      */
     protected function registerCachingFramework(): self
     {
-        $useNullBackend = isset($this->configuration['disableInDevelopment']) && $this->configuration['disableInDevelopment'] && Environment::getContext()->isDevelopment();
+        $useNullBackend = $this->configurationService->isBool('disableInDevelopment') && Environment::getContext()->isDevelopment();
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][self::EXTENSION_KEY] = [
             'frontend' => UriFrontend::class,
@@ -192,20 +192,21 @@ class Configuration extends StaticFileCacheObject
             'htaccess' => HtaccessGenerator::class,
         ];
 
-        if ($this->configuration['enableGeneratorManifest']) {
+
+        if ($this->configurationService->get('enableGeneratorManifest')) {
             $generator['manifest'] = ManifestGenerator::class;
         }
-        if ($this->configuration['enableGeneratorPhp']) {
+        if ($this->configurationService->get('enableGeneratorPhp')) {
             $generator['php'] = PhpGenerator::class;
             unset($generator['htaccess']);
         }
-        if ($this->configuration['enableGeneratorPlain']) {
+        if ($this->configurationService->get('enableGeneratorPlain')) {
             $generator['plain'] = PlainGenerator::class;
         }
-        if ($this->configuration['enableGeneratorGzip']) {
+        if ($this->configurationService->get('enableGeneratorGzip')) {
             $generator['gzip'] = GzipGenerator::class;
         }
-        if ($this->configuration['enableGeneratorBrotli']) {
+        if ($this->configurationService->get('enableGeneratorBrotli')) {
             $generator['brotli'] = BrotliGenerator::class;
         }
 
