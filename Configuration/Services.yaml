@@ -65,6 +65,16 @@ services:
         identifier: 'SfcCacheRuleNoBackendUserCookieListenerFallback'
         event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
 
+  SFC\Staticfilecache\Cache\Listener\NoAuthorizationListener:
+    tags:
+      - name: event.listener
+        identifier: 'SfcCacheRuleNoAuthorizationListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+        before: 'SfcCacheRuleForceStaticCacheListener'
+      - name: event.listener
+        identifier: 'SfcCacheRuleNoAuthorizationListenerFallback'
+        event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
+
   SFC\Staticfilecache\Cache\Listener\ForceStaticCacheListener:
     tags:
       - name: event.listener
