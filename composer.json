@@ -30,11 +30,11 @@
 		}
 	],
 	"require": {
-		"php": "^7.4||^8.0",
+		"php": "^8.0",
 		"ext-pdo": "*",
 		"ext-zlib": "*",
-		"typo3/cms-core": "^10.4.21||^11.5.2",
-		"typo3/cms-extensionmanager": "^10.4.21||^11.5.2"
+		"typo3/cms-core": "^11.5||^12.0",
+		"typo3/cms-extensionmanager": "^11.5||^12.0"
 	},
 	"replace": {
 		"typo3-ter/staticfilecache": "self.version"
