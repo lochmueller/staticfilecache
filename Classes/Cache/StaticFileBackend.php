@@ -295,7 +295,6 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     /**
      * Get the cache folder for the given entry.
      *
-     * @param $entryIdentifier
      */
     protected function getFilepath(string $entryIdentifier): string
     {

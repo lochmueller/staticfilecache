@@ -20,10 +20,6 @@ class DatamapHook extends AbstractHook
      * Check if the page is removed out of the SFC.
      * We drop the cache in this case.
      *
-     * @param $status
-     * @param $table
-     * @param $id
-     * @param $fieldArray
      */
     public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, DataHandler $dataHandler): void
     {

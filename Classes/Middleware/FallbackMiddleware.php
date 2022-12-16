@@ -78,7 +78,7 @@ class FallbackMiddleware implements MiddlewareInterface
         }
 
         $cacheDirectory = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory();
-        if (0 !== strpos($possibleStaticFile, $cacheDirectory)) {
+        if (!str_starts_with($possibleStaticFile, $cacheDirectory)) {
             throw new Exception('The path is not in the cache directory', 348923472);
         }
 
@@ -102,7 +102,7 @@ class FallbackMiddleware implements MiddlewareInterface
             $headers['X-SFC-State'] = 'StaticFileCache - via Fallback Middleware';
         }
         foreach ($request->getHeader('accept-encoding') as $acceptEncoding) {
-            if (false !== strpos($acceptEncoding, 'br')) {
+            if (str_contains($acceptEncoding, 'br')) {
                 if (is_file($possibleStaticFile.'.br') && is_readable($possibleStaticFile.'.br')) {
                     $headers['Content-Encoding'] = 'br';
                     $possibleStaticFile .= '.br';
@@ -110,7 +110,7 @@ class FallbackMiddleware implements MiddlewareInterface
 
                 break;
             }
-            if (false !== strpos($acceptEncoding, 'gzip')) {
+            if (str_contains($acceptEncoding, 'gzip')) {
                 if (is_file($possibleStaticFile.'.gz') && is_readable($possibleStaticFile.'.gz')) {
                     $headers['Content-Encoding'] = 'gzip';
                     $possibleStaticFile .= '.gz';

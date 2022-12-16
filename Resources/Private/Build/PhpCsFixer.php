@@ -17,11 +17,10 @@ $finder = PhpCsFixer\Finder::create()
 return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
+        '@PER' => true,
         '@DoctrineAnnotation' => true,
-        '@PhpCsFixer' => true,
-        '@PhpCsFixer:risky' => true,
-        '@PHP74Migration' => true,
-        '@PHP74Migration:risky' => true,
+        '@PHP80Migration' => true,
+        '@PHP80Migration:risky' => true,
         'no_superfluous_phpdoc_tags' => true,
     ])
     ->setFinder($finder)

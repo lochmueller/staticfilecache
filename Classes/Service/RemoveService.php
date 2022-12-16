@@ -42,7 +42,6 @@ class RemoveService extends AbstractService
     /**
      * Add the subdirecotries of thee given folder to the remove function.
      *
-     * @return RemoveService
      */
     public function subdirectories(string $absoluteDirName): self
     {
@@ -64,7 +63,6 @@ class RemoveService extends AbstractService
      * Rename the dir and mark them as "to remove".
      * Speed up the remove process.
      *
-     * @return RemoveService
      */
     public function directory(string $absoluteDirName): self
     {

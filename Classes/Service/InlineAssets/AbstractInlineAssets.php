@@ -53,33 +53,33 @@ abstract class AbstractInlineAssets extends \SFC\Staticfilecache\Service\Abstrac
         }
 
         switch ($match['ext']) {
-          case 'svg':// TODO ; https://github.com/peteboere/css-crush/commit/7cd5d73f67212dfc7ec0f85e4a84932a32ce95d8
-              $type = 'image/svg+xml;utf8';
-              $file = str_replace('"', '\'', $file); // change quotes
-              $file = preg_replace('/#(?=[a-f0-9]{3,6})/', '%23', $file); // adapt hex-color
-              $file = preg_replace('/(?<=>)\s+|\s+(?=<)/', '', $file); // remove overhead
-              $file = preg_replace('/\s+/', ' ', $file); // shrink whitespace
+            case 'svg':// TODO ; https://github.com/peteboere/css-crush/commit/7cd5d73f67212dfc7ec0f85e4a84932a32ce95d8
+                $type = 'image/svg+xml;utf8';
+                $file = str_replace('"', '\'', $file); // change quotes
+                $file = preg_replace('/#(?=[a-f0-9]{3,6})/', '%23', $file); // adapt hex-color
+                $file = preg_replace('/(?<=>)\s+|\s+(?=<)/', '', $file); // remove overhead
+                $file = preg_replace('/\s+/', ' ', $file); // shrink whitespace
 
-          break;
+                break;
 
-          case 'ico':
-              $type = 'image/x-icon;base64';
-              $file = base64_encode($file);
+            case 'ico':
+                $type = 'image/x-icon;base64';
+                $file = base64_encode($file);
 
-          break;
+                break;
 
-          case 'woff':
-          case 'woff2':
-              $type = 'font/'.$match['ext'].';base64';
-              $file = base64_encode($file);
+            case 'woff':
+            case 'woff2':
+                $type = 'font/'.$match['ext'].';base64';
+                $file = base64_encode($file);
 
-          break;
+                break;
 
-          default:
-              $type = 'image/'.$match['ext'].';base64';
-              $file = base64_encode($file);
+            default:
+                $type = 'image/'.$match['ext'].';base64';
+                $file = base64_encode($file);
 
-          break;
+                break;
         }
 
         return "data:{$type},{$file}";
