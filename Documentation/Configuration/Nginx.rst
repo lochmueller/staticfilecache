@@ -9,7 +9,7 @@ This configuration example adds a named location_ called @sfc which replaces the
 The @sfc location_ includes all checks necessary to decide whether the current request can be handled with
 a static file or needs to be directed to TYPO3.
 If all checks pass, the try_files_ directive is used to find the files in
-typo3temp/tx_staticfilecache/ and if unavailable, redirect to index.php.
+typo3temp/assets/tx_staticfilecache/ and if unavailable, redirect to index.php.
 
 In your nginx configuration you need to replace your '/' location, which probably looks like the following:
 
@@ -72,12 +72,12 @@ By the following configuration:
 
        charset utf-8;
        default_type text/html;
-       try_files /typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index
-             /typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}
+       try_files /typo3temp/assets/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index
+             /typo3temp/assets/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}
              =405;
    }
 
-   location /typo3temp/tx_staticfilecache {
+   location /typo3temp/assets/tx_staticfilecache {
        deny all;
    }
 
@@ -85,25 +85,25 @@ If you activate the php generator you need to use this block accepting urls with
 
 .. code-block:: nginx
 
-        if (!-f $document_root/typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}index.php) {
+        if (!-f $document_root/typo3temp/assets/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}index.php) {
             return 405;
         }
 
         include /etc/nginx/fastcgi_params;
         fastcgi_pass unix:/var/run/php/php-fpm.sock;
-        fastcgi_param SCRIPT_FILENAME $document_root/typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root/typo3temp/assets/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index.php;
 
 or this block accepting urls with or without trailing slashes
 
 .. code-block:: nginx
 
-        if (!-f $document_root/typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index.php) {
+        if (!-f $document_root/typo3temp/assets/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index.php) {
             return 405;
         }
 
         include /etc/nginx/fastcgi_params;
         fastcgi_pass unix:/var/run/php/php-fpm.sock;
-        fastcgi_param SCRIPT_FILENAME $document_root/typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root/typo3temp/assets/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index.php;
 
 instead of
 
@@ -111,8 +111,8 @@ instead of
 
        charset utf-8;
        default_type text/html;
-       try_files /typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index
-             /typo3temp/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}
+       try_files /typo3temp/assets/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index
+             /typo3temp/assets/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}
              =405;
 
 *Extension configuration*

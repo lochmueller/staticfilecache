@@ -22,7 +22,7 @@ Installation
 
 #. Check access rights of the cache directory
 
-   Make sure `typo3temp/tx_staticfilecache` is accessible publicly
+   Make sure `typo3temp/assets/tx_staticfilecache` is accessible publicly
 
 #. Clear the TYPO3 cache
 
@@ -38,7 +38,7 @@ Verify the functionality
 -  Enable `basic.debugHeaders` in the extension settings.
 -  Open some frontend pages in a different browser than the one you're logged in with TYPO3.
 -  Check the staticfilecache module - are there cached pages listed? good!
--  Check the your typo3temp/tx_staticfilecache folder for content. Is there content? Good!
+-  Check the your typo3temp/assets/tx_staticfilecache folder for content. Is there content? Good!
 -  In your code, make sure there are no INT objects on pages you want to be cached. A single statically-uncacheable element will make the entire page statically-uncacheable.
 -  In the second browser, hard reload the pages you previously called and check for x-sfc headers. Loaded? Good!
 
