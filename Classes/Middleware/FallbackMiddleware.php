@@ -85,22 +85,22 @@ class FallbackMiddleware implements MiddlewareInterface
         return new HtmlResponse(GeneralUtility::getUrl($possibleStaticFile), 200, $headers);
     }
 
-    /**
-     * @return array
-     */
-    protected function getHeaders(ServerRequestInterface $request, string &$possibleStaticFile)
+    protected function getHeaders(ServerRequestInterface $request, string &$possibleStaticFile): array
     {
         $headers = [
             'Content-Type' => 'text/html; charset=utf-8',
         ];
         $config = $this->getCacheConfiguration($possibleStaticFile);
-        if (isset($config['headers']->{'Content-Type'})) {
-            $headers['Content-Type'] = implode(', ', $config['headers']->{'Content-Type'});
+
+        foreach ($config['headers'] as $header => $value) {
+            $headers[$header] = implode(', ', $value);
         }
+
         $debug = $this->configurationService->isBool('debugHeaders');
         if ($debug) {
             $headers['X-SFC-State'] = 'StaticFileCache - via Fallback Middleware';
         }
+
         foreach ($request->getHeader('accept-encoding') as $acceptEncoding) {
             if (str_contains($acceptEncoding, 'br')) {
                 if (is_file($possibleStaticFile.'.br') && is_readable($possibleStaticFile.'.br')) {
@@ -130,7 +130,7 @@ class FallbackMiddleware implements MiddlewareInterface
     {
         $configFile = $possibleStaticFile.'.config.json';
         if (is_file($configFile) || !is_readable($configFile)) {
-            return (array) json_decode((string) GeneralUtility::getUrl($configFile));
+            return (array) json_decode((string) GeneralUtility::getUrl($configFile), true);
         }
 
         return [];
