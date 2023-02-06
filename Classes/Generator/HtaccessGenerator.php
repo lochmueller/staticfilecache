@@ -28,7 +28,7 @@ class HtaccessGenerator extends AbstractGenerator
         $accessTimeout = (int) $configuration->get('htaccessTimeout');
         $lifetime = $accessTimeout ?: $lifetime;
 
-        $headers = $this->getReponseHeaders($response);
+        $headers = $configuration->getValidHeaders($response->getHeaders(), 'validHtaccessHeaders');
         if ($configuration->isBool('debugHeaders')) {
             $headers['X-SFC-State'] = 'StaticFileCache - via htaccess';
         }
@@ -75,25 +75,6 @@ class HtaccessGenerator extends AbstractGenerator
         $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess';
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
         $removeService->file($htaccessFile);
-    }
-
-    /**
-     * Get reponse headers.
-     */
-    protected function getReponseHeaders(ResponseInterface $response): array
-    {
-        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        $validHeaders = GeneralUtility::trimExplode(',', $configuration->get('validHtaccessHeaders') . ',Content-Type', true);
-
-        $headers = $response->getHeaders();
-        $result = [];
-        foreach ($headers as $name => $values) {
-            if (\in_array($name, $validHeaders, true)) {
-                $result[$name] = implode(', ', $values);
-            }
-        }
-
-        return $result;
     }
 
     /**
