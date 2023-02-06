@@ -87,6 +87,31 @@ class ConfigurationService extends AbstractService
     }
 
     /**
+     * Get the valid headers.
+     *
+     * @param array $headers
+     * @param string $configKey
+     * @return array
+     */
+    public function getValidHeaders(array $headers, string $configKey): array
+    {
+        $validHeaders = GeneralUtility::trimExplode(
+            ',',
+            $this->get($configKey) . ',Content-Type',
+            true
+        );
+
+        $result = [];
+        foreach ($headers as $name => $values) {
+            if (in_array($name, $validHeaders)) {
+                $result[$name] = implode(', ', $values);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Get backend display mode.
      */
     public function getBackendDisplayMode(): string
