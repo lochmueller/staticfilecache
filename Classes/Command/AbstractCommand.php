@@ -18,7 +18,7 @@ abstract class AbstractCommand extends Command
      *
      * @return Command
      */
-    public function setDescription($description)
+    public function setDescription($description): static
     {
         return parent::setDescription('StaticFileCache task: '.$description);
     }
