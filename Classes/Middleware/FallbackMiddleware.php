@@ -93,7 +93,7 @@ class FallbackMiddleware implements MiddlewareInterface
         $config = $this->getCacheConfiguration($possibleStaticFile);
 
         foreach ($config['headers'] as $header => $value) {
-            $headers[$header] = implode(', ', $value);
+            $headers[$header] = $value;
         }
 
         $debug = $this->configurationService->isBool('debugHeaders');
