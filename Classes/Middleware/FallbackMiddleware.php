@@ -92,7 +92,7 @@ class FallbackMiddleware implements MiddlewareInterface
         ];
         $config = $this->getCacheConfiguration($possibleStaticFile);
 
-        foreach ($config['headers'] as $header => $value) {
+        foreach ($config['headers'] ?? [] as $header => $value) {
             $headers[$header] = $value;
         }
 

@@ -42,9 +42,9 @@ class BackendController extends ActionController
         $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
-    public function listAction(ServerRequestInterface $request, string $filter = ''): ResponseInterface
+    public function listAction(string $filter = ''): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
 
         $filter = $this->setFilter($filter);
         $this->view->assignMultiple([
@@ -58,9 +58,9 @@ class BackendController extends ActionController
         return new HtmlResponse($moduleTemplate->renderContent());
     }
 
-    public function boostAction(ServerRequestInterface $request, $run = false): ResponseInterface
+    public function boostAction(bool $run = false): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
 
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
@@ -87,9 +87,9 @@ class BackendController extends ActionController
         return new HtmlResponse($moduleTemplate->renderContent());
     }
 
-    public function supportAction(ServerRequestInterface $request): ResponseInterface
+    public function supportAction(): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
 
         $htaccessConfigurationService = GeneralUtility::makeInstance(HtaccessConfigurationService::class);
         $environmentService = GeneralUtility::makeInstance(EnvironmentService::class);
