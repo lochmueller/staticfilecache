@@ -71,7 +71,6 @@ class Configuration extends StaticFileCacheObject
             ->registerRules()
             ->registerCachingFramework()
             ->registerIcons()
-            ->registerFluidNamespace()
             ->registerGenerators()
             ->registerHttpPushServices()
         ;
@@ -168,16 +167,6 @@ class Configuration extends StaticFileCacheObject
                 // 'hashLength' => 10,
             ],
         ];
-
-        return $this;
-    }
-
-    /**
-     * Add fluid namespaces.
-     */
-    protected function registerFluidNamespace(): self
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['sfc'] = ['SFC\\Staticfilecache\\ViewHelpers'];
 
         return $this;
     }
