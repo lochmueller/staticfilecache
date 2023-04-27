@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
 
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
@@ -54,7 +55,7 @@ class CacheService extends AbstractService
      * Flush the cache.
      *
      * @throws NoSuchCacheException
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException
+     * @throws NoSuchCacheGroupException
      */
     public function flush(bool $includeBoostQueue = false): void
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Controller;
 
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Domain\Repository\PageRepository;
@@ -71,10 +72,10 @@ class BackendController extends ActionController
                     $this->queueService->runSingleRequest($item);
                 }
             } catch (\Exception $exception) {
-                $this->addFlashMessage('Error in run: '.$exception->getMessage(), 'Runner', FlashMessage::ERROR, true);
+                $this->addFlashMessage('Error in run: '.$exception->getMessage(), 'Runner', AbstractMessage::ERROR, true);
             }
 
-            $this->addFlashMessage('Run '.\count($items).' entries', 'Runner', FlashMessage::OK, true);
+            $this->addFlashMessage('Run '.\count($items).' entries', 'Runner', AbstractMessage::OK, true);
         }
         $this->view->assignMultiple([
             'enable' => (bool) $configurationService->get('boostMode'),

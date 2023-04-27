@@ -50,7 +50,8 @@
 	"require-dev": {
 		"typo3/testing-framework": "^6.1",
 		"friendsofphp/php-cs-fixer": "^3.5",
-		"phpmetrics/phpmetrics": "^2.5"
+		"phpmetrics/phpmetrics": "^2.5",
+		"ssch/typo3-rector": "^1.2"
 	},
 	"suggest": {
 		"lochmueller/seocli": "Scan websites against SEO criteria and/or trigger the indexing process and cache warming in deployment scripts",

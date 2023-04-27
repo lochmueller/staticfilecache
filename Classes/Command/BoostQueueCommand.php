@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Command;
 
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use SFC\Staticfilecache\Service\QueueService;
 use Symfony\Component\Console\Input\InputInterface;
@@ -55,7 +56,7 @@ class BoostQueueCommand extends AbstractCommand
      * execute() method, you set the code to execute by passing
      * a Closure to the setCode() method.
      *
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     * @throws NoSuchCacheException
      *
      * @return null|int null or 0 if everything went fine, or an error code
      *

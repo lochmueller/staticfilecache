@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
 
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use SFC\Staticfilecache\Command\BoostQueueCommand;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 
@@ -91,7 +92,7 @@ class QueueService extends AbstractService
     /**
      * Run a single request with guzzle.
      *
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     * @throws NoSuchCacheException
      */
     public function runSingleRequest(array $runEntry): void
     {

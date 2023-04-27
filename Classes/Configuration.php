@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache;
 
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use SFC\Staticfilecache\Cache\RemoteFileBackend;
 use SFC\Staticfilecache\Cache\Rule\Enable;
 use SFC\Staticfilecache\Cache\Rule\LoginDeniedConfiguration;
@@ -54,8 +56,8 @@ class Configuration extends StaticFileCacheObject
     /**
      * Configuration constructor.
      *
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
-     * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
+     * @throws ExtensionConfigurationExtensionNotConfiguredException
+     * @throws ExtensionConfigurationPathDoesNotExistException
      */
     public function __construct()
     {

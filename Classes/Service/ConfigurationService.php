@@ -89,9 +89,6 @@ class ConfigurationService extends AbstractService
     /**
      * Get the valid headers.
      *
-     * @param array $headers
-     * @param string $configKey
-     * @return array
      */
     public function getValidHeaders(array $headers, string $configKey): array
     {

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service\InlineAssets;
 
+use SFC\Staticfilecache\Service\AbstractService;
+use TYPO3\CMS\Core\Core\Environment;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -11,14 +14,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Marcus Förster ; https://github.com/xerc
  */
-abstract class AbstractInlineAssets extends \SFC\Staticfilecache\Service\AbstractService
+abstract class AbstractInlineAssets extends AbstractService
 {
     public function __construct()
     {
-        $this->sitePath = \TYPO3\CMS\Core\Core\Environment::getPublicPath(); // [^/]$
+        $this->sitePath = Environment::getPublicPath(); // [^/]$
 
         // @var ConfigurationService $configurationService
-        $this->configurationService = GeneralUtility::makeInstance(\SFC\Staticfilecache\Service\ConfigurationService::class); // CHECK ; src-location?!
+        $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class); // CHECK ; src-location?!
     }
 
     /**

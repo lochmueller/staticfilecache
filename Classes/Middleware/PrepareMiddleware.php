@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Middleware;
 
+use TYPO3\CMS\Core\Http\Stream;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -77,7 +78,7 @@ class PrepareMiddleware implements MiddlewareInterface
         }
 
         $processedHtml = (string) GeneralUtility::makeInstance(InlineAssetsService::class)->replaceInlineContent((string) $response->getBody());
-        $responseBody = new \TYPO3\CMS\Core\Http\Stream('php://temp', 'rw');
+        $responseBody = new Stream('php://temp', 'rw');
         $responseBody->write($processedHtml);
         $response = $response->withBody($responseBody);
 
