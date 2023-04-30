@@ -35,7 +35,8 @@
 		"ext-zlib": "*",
 		"typo3/cms-core": "^11.5||^12.0",
 		"typo3/cms-backend": "^11.5||^12.0",
-		"typo3/cms-extensionmanager": "^11.5||^12.0"
+		"typo3/cms-extensionmanager": "^11.5||^12.0",
+		"friendsoftypo3/fontawesome-provider": "^1.0"
 	},
 	"replace": {
 		"typo3-ter/staticfilecache": "self.version"
