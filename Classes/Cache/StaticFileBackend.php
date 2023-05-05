@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
+use TYPO3\CMS\Core\Context\Context;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Domain\Repository\CacheRepository;
@@ -38,7 +40,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      * @param int               $lifetime        Lifetime of this cache entry in seconds
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception                      if no cache frontend has been set
-     * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the data is not a string
+     * @throws InvalidDataException if the data is not a string
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
     {
@@ -322,6 +324,9 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     protected function findIdentifiersByTagIncludingExpired($tag): array
     {
         $base = (new DateTimeService())->getCurrentTime();
+
+        // Use EXEC_TIME because the core still use EXEC_TIME for checking the time
+        $base = $GLOBALS['EXEC_TIME'];
         $GLOBALS['EXEC_TIME'] = 0;
         $identifiers = $this->findIdentifiersByTag($tag);
         $GLOBALS['EXEC_TIME'] = $base;

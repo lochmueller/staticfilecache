@@ -2,6 +2,8 @@
 
 <f:section name="Content">
 
+	<f:render partial="Backend/Menu" />
+
 	<h1>
 		<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:module.title"/>
 	</h1>
@@ -13,13 +15,13 @@
 			key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:module.intro.{backendDisplayMode}"/>
 	</p>
 
-	<f:form action="list" class="form-inline">
-		Filter:
+	<p>Filter:</p>
+	<f:form action="list" class="form-inline input-group">
 		<f:form.select name="filter" options="{all: 'All', cached: 'Cached', notCached: 'Not cached'}" class="form-control" value="{filter}" />
 		<f:form.submit value="Set!" class="btn btn-primary" />
 	</f:form>
 
-	<table class="table table-striped">
+	<table class="table table-striped" style="margin-top: 20px;">
 		<tr>
 			<th class="col-sm-3">
 				<f:translate key="LLL:EXT:staticfilecache/Resources/Private/Language/locallang.xlf:page"/>

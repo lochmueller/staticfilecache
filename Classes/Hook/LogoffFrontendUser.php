@@ -12,6 +12,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * LogoffFrontendUser.
+ *
+ * If v11 is dropped, migrate to AfterUserLoggedOutEvent
  */
 class LogoffFrontendUser extends AbstractHook
 {

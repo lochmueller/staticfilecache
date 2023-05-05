@@ -1,6 +1,6 @@
 [![Latest Stable Version](https://poser.pugx.org/lochmueller/staticfilecache/v/stable)](https://extensions.typo3.org/extension/staticfilecache)
+[![TYPO3 12](https://img.shields.io/badge/TYPO3-12-orange.svg)](https://get.typo3.org/version/12)
 [![TYPO3 11](https://img.shields.io/badge/TYPO3-11-orange.svg)](https://get.typo3.org/version/11)
-[![TYPO3 10](https://img.shields.io/badge/TYPO3-10-orange.svg)](https://get.typo3.org/version/10)
 [![Total Downloads](https://poser.pugx.org/lochmueller/staticfilecache/d/total)](https://packagist.org/packages/lochmueller/staticfilecache)
 [![Monthly Downloads](https://poser.pugx.org/lochmueller/staticfilecache/d/monthly)](https://packagist.org/packages/lochmueller/staticfilecache)
 ![Test](https://github.com/lochmueller/staticfilecache/workflows/Test/badge.svg)

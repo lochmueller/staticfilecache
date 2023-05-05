@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use SFC\Staticfilecache\Middleware\CookieCheckMiddleware;
 use SFC\Staticfilecache\Middleware\FallbackMiddleware;
 use SFC\Staticfilecache\Middleware\FrontendUserMiddleware;

@@ -1,9 +1,5 @@
-<div class="form-inline">
-	<div class="form-group form-group-sm">
-		<f:be.menus.actionMenu>
-			<f:be.menus.actionMenuItem label="List (Overview)" controller="Backend" action="list"/>
-			<f:be.menus.actionMenuItem label="Boostmode" controller="Backend" action="boost"/>
-			<f:be.menus.actionMenuItem label="Configuration, Support, Documentation..." controller="Backend" action="support"/>
-		</f:be.menus.actionMenu>
-	</div>
+<div class="btn-group" role="group" aria-label="Menu" style="padding-bottom: 20px;">
+	<f:link.action action="list" class="btn btn-light">List (Overview)</f:link.action>
+	<f:link.action action="boost" class="btn btn-light">Boostmode</f:link.action>
+	<f:link.action action="support" class="btn btn-light">Configuration, Support, Documentation...</f:link.action>
 </div>

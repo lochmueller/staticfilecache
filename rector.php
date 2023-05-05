@@ -1,6 +1,8 @@
 <?php
 
 declare(strict_types=1);
+use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
+use Ssch\TYPO3Rector\FileProcessor\TypoScript\Rector\v9\v0\FileIncludeToImportStatementTypoScriptRector;
 
 use Rector\Config\RectorConfig;
 use Rector\Core\Configuration\Option;
@@ -22,7 +24,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->phpVersion(PhpVersion::PHP_80);
 
     $rectorConfig->paths([
-        __DIR__ . '/Classes/',
+        __DIR__ . '/',
      ]);
 
     $rectorConfig->skip([
@@ -50,12 +52,12 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
 
 
-    $rectorConfig->rule(\Rector\Php55\Rector\String_\StringClassNameToClassConstantRector::class);
+    $rectorConfig->rule(StringClassNameToClassConstantRector::class);
 
     $rectorConfig->rule(ConvertImplicitVariablesToExplicitGlobalsRector::class);
     $rectorConfig->ruleWithConfiguration(ExtEmConfRector::class, [
         ExtEmConfRector::ADDITIONAL_VALUES_TO_BE_REMOVED => []
     ]);
 
-    $rectorConfig->rule(\Ssch\TYPO3Rector\FileProcessor\TypoScript\Rector\v9\v0\FileIncludeToImportStatementTypoScriptRector::class);
+    $rectorConfig->rule(FileIncludeToImportStatementTypoScriptRector::class);
 };

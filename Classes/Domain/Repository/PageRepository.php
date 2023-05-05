@@ -43,7 +43,7 @@ class PageRepository extends AbstractRepository
         return (array) $queryBuilder->select('*')
             ->from('pages')
             ->orWhere(...$where)
-            ->execute()
+            ->executeQuery()
             ->fetchAll()
         ;
     }

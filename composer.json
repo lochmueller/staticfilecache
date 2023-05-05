@@ -33,10 +33,9 @@
 		"php": "^8.0",
 		"ext-pdo": "*",
 		"ext-zlib": "*",
-		"typo3/cms-core": "^11.5||^12.0",
-		"typo3/cms-backend": "^11.5||^12.0",
-		"typo3/cms-extensionmanager": "^11.5||^12.0",
-		"friendsoftypo3/fontawesome-provider": "^1.0"
+		"typo3/cms-core": "^11.5||^12.4",
+		"typo3/cms-backend": "^11.5||^12.4",
+		"typo3/cms-extensionmanager": "^11.5||^12.4"
 	},
 	"replace": {
 		"typo3-ter/staticfilecache": "self.version"
@@ -49,8 +48,8 @@
 		"source": "https://github.com/lochmueller/staticfilecache"
 	},
 	"require-dev": {
-		"typo3/testing-framework": "^6.1",
-		"friendsofphp/php-cs-fixer": "^3.5",
+		"typo3/testing-framework": "^7.0",
+		"friendsofphp/php-cs-fixer": "^3.16",
 		"phpmetrics/phpmetrics": "^2.5",
 		"ssch/typo3-rector": "^1.2"
 	},

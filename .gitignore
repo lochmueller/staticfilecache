@@ -6,3 +6,4 @@
 .DS_Store
 /Documentation-GENERATED-temp/
 /composer.lock
+/Tests/.phpunit.cache/

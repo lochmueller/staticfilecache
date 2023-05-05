@@ -26,7 +26,7 @@ class CacheRepository extends AbstractRepository
                 $queryBuilder->createNamedParameter((new DateTimeService())->getCurrentTime(), \PDO::PARAM_INT)
             ))
             ->groupBy('identifier')
-            ->execute()
+            ->executeQuery()
             ->fetchAll()
         ;
 
@@ -47,7 +47,7 @@ class CacheRepository extends AbstractRepository
         $rows = $queryBuilder->select('identifier')
             ->from($this->getTableName())
             ->groupBy('identifier')
-            ->execute()
+            ->executeQuery()
             ->fetchAll()
         ;
 

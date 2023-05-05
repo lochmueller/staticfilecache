@@ -23,7 +23,7 @@ class QueueRepository extends AbstractRepository
             ->where($queryBuilder->expr()->eq('call_date', 0))
             ->setMaxResults($limit)
             ->orderBy('cache_priority', 'desc')
-            ->execute()
+            ->executeQuery()
             ->fetchAll()
         ;
     }
@@ -36,7 +36,7 @@ class QueueRepository extends AbstractRepository
     public function countOpenByIdentifier($identifier): int
     {
         $queryBuilder = $this->createQuery();
-        $where = $queryBuilder->expr()->andX(
+        $where = $queryBuilder->expr()->and(
             $queryBuilder->expr()->eq('cache_url', $queryBuilder->createNamedParameter($identifier)),
             $queryBuilder->expr()->eq('call_date', 0)
         );
@@ -44,7 +44,7 @@ class QueueRepository extends AbstractRepository
         return (int) $queryBuilder->select('uid')
             ->from($this->getTableName())
             ->where($where)
-            ->execute()
+            ->executeQuery()
             ->rowCount()
         ;
     }
@@ -59,7 +59,7 @@ class QueueRepository extends AbstractRepository
         return (array) $queryBuilder->select('uid')
             ->from($this->getTableName())
             ->where($queryBuilder->expr()->gt('call_date', 0))
-            ->execute()
+            ->executeQuery()
             ->fetchAll()
         ;
     }
