@@ -72,7 +72,6 @@ class Configuration extends StaticFileCacheObject
         $this->registerHooks()
             ->registerRules()
             ->registerCachingFramework()
-            ->registerIcons()
             ->registerGenerators()
             ->registerHttpPushServices()
         ;
@@ -218,31 +217,6 @@ class Configuration extends StaticFileCacheObject
             'font' => FontHttpPush::class,
             'svg' => SvgHttpPush::class,
         ]);
-
-        return $this;
-    }
-
-    /**
-     * Register icons.
-     */
-    protected function registerIcons(): self
-    {
-        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-        $iconRegistry->registerIcon(
-            'brand-amazon',
-            FontawesomeIconProvider::class,
-            ['name' => 'amazon']
-        );
-        $iconRegistry->registerIcon(
-            'brand-paypal',
-            FontawesomeIconProvider::class,
-            ['name' => 'paypal']
-        );
-        $iconRegistry->registerIcon(
-            'documentation-book',
-            FontawesomeIconProvider::class,
-            ['name' => 'book']
-        );
 
         return $this;
     }
