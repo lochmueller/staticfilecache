@@ -1,0 +1,6 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Function brotli_compress not found\\.$#"
+			count: 1
+			path: Classes/Generator/BrotliGenerator.php

@@ -16,6 +16,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractInlineAssets extends AbstractService
 {
+    protected string $sitePath;
+    protected ConfigurationService $configurationService;
+
     public function __construct()
     {
         $this->sitePath = Environment::getPublicPath(); // [^/]$

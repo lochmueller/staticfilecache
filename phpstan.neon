@@ -1,0 +1,7 @@
+includes:
+	- phpstan-baseline.neon
+	- .Build/vendor/andersundsehr/phpstan-git-files/extension.php
+
+parameters:
+	level: 1
+	reportUnmatchedIgnoredErrors: false
