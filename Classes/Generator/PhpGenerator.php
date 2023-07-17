@@ -25,7 +25,7 @@ class PhpGenerator extends HtaccessGenerator
         $accessTimeout = (int) $configuration->get('htaccessTimeout');
         $lifetime = $accessTimeout ?: $lifetime;
 
-        $headers = $this->getReponseHeaders($response);
+        $headers = $configuration->getValidHeaders($response->getHeaders(), 'validHtaccessHeaders');
         if ($configuration->isBool('debugHeaders')) {
             $headers['X-SFC-State'] = 'StaticFileCache - via PhpGenerator';
         }
