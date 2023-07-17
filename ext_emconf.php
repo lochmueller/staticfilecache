@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+/** @var string $_EXTKEY */
 $EM_CONF[$_EXTKEY] = [
     'title' => 'StaticFileCache',
     'description' => 'Transparent static file cache solution using mod_rewrite and mod_expires. Increase performance for static pages by a factor of 230!!',
