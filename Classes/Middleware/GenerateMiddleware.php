@@ -97,8 +97,8 @@ class GenerateMiddleware implements MiddlewareInterface
         $timeOutTime = $tsfe->get_cache_timeout();
 
         // If page has a endtime before the current timeOutTime, use it instead:
-        if ($tsfe->page['endtime'] > 0 && $tsfe->page['endtime'] < $timeOutTime) {
-            $endtimeLifetime = $tsfe->page['endtime'] - time();
+        if ($tsfe->page['endtime'] > 0 && ($tsfe->page['endtime'] - $GLOBALS['EXEC_TIME']) < $timeOutTime) {
+            $endtimeLifetime = $tsfe->page['endtime'] - $GLOBALS['EXEC_TIME'];
             if ($endtimeLifetime > 0) {
                 $timeOutTime = $endtimeLifetime;
             }
