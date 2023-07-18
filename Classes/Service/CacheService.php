@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
 
+use SFC\Staticfilecache\Cache\UriFrontend;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -22,7 +23,7 @@ class CacheService extends AbstractService
      *
      * @throws NoSuchCacheException
      */
-    public function get(): VariableFrontend
+    public function get(): UriFrontend
     {
         return $this->getManager()->getCache('staticfilecache');
     }

@@ -80,7 +80,7 @@ class BackendController extends ActionController
         $this->view->assignMultiple([
             'enable' => (bool) $configurationService->get('boostMode'),
             'open' => \count($queueRepository->findOpen(99999999)),
-            'old' => \count($queueRepository->findOld()),
+            'old' => \count($queueRepository->findOldUids()),
         ]);
 
         $moduleTemplate->setContent($this->view->render());

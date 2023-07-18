@@ -19,7 +19,7 @@ class CacheRepository extends AbstractRepository
     public function findExpiredIdentifiers(): array
     {
         $queryBuilder = $this->createQuery();
-        $rows = $queryBuilder->select('identifier')
+        $cacheIdentifiers = $queryBuilder->select('identifier')
             ->from($this->getTableName())
             ->where($queryBuilder->expr()->lt(
                 'expires',
@@ -27,14 +27,8 @@ class CacheRepository extends AbstractRepository
             ))
             ->groupBy('identifier')
             ->executeQuery()
-            ->fetchAll()
+            ->fetchFirstColumn()
         ;
-
-        $cacheIdentifiers = [];
-        foreach ($rows as $row) {
-            $cacheIdentifiers[] = $row['identifier'];
-        }
-
         return $cacheIdentifiers;
     }
 
@@ -44,18 +38,12 @@ class CacheRepository extends AbstractRepository
     public function findAllIdentifiers(): array
     {
         $queryBuilder = $this->createQuery();
-        $rows = $queryBuilder->select('identifier')
+        $cacheIdentifiers = $queryBuilder->select('identifier')
             ->from($this->getTableName())
             ->groupBy('identifier')
             ->executeQuery()
-            ->fetchAll()
+            ->fetchFirstColumn()
         ;
-
-        $cacheIdentifiers = [];
-        foreach ($rows as $row) {
-            $cacheIdentifiers[] = $row['identifier'];
-        }
-
         return $cacheIdentifiers;
     }
 

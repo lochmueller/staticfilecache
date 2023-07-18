@@ -38,7 +38,7 @@ class ForceStaticCacheListener
                 }
 
                 // render the plugins in the output
-                $GLOBALS['TSFE']->INTincScript();
+                $GLOBALS['TSFE']->INTincScript($event->getRequest());
             }
         }
     }

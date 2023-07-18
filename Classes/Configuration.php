@@ -39,7 +39,6 @@ use SFC\Staticfilecache\Service\HttpPush\SvgHttpPush;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
@@ -112,7 +111,6 @@ class Configuration extends StaticFileCacheObject
      */
     protected function registerHooks(): self
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'][self::EXTENSION_KEY] = LogoffFrontendUser::class.'->logoff';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = DatamapHook::class;
 
         return $this;

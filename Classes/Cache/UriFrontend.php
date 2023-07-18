@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -47,6 +48,7 @@ class UriFrontend extends VariableFrontend
         if (!$this->isValidTag($tag)) {
             throw new \InvalidArgumentException('"'.$tag.'" is not a valid tag for a cache entry.', 1233058312);
         }
+        assert($this->backend instanceof TaggableBackendInterface);
         $entries = [];
         $identifiers = $this->backend->findIdentifiersByTag($tag);
         foreach ($identifiers as $identifier) {
