@@ -28,6 +28,9 @@ class CookieService extends AbstractService
      */
     public function setCookie(int $lifetime): void
     {
+        if ($lifetime !== self::SESSION_LIFETIME) {
+            $lifetime += $this->dateTimeService->getCurrentTime();
+        }
         setcookie(self::FE_COOKIE_NAME, 'typo_user_logged_in', $lifetime + $this->dateTimeService->getCurrentTime(), '/', $this->getCookieDomain(), GeneralUtility::getIndpEnv('TYPO3_SSL'));
     }
 
@@ -36,7 +39,7 @@ class CookieService extends AbstractService
      */
     public function unsetCookie(): void
     {
-        $this->setCookie( -3600);
+        $this->setCookie(-3600);
     }
 
     public function hasCookie(): bool
