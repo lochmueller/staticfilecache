@@ -92,4 +92,3 @@ services:
       - name: event.listener
         identifier: 'SfcCacheRuleNoBackendUserListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
-

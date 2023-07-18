@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
 
+use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -11,17 +12,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CookieService extends AbstractService
 {
+    public const SESSION_LIFETIME = 0;
+
     /**
      * The name of the cookie.
      */
     public const FE_COOKIE_NAME = 'staticfilecache';
+
+    public function __construct(private DateTimeService $dateTimeService)
+    {
+    }
 
     /**
      * Set the Cookie.
      */
     public function setCookie(int $lifetime): void
     {
-        setcookie(self::FE_COOKIE_NAME, 'typo_user_logged_in', $lifetime, '/', $this->getCookieDomain(), GeneralUtility::getIndpEnv('TYPO3_SSL'));
+        setcookie(self::FE_COOKIE_NAME, 'typo_user_logged_in', $lifetime + $this->dateTimeService->getCurrentTime(), '/', $this->getCookieDomain(), GeneralUtility::getIndpEnv('TYPO3_SSL'));
     }
 
     /**
@@ -29,7 +36,7 @@ class CookieService extends AbstractService
      */
     public function unsetCookie(): void
     {
-        $this->setCookie(time() - 3600);
+        $this->setCookie( -3600);
     }
 
     public function hasCookie(): bool

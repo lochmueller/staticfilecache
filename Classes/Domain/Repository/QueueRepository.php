@@ -24,7 +24,7 @@ class QueueRepository extends AbstractRepository
             ->setMaxResults($limit)
             ->orderBy('cache_priority', 'desc')
             ->executeQuery()
-            ->fetchAll()
+            ->fetchAllAssociative()
         ;
     }
 
@@ -51,16 +51,17 @@ class QueueRepository extends AbstractRepository
 
     /**
      * Find old entries.
+     * @return list<int>
      */
-    public function findOld(): array
+    public function findOldUids(): array
     {
         $queryBuilder = $this->createQuery();
 
-        return (array) $queryBuilder->select('uid')
+        return $queryBuilder->select('uid')
             ->from($this->getTableName())
             ->where($queryBuilder->expr()->gt('call_date', 0))
             ->executeQuery()
-            ->fetchAll()
+            ->fetchFirstColumn()
         ;
     }
 

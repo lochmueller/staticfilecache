@@ -99,14 +99,14 @@ class BoostQueueCommand extends AbstractCommand
      */
     protected function cleanupQueue(SymfonyStyle $io): void
     {
-        $rows = $this->queueRepository->findOld();
-        $io->progressStart(\count($rows));
-        foreach ($rows as $row) {
-            $this->queueRepository->delete(['uid' => $row['uid']]);
+        $uids = $this->queueRepository->findOldUids();
+        $io->progressStart(\count($uids));
+        foreach ($uids as $uid) {
+            $this->queueRepository->delete(['uid' => $uid]);
             $io->progressAdvance();
         }
         $io->progressFinish();
 
-        $io->success(\count($rows).' items are removed.');
+        $io->success(\count($uids).' items are removed.');
     }
 }

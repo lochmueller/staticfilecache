@@ -44,7 +44,7 @@ class PageRepository extends AbstractRepository
             ->from('pages')
             ->orWhere(...$where)
             ->executeQuery()
-            ->fetchAll()
+            ->fetchAllAssociative()
         ;
     }
 

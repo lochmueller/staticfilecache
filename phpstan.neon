@@ -3,5 +3,5 @@ includes:
 	- .Build/vendor/andersundsehr/phpstan-git-files/extension.php
 
 parameters:
-	level: 1
+	level: 2
 	reportUnmatchedIgnoredErrors: false

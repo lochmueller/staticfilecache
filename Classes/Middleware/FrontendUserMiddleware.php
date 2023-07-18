@@ -9,8 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Service\CookieService;
-use SFC\Staticfilecache\Service\DateTimeService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
@@ -18,30 +17,52 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 class FrontendUserMiddleware implements MiddlewareInterface
 {
+    public function __construct(private CookieService $cookieService)
+    {
+    }
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        /** @var FrontendUserAuthentication $feUser */
         $feUser = $request->getAttribute('frontend.user');
+        assert($feUser instanceof FrontendUserAuthentication);
+
         $response = $handler->handle($request);
 
-        if ($feUser->dontSetCookie) {
-            // do not set any cookie
-            return $response;
-        }
+        $weShouldHaveCookie = $this->weShouldHaveCookie($feUser, $request);
+        $lifetime = (int)($GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] ?? 0);
 
-        $started = $feUser->loginSessionStarted;
-
-        $cookieService = GeneralUtility::makeInstance(CookieService::class);
-        if (($started || $feUser->forceSetCookie) && 0 === $feUser->lifetime) {
-            // If new session and the cookie is a sessioncookie, we need to set it only once!
-            // // isSetSessionCookie()
-            $cookieService->setCookie(0);
-        } elseif (($started || $cookieService->hasCookie()) && $feUser->lifetime > 0) {
-            // If it is NOT a session-cookie, we need to refresh it.
-            // isRefreshTimeBasedCookie()
-            $cookieService->setCookie((new DateTimeService())->getCurrentTime() + $feUser->lifetime);
+        if ($weShouldHaveCookie) {
+            if ($lifetime === CookieService::SESSION_LIFETIME) {
+                // only set session cookie once:
+                if (!$this->cookieService->hasCookie()) {
+                    $this->cookieService->setCookie(CookieService::SESSION_LIFETIME);
+                }
+            } else {
+                // update lifetime cookie now:
+                $this->cookieService->setCookie($lifetime);
+            }
+        } elseif ($this->cookieService->hasCookie()) {
+            // remove cookie:
+            $this->cookieService->unsetCookie();
         }
 
         return $response;
+    }
+
+    protected function weShouldHaveCookie(FrontendUserAuthentication $feUser, ServerRequestInterface $request): bool
+    {
+        $setCookieHeader = $feUser->appendCookieToResponse(new HtmlResponse(''))->getHeaderLine('Set-Cookie');
+
+        if (strpos($setCookieHeader, 'Max-Age=0')) {
+            // the new cookie is to delete the old cookie:
+            return false;
+        }
+        if ($setCookieHeader) {
+            // a new cookie is set:
+            return true;
+        }
+
+        // there was a cookie:
+        return isset($request->getCookieParams()[FrontendUserAuthentication::getCookieName()]);
     }
 }
