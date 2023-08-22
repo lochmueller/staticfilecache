@@ -57,12 +57,14 @@ class ClientService extends AbstractService
     protected function getCallableClient(string $domain): Client
     {
         $jar = GeneralUtility::makeInstance(CookieJar::class);
+        /** @var SetCookie $cookie */
         $cookie = GeneralUtility::makeInstance(SetCookie::class);
         $cookie->setName(CookieService::FE_COOKIE_NAME);
         $cookie->setValue('1');
         $cookie->setPath('/');
         $cookie->setExpires((new DateTimeService())->getCurrentTime() + 3600);
         $cookie->setDomain($domain);
+        $cookie->setHttpOnly(true);
         $jar->setCookie($cookie);
         $options = [
             'cookies' => $jar,
