@@ -82,6 +82,10 @@ variables (SFC_ROOT, SFC_GZIP) and read the comments carefully.
    # don't show the anonymous version to logged in users.
    RewriteCond %{HTTP_COOKIE} !staticfilecache [NC]
 
+   # Avoid cached versions for workspace preview links of users that are not
+   # logged in: https://github.com/lochmueller/staticfilecache/issues/395
+   RewriteCond %{HTTP_COOKIE} !ADMCMD_prev [NC]
+
    # We only redirect GET requests
    RewriteCond %{REQUEST_METHOD} GET
 
