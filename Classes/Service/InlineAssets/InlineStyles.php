@@ -39,13 +39,13 @@ class InlineStyles extends AbstractInlineAssets
         }
 
         foreach ($matches['path'] as $index => $path) {
-            $fileSrc = file_get_contents($this->sitePath.$path.'.css');
+            $fileSrc = file_get_contents($this->sitePath . $path . '.css');
             $fileSrc = preg_replace('/@charset[^;]+;/', '', $fileSrc);
 
             if (!empty($this->configurationService->get('inlineStyleAssets'))) {
-                $fileExtensions = preg_grep('/'.str_replace(',', '|', $this->configurationService->get('inlineStyleAssets')).'/', array_merge($this->imageExtensions, $this->fontExtensions));
+                $fileExtensions = preg_grep('/' . str_replace(',', '|', $this->configurationService->get('inlineStyleAssets')) . '/', array_merge($this->imageExtensions, $this->fontExtensions));
                 if (\is_array($fileExtensions)) {
-                    $fileSrc = $this->includeAssets('/(?<=url\(")(?<src>\/[^\)]+?\.(?<ext>'.implode('|', array_values($fileExtensions)).'))(?="\))/', $fileSrc);
+                    $fileSrc = $this->includeAssets('/(?<=url\(")(?<src>\/[^\)]+?\.(?<ext>' . implode('|', array_values($fileExtensions)) . '))(?="\))/', $fileSrc);
                 }
             }
 
@@ -58,7 +58,7 @@ class InlineStyles extends AbstractInlineAssets
                 $fileSrc = preg_replace('/;(?=})/', '', $fileSrc); // shorten declaration endings
             }
 
-            $content = str_replace($matches[0][$index], '<style>'.rtrim($fileSrc).'</style>', $content);
+            $content = str_replace($matches[0][$index], '<style>' . rtrim($fileSrc) . '</style>', $content);
         }
 
         return preg_replace('/<\/style>\s*<style>/', '', $content); // cleanup

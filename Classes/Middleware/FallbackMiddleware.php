@@ -60,7 +60,7 @@ class FallbackMiddleware implements MiddlewareInterface
         $this->eventDispatcher->dispatch($event);
 
         if ($event->isSkipProcessing()) {
-            throw new Exception('Could not use fallback, because: '.implode(', ', $event->getExplanation()), 1236781);
+            throw new Exception('Could not use fallback, because: ' . implode(', ', $event->getExplanation()), 1236781);
         }
 
         $uri = $request->getUri();
@@ -103,7 +103,7 @@ class FallbackMiddleware implements MiddlewareInterface
 
         foreach ($request->getHeader('accept-encoding') as $acceptEncoding) {
             if (str_contains($acceptEncoding, 'br')) {
-                if (is_file($possibleStaticFile.'.br') && is_readable($possibleStaticFile.'.br')) {
+                if (is_file($possibleStaticFile . '.br') && is_readable($possibleStaticFile . '.br')) {
                     $headers['Content-Encoding'] = 'br';
                     $possibleStaticFile .= '.br';
                 }
@@ -111,7 +111,7 @@ class FallbackMiddleware implements MiddlewareInterface
                 break;
             }
             if (str_contains($acceptEncoding, 'gzip')) {
-                if (is_file($possibleStaticFile.'.gz') && is_readable($possibleStaticFile.'.gz')) {
+                if (is_file($possibleStaticFile . '.gz') && is_readable($possibleStaticFile . '.gz')) {
                     $headers['Content-Encoding'] = 'gzip';
                     $possibleStaticFile .= '.gz';
                 }
@@ -128,7 +128,7 @@ class FallbackMiddleware implements MiddlewareInterface
      */
     protected function getCacheConfiguration(string $possibleStaticFile): array
     {
-        $configFile = $possibleStaticFile.'.config.json';
+        $configFile = $possibleStaticFile . '.config.json';
         if (is_file($configFile) || !is_readable($configFile)) {
             return (array) json_decode((string) GeneralUtility::getUrl($configFile), true);
         }

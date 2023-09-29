@@ -38,7 +38,7 @@ class DatamapHook extends AbstractHook
                 $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
                 $configuration->override('boostMode', '0');
                 $cacheService = GeneralUtility::makeInstance(CacheService::class);
-                $cacheService->get()->flushByTag('pageId_'.$id);
+                $cacheService->get()->flushByTag('pageId_' . $id);
                 $configuration->reset('boostMode');
             } catch (\Exception $ex) {
                 return;

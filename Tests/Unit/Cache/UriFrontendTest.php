@@ -30,7 +30,7 @@ final class UriFrontendTest extends AbstractTest
         ];
 
         foreach ($validUris as $uri) {
-            static::assertTrue($this->getCacheFrontend()->isValidEntryIdentifier($uri), 'The URI "'.$uri.'" should be valid!');
+            static::assertTrue($this->getCacheFrontend()->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be valid!');
         }
     }
 
@@ -46,7 +46,7 @@ final class UriFrontendTest extends AbstractTest
         ];
 
         foreach ($invalidUris as $uri) {
-            static::assertFalse($this->getCacheFrontend()->isValidEntryIdentifier($uri), 'The URI "'.$uri.'" should be invalid!');
+            static::assertFalse($this->getCacheFrontend()->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be invalid!');
         }
     }
 

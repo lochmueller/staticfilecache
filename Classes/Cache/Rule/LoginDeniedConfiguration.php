@@ -23,7 +23,7 @@ class LoginDeniedConfiguration extends AbstractRule
             return;
         }
         // @deprecated method was removed with TYPO3 12
-        if(!method_exists($tsfe, 'checkIfLoginAllowedInBranch')){
+        if(!method_exists($tsfe, 'checkIfLoginAllowedInBranch')) {
             return;
         }
         $name = 'sendCacheHeaders_onlyWhenLoginDeniedInBranch';

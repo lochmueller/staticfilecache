@@ -37,7 +37,7 @@ class HtaccessConfigurationService extends AbstractService
     public function getHtaccessPaths(): array
     {
         return [
-            Environment::getPublicPath().'/.htaccess',
+            Environment::getPublicPath() . '/.htaccess',
         ];
     }
 

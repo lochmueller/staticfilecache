@@ -9,6 +9,4 @@ use SFC\Staticfilecache\StaticFileCacheObject;
 /**
  * AbstractService.
  */
-class AbstractService extends StaticFileCacheObject
-{
-}
+class AbstractService extends StaticFileCacheObject {}

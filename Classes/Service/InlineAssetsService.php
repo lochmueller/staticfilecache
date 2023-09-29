@@ -20,7 +20,7 @@ class InlineAssetsService extends AbstractService
 
         foreach ($configurationService->getAll() as $index => $value) {
             if ('inlineService' === substr($index, 0, 13) && (bool) $value) {
-                $content = GeneralUtility::makeInstance('SFC\Staticfilecache\Service\InlineAssets\Inline'.substr($index, 13))->replaceInline($content);
+                $content = GeneralUtility::makeInstance('SFC\Staticfilecache\Service\InlineAssets\Inline' . substr($index, 13))->replaceInline($content);
             }
         }
 

@@ -72,10 +72,10 @@ class BackendController extends ActionController
                     $this->queueService->runSingleRequest($item);
                 }
             } catch (\Exception $exception) {
-                $this->addFlashMessage('Error in run: '.$exception->getMessage(), 'Runner', AbstractMessage::ERROR, true);
+                $this->addFlashMessage('Error in run: ' . $exception->getMessage(), 'Runner', AbstractMessage::ERROR, true);
             }
 
-            $this->addFlashMessage('Run '.\count($items).' entries', 'Runner', AbstractMessage::OK, true);
+            $this->addFlashMessage('Run ' . \count($items) . ' entries', 'Runner', AbstractMessage::OK, true);
         }
         $this->view->assignMultiple([
             'enable' => (bool) $configurationService->get('boostMode'),
@@ -144,7 +144,7 @@ class BackendController extends ActionController
             $cache = GeneralUtility::makeInstance(CacheService::class)->get();
         } catch (\Exception $exception) {
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-            $logger->error('Problems by fetching the cache: '.$exception->getMessage().' / '.$exception->getFile().':'.$exception->getLine());
+            $logger->error('Problems by fetching the cache: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
 
             return $rows;
         }
@@ -152,7 +152,7 @@ class BackendController extends ActionController
         $dbRows = GeneralUtility::makeInstance(PageRepository::class)->findForBackend($this->getCurrentUid(), $this->getDisplayMode());
 
         foreach ($dbRows as $row) {
-            $cacheEntries = $cache->getByTag('pageId_'.$row['uid']);
+            $cacheEntries = $cache->getByTag('pageId_' . $row['uid']);
             foreach ($cacheEntries as $identifier => $info) {
                 $explanation = $info['explanation'] ?? [];
                 $rows[] = [

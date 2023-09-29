@@ -46,7 +46,7 @@ class ManifestMiddleware implements MiddlewareInterface
     {
         header('Content-Type: text/cache-manifest');
         header('Cache-Control: no-cache, must-revalidate');
-        header('Expires: '.date(DATE_RFC1123));
+        header('Expires: ' . date(DATE_RFC1123));
 
         try {
             $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);

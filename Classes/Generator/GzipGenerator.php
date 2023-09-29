@@ -26,7 +26,7 @@ class GzipGenerator extends AbstractGenerator
     {
         $contentGzip = gzencode((string) $response->getBody(), $this->getCompressionLevel());
         if ($contentGzip) {
-            GeneralUtility::writeFile($fileName.'.gz', $contentGzip);
+            GeneralUtility::writeFile($fileName . '.gz', $contentGzip);
         }
     }
 
@@ -36,7 +36,7 @@ class GzipGenerator extends AbstractGenerator
     public function remove(string $entryIdentifier, string $fileName): void
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->file($fileName.'.gz');
+        $removeService->file($fileName . '.gz');
     }
 
     /**

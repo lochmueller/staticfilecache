@@ -41,7 +41,7 @@ class FontHttpPush extends AbstractHttpPush
             return [];
         }
 
-        if (!preg_match_all('/(?<=")(?<src>[^"]+?\.'.$this->lastExtension.')(?=")/', $content, $fontFiles)) {
+        if (!preg_match_all('/(?<=")(?<src>[^"]+?\.' . $this->lastExtension . ')(?=")/', $content, $fontFiles)) {
             return [];
         }
 

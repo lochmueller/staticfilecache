@@ -59,7 +59,7 @@ class PrepareMiddleware implements MiddlewareInterface
             $cacheTags = GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getTags();
             $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
             if (false === (bool) $configuration->get('clearCacheForAllDomains')) {
-                $cacheTags[] = 'sfc_domain_'.str_replace('.', '_', $event->getRequest()->getUri()->getHost());
+                $cacheTags[] = 'sfc_domain_' . str_replace('.', '_', $event->getRequest()->getUri()->getHost());
             }
 
             if (empty($event->getExplanation())) {
@@ -84,7 +84,7 @@ class PrepareMiddleware implements MiddlewareInterface
 
         $pushHeaders = (array) GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders((string) $response->getBody());
         foreach ($pushHeaders as $pushHeader) {
-            $response = $response->withAddedHeader('Link', '<'.$pushHeader['path'].'>; rel=preload; as='.$pushHeader['type']);
+            $response = $response->withAddedHeader('Link', '<' . $pushHeader['path'] . '>; rel=preload; as=' . $pushHeader['type']);
         }
 
         return $response;

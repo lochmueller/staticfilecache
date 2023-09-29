@@ -85,7 +85,7 @@ class BoostQueueCommand extends AbstractCommand
         }
         $io->progressFinish();
 
-        $io->success(\count($rows).' items are done (perhaps not all are processed).');
+        $io->success(\count($rows) . ' items are done (perhaps not all are processed).');
 
         if (!(bool) $input->getOption('avoid-cleanup')) {
             $this->cleanupQueue($io);
@@ -107,6 +107,6 @@ class BoostQueueCommand extends AbstractCommand
         }
         $io->progressFinish();
 
-        $io->success(\count($uids).' items are removed.');
+        $io->success(\count($uids) . ' items are removed.');
     }
 }

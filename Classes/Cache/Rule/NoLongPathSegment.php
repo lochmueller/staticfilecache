@@ -22,7 +22,7 @@ class NoLongPathSegment extends AbstractRule
 
         foreach ($segments as $segment) {
             if (\strlen($segment) > 255) {
-                $explanation[__CLASS__] = 'The URI seegment of the URI is to long to create a folder based on tthis segment: '.$segment;
+                $explanation[__CLASS__] = 'The URI seegment of the URI is to long to create a folder based on tthis segment: ' . $segment;
                 $skipProcessing = true;
 
                 return;

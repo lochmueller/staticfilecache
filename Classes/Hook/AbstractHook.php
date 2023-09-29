@@ -9,6 +9,4 @@ use SFC\Staticfilecache\StaticFileCacheObject;
 /**
  * AbstractHook.
  */
-class AbstractHook extends StaticFileCacheObject
-{
-}
+class AbstractHook extends StaticFileCacheObject {}

@@ -44,10 +44,10 @@ class CacheService extends AbstractService
         $relativeDirectory = 'typo3temp/assets/tx_staticfilecache/';
         $overrideDirectory = trim((string) GeneralUtility::makeInstance(ConfigurationService::class)->get('overrideCacheDirectory'));
         if ('' !== $overrideDirectory) {
-            $relativeDirectory = rtrim($overrideDirectory, '/').'/';
+            $relativeDirectory = rtrim($overrideDirectory, '/') . '/';
         }
 
-        $absolutePath = Environment::getPublicPath().'/'.$relativeDirectory;
+        $absolutePath = Environment::getPublicPath() . '/' . $relativeDirectory;
 
         return GeneralUtility::resolveBackPath($absolutePath);
     }

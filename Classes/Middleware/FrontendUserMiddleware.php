@@ -17,9 +17,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 class FrontendUserMiddleware implements MiddlewareInterface
 {
-    public function __construct(private CookieService $cookieService)
-    {
-    }
+    public function __construct(private CookieService $cookieService) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

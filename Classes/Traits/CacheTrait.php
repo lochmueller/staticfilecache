@@ -43,7 +43,7 @@ trait CacheTrait
      */
     protected function cacheLongTime(string $entryIdentifier, callable $callback, int $lifetime = 3600, array $tags = [])
     {
-        return $this->cacheViaTrait('sfc_'.$entryIdentifier, $callback, 'pagesection', $lifetime, $tags);
+        return $this->cacheViaTrait('sfc_' . $entryIdentifier, $callback, 'pagesection', $lifetime, $tags);
     }
 
     /**
@@ -53,13 +53,11 @@ trait CacheTrait
      */
     protected function cacheRemoteUri(string $entryIdentifier, int $lifetime = 3600, array $tags = [])
     {
-        $result = $this->cacheViaTrait($entryIdentifier, function (): void {
-        }, 'remote_file', $lifetime, $tags);
+        $result = $this->cacheViaTrait($entryIdentifier, function (): void {}, 'remote_file', $lifetime, $tags);
         if (null === $result) {
             // call two times, because the anonym function is not the real result.
             // The result is output by the get method of the remote_file backend.
-            $result = $this->cacheViaTrait($entryIdentifier, function (): void {
-            }, 'remote_file', $lifetime, $tags);
+            $result = $this->cacheViaTrait($entryIdentifier, function (): void {}, 'remote_file', $lifetime, $tags);
         }
 
         return $result;

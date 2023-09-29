@@ -12,6 +12,4 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @internal
  * @coversNothing
  */
-abstract class AbstractTest extends UnitTestCase
-{
-}
+abstract class AbstractTest extends UnitTestCase {}

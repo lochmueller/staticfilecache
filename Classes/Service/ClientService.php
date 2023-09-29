@@ -43,7 +43,7 @@ class ClientService extends AbstractService
 
             return (int) $response->getStatusCode();
         } catch (\Exception $exception) {
-            $this->logger->error('Problems in single request running: '.$exception->getMessage().' / '.$exception->getFile().':'.$exception->getLine());
+            $this->logger->error('Problems in single request running: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
         }
 
         return 900;

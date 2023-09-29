@@ -23,7 +23,7 @@ class SiteCacheable extends AbstractRule
         }
         $config = $site->getConfiguration();
         if (isset($config['disableStaticFileCache']) && $config['disableStaticFileCache']) {
-            $explanation[__CLASS__] = 'static cache disabled on site configuration: '.$site->getIdentifier();
+            $explanation[__CLASS__] = 'static cache disabled on site configuration: ' . $site->getIdentifier();
         }
     }
 }

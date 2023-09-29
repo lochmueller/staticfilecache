@@ -19,9 +19,7 @@ class CookieService extends AbstractService
      */
     public const FE_COOKIE_NAME = 'staticfilecache';
 
-    public function __construct(private DateTimeService $dateTimeService)
-    {
-    }
+    public function __construct(private DateTimeService $dateTimeService) {}
 
     /**
      * Set the Cookie.
@@ -68,7 +66,7 @@ class CookieService extends AbstractService
                 $match = [];
                 $matchCnt = preg_match($cookieDomain, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
                 if (false === $matchCnt) {
-                    $message = 'The regular expression for the cookie domain ('.$cookieDomain.') contains errors.';
+                    $message = 'The regular expression for the cookie domain (' . $cookieDomain . ') contains errors.';
                     $message .= 'The session is not shared across sub-domains.';
                     $this->logger->warning($message);
                 } elseif ($matchCnt) {

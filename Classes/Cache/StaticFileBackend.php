@@ -164,7 +164,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     public function flush(): void
     {
         if (false === (bool) $this->configuration->get('clearCacheForAllDomains')) {
-            $this->flushByTag('sfc_domain_'.str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
+            $this->flushByTag('sfc_domain_' . str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
 
             return;
         }

@@ -41,7 +41,7 @@ class ImageHttpPush extends AbstractHttpPush
             return [];
         }
 
-        if (!preg_match_all('/(?<=")(?<src>[^"]+?\.'.$this->lastExtension.')(?=")/', $content, $imageFiles)) {
+        if (!preg_match_all('/(?<=")(?<src>[^"]+?\.' . $this->lastExtension . ')(?=")/', $content, $imageFiles)) {
             return [];
         }
 

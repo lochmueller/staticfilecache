@@ -20,7 +20,7 @@ class NoIntScripts extends AbstractRule
         $tsfe = $GLOBALS['TSFE'] ?? null;
         if ($tsfe instanceof TypoScriptFrontendController && $tsfe->isINTincScript()) {
             foreach ((array) $tsfe->config['INTincScript'] as $key => $configuration) {
-                $explanation[__CLASS__.':'.$key] = 'The page has a INTincScript: '.implode(', ', $this->getInformation($configuration));
+                $explanation[__CLASS__ . ':' . $key] = 'The page has a INTincScript: ' . implode(', ', $this->getInformation($configuration));
             }
         }
     }
@@ -34,7 +34,7 @@ class NoIntScripts extends AbstractRule
     {
         $info = [];
         if (isset($configuration['type'])) {
-            $info[] = 'type: '.$configuration['type'];
+            $info[] = 'type: ' . $configuration['type'];
         }
         $check = [
             'userFunc',
@@ -44,7 +44,7 @@ class NoIntScripts extends AbstractRule
         ];
         foreach ($check as $value) {
             if (isset($configuration['conf'][$value])) {
-                $info[] = $value.': '.$configuration['conf'][$value];
+                $info[] = $value . ': ' . $configuration['conf'][$value];
             }
         }
 

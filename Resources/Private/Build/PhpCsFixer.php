@@ -7,13 +7,13 @@ use PhpCsFixer\Config;
 
 $baseDir = dirname(__DIR__, 3);
 
-require $baseDir.'/.Build/vendor/autoload.php';
+require $baseDir . '/.Build/vendor/autoload.php';
 
 $finder = Finder::create()
-    ->in($baseDir.'/Classes')
-    ->in($baseDir.'/Tests/Unit')
-    ->in($baseDir.'/Configuration')
-    ->in($baseDir.'/Resources/Private/Build')
+    ->in($baseDir . '/Classes')
+    ->in($baseDir . '/Tests/Unit')
+    ->in($baseDir . '/Configuration')
+    ->in($baseDir . '/Resources/Private/Build')
 ;
 
 return (new Config())

@@ -9,6 +9,4 @@ use SFC\Staticfilecache\Tests\Unit\AbstractTest;
 /**
  * Abstract rule test.
  */
-abstract class AbstractRuleTest extends AbstractTest
-{
-}
+abstract class AbstractRuleTest extends AbstractTest {}

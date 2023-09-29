@@ -29,7 +29,7 @@ class InlineScripts extends AbstractInlineAssets
         }
 
         foreach ($matches['path'] as $index => $path) {
-            $fileSrc = file_get_contents($this->sitePath.$path.'.js');
+            $fileSrc = file_get_contents($this->sitePath . $path . '.js');
 
             if ($this->configurationService->get('inlineScriptMinify')) {
                 $fileSrc = preg_replace('/^\s*\/\/.*$/m', '', $fileSrc); // remove single-line comments
@@ -45,7 +45,7 @@ class InlineScripts extends AbstractInlineAssets
                 $fileSrc = preg_replace('/;(?=})|(?<=});\s/', '', $fileSrc); // shorten function "end"
             }
 
-            $content = str_replace($matches[0][$index], '<script>'.rtrim($fileSrc), $content);
+            $content = str_replace($matches[0][$index], '<script>' . rtrim($fileSrc), $content);
         }
 
         return preg_replace('/<\/script>\s*<script>/', '', $content); // cleanup

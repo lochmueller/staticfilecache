@@ -14,7 +14,6 @@ abstract class AbstractCommand extends Command
     /**
      * Set generic prefix for the description.
      *
-     * @param string $description
      *
      * @return $this
      */

@@ -40,7 +40,7 @@ class PhpGenerator extends HtaccessGenerator
             'body' => (string) $response->getBody(),
         ];
 
-        $this->renderTemplateToFile($this->getTemplateName(), $variables, $fileName.'.php');
+        $this->renderTemplateToFile($this->getTemplateName(), $variables, $fileName . '.php');
     }
 
     /**
@@ -49,7 +49,7 @@ class PhpGenerator extends HtaccessGenerator
     public function remove(string $entryIdentifier, string $fileName): void
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->file($fileName.'.php');
+        $removeService->file($fileName . '.php');
     }
 
     /**

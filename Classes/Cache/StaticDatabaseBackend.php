@@ -45,8 +45,8 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend implements Log
     {
         parent::setCache($cache);
         if ($this->configuration->isBool('renameTablesToOtherPrefix')) {
-            $this->cacheTable = 'sfc_'.$this->cacheIdentifier;
-            $this->tagsTable = 'sfc_'.$this->cacheIdentifier.'_tags';
+            $this->cacheTable = 'sfc_' . $this->cacheIdentifier;
+            $this->tagsTable = 'sfc_' . $this->cacheIdentifier . '_tags';
         }
     }
 
@@ -60,16 +60,16 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend implements Log
         $large = $this->configuration->isBool('largeIdentifierInCacheTable') ? 'Large' : '';
 
         $cacheTableSql = file_get_contents(
-            ExtensionManagementUtility::extPath('staticfilecache').
-            'Resources/Private/Sql/Cache/Backend/'.$large.'Typo3DatabaseBackendCache.sql'
+            ExtensionManagementUtility::extPath('staticfilecache') .
+            'Resources/Private/Sql/Cache/Backend/' . $large . 'Typo3DatabaseBackendCache.sql'
         );
-        $requiredTableStructures = str_replace('###CACHE_TABLE###', $this->cacheTable, $cacheTableSql).LF.LF;
+        $requiredTableStructures = str_replace('###CACHE_TABLE###', $this->cacheTable, $cacheTableSql) . LF . LF;
         $tagsTableSql = file_get_contents(
-            ExtensionManagementUtility::extPath('staticfilecache').
-            'Resources/Private/Sql/Cache/Backend/'.$large.'Typo3DatabaseBackendTags.sql'
+            ExtensionManagementUtility::extPath('staticfilecache') .
+            'Resources/Private/Sql/Cache/Backend/' . $large . 'Typo3DatabaseBackendTags.sql'
         );
 
-        return $requiredTableStructures.str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql).LF;
+        return $requiredTableStructures . str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql) . LF;
     }
 
     /**

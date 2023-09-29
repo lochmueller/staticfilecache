@@ -44,7 +44,7 @@ abstract class AbstractInlineAssets extends AbstractService
 
     protected function parseAsset(array $match): string
     {
-        $path = $this->sitePath.$match['src'];
+        $path = $this->sitePath . $match['src'];
         if (!file_exists($path)) {
             return $match[0];
         }
@@ -76,13 +76,13 @@ abstract class AbstractInlineAssets extends AbstractService
 
             case 'woff':
             case 'woff2':
-                $type = 'font/'.$match['ext'].';base64';
+                $type = 'font/' . $match['ext'] . ';base64';
                 $file = base64_encode($file);
 
                 break;
 
             default:
-                $type = 'image/'.$match['ext'].';base64';
+                $type = 'image/' . $match['ext'] . ';base64';
                 $file = base64_encode($file);
 
                 break;

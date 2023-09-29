@@ -24,7 +24,7 @@ class ConfigGenerator extends AbstractGenerator
             'headers' => GeneralUtility::makeInstance(ConfigurationService::class)
                 ->getValidHeaders($response->getHeaders(), 'validFallbackHeaders'),
         ];
-        GeneralUtility::writeFile($fileName.'.config.json', json_encode($config, JSON_PRETTY_PRINT));
+        GeneralUtility::writeFile($fileName . '.config.json', json_encode($config, JSON_PRETTY_PRINT));
     }
 
     /**
@@ -33,6 +33,6 @@ class ConfigGenerator extends AbstractGenerator
     public function remove(string $entryIdentifier, string $fileName): void
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->file($fileName.'.config.json');
+        $removeService->file($fileName . '.config.json');
     }
 }

@@ -27,7 +27,6 @@ class TypoScriptFrontendService extends AbstractService
     /**
      * Get the TSFE.
      *
-     * @return TypoScriptFrontendController
      */
     protected function getTsfe(): ?TypoScriptFrontendController
     {
