@@ -4,7 +4,7 @@
 $EM_CONF[$_EXTKEY] = [
     'title' => 'StaticFileCache',
     'description' => 'Transparent static file cache solution using mod_rewrite and mod_expires. Increase performance for static pages by a factor of 230!!',
-    'version' => '13.1.2',
+    'version' => '13.1.3',
     'category' => 'fe',
     'constraints' => [
         'depends' => [
