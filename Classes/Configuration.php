@@ -74,6 +74,7 @@ class Configuration extends StaticFileCacheObject
             ->registerCachingFramework()
             ->registerGenerators()
             ->registerHttpPushServices()
+            ->adjustSystemSettings()
         ;
     }
 
@@ -221,6 +222,15 @@ class Configuration extends StaticFileCacheObject
             'svg' => SvgHttpPush::class,
         ]);
 
+        return $this;
+    }
+
+    protected function adjustSystemSettings(): self
+    {
+        if ($this->typo3version->getMajorVersion() >= 12) {
+            // aim for cacheable frontend responses when using TYPO3's `Content-Security-Policy` behavior
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['contentSecurityPolicy']['preferCacheableResponse'] = true;
+        }
         return $this;
     }
 }

@@ -1,11 +1,14 @@
 {escaping off}
+{namespace sfc=SFC\Staticfilecache\ViewHelpers}
 ForceType {contentType}
+<sfc:format.stripEmptyVerticalSpaces>
 <f:if condition="{sendCacheControlHeader}">
 <IfModule mod_expires.c>
 	ExpiresActive on
 	ExpiresByType {contentType} {mode}{lifetime}
 </IfModule>
 </f:if>
+
 <f:if condition="{sendCacheControlHeaderRedirectAfterCacheTimeout}">
 <IfModule mod_rewrite.c>
 	RewriteEngine On
@@ -22,9 +25,18 @@ ForceType {contentType}
 </f:if>
 
 <f:if condition="{headers}">
-	<IfModule mod_headers.c>
-		<f:for each="{headers}" key="name" as="value">
-				Header set {name} "{value}"
-		</f:for>
-	</IfModule>
+<IfModule mod_headers.c>
+<f:for each="{headers}" key="name" as="value">
+	Header set {name} "{value}"
+	<f:if condition="{name} == 'Content-Security-Policy'">
+	<f:comment><!--
+		see https://httpd.apache.org/docs/2.4/mod/mod_headers.html
+		`%t` results in `t=[unixtime in microseconds]`, thus `&t=` needs to be stripped
+	--></f:comment>
+	Header edit Content-Security-Policy (@http-reporting\?csp=report&requestTime=)\d+ $1@t&%t
+	Header edit Content-Security-Policy (@http-reporting\?csp=report&requestTime=)@t&t=(\d+) $1$2
+	</f:if>
+</f:for>
+</IfModule>
 </f:if>
+</sfc:format.stripEmptyVerticalSpaces>
