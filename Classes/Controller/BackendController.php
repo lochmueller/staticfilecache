@@ -6,7 +6,6 @@ namespace SFC\Staticfilecache\Controller;
 
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Domain\Repository\PageRepository;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use SFC\Staticfilecache\Service\CacheService;
@@ -18,9 +17,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -44,24 +41,21 @@ class BackendController extends ActionController
 
     public function listAction(string $filter = ''): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-
         $filter = $this->setFilter($filter);
-        $this->view->assignMultiple([
+        $viewVariables = [
             'rows' => $this->getCachePagesEntries($filter),
             'filter' => $filter,
             'pageId' => $this->getCurrentUid(),
             'backendDisplayMode' => $this->getDisplayMode(),
-        ]);
+        ];
 
-        $moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $this->createModuleTemplate()
+            ->assignMultiple($viewVariables)
+            ->renderResponse('Backend/List');
     }
 
     public function boostAction(bool $run = false): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
         if ($run) {
@@ -77,33 +71,33 @@ class BackendController extends ActionController
 
             $this->addFlashMessage('Run ' . \count($items) . ' entries', 'Runner', AbstractMessage::OK, true);
         }
-        $this->view->assignMultiple([
+        $viewVariables = [
             'enable' => (bool) $configurationService->get('boostMode'),
             'open' => \count($queueRepository->findOpen(99999999)),
             'old' => \count($queueRepository->findOldUids()),
-        ]);
+        ];
 
-        $moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $this->createModuleTemplate()
+            ->assignMultiple($viewVariables)
+            ->renderResponse('Backend/Boost');
     }
 
     public function supportAction(): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-
         $htaccessConfigurationService = GeneralUtility::makeInstance(HtaccessConfigurationService::class);
         $environmentService = GeneralUtility::makeInstance(EnvironmentService::class);
-        $this->view->assignMultiple([
+        $viewVariables = [
             'foundHtaccess' => $htaccessConfigurationService->foundConfigurationInHtaccess(),
             'htaccessPaths' => $htaccessConfigurationService->getHtaccessPaths(),
             'missingModules' => $htaccessConfigurationService->getMissingApacheModules(),
             'useCrawler' => ExtensionManagementUtility::isLoaded('crawler'),
             'envInfoLink' => $environmentService->getLink(),
             'envInfoMarkdown' => $environmentService->getMarkdown(),
-        ]);
+        ];
 
-        $moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $this->createModuleTemplate()
+            ->assignMultiple($viewVariables)
+            ->renderResponse('Backend/Boost');
     }
 
     /**
@@ -193,6 +187,13 @@ class BackendController extends ActionController
      */
     protected function getCurrentUid(): int
     {
-        return (int) GeneralUtility::_GET('id');
+        return (int)($this->request->getQueryParams()['id'] ?? 0);
+    }
+
+    protected function createModuleTemplate(): ModuleTemplate
+    {
+        return $this->moduleTemplateFactory->create($this->request)
+            ->setFlashMessageQueue($this->getFlashMessageQueue())
+            ->setModuleClass('tx-staticfilecache');
     }
 }
