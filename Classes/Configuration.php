@@ -29,7 +29,6 @@ use SFC\Staticfilecache\Generator\ManifestGenerator;
 use SFC\Staticfilecache\Generator\PhpGenerator;
 use SFC\Staticfilecache\Generator\PlainGenerator;
 use SFC\Staticfilecache\Hook\DatamapHook;
-use SFC\Staticfilecache\Hook\LogoffFrontendUser;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\HttpPush\FontHttpPush;
 use SFC\Staticfilecache\Service\HttpPush\ImageHttpPush;
@@ -39,6 +38,7 @@ use SFC\Staticfilecache\Service\HttpPush\SvgHttpPush;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
@@ -50,6 +50,7 @@ class Configuration extends StaticFileCacheObject
     public const EXTENSION_KEY = 'staticfilecache';
 
     protected ConfigurationService $configurationService;
+    protected Typo3Version $typo3version;
 
     /**
      * Configuration constructor.
@@ -60,6 +61,7 @@ class Configuration extends StaticFileCacheObject
     public function __construct()
     {
         $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $this->typo3version = GeneralUtility::makeInstance(Typo3Version::class);
     }
 
     /**
@@ -88,6 +90,10 @@ class Configuration extends StaticFileCacheObject
      */
     protected function registerBackendModule(): self
     {
+        // see `Configuration/Backend/Modules.php` (since TYPO3 v12)
+        if ($this->typo3version->getMajorVersion() >= 12) {
+            return $this;
+        }
         ExtensionUtility::registerModule(
             'Staticfilecache',
             'web',
