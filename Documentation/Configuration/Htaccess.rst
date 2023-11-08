@@ -162,6 +162,14 @@ variables (SFC_ROOT, SFC_GZIP) and read the comments carefully.
       ForceType text/html
       # AddType "text/html" .gz
    </FilesMatch>
+   <FilesMatch "\.js\.gz$">
+	   ForceType text/javascript
+	   # AddType "text/javascript" .gz
+   </FilesMatch>
+   <FilesMatch "\.css\.gz$">
+	   ForceType text/css
+	   # AddType "text/css" .gz
+   </FilesMatch>
    <FilesMatch "\.xml\.gz$">
       ForceType text/xml
       # AddType "text/xml" .gz
