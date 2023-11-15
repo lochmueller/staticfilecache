@@ -1,8 +1,8 @@
 <tr>
 	<td>
-		<f:format.raw>{row.title}</f:format.raw> <i>[{row.uid}]</i>
+		{row.title -> f:sanitize.html()} <i>[{row.uid}]</i>
 	</td>
-	<td><a href="{row.identifier}">{row.identifier}</a>
+	<td><a href="{row.identifier}" target="_blank">{row.identifier}</a>
 		<f:if condition="{row.cached}">
 			<f:then>
 				<core:icon identifier="status-status-permission-granted"/>

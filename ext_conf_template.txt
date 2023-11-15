@@ -11,10 +11,10 @@ backendDisplayMode = both
 debugHeaders = 0
 
 # cat=basic; type=string; label=Valid .htaccess headers: List of headers that are transferred to the .htaccess configuration. E.g. if you use config.additionalHeaders.xxx you can add this headers here. Please change this configuration only, if you know what you do. "Content-Type" is recommended. Note: Content-Type will be added automatically.
-validHtaccessHeaders = Content-Type,Content-Language,Link,X-SFC-Tags
+validHtaccessHeaders = Content-Type,Content-Language,Content-Security-Policy,Link,X-SFC-Tags
 
 # cat=basic; type=string; label=Valid fallback middleware headers: List of headers that are transferred to the xxx.config.json file. E.g. if you use config.additionalHeaders.xxx and you have useFallbackMiddleware set to true, you can add this headers here. Please change this configuration only, if you know what you do. "Content-Type" is recommended. Note: Content-Type will be added automatically.
-validFallbackHeaders = Content-Type,Content-Language,Link,X-SFC-Tags
+validFallbackHeaders = Content-Type,Content-Language,Content-Security-Policy,Link,X-SFC-Tags
 
 # cat=basic; type=boolean; label=Disable StaticFileCache in development: When checked, the StaticFileCache won't be generated if in development application context.
 disableInDevelopment = 0
