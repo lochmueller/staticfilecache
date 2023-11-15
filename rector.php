@@ -18,10 +18,10 @@ return static function (RectorConfig $rectorConfig): void {
     $parameters->set(Typo3Option::TYPOSCRIPT_INDENT_SIZE, 4);
 
     $rectorConfig->sets([
-        Typo3LevelSetList::UP_TO_TYPO3_11,
+        Typo3LevelSetList::UP_TO_TYPO3_12,
     ]);
 
-    $rectorConfig->phpVersion(PhpVersion::PHP_80);
+    $rectorConfig->phpVersion(PhpVersion::PHP_81);
 
     $rectorConfig->paths([
         __DIR__ . '/',

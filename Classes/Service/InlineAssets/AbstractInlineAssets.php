@@ -39,7 +39,7 @@ abstract class AbstractInlineAssets extends AbstractService
 
     protected function includeAssets(string $regex, string $content): string
     {
-        return preg_replace_callback($regex, fn (array $match): string => $this->parseAsset($match), $content);
+        return preg_replace_callback($regex, fn(array $match): string => $this->parseAsset($match), $content);
     }
 
     protected function parseAsset(array $match): string

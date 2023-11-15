@@ -29,7 +29,7 @@ class PhpGenerator extends HtaccessGenerator
         if ($configuration->isBool('debugHeaders')) {
             $headers['X-SFC-State'] = 'StaticFileCache - via PhpGenerator';
         }
-        $headers = array_map(fn ($item) => str_replace("'", "\'", $item), $headers);
+        $headers = array_map(fn($item) => str_replace("'", "\'", $item), $headers);
         $requestUri = GeneralUtility::getIndpEnv('REQUEST_URI');
 
         $variables = [

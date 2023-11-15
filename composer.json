@@ -30,15 +30,12 @@
 		}
 	],
 	"require": {
-		"php": "^8.0",
+		"php": "^8.1",
 		"ext-pdo": "*",
 		"ext-zlib": "*",
-		"typo3/cms-core": "^11.5||^12.4",
-		"typo3/cms-backend": "^11.5||^12.4",
-		"typo3/cms-extensionmanager": "^11.5||^12.4"
-	},
-	"replace": {
-		"typo3-ter/staticfilecache": "self.version"
+		"typo3/cms-core": "^12.4||13.*.*@dev",
+		"typo3/cms-backend": "^12.4||13.*.*@dev",
+		"typo3/cms-extensionmanager": "^12.4||13.*.*@dev"
 	},
 	"license": "GPL-2.0-or-later",
 	"homepage": "https://extensions.typo3.org/extension/staticfilecache",
@@ -48,7 +45,7 @@
 		"source": "https://github.com/lochmueller/staticfilecache"
 	},
 	"require-dev": {
-		"typo3/testing-framework": "^7.0",
+		"typo3/testing-framework": "^8.0",
 		"friendsofphp/php-cs-fixer": "^3.30",
 		"phpmetrics/phpmetrics": "^2.5",
 		"ssch/typo3-rector": "^1.2",
@@ -92,7 +89,7 @@
 			"phpunit -c Tests/UnitTests.xml"
 		],
 		"phpstan": [
-			".Build/bin/phpstan"
+			".Build/bin/phpstan --memory-limit=1024M"
 		]
 	}
 }

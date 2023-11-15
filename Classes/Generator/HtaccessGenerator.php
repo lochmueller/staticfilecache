@@ -62,7 +62,7 @@ class HtaccessGenerator extends AbstractGenerator
         }
 
         // illegal chars
-        $headers = array_map(fn ($item) => str_replace('"', '\"', $item), $headers);
+        $headers = array_map(fn($item) => str_replace('"', '\"', $item), $headers);
 
         return $headers;
     }
