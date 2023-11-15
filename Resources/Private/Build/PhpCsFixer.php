@@ -19,9 +19,10 @@ $finder = Finder::create()
 return (new Config())
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PER' => true,
+        '@PER-CS2.0' => true,
+        '@PER-CS:risky' => true,
         '@DoctrineAnnotation' => true,
-        '@PHP80Migration' => true,
+        '@PHP81Migration' => true,
         '@PHP80Migration:risky' => true,
         'no_superfluous_phpdoc_tags' => true,
     ])
