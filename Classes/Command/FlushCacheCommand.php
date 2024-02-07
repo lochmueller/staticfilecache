@@ -44,7 +44,7 @@ class FlushCacheCommand extends AbstractCommand
      *
      * @see setCode()
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $cacheService = GeneralUtility::makeInstance(CacheService::class);
         $cacheService->flush((bool) $input->getOption('force-boost-mode-flush'));
