@@ -27,7 +27,7 @@ class FrontendUserMiddleware implements MiddlewareInterface
         $response = $handler->handle($request);
 
         $weShouldHaveCookie = $this->weShouldHaveCookie($feUser, $request);
-        $lifetime = (int)($GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] ?? 0);
+        $lifetime = (int) ($GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] ?? 0);
 
         if ($weShouldHaveCookie) {
             if ($lifetime === CookieService::SESSION_LIFETIME) {

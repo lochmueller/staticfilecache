@@ -187,7 +187,7 @@ class BackendController extends ActionController
      */
     protected function getCurrentUid(): int
     {
-        return (int)($this->request->getQueryParams()['id'] ?? 0);
+        return (int) ($this->request->getQueryParams()['id'] ?? 0);
     }
 
     protected function createModuleTemplate(): ModuleTemplate
