@@ -89,7 +89,7 @@
 			"phpunit -c Tests/UnitTests.xml"
 		],
 		"phpstan": [
-			".Build/bin/phpstan --memory-limit=1024M"
+			"phpstan --memory-limit=1024M"
 		]
 	}
 }

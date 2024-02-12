@@ -58,7 +58,7 @@ class BoostQueueCommand extends AbstractCommand
      *
      * @throws NoSuchCacheException
      *
-     * @return null|int null or 0 if everything went fine, or an error code
+     * @return int null or 0 if everything went fine, or an error code
      *
      * @see setCode()
      */
@@ -91,7 +91,7 @@ class BoostQueueCommand extends AbstractCommand
             $this->cleanupQueue($io);
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

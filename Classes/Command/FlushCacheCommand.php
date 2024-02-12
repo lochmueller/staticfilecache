@@ -40,7 +40,7 @@ class FlushCacheCommand extends AbstractCommand
      * @throws NoSuchCacheException
      * @throws NoSuchCacheGroupException
      *
-     * @return null|int null or 0 if everything went fine, or an error code
+     * @return int null or 0 if everything went fine, or an error code
      *
      * @see setCode()
      */
@@ -49,6 +49,6 @@ class FlushCacheCommand extends AbstractCommand
         $cacheService = GeneralUtility::makeInstance(CacheService::class);
         $cacheService->flush((bool) $input->getOption('force-boost-mode-flush'));
 
-        return 0;
+        return self::SUCCESS;
     }
 }
