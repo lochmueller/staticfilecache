@@ -359,7 +359,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
             ->from($this->tagsTable)
             ->where(
                 $queryBuilder->expr()->eq($this->cacheTable . '.identifier', $queryBuilder->quoteIdentifier($this->tagsTable . '.identifier')),
-                $queryBuilder->expr()->eq(
+                $queryBuilder->expr()->in(
                     $this->tagsTable . '.tag',
                     array_map(fn($tag) => $queryBuilder->quote($tag), $tags)
                 ),
