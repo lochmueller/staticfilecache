@@ -18,6 +18,8 @@ use SFC\Staticfilecache\Service\GeneratorService;
 use SFC\Staticfilecache\Service\QueueService;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -201,10 +203,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
         $this->logger->debug('SFC flushByTags', [$tags]);
 
-        $identifiers = [];
-        foreach ($tags as $tag) {
-            $identifiers = array_merge($identifiers, $this->findIdentifiersByTagIncludingExpired($tag));
-        }
+        $identifiers = $this->findIdentifiersByTagsIncludingExpired($tags);
 
         if ($this->isBoostMode()) {
             $priority = QueueService::PRIORITY_LOW;
@@ -323,15 +322,56 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     protected function findIdentifiersByTagIncludingExpired($tag): array
     {
+        return $this->findIdentifiersByTagsIncludingExpired([$tag]);
+    }
+
+    /**
+     * Call findIdentifiersByTags but ignore the expires check.
+     */
+    protected function findIdentifiersByTagsIncludingExpired(array $tags): array
+    {
         $base = (new DateTimeService())->getCurrentTime();
 
         // Use EXEC_TIME because the core still use EXEC_TIME for checking the time
         $base = $GLOBALS['EXEC_TIME'];
         $GLOBALS['EXEC_TIME'] = 0;
-        $identifiers = $this->findIdentifiersByTag($tag);
+        $identifiers = $this->findIdentifiersByTags($tags);
         $GLOBALS['EXEC_TIME'] = $base;
 
         return $identifiers;
+    }
+
+
+    /**
+     * Base on TYPO3 Database Backend findIdentifiersByTag
+     * Finds and returns all cache entries which are tagged by the specified tag.
+     *
+     * @param array $tags The tags to search for
+     * @return array An array with identifiers of all matching entries. An empty array if no entries matched
+     */
+    public function findIdentifiersByTags(array $tags)
+    {
+        $this->throwExceptionIfFrontendDoesNotExist();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->tagsTable);
+        $result = $queryBuilder->select($this->cacheTable . '.identifier')
+            ->from($this->cacheTable)
+            ->from($this->tagsTable)
+            ->where(
+                $queryBuilder->expr()->eq($this->cacheTable . '.identifier', $queryBuilder->quoteIdentifier($this->tagsTable . '.identifier')),
+                $queryBuilder->expr()->eq(
+                    $this->tagsTable . '.tag',
+                    array_map(fn($tag) => $queryBuilder->quote($tag), $tags)
+                ),
+                $queryBuilder->expr()->gte(
+                    $this->cacheTable . '.expires',
+                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
+                )
+            )
+            ->groupBy($this->cacheTable . '.identifier')
+            ->executeQuery()
+            ->fetchAllAssociative();
+        return array_map(fn($row) => $row['identifier'], $result);
     }
 
     /**
