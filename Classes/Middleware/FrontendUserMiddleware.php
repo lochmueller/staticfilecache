@@ -49,7 +49,7 @@ class FrontendUserMiddleware implements MiddlewareInterface
 
     protected function weShouldHaveCookie(FrontendUserAuthentication $feUser, ServerRequestInterface $request): bool
     {
-        $setCookieHeader = $feUser->appendCookieToResponse(new HtmlResponse(''))->getHeaderLine('Set-Cookie');
+        $setCookieHeader = $feUser->appendCookieToResponse(new HtmlResponse(''), $request->getAttribute('normalizedParams'))->getHeaderLine('Set-Cookie');
 
         if (strpos($setCookieHeader, 'Max-Age=0')) {
             // the new cookie is to delete the old cookie:
