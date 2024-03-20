@@ -18,15 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ClientService extends AbstractService
 {
-    protected EventDispatcherInterface $eventDispatcher;
-
-    /**
-     * PrepareMiddleware constructor.
-     */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
+    public function __construct(protected EventDispatcherInterface $eventDispatcher) {}
 
     /**
      * Run a single request with guzzle and return status code.

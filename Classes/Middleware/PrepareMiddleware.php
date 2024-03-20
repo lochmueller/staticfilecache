@@ -24,15 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PrepareMiddleware implements MiddlewareInterface
 {
-    protected EventDispatcherInterface $eventDispatcher;
-
-    /**
-     * PrepareMiddleware constructor.
-     */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
+    public function __construct(protected EventDispatcherInterface $eventDispatcher) {}
 
     /**
      * Process an incoming server request.

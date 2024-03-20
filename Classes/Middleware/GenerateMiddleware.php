@@ -19,25 +19,12 @@ use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
-/**
- * GenerateMiddleware.
- */
 class GenerateMiddleware implements MiddlewareInterface
 {
     protected ?UriFrontend $cache = null;
 
-    protected EventDispatcherInterface $eventDispatcher;
 
-    protected CookieService $cookieService;
-
-    /**
-     * GenerateMiddleware constructor.
-     */
-    public function __construct(EventDispatcherInterface $eventDispatcher, CookieService $cookieService)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->cookieService = $cookieService;
-    }
+    public function __construct(protected EventDispatcherInterface $eventDispatcher, protected CookieService $cookieService) {}
 
     /**
      * Process an incoming server request.

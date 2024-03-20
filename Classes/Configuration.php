@@ -42,9 +42,6 @@ use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
-/**
- * Configuration.
- */
 class Configuration extends StaticFileCacheObject
 {
     public const EXTENSION_KEY = 'staticfilecache';

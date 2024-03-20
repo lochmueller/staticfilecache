@@ -17,19 +17,7 @@ use TYPO3\CMS\Core\Context\Context;
  */
 class CookieCheckMiddleware implements MiddlewareInterface
 {
-    protected Context $context;
-    protected CookieService $cookieService;
-    protected EventDispatcherInterface $eventDispatcher;
-
-    /**
-     * CookieCheckMiddleware constructor.
-     */
-    public function __construct(Context $context, CookieService $cookieService, EventDispatcherInterface $eventDispatcher)
-    {
-        $this->context = $context;
-        $this->cookieService = $cookieService;
-        $this->eventDispatcher = $eventDispatcher;
-    }
+    public function __construct(protected Context $context, protected CookieService $cookieService, protected EventDispatcherInterface $eventDispatcher) {}
 
     /**
      * Check for the sfc cookie and remove it when there is no valid user session.

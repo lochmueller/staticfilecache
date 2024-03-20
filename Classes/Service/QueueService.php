@@ -19,27 +19,12 @@ class QueueService extends AbstractService
     public const PRIORITY_MEDIUM = 1000;
     public const PRIORITY_LOW = 0;
 
-    /**
-     * Queue repository.
-     */
-    protected QueueRepository $queueRepository;
-
-    protected ConfigurationService $configurationService;
-
-    protected ClientService $clientService;
-
-    protected CacheService $cacheService;
-
-    /**
-     * QueueService constructor.
-     */
-    public function __construct(QueueRepository $queueRepository, ConfigurationService $configurationService, ClientService $clientService, CacheService $cacheService)
-    {
-        $this->queueRepository = $queueRepository;
-        $this->configurationService = $configurationService;
-        $this->clientService = $clientService;
-        $this->cacheService = $cacheService;
-    }
+    public function __construct(
+        protected QueueRepository $queueRepository,
+        protected ConfigurationService $configurationService,
+        protected ClientService $clientService,
+        protected CacheService $cacheService
+    ) {}
 
     /**
      * Add identifiers to Queue.

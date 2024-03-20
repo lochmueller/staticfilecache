@@ -15,15 +15,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class ForceStaticCacheListener
 {
-    protected EventDispatcherInterface $eventDispatcher;
-
-    /**
-     * PrepareMiddleware constructor.
-     */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
+    public function __construct(readonly protected EventDispatcherInterface $eventDispatcher) {}
 
     public function __invoke(CacheRuleEvent $event): void
     {

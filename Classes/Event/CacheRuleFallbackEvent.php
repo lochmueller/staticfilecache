@@ -8,18 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class CacheRuleFallbackEvent implements CacheRuleEventInterface
 {
-    private ServerRequestInterface $request;
-
-    private array $explanation;
-
-    private bool $skipProcessing;
-
-    public function __construct(ServerRequestInterface $request, array $explanation, bool $skipProcessing)
-    {
-        $this->request = $request;
-        $this->explanation = $explanation;
-        $this->skipProcessing = $skipProcessing;
-    }
+    public function __construct(private ServerRequestInterface $request, private array $explanation, private bool $skipProcessing) {}
 
     public function getRequest(): ServerRequestInterface
     {

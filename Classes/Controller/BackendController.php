@@ -23,22 +23,9 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
-/**
- * StaticFileCache backend module.
- */
 class BackendController extends ActionController
 {
-    protected QueueService $queueService;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
-    /**
-     * BackendController constructor.
-     */
-    public function __construct(QueueService $queueService, ModuleTemplateFactory $moduleTemplateFactory)
-    {
-        $this->queueService = $queueService;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-    }
+    public function __construct(protected QueueService $queueService, protected ModuleTemplateFactory $moduleTemplateFactory) {}
 
     public function listAction(string $filter = ''): ResponseInterface
     {
