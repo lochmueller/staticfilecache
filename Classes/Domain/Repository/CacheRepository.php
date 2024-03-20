@@ -6,6 +6,7 @@ namespace SFC\Staticfilecache\Domain\Repository;
 
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -23,7 +24,7 @@ class CacheRepository extends AbstractRepository
             ->from($this->getTableName())
             ->where($queryBuilder->expr()->lt(
                 'expires',
-                $queryBuilder->createNamedParameter((new DateTimeService())->getCurrentTime(), \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter((new DateTimeService())->getCurrentTime(), Connection::PARAM_INT)
             ))
             ->groupBy('identifier')
             ->executeQuery()
