@@ -8,7 +8,6 @@ use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotCon
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use SFC\Staticfilecache\Cache\RemoteFileBackend;
 use SFC\Staticfilecache\Cache\Rule\Enable;
-use SFC\Staticfilecache\Cache\Rule\LoginDeniedConfiguration;
 use SFC\Staticfilecache\Cache\Rule\NoFakeFrontend;
 use SFC\Staticfilecache\Cache\Rule\NoIntScripts;
 use SFC\Staticfilecache\Cache\Rule\NoLongPathSegment;
@@ -38,7 +37,6 @@ use SFC\Staticfilecache\Service\HttpPush\SvgHttpPush;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
@@ -47,7 +45,6 @@ class Configuration extends StaticFileCacheObject
     public const EXTENSION_KEY = 'staticfilecache';
 
     protected ConfigurationService $configurationService;
-    protected Typo3Version $typo3version;
 
     /**
      * Configuration constructor.
@@ -58,7 +55,6 @@ class Configuration extends StaticFileCacheObject
     public function __construct()
     {
         $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $this->typo3version = GeneralUtility::makeInstance(Typo3Version::class);
     }
 
     /**
@@ -96,7 +92,6 @@ class Configuration extends StaticFileCacheObject
             'noWorkspacePreview' => NoWorkspacePreview::class,
             'noUserOrGroupSet' => NoUserOrGroupSet::class,
             'noIntScripts' => NoIntScripts::class,
-            'loginDeniedConfiguration' => LoginDeniedConfiguration::class,
             'noNoCache' => NoNoCache::class,
             'enable' => Enable::class,
             'validPageInformation' => ValidPageInformation::class,
