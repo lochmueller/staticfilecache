@@ -86,6 +86,12 @@
 		],
 		"test": [
 			"phpunit -c Tests/UnitTests.xml"
+		],
+		"phpstan": [
+			"phpstan --memory-limit=1024M"
+		],
+		"rector": [
+			"rector"
 		]
 	}
 }
