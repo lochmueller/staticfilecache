@@ -192,10 +192,9 @@ class Configuration extends StaticFileCacheObject
 
     protected function adjustSystemSettings(): self
     {
-        if ($this->typo3version->getMajorVersion() >= 12) {
-            // aim for cacheable frontend responses when using TYPO3's `Content-Security-Policy` behavior
-            $GLOBALS['TYPO3_CONF_VARS']['FE']['contentSecurityPolicy']['preferCacheableResponse'] = true;
-        }
+        // aim for cacheable frontend responses when using TYPO3's `Content-Security-Policy` behavior
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['contentSecurityPolicy']['preferCacheableResponse'] = true;
+
         return $this;
     }
 }
