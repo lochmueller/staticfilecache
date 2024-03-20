@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /** @var string $_EXTKEY */
 $EM_CONF[$_EXTKEY] = [
     'title' => 'StaticFileCache',
@@ -19,7 +21,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'StaticFileCache Team',
     'autoload' => [
         'psr-4' => [
-            'SFC\\Staticfilecache\\' => 'Classes'
+            'SFC\\Staticfilecache\\' => 'Classes',
         ],
     ],
 ];

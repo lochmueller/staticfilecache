@@ -47,8 +47,7 @@
 	"require-dev": {
 		"typo3/testing-framework": "^8.0",
 		"friendsofphp/php-cs-fixer": "^3.30",
-		"phpmetrics/phpmetrics": "^2.5",
-		"ssch/typo3-rector": "^1.2",
+		"ssch/typo3-rector": "^2.2",
 		"phpstan/phpstan": "^1.10",
 		"saschaegerer/phpstan-typo3": "^1.8",
 		"andersundsehr/phpstan-git-files": "^1.0",
@@ -82,14 +81,11 @@
 			"PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix --config Resources/Private/Build/PhpCsFixer.php --cache-file=.Build/phpcs.cache"
 		],
 		"code-check": [
-			"phpmetrics --report-html=.Build/PhpMetrics . --exclude='.Build,Tests'",
-			"PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix --config Resources/Private/Build/PhpCsFixer.php --cache-file=.Build/phpcs.cache --dry-run"
+			"PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix --config Resources/Private/Build/PhpCsFixer.php --cache-file=.Build/phpcs.cache --dry-run",
+			"phpstan --memory-limit=1024M"
 		],
 		"test": [
 			"phpunit -c Tests/UnitTests.xml"
-		],
-		"phpstan": [
-			"phpstan --memory-limit=1024M"
 		]
 	}
 }

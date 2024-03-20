@@ -14,9 +14,7 @@ class NoWorkspacePreview extends AbstractRule
 {
     public function __construct(
         private readonly Context $context,
-    )
-    {
-    }
+    ) {}
 
     /**
      * Check if it is no workspace preview.

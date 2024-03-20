@@ -79,41 +79,6 @@ class Configuration extends StaticFileCacheObject
     }
 
     /**
-     * Call in ext_tables.php.
-     */
-    public function extTables(): void
-    {
-        $this->registerBackendModule();
-    }
-
-    /**
-     * Add Web>Info module:.
-     */
-    protected function registerBackendModule(): self
-    {
-        // see `Configuration/Backend/Modules.php` (since TYPO3 v12)
-        if ($this->typo3version->getMajorVersion() >= 12) {
-            return $this;
-        }
-        ExtensionUtility::registerModule(
-            'Staticfilecache',
-            'web',
-            self::EXTENSION_KEY,
-            '',
-            [
-                BackendController::class => 'list,boost,support',
-            ],
-            [
-                'access' => 'user,group',
-                'icon' => 'EXT:staticfilecache/Resources/Public/Icons/Extension.svg',
-                'labels' => 'LLL:EXT:staticfilecache/Resources/Private/Language/locallang_mod.xlf',
-            ]
-        );
-
-        return $this;
-    }
-
-    /**
      * Register hooks.
      */
     protected function registerHooks(): self

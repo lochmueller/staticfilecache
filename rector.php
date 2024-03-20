@@ -1,22 +1,15 @@
 <?php
 
 declare(strict_types=1);
-use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
-use Ssch\TYPO3Rector\FileProcessor\TypoScript\Rector\v9\v0\FileIncludeToImportStatementTypoScriptRector;
 
+use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
+use Rector\ValueObject\PhpVersion;
 use Rector\Config\RectorConfig;
-use Rector\Core\Configuration\Option;
-use Rector\Core\ValueObject\PhpVersion;
 use Rector\PostRector\Rector\NameImportingPostRector;
 use Ssch\TYPO3Rector\Configuration\Typo3Option;
-use Ssch\TYPO3Rector\Rector\General\ConvertImplicitVariablesToExplicitGlobalsRector;
-use Ssch\TYPO3Rector\Rector\General\ExtEmConfRector;
 use Ssch\TYPO3Rector\Set\Typo3LevelSetList;
 
 return static function (RectorConfig $rectorConfig): void {
-    $parameters = $rectorConfig->parameters();
-    $parameters->set(Typo3Option::TYPOSCRIPT_INDENT_SIZE, 4);
-
     $rectorConfig->sets([
         Typo3LevelSetList::UP_TO_TYPO3_12,
     ]);
@@ -25,7 +18,7 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->paths([
         __DIR__ . '/',
-     ]);
+    ]);
 
     $rectorConfig->skip([
         // @see https://github.com/sabbelasichon/typo3-rector/issues/2536
@@ -48,16 +41,6 @@ return static function (RectorConfig $rectorConfig): void {
             'ClassAliasMap.php',
             __DIR__ . '/**/Configuration/*.php',
             __DIR__ . '/**/Configuration/**/*.php',
-        ]
+        ],
     ]);
-
-
-    $rectorConfig->rule(StringClassNameToClassConstantRector::class);
-
-    $rectorConfig->rule(ConvertImplicitVariablesToExplicitGlobalsRector::class);
-    $rectorConfig->ruleWithConfiguration(ExtEmConfRector::class, [
-        ExtEmConfRector::ADDITIONAL_VALUES_TO_BE_REMOVED => []
-    ]);
-
-    $rectorConfig->rule(FileIncludeToImportStatementTypoScriptRector::class);
 };

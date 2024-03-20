@@ -10,10 +10,10 @@ $baseDir = dirname(__DIR__, 3);
 require $baseDir . '/.Build/vendor/autoload.php';
 
 $finder = Finder::create()
-    ->in($baseDir . '/Classes')
-    ->in($baseDir . '/Tests/Unit')
-    ->in($baseDir . '/Configuration')
-    ->in($baseDir . '/Resources/Private/Build')
+    ->in($baseDir)
+    ->exclude('.Build')
+    ->exclude('ext_tables.php')
+    ->exclude('ext_localconf.php')
 ;
 
 return (new Config())
