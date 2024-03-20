@@ -24,8 +24,10 @@ class StaticCacheableListener
     {
         if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
             if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() >= 13) {
+                /* @phpstan-ignore-next-line */
                 $isStaticCacheble = $GLOBALS['TSFE']->isStaticCacheble($event->getRequest());
             } else {
+                /* @phpstan-ignore-next-line */
                 $isStaticCacheble = $GLOBALS['TSFE']->isStaticCacheble();
             }
             if(!$isStaticCacheble) {

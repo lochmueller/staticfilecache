@@ -18,6 +18,7 @@ class NoNoCache extends AbstractRule
     public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
     {
         $tsfe = $GLOBALS['TSFE'] ?? null;
+        /* @phpstan-ignore-next-line */
         if ($tsfe instanceof TypoScriptFrontendController && $tsfe->no_cache) {
             $explanation[__CLASS__] = 'config.no_cache is true';
         }

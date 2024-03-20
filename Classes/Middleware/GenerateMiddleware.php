@@ -18,6 +18,8 @@ use SFC\Staticfilecache\Service\CookieService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
+use TYPO3\CMS\Frontend\Event\ModifyCacheLifetimeForPageEvent;
 
 class GenerateMiddleware implements MiddlewareInterface
 {
@@ -82,6 +84,10 @@ class GenerateMiddleware implements MiddlewareInterface
             // $this->logger->warning('TSFE to not contains a valid page record?! Please check: https://github.com/lochmueller/staticfilecache/issues/150');
             return 0;
         }
+
+        // @todo migrate for v13 to Events
+        // Check ModifyCacheLifetimeForPageEvent & AfterCachedPageIsPersistedEvent
+
         $timeOutTime = $tsfe->get_cache_timeout();
 
         // If page has a endtime before the current timeOutTime, use it instead:
