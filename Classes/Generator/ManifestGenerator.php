@@ -17,9 +17,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ManifestGenerator extends AbstractGenerator
 {
-    /**
-     * Generate file.
-     */
     public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
     {
         // $manifestService = GeneralUtility::makeInstance(ManifestService::class);
@@ -30,12 +27,9 @@ class ManifestGenerator extends AbstractGenerator
         // }
     }
 
-    /**
-     * Remove file.
-     */
+
     public function remove(string $entryIdentifier, string $fileName): void
     {
-        // $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        // $removeService->file($fileName.'.sfc');
+        // $this->removeFile($fileName.'.sfc');
     }
 }

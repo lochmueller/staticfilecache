@@ -9,9 +9,6 @@ use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
-/**
- * GzipGenerator.
- */
 class GzipGenerator extends AbstractGenerator
 {
     /**
@@ -19,24 +16,17 @@ class GzipGenerator extends AbstractGenerator
      */
     public const DEFAULT_COMPRESSION_LEVEL = 3;
 
-    /**
-     * Generate file.
-     */
     public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
     {
         $contentGzip = gzencode((string) $response->getBody(), $this->getCompressionLevel());
         if ($contentGzip) {
-            GeneralUtility::writeFile($fileName . '.gz', $contentGzip);
+            $this->writeFile($fileName . '.gz', $contentGzip);
         }
     }
 
-    /**
-     * Remove file.
-     */
     public function remove(string $entryIdentifier, string $fileName): void
     {
-        $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->file($fileName . '.gz');
+        $this->removeFile($fileName . '.gz');
     }
 
     /**

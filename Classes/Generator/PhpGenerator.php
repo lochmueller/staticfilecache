@@ -16,9 +16,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class PhpGenerator extends HtaccessGenerator
 {
-    /**
-     * Generate file.
-     */
     public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
@@ -43,13 +40,9 @@ class PhpGenerator extends HtaccessGenerator
         $this->renderTemplateToFile($this->getTemplateName(), $variables, $fileName . '.php');
     }
 
-    /**
-     * Remove file.
-     */
     public function remove(string $entryIdentifier, string $fileName): void
     {
-        $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->file($fileName . '.php');
+        $this->removeFile($fileName . '.php');
     }
 
     /**

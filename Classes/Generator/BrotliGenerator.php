@@ -8,14 +8,8 @@ use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * BrotliGenerator.
- */
 class BrotliGenerator extends AbstractGenerator
 {
-    /**
-     * Generate file.
-     */
     public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
     {
         if (!$this->checkAvailable()) {
@@ -23,20 +17,16 @@ class BrotliGenerator extends AbstractGenerator
         }
         $contentCompress = brotli_compress((string) $response->getBody());
         if ($contentCompress) {
-            GeneralUtility::writeFile($fileName . '.br', $contentCompress);
+            $this->writeFile($fileName . '.br', $contentCompress);
         }
     }
 
-    /**
-     * Remove file.
-     */
     public function remove(string $entryIdentifier, string $fileName): void
     {
         if (!$this->checkAvailable()) {
             return;
         }
-        $removeService = GeneralUtility::makeInstance(RemoveService::class);
-        $removeService->file($fileName . '.br');
+        $this->removeFile($fileName . '.br');
     }
 
     /**
