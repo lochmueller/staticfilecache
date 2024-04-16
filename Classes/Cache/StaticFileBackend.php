@@ -184,6 +184,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
         $removeService->subdirectories($absoluteCacheDir);
         parent::flush();
+        $removeService->removeQueueDirectories();
     }
 
     /**

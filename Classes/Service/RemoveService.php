@@ -21,6 +21,11 @@ class RemoveService extends AbstractService
      */
     public function __destruct()
     {
+        $this->removeQueueDirectories();
+    }
+
+    public function removeQueueDirectories(): void
+    {
         foreach ($this->removeDirs as $removeDir) {
             GeneralUtility::rmdir($removeDir, true);
         }
@@ -40,8 +45,7 @@ class RemoveService extends AbstractService
     }
 
     /**
-     * Add the subdirecotries of thee given folder to the remove function.
-     *
+     * Add the subdirectories of the given folder to the remove function.
      */
     public function subdirectories(string $absoluteDirName): self
     {
@@ -62,7 +66,6 @@ class RemoveService extends AbstractService
     /**
      * Rename the dir and mark them as "to remove".
      * Speed up the remove process.
-     *
      */
     public function directory(string $absoluteDirName): self
     {
