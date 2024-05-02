@@ -199,16 +199,18 @@ variables (SFC_ROOT, SFC_GZIP) and read the comments carefully.
    ### End: StaticFileCache ###
 
 
-If you use the oldschool .htaccess rewrite rules that come with the TYPO3 dummy,
+If you use the default .htaccess rewrite rules that come with the TYPO3 dummy,
 then the relevant StaticFileCache configuration should be inserted in the
 .htaccess file just before these lines:
 
 .. code-block:: apache
 
+   # If the file/symlink/directory does not exist => Redirect to index.php.
+   # For httpd.conf, you need to prefix each '%{REQUEST_FILENAME}' with '%{DOCUMENT_ROOT}'.
    RewriteCond %{REQUEST_FILENAME} !-f
    RewriteCond %{REQUEST_FILENAME} !-d
    RewriteCond %{REQUEST_FILENAME} !-l
-   RewriteRule .* index.php [L]
+   RewriteRule ^.*$ %{ENV:CWD}index.php [QSA,L]
 
 If the TYPO3 Installation isn´t in your root directory (say your site lives in
 :samp:`https://some.domain.com/t3site/`), then you have to add the '/t3site'
