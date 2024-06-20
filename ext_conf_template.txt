@@ -7,6 +7,9 @@ boostMode = 0
 # cat=basic; type=options[Current=current,Childs=childs,Both=both]; label=Backend display options: The backend module should display cache entries of the current page, only the direct children or both?
 backendDisplayMode = both
 
+# cat=basic; type=string; label=Client user agent: Overrides the default user agent of the boost mode crawler, if set.
+overrideClientUserAgent =
+
 # cat=basic; type=boolean; label=Debug headers: Send debug headers to get a information which component deliver the file (X-SFC-State).
 debugHeaders = 0
 
