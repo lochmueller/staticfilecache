@@ -18,6 +18,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ClientService extends AbstractService
 {
+    protected const DEFAULT_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:54.0) Gecko/20100101 Firefox/54.0';
+
     public function __construct(protected EventDispatcherInterface $eventDispatcher) {}
 
     /**
@@ -64,7 +66,7 @@ class ClientService extends AbstractService
                 'max' => false,
             ],
             'headers' => [
-                'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:54.0) Gecko/20100101 Firefox/54.0',
+                'User-Agent' => GeneralUtility::makeInstance(ConfigurationService::class)->get('overrideClientUserAgent') ?? self::DEFAULT_USER_AGENT
             ],
         ];
 
