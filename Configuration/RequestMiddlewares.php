@@ -5,6 +5,7 @@ declare(strict_types=1);
 use SFC\Staticfilecache\Middleware\CookieCheckMiddleware;
 use SFC\Staticfilecache\Middleware\FallbackMiddleware;
 use SFC\Staticfilecache\Middleware\FrontendUserMiddleware;
+use SFC\Staticfilecache\Middleware\FrontendCacheMiddleware;
 use SFC\Staticfilecache\Middleware\GenerateMiddleware;
 use SFC\Staticfilecache\Middleware\PrepareMiddleware;
 
