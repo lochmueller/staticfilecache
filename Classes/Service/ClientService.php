@@ -66,7 +66,7 @@ class ClientService extends AbstractService
                 'max' => false,
             ],
             'headers' => [
-                'User-Agent' => GeneralUtility::makeInstance(ConfigurationService::class)->get('overrideClientUserAgent') ?? self::DEFAULT_USER_AGENT
+                'User-Agent' => GeneralUtility::makeInstance(ConfigurationService::class)->get('overrideClientUserAgent') ?? self::DEFAULT_USER_AGENT,
             ],
         ];
 

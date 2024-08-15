@@ -15,8 +15,7 @@ class FrontendCacheMiddleware implements MiddlewareInterface
     public function process(
         ServerRequestInterface  $request,
         RequestHandlerInterface $handler,
-    ): ResponseInterface
-    {
+    ): ResponseInterface {
         if (class_exists(CacheInstruction::class)) {
             // Get the attribute, if not available, use a new CacheInstruction object
             $cacheInstruction = $request->getAttribute(
