@@ -5,6 +5,7 @@ declare(strict_types=1);
 use SFC\Staticfilecache\Middleware\CookieCheckMiddleware;
 use SFC\Staticfilecache\Middleware\FallbackMiddleware;
 use SFC\Staticfilecache\Middleware\FrontendUserMiddleware;
+use SFC\Staticfilecache\Middleware\FrontendCacheMiddleware;
 use SFC\Staticfilecache\Middleware\GenerateMiddleware;
 use SFC\Staticfilecache\Middleware\PrepareMiddleware;
 
@@ -33,6 +34,15 @@ return [
         ],
         'staticfilecache/frontend-user' => [
             'target' => FrontendUserMiddleware::class,
+            'after' => [
+                'typo3/cms-frontend/authentication',
+            ],
+            'before' => [
+                'staticfilecache/generate',
+            ],
+        ],
+        'staticfilecache/frontend-cache' => [
+            'target' => FrontendCacheMiddleware::class,
             'after' => [
                 'typo3/cms-frontend/authentication',
             ],
