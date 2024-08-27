@@ -88,6 +88,7 @@ class GenerateMiddleware implements MiddlewareInterface
         // @todo migrate for v13 to Events
         // Check ModifyCacheLifetimeForPageEvent & AfterCachedPageIsPersistedEvent
 
+        // @phpstan-ignore-next-line
         $timeOutTime = $tsfe->get_cache_timeout();
 
         // If page has a endtime before the current timeOutTime, use it instead:

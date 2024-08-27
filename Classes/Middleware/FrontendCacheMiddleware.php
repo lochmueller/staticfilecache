@@ -17,7 +17,7 @@ class FrontendCacheMiddleware implements MiddlewareInterface
         RequestHandlerInterface $handler,
     ): ResponseInterface {
         if (class_exists(CacheInstruction::class)) {
-            // Get the attribute, if not available, use a new CacheInstruction object
+            // @phpstan-ignore-next-line
             $cacheInstruction = $request->getAttribute(
                 'frontend.cache.instruction',
                 new CacheInstruction(),
