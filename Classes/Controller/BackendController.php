@@ -85,7 +85,7 @@ class BackendController extends ActionController
 
         return $this->createModuleTemplate()
             ->assignMultiple($viewVariables)
-            ->renderResponse('Backend/Boost');
+            ->renderResponse('Backend/Support');
     }
 
     /**
