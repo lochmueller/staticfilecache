@@ -9,9 +9,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
-/**
- * EnvironmentService.
- */
 class EnvironmentService
 {
     /**

@@ -7,9 +7,6 @@ namespace SFC\Staticfilecache\Service;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * HtaccessConfigurationService.
- */
 class HtaccessConfigurationService extends AbstractService
 {
     /**

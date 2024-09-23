@@ -13,9 +13,6 @@ use SFC\Staticfilecache\Event\BuildClientEvent;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * ClientService.
- */
 class ClientService extends AbstractService
 {
     protected const DEFAULT_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:54.0) Gecko/20100101 Firefox/54.0';

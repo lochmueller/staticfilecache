@@ -49,9 +49,6 @@ phpTemplateName = EXT:staticfilecache/Resources/Private/Templates/Php.html
 # cat=basic; type=string; label=Override cache directory: If this config var is empty the default is "typo3temp/assets/tx_staticfilecache/". If you change this value you HAVE TO adapt your rewrite configuration.
 overrideCacheDirectory =
 
-# cat=Generator; type=boolean; label=Enable Cache Manifest generator (BETA!!!): Create manifest files
-enableGeneratorManifest = 0
-
 # cat=Generator; type=boolean; label=Enable PHP generator: When checked, the php file including headers output will write to the cache. This will also disable the .htaccess file generation.
 enableGeneratorPhp = 0
 

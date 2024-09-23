@@ -7,9 +7,6 @@ namespace SFC\Staticfilecache\Service;
 use SFC\Staticfilecache\Service\HttpPush\AbstractHttpPush;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * HttpPushService.
- */
 class HttpPushService extends AbstractService
 {
     /**

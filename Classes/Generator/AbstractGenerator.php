@@ -10,6 +10,9 @@ use SFC\Staticfilecache\StaticFileCacheObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
+/**
+ * @todo move to Generate Event
+ */
 abstract class AbstractGenerator extends StaticFileCacheObject
 {
     abstract public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void;

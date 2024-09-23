@@ -13,5 +13,6 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 abstract class StaticFileCacheObject implements SingletonInterface, LoggerAwareInterface
 {
+    // @todo remove this "all object stuff"
     use LoggerAwareTrait;
 }

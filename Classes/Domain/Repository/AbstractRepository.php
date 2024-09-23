@@ -12,6 +12,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * AbstractRepository.
+ *
+ * @todo move methods to iterator?
  */
 abstract class AbstractRepository extends StaticFileCacheObject
 {

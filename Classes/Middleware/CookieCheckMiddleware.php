@@ -12,12 +12,13 @@ use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Service\CookieService;
 use TYPO3\CMS\Core\Context\Context;
 
-/**
- * CookieCheckMiddleware.
- */
 class CookieCheckMiddleware implements MiddlewareInterface
 {
-    public function __construct(protected Context $context, protected CookieService $cookieService, protected EventDispatcherInterface $eventDispatcher) {}
+    public function __construct(
+        protected Context $context,
+        protected CookieService $cookieService,
+        protected EventDispatcherInterface $eventDispatcher
+    ) {}
 
     /**
      * Check for the sfc cookie and remove it when there is no valid user session.

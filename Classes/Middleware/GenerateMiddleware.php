@@ -25,8 +25,10 @@ class GenerateMiddleware implements MiddlewareInterface
 {
     protected ?UriFrontend $cache = null;
 
-
-    public function __construct(protected EventDispatcherInterface $eventDispatcher, protected CookieService $cookieService) {}
+    public function __construct(
+        protected EventDispatcherInterface $eventDispatcher,
+        protected CookieService $cookieService
+    ) {}
 
     /**
      * Process an incoming server request.
@@ -89,6 +91,7 @@ class GenerateMiddleware implements MiddlewareInterface
         // Check ModifyCacheLifetimeForPageEvent & AfterCachedPageIsPersistedEvent
 
         // @phpstan-ignore-next-line
+        // @todo check this Line!!!
         $timeOutTime = $tsfe->get_cache_timeout();
 
         // If page has a endtime before the current timeOutTime, use it instead:

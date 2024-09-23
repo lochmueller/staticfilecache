@@ -8,9 +8,6 @@ use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Generator\AbstractGenerator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * GeneratorService.
- */
 class GeneratorService extends AbstractService
 {
     /**

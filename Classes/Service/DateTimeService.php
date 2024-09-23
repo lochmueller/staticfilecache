@@ -7,9 +7,6 @@ namespace SFC\Staticfilecache\Service;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * DateTimeService.
- */
 class DateTimeService extends AbstractService
 {
     /**

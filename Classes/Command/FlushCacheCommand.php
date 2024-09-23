@@ -17,8 +17,7 @@ class FlushCacheCommand extends AbstractCommand
     protected function configure(): void
     {
         parent::configure();
-        $this->addOption('force-boost-mode-flush', null, InputOption::VALUE_NONE, 'Force a boost mode flush')
-        ;
+        $this->addOption('force-boost-mode-flush', null, InputOption::VALUE_NONE, 'Force a boost mode flush');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

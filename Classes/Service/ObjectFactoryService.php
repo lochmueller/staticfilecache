@@ -7,7 +7,7 @@ namespace SFC\Staticfilecache\Service;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * ObjectFactoryService.
+ * @todo drop this for events
  */
 class ObjectFactoryService extends AbstractService
 {

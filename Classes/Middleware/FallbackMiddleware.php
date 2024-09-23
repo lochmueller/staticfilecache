@@ -18,12 +18,12 @@ use SFC\Staticfilecache\Service\CookieService;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * FallbackMiddleware.
- */
 class FallbackMiddleware implements MiddlewareInterface
 {
-    public function __construct(protected EventDispatcherInterface $eventDispatcher, protected ConfigurationService $configurationService) {}
+    public function __construct(
+        protected EventDispatcherInterface $eventDispatcher,
+        protected ConfigurationService $configurationService
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

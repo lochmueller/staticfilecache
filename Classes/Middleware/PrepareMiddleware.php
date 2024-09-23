@@ -19,9 +19,6 @@ use SFC\Staticfilecache\Service\ObjectFactoryService;
 use SFC\Staticfilecache\Service\TypoScriptFrontendService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * PrepareMiddleware.
- */
 class PrepareMiddleware implements MiddlewareInterface
 {
     public function __construct(protected EventDispatcherInterface $eventDispatcher) {}

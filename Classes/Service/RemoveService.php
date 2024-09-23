@@ -6,9 +6,6 @@ namespace SFC\Staticfilecache\Service;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * RemoveService.
- */
 class RemoveService extends AbstractService
 {
     /**

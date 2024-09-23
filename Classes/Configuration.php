@@ -24,7 +24,6 @@ use SFC\Staticfilecache\Generator\BrotliGenerator;
 use SFC\Staticfilecache\Generator\ConfigGenerator;
 use SFC\Staticfilecache\Generator\GzipGenerator;
 use SFC\Staticfilecache\Generator\HtaccessGenerator;
-use SFC\Staticfilecache\Generator\ManifestGenerator;
 use SFC\Staticfilecache\Generator\PhpGenerator;
 use SFC\Staticfilecache\Generator\PlainGenerator;
 use SFC\Staticfilecache\Hook\DatamapHook;
@@ -143,10 +142,6 @@ class Configuration extends StaticFileCacheObject
             'htaccess' => HtaccessGenerator::class,
         ];
 
-
-        if ($this->configurationService->get('enableGeneratorManifest')) {
-            $generator['manifest'] = ManifestGenerator::class;
-        }
         if ($this->configurationService->get('enableGeneratorPhp')) {
             $generator['php'] = PhpGenerator::class;
             unset($generator['htaccess']);

@@ -9,6 +9,7 @@ use SFC\Staticfilecache\StaticFileCacheObject;
 
 /**
  * Abstract Rule.
+ * @todo migrate to Listener
  */
 abstract class AbstractRule extends StaticFileCacheObject
 {

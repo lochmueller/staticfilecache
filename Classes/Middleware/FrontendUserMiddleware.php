@@ -12,9 +12,6 @@ use SFC\Staticfilecache\Service\CookieService;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
-/**
- * Init frontend user.
- */
 class FrontendUserMiddleware implements MiddlewareInterface
 {
     public function __construct(private CookieService $cookieService) {}
