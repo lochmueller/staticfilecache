@@ -105,7 +105,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         }
 
         GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_TAG, '|' . implode('|', $tags) . '|');
-        GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_LIFETIME, $this->calculateExpiryTime($lifetime)->getTimestamp());
+        GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_LIFETIME, (string)$this->calculateExpiryTime($lifetime)->getTimestamp());
         GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_IDENTIFIER, $entryIdentifier);
     }
 
