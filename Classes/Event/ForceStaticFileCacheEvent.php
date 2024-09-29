@@ -9,7 +9,11 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 final class ForceStaticFileCacheEvent
 {
-    public function __construct(private bool $forceStatic, private ?TypoScriptFrontendController $frontendController, private ServerRequestInterface $request) {}
+    public function __construct(
+        private bool $forceStatic,
+        private ?TypoScriptFrontendController $frontendController,
+        private ServerRequestInterface $request
+    ) {}
 
     public function isForceStatic(): bool
     {

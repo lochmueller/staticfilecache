@@ -12,7 +12,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Handle cookie related stuff.
  */
-class CookieService extends AbstractService implements LoggerAwareInterface
+class CookieService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

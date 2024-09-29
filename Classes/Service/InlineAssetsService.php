@@ -11,7 +11,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Marcus Förster ; https://github.com/xerc
  */
-class InlineAssetsService extends AbstractService
+class InlineAssetsService
 {
     public function replaceInlineContent(string $content): string
     {

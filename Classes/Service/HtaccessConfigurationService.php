@@ -7,7 +7,7 @@ namespace SFC\Staticfilecache\Service;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class HtaccessConfigurationService extends AbstractService
+class HtaccessConfigurationService
 {
     /**
      * Check if the SFC_FULLPATH string is found in htaccess file.

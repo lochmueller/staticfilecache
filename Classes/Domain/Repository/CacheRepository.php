@@ -16,6 +16,7 @@ class CacheRepository extends AbstractRepository
 {
     /**
      * Get the expired cache identifiers.
+     * @todo move methods to iterator?
      */
     public function findExpiredIdentifiers(): array
     {
@@ -35,6 +36,7 @@ class CacheRepository extends AbstractRepository
 
     /**
      * Get all the cache identifiers.
+     * @todo move methods to iterator?
      */
     public function findAllIdentifiers(): array
     {
@@ -48,9 +50,7 @@ class CacheRepository extends AbstractRepository
         return $cacheIdentifiers;
     }
 
-    /**
-     * Get the table name.
-     */
+
     protected function getTableName(): string
     {
         $prefix = 'cache_';

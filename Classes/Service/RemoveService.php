@@ -6,7 +6,7 @@ namespace SFC\Staticfilecache\Service;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class RemoveService extends AbstractService
+class RemoveService
 {
     /**
      * Dirs that are created with "softRemoveDir" and dropped with "runRemoveDir".

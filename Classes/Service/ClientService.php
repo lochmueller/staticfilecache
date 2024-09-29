@@ -15,7 +15,7 @@ use SFC\Staticfilecache\Event\BuildClientEvent;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class ClientService extends AbstractService implements LoggerAwareInterface
+class ClientService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

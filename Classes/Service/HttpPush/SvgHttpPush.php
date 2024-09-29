@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Service\HttpPush;
 
 /**
- * Class SvgHttpPush.
- *
  * @author Marcus Förster ; https://github.com/xerc
  */
 class SvgHttpPush extends AbstractHttpPush

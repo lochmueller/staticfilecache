@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service\HttpPush;
 
-use SFC\Staticfilecache\Service\AbstractService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * AbstractHttpPush.
  */
-abstract class AbstractHttpPush extends AbstractService
+abstract class AbstractHttpPush
 {
     /**
      * Check if the class can handle the file extension.

@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Domain\Repository;
 
-/**
- * QueueRepository.
- */
 class QueueRepository extends AbstractRepository
 {
     /**
      * Find the entries for the worker.
      *
-     * @param int $limit
+     * @todo move methods to iterator?
      */
     public function findOpen($limit = 999): array
     {
@@ -29,9 +26,9 @@ class QueueRepository extends AbstractRepository
     }
 
     /**
-     * Find open by identnfier.
+     * Find open by identifier.
      *
-     * @param string $identifier
+     * @todo move methods to iterator?
      */
     public function countOpenByIdentifier($identifier): int
     {
@@ -52,6 +49,8 @@ class QueueRepository extends AbstractRepository
     /**
      * Find old entries.
      * @return list<int>
+     *
+     * @todo move methods to iterator?
      */
     public function findOldUids(): array
     {
@@ -65,9 +64,6 @@ class QueueRepository extends AbstractRepository
         ;
     }
 
-    /**
-     * Get the table name.
-     */
     protected function getTableName(): string
     {
         return 'tx_staticfilecache_queue';

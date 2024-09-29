@@ -13,10 +13,7 @@ use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Cache Service.
- */
-class CacheService extends AbstractService
+class CacheService
 {
     /**
      * Get the StaticFileCache.

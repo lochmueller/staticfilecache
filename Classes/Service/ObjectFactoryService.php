@@ -9,7 +9,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @todo drop this for events
  */
-class ObjectFactoryService extends AbstractService
+class ObjectFactoryService
 {
     /**
      * Get the objects for the given category.

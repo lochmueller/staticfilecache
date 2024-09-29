@@ -10,7 +10,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Handle extension and TS configuration.
  */
-class ConfigurationService extends AbstractService
+class ConfigurationService
 {
     /**
      * Current configuration.

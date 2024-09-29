@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service\HttpPush;
 
-/**
- * ScriptHttpPush.
- */
 class ScriptHttpPush extends AbstractHttpPush
 {
     /**

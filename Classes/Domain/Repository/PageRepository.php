@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Domain\Repository;
 
-/**
- * PageRepository.
- */
 class PageRepository extends AbstractRepository
 {
     /**
@@ -14,6 +11,7 @@ class PageRepository extends AbstractRepository
      *
      * @param int    $pageId
      * @param string $displayMode
+     * @todo move methods to iterator?
      */
     public function findForBackend($pageId, $displayMode): array
     {
@@ -48,9 +46,6 @@ class PageRepository extends AbstractRepository
         ;
     }
 
-    /**
-     * Get the table name.
-     */
     protected function getTableName(): string
     {
         return 'pages';

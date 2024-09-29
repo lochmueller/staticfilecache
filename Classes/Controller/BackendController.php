@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Controller;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use Psr\Http\Message\ResponseInterface;
@@ -18,14 +20,19 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
-class BackendController extends ActionController
+class BackendController extends ActionController implements LoggerAwareInterface
 {
-    public function __construct(protected QueueService $queueService, protected ModuleTemplateFactory $moduleTemplateFactory) {}
+    use LoggerAwareTrait;
+
+    public function __construct(
+        readonly protected QueueService $queueService,
+        readonly protected ModuleTemplateFactory $moduleTemplateFactory,
+        readonly protected ConfigurationService $configurationService
+    ) {}
 
     public function listAction(string $filter = ''): ResponseInterface
     {
@@ -44,7 +51,6 @@ class BackendController extends ActionController
 
     public function boostAction(bool $run = false): ResponseInterface
     {
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
         if ($run) {
             $items = $queueRepository->findOpen(10);
@@ -60,7 +66,7 @@ class BackendController extends ActionController
             $this->addFlashMessage('Run ' . \count($items) . ' entries', 'Runner', ContextualFeedbackSeverity::OK, true);
         }
         $viewVariables = [
-            'enable' => (bool) $configurationService->get('boostMode'),
+            'enable' => (bool) $this->configurationService->get('boostMode'),
             'open' => \count($queueRepository->findOpen(99999999)),
             'old' => \count($queueRepository->findOldUids()),
         ];
@@ -107,17 +113,11 @@ class BackendController extends ActionController
         return $filter;
     }
 
-    /**
-     * Get backend user.
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Get cache pages entries.
-     */
     protected function getCachePagesEntries(string $filter): array
     {
         $rows = [];
@@ -125,8 +125,7 @@ class BackendController extends ActionController
         try {
             $cache = GeneralUtility::makeInstance(CacheService::class)->get();
         } catch (\Exception $exception) {
-            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-            $logger->error('Problems by fetching the cache: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
+            $this->logger->error('Problems by fetching the cache: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
 
             return $rows;
         }
@@ -160,19 +159,11 @@ class BackendController extends ActionController
         });
     }
 
-    /**
-     * Get display mode.
-     */
     protected function getDisplayMode(): string
     {
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-
-        return $configurationService->getBackendDisplayMode();
+        return $this->configurationService->getBackendDisplayMode();
     }
 
-    /**
-     * Get the current UID.
-     */
     protected function getCurrentUid(): int
     {
         return (int) ($this->request->getQueryParams()['id'] ?? 0);

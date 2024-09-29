@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
 
-class GeneratorService extends AbstractService
+class GeneratorService
 {
     public function __construct(
         protected EventDispatcherInterface $eventDispatcher,

@@ -15,7 +15,7 @@ use SFC\Staticfilecache\Domain\Repository\QueueRepository;
  *
  * @see BoostQueueCommand
  */
-class QueueService extends AbstractService implements LoggerAwareInterface
+class QueueService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

@@ -6,10 +6,7 @@ namespace SFC\Staticfilecache\Service;
 
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
-/**
- * TypoScriptFrontendService.
- */
-class TypoScriptFrontendService extends AbstractService
+class TypoScriptFrontendService
 {
     /**
      * Get the tags and respect the configuration.

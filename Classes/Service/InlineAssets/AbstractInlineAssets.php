@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service\InlineAssets;
 
-use SFC\Staticfilecache\Service\AbstractService;
 use TYPO3\CMS\Core\Core\Environment;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -14,7 +13,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Marcus Förster ; https://github.com/xerc
  */
-abstract class AbstractInlineAssets extends AbstractService
+abstract class AbstractInlineAssets
 {
     protected string $sitePath;
     protected ConfigurationService $configurationService;

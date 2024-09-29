@@ -7,11 +7,13 @@ namespace SFC\Staticfilecache\Service;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class DateTimeService extends AbstractService
+class DateTimeService
 {
     /**
      * Get current time
      * Same time for the complete request.
+     *
+     * @todo remove and replace with context API
      */
     public function getCurrentTime(): int
     {
