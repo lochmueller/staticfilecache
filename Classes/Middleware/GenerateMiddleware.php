@@ -16,6 +16,7 @@ use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\CookieService;
 use SFC\Staticfilecache\Service\DateTimeService;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
@@ -24,10 +25,12 @@ use TYPO3\CMS\Frontend\Event\ModifyCacheLifetimeForPageEvent;
 class GenerateMiddleware implements MiddlewareInterface
 {
     protected ?UriFrontend $cache = null;
+    protected ServerRequestInterface $request;
 
     public function __construct(
-        protected EventDispatcherInterface $eventDispatcher,
-        protected CookieService $cookieService
+        readonly protected EventDispatcherInterface $eventDispatcher,
+        readonly protected CookieService $cookieService,
+        readonly protected Typo3Version $typo3Version
     ) {}
 
     /**
@@ -39,6 +42,7 @@ class GenerateMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $this->request = $request;
         $response = $handler->handle($request);
 
         if (!$response->hasHeader('X-SFC-Cachable')) {
@@ -90,9 +94,14 @@ class GenerateMiddleware implements MiddlewareInterface
         // @todo migrate for v13 to Events
         // Check ModifyCacheLifetimeForPageEvent & AfterCachedPageIsPersistedEvent
 
-        // @phpstan-ignore-next-line
-        // @todo check this Line!!!
-        $timeOutTime = $tsfe->get_cache_timeout();
+        if ($this->typo3Version->getMajorVersion() >= 13) {
+            /* @phpstan-ignore-next-line */
+            $timeOutTime = $tsfe->get_cache_timeout($this->request);
+        } else {
+            /* @phpstan-ignore-next-line */
+            $timeOutTime = $tsfe->get_cache_timeout();
+        }
+
 
         // If page has a endtime before the current timeOutTime, use it instead:
         if ($tsfe->page['endtime'] > 0 && ($tsfe->page['endtime'] - $GLOBALS['EXEC_TIME']) < $timeOutTime) {

@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Handle cookie related stuff.
  */
-class CookieService extends AbstractService
+class CookieService extends AbstractService implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public const SESSION_LIFETIME = 0;
 
     /**

@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Generator;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class BrotliGenerator extends AbstractGenerator
+class BrotliGenerator extends AbstractGenerator implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function generate(GeneratorCreate $generatorCreateEvent): void
     {
         if (!$this->checkAvailable()) {

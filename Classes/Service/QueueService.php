@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use SFC\Staticfilecache\Command\BoostQueueCommand;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
@@ -13,8 +15,10 @@ use SFC\Staticfilecache\Domain\Repository\QueueRepository;
  *
  * @see BoostQueueCommand
  */
-class QueueService extends AbstractService
+class QueueService extends AbstractService implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public const PRIORITY_HIGH = 2000;
     public const PRIORITY_MEDIUM = 1000;
     public const PRIORITY_LOW = 0;
