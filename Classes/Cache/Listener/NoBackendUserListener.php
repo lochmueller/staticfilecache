@@ -13,10 +13,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class NoBackendUserListener
 {
+    public function __construct(private readonly Context $context) {}
+
     public function __invoke(CacheRuleEvent $event): void
     {
-        $context = GeneralUtility::makeInstance(Context::class);
-        if ($context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
+        if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
             $event->addExplanation(__CLASS__, 'Active BE Login (TSFE:beUserLogin)');
             $event->setSkipProcessing(true);
         }

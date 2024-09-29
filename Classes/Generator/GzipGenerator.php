@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Generator;
 
 use Psr\Http\Message\ResponseInterface;
+use SFC\Staticfilecache\Event\GeneratorCreate;
+use SFC\Staticfilecache\Event\GeneratorRemove;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -16,17 +18,25 @@ class GzipGenerator extends AbstractGenerator
      */
     public const DEFAULT_COMPRESSION_LEVEL = 3;
 
-    public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
+    public function generate(GeneratorCreate $generatorCreateEvent): void
     {
-        $contentGzip = gzencode((string) $response->getBody(), $this->getCompressionLevel());
+
+        if (!$this->getConfigurationService()->get('enableGeneratorGzip')) {
+            return;
+        }
+        $contentGzip = gzencode((string) $generatorCreateEvent->getResponse()->getBody(), $this->getCompressionLevel());
         if ($contentGzip) {
-            $this->writeFile($fileName . '.gz', $contentGzip);
+            $this->writeFile($generatorCreateEvent->getFileName() . '.gz', $contentGzip);
         }
     }
 
-    public function remove(string $entryIdentifier, string $fileName): void
+    public function remove(GeneratorRemove $generatorRemoveEvent): void
     {
-        $this->removeFile($fileName . '.gz');
+
+        if (!$this->getConfigurationService()->get('enableGeneratorGzip')) {
+            return;
+        }
+        $this->removeFile($generatorRemoveEvent->getFileName() . '.gz');
     }
 
     /**

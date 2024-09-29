@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Generator;
 
 use Psr\Http\Message\ResponseInterface;
+use SFC\Staticfilecache\Event\GeneratorCreate;
+use SFC\Staticfilecache\Event\GeneratorRemove;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\RemoveService;
@@ -14,15 +16,15 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class HtaccessGenerator extends AbstractGenerator
 {
-    public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
+    public function generate(GeneratorCreate $generatorCreateEvent): void
     {
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
 
-        $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess';
+        $htaccessFile = PathUtility::pathinfo($generatorCreateEvent->getFileName(), PATHINFO_DIRNAME) . '/.htaccess';
         $accessTimeout = (int) $configuration->get('htaccessTimeout');
-        $lifetime = $accessTimeout ?: $lifetime;
+        $lifetime = $accessTimeout ?: $generatorCreateEvent->getLifetime();
 
-        $headers = $configuration->getValidHeaders($response->getHeaders(), 'validHtaccessHeaders');
+        $headers = $configuration->getValidHeaders($generatorCreateEvent->getResponse()->getHeaders(), 'validHtaccessHeaders');
         if ($configuration->isBool('debugHeaders')) {
             $headers['X-SFC-State'] = 'StaticFileCache - via htaccess';
         }
@@ -61,9 +63,9 @@ class HtaccessGenerator extends AbstractGenerator
         return $headers;
     }
 
-    public function remove(string $entryIdentifier, string $fileName): void
+    public function remove(GeneratorRemove $generatorRemoveEvent): void
     {
-        $htaccessFile = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME) . '/.htaccess';
+        $htaccessFile = PathUtility::pathinfo($generatorRemoveEvent->getFileName(), PATHINFO_DIRNAME) . '/.htaccess';
         $this->removeFile($htaccessFile);
     }
 

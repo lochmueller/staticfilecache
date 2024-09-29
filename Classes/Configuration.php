@@ -36,10 +36,11 @@ use SFC\Staticfilecache\Service\HttpPush\SvgHttpPush;
 use SFC\Staticfilecache\Service\ObjectFactoryService;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
-class Configuration extends StaticFileCacheObject
+class Configuration implements SingletonInterface
 {
     public const EXTENSION_KEY = 'staticfilecache';
 
@@ -64,7 +65,6 @@ class Configuration extends StaticFileCacheObject
         $this->registerHooks()
             ->registerRules()
             ->registerCachingFramework()
-            ->registerGenerators()
             ->registerHttpPushServices()
             ->adjustSystemSettings()
         ;
@@ -128,35 +128,6 @@ class Configuration extends StaticFileCacheObject
                 // 'hashLength' => 10,
             ],
         ];
-
-        return $this;
-    }
-
-    /**
-     * Register generator.
-     */
-    protected function registerGenerators(): self
-    {
-        $generator = [
-            'config' => ConfigGenerator::class,
-            'htaccess' => HtaccessGenerator::class,
-        ];
-
-        if ($this->configurationService->get('enableGeneratorPhp')) {
-            $generator['php'] = PhpGenerator::class;
-            unset($generator['htaccess']);
-        }
-        if ($this->configurationService->get('enableGeneratorPlain')) {
-            $generator['plain'] = PlainGenerator::class;
-        }
-        if ($this->configurationService->get('enableGeneratorGzip')) {
-            $generator['gzip'] = GzipGenerator::class;
-        }
-        if ($this->configurationService->get('enableGeneratorBrotli')) {
-            $generator['brotli'] = BrotliGenerator::class;
-        }
-
-        GeneralUtility::makeInstance(ObjectFactoryService::class)->set('Generator', $generator);
 
         return $this;
     }

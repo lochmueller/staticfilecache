@@ -4,19 +4,26 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Generator;
 
-use Psr\Http\Message\ResponseInterface;
-use SFC\Staticfilecache\Service\RemoveService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use SFC\Staticfilecache\Event\GeneratorCreate;
+use SFC\Staticfilecache\Event\GeneratorRemove;
 
 class PlainGenerator extends AbstractGenerator
 {
-    public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
+    public function generate(GeneratorCreate $generatorCreateEvent): void
     {
-        $this->writeFile($fileName, (string) $response->getBody());
+
+        if (!$this->getConfigurationService()->get('enableGeneratorPlain')) {
+            return;
+        }
+        $this->writeFile($generatorCreateEvent->getFileName(), (string) $generatorCreateEvent->getResponse()->getBody());
     }
 
-    public function remove(string $entryIdentifier, string $fileName): void
+    public function remove(GeneratorRemove $generatorRemoveEvent): void
     {
-        $this->removeFile($fileName);
+
+        if (!$this->getConfigurationService()->get('enableGeneratorPlain')) {
+            return;
+        }
+        $this->removeFile($generatorRemoveEvent->getFileName());
     }
 }

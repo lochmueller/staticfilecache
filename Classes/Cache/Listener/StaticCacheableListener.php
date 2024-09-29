@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Cache\Listener;
 
 use SFC\Staticfilecache\Event\CacheRuleEvent;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -14,6 +15,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class StaticCacheableListener
 {
+    public function __construct(private readonly Typo3Version $typo3Version) {}
+
     /**
      * Check if the page is static cacheable.
      *
@@ -23,14 +26,14 @@ class StaticCacheableListener
     public function __invoke(CacheRuleEvent $event): void
     {
         if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
-            if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() >= 13) {
+            if ($this->typo3Version->getMajorVersion() >= 13) {
                 /* @phpstan-ignore-next-line */
                 $isStaticCacheble = $GLOBALS['TSFE']->isStaticCacheble($event->getRequest());
             } else {
                 /* @phpstan-ignore-next-line */
                 $isStaticCacheble = $GLOBALS['TSFE']->isStaticCacheble();
             }
-            if(!$isStaticCacheble) {
+            if (!$isStaticCacheble) {
                 $event->addExplanation(__CLASS__, 'The page is not static cacheable via TypoScriptFrontend. Check the first Question on: https://github.com/lochmueller/staticfilecache/blob/master/Documentation/Faq/Index.rst');
             }
         }

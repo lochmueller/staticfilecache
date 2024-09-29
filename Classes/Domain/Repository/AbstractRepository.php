@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Domain\Repository;
 
-use SFC\Staticfilecache\StaticFileCacheObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -15,7 +14,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @todo move methods to iterator?
  */
-abstract class AbstractRepository extends StaticFileCacheObject
+abstract class AbstractRepository
 {
     /**
      * Delete records.

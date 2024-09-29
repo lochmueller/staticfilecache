@@ -4,31 +4,24 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
-use SFC\Staticfilecache\Generator\AbstractGenerator;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use SFC\Staticfilecache\Event\GeneratorCreate;
+use SFC\Staticfilecache\Event\GeneratorRemove;
 
 class GeneratorService extends AbstractService
 {
-    /**
-     * Generate file.
-     */
+    public function __construct(
+        protected EventDispatcherInterface $eventDispatcher,
+    ) {}
+
     public function generate(string $entryIdentifier, string $fileName, ResponseInterface &$response, int $lifetime): void
     {
-        foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('Generator') as $implementation) {
-            // @var $implementation AbstractGenerator
-            $implementation->generate($entryIdentifier, $fileName, $response, $lifetime);
-        }
+        $this->eventDispatcher->dispatch(new GeneratorCreate($entryIdentifier, $fileName, $response, $lifetime));
     }
 
-    /**
-     * Remove file.
-     */
     public function remove(string $entryIdentifier, string $fileName): void
     {
-        foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('Generator') as $implementation) {
-            // @var $implementation AbstractGenerator
-            $implementation->remove($entryIdentifier, $fileName);
-        }
+        $this->eventDispatcher->dispatch(new GeneratorRemove($entryIdentifier, $fileName));
     }
 }

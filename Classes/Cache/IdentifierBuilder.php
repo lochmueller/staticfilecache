@@ -7,13 +7,9 @@ namespace SFC\Staticfilecache\Cache;
 use SFC\Staticfilecache\Exception;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
-use SFC\Staticfilecache\StaticFileCacheObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * IdentifierBuilder.
- */
-class IdentifierBuilder extends StaticFileCacheObject
+class IdentifierBuilder
 {
     /**
      * Get the cache name for the given URI.

@@ -5,28 +5,30 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Generator;
 
 use Psr\Http\Message\ResponseInterface;
+use SFC\Staticfilecache\Event\GeneratorCreate;
+use SFC\Staticfilecache\Event\GeneratorRemove;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class BrotliGenerator extends AbstractGenerator
 {
-    public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
+    public function generate(GeneratorCreate $generatorCreateEvent): void
     {
         if (!$this->checkAvailable()) {
             return;
         }
-        $contentCompress = brotli_compress((string) $response->getBody());
+        $contentCompress = brotli_compress((string) $generatorCreateEvent->getResponse()->getBody());
         if ($contentCompress) {
-            $this->writeFile($fileName . '.br', $contentCompress);
+            $this->writeFile($generatorCreateEvent->getFileName() . '.br', $contentCompress);
         }
     }
 
-    public function remove(string $entryIdentifier, string $fileName): void
+    public function remove(GeneratorRemove $generatorRemoveEvent): void
     {
         if (!$this->checkAvailable()) {
             return;
         }
-        $this->removeFile($fileName . '.br');
+        $this->removeFile($generatorRemoveEvent->getFileName() . '.br');
     }
 
     /**
@@ -34,6 +36,10 @@ class BrotliGenerator extends AbstractGenerator
      */
     protected function checkAvailable(): bool
     {
+        if (!$this->getConfigurationService()->get('enableGeneratorBrotli')) {
+            return false;
+        }
+
         $available = \function_exists('brotli_compress');
         if (!$available) {
             $this->logger->error('Your server do not support Botli compression, but you enable Brotli in EXT:staticfilecache configuration');

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Generator;
 
 use Psr\Http\Message\ResponseInterface;
+use SFC\Staticfilecache\Event\GeneratorCreate;
+use SFC\Staticfilecache\Event\GeneratorRemove;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Service\RemoveService;
@@ -16,13 +18,17 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class PhpGenerator extends HtaccessGenerator
 {
-    public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void
+    public function generate(GeneratorCreate $generatorCreateEvent): void
     {
+        if (!$this->getConfigurationService()->get('enableGeneratorPhp')) {
+            return;
+        }
+
         $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
         $accessTimeout = (int) $configuration->get('htaccessTimeout');
-        $lifetime = $accessTimeout ?: $lifetime;
+        $lifetime = $accessTimeout ?: $generatorCreateEvent->getLifetime();
 
-        $headers = $configuration->getValidHeaders($response->getHeaders(), 'validHtaccessHeaders');
+        $headers = $configuration->getValidHeaders($generatorCreateEvent->getResponse()->getHeaders(), 'validHtaccessHeaders');
         if ($configuration->isBool('debugHeaders')) {
             $headers['X-SFC-State'] = 'StaticFileCache - via PhpGenerator';
         }
@@ -34,15 +40,18 @@ class PhpGenerator extends HtaccessGenerator
             'sendCacheControlHeaderRedirectAfterCacheTimeout' => $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout'),
             'headers' => $headers,
             'requestUri' => $requestUri,
-            'body' => (string) $response->getBody(),
+            'body' => (string) $generatorCreateEvent->getResponse()->getBody(),
         ];
 
-        $this->renderTemplateToFile($this->getTemplateName(), $variables, $fileName . '.php');
+        $this->renderTemplateToFile($this->getTemplateName(), $variables, $generatorCreateEvent->getFileName() . '.php');
     }
 
-    public function remove(string $entryIdentifier, string $fileName): void
+    public function remove(GeneratorRemove $generatorRemoveEvent): void
     {
-        $this->removeFile($fileName . '.php');
+        if (!$this->getConfigurationService()->get('enableGeneratorPhp')) {
+            return;
+        }
+        $this->removeFile($generatorRemoveEvent->getFileName() . '.php');
     }
 
     /**

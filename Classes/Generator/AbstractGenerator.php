@@ -5,19 +5,23 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Generator;
 
 use Psr\Http\Message\ResponseInterface;
+use SFC\Staticfilecache\Event\GeneratorCreate;
+use SFC\Staticfilecache\Event\GeneratorRemove;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\RemoveService;
-use SFC\Staticfilecache\StaticFileCacheObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
-/**
- * @todo move to Generate Event
- */
-abstract class AbstractGenerator extends StaticFileCacheObject
+abstract class AbstractGenerator
 {
-    abstract public function generate(string $entryIdentifier, string $fileName, ResponseInterface $response, int $lifetime): void;
+    abstract public function generate(GeneratorCreate $generatorCreateEvent): void;
 
-    abstract public function remove(string $entryIdentifier, string $fileName): void;
+    abstract public function remove(GeneratorRemove $generatorRemoveEvent): void;
+
+    protected function getConfigurationService(): ConfigurationService
+    {
+        return GeneralUtility::makeInstance(ConfigurationService::class);
+    }
 
     protected function writeFile(string $fileName, string $content): void
     {

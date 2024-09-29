@@ -92,3 +92,57 @@ services:
       - name: event.listener
         identifier: 'SfcCacheRuleNoBackendUserListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
+
+  SFC\Staticfilecache\Generator\ConfigGenerator:
+    tags:
+      - name: event.listener
+        method: generate
+        identifier: 'SfcConfigGeneratorCreate'
+      - name: event.listener
+        method: remove
+        identifier: 'SfcConfigGeneratorRemove'
+
+  SFC\Staticfilecache\Generator\HtaccessGenerator:
+    tags:
+      - name: event.listener
+        method: generate
+        identifier: 'SfcHtaccessGeneratorCreate'
+      - name: event.listener
+        method: remove
+        identifier: 'SfcHtaccessGeneratorRemove'
+
+  SFC\Staticfilecache\Generator\PhpGenerator:
+    tags:
+      - name: event.listener
+        method: generate
+        identifier: 'SfcPhpGeneratorCreate'
+      - name: event.listener
+        method: remove
+        identifier: 'SfcPhpGeneratorRemove'
+
+  SFC\Staticfilecache\Generator\PlainGenerator:
+    tags:
+      - name: event.listener
+        method: generate
+        identifier: 'SfcPlainGeneratorCreate'
+      - name: event.listener
+        method: remove
+        identifier: 'SfcPlainGeneratorRemove'
+
+  SFC\Staticfilecache\Generator\GzipGenerator:
+    tags:
+      - name: event.listener
+        method: generate
+        identifier: 'SfcGzipGeneratorCreate'
+      - name: event.listener
+        method: remove
+        identifier: 'SfcGzipGeneratorRemove'
+
+  SFC\Staticfilecache\Generator\BrotliGenerator:
+    tags:
+      - name: event.listener
+        method: generate
+        identifier: 'SfcBrotliGeneratorCreate'
+      - name: event.listener
+        method: remove
+        identifier: 'SfcBrotliGeneratorRemove'
