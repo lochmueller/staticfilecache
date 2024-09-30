@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service\HttpPush;
 
+use SFC\Staticfilecache\Event\HttpPushHeaderEvent;
+use SFC\Staticfilecache\Service\ObjectFactoryService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class FontHttpPush extends AbstractHttpPush
 {
     /**
@@ -15,6 +19,7 @@ class FontHttpPush extends AbstractHttpPush
      * Fonts extensions.
      */
     private $fontsExtensions = ['woff', 'woff2'];
+
 
     /**
      * Check if the class can handle the file extension.

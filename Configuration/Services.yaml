@@ -93,6 +93,36 @@ services:
         identifier: 'SfcCacheRuleNoBackendUserListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
 
+  SFC\Staticfilecache\Service\HttpPush\StyleHttpPush:
+    tags:
+      - name: event.listener
+        identifier: 'SfcStyleHttpPush'
+        event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
+
+  SFC\Staticfilecache\Service\HttpPush\ScriptHttpPush:
+    tags:
+      - name: event.listener
+        identifier: 'SfcStyleHttpPush'
+        event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
+
+  SFC\Staticfilecache\Service\HttpPush\ImageHttpPush:
+    tags:
+      - name: event.listener
+        identifier: 'SfcStyleHttpPush'
+        event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
+
+  SFC\Staticfilecache\Service\HttpPush\FontHttpPush:
+    tags:
+      - name: event.listener
+        identifier: 'SfcStyleHttpPush'
+        event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
+
+  SFC\Staticfilecache\Service\HttpPush\SvgHttpPush:
+    tags:
+      - name: event.listener
+        identifier: 'SfcStyleHttpPush'
+        event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
+
   SFC\Staticfilecache\Generator\ConfigGenerator:
     tags:
       - name: event.listener

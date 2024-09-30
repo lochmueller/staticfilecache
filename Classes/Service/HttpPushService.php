@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
 
-use SFC\Staticfilecache\Service\HttpPush\AbstractHttpPush;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use SFC\Staticfilecache\Event\HttpPushHeaderEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class HttpPushService
 {
+    public function __construct(readonly protected EventDispatcherInterface $eventDispatcher) {}
+
     /**
      * Get http push headers.
      */
@@ -28,16 +31,10 @@ class HttpPushService
                 $content = (string) $limitToAreaMatch[0];
             }
 
-            foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('HttpPush') as $handler) {
-                foreach ($extensions as $extension) {
-                    /** @var AbstractHttpPush $handler */
-                    if ($handler->canHandleExtension($extension)) {
-                        $headers = array_merge($headers, $handler->getHeaders($content));
-                    }
-                }
-            }
+            $event = new HttpPushHeaderEvent($headers, $content, $extensions);
+            $this->eventDispatcher->dispatch($event);
 
-            $headers = \array_slice($headers, 0, $limit);
+            $headers = \array_slice($event->getHeaders(), 0, $limit);
         }
 
         return $headers;

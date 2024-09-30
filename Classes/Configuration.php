@@ -65,7 +65,6 @@ class Configuration implements SingletonInterface
         $this->registerHooks()
             ->registerRules()
             ->registerCachingFramework()
-            ->registerHttpPushServices()
             ->adjustSystemSettings()
         ;
     }
@@ -128,22 +127,6 @@ class Configuration implements SingletonInterface
                 // 'hashLength' => 10,
             ],
         ];
-
-        return $this;
-    }
-
-    /**
-     * Register HTTP push services.
-     */
-    protected function registerHttpPushServices(): self
-    {
-        GeneralUtility::makeInstance(ObjectFactoryService::class)->set('HttpPush', [
-            'style' => StyleHttpPush::class,
-            'script' => ScriptHttpPush::class,
-            'image' => ImageHttpPush::class,
-            'font' => FontHttpPush::class,
-            'svg' => SvgHttpPush::class,
-        ]);
 
         return $this;
     }

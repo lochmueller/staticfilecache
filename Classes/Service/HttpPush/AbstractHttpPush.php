@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service\HttpPush;
 
+use SFC\Staticfilecache\Event\HttpPushHeaderEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * AbstractHttpPush.
- */
 abstract class AbstractHttpPush
 {
+    public function __invoke(HttpPushHeaderEvent $event): void
+    {
+        foreach ($event->getExtensions() as $extension) {
+            if ($this->canHandleExtension($extension)) {
+                $event->setHeaders(array_merge($event->getHeaders(), $this->getHeaders($event->getContent())));
+                ;
+            }
+        }
+    }
+
     /**
      * Check if the class can handle the file extension.
      */
