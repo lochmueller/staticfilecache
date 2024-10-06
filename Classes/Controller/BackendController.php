@@ -6,6 +6,8 @@ namespace SFC\Staticfilecache\Controller;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Backend\Template\Components\Menu\Menu;
+use TYPO3\CMS\Backend\Template\Components\Menu\MenuItem;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use Psr\Http\Message\ResponseInterface;
@@ -29,9 +31,9 @@ class BackendController extends ActionController implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        readonly protected QueueService $queueService,
+        readonly protected QueueService          $queueService,
         readonly protected ModuleTemplateFactory $moduleTemplateFactory,
-        readonly protected ConfigurationService $configurationService
+        readonly protected ConfigurationService  $configurationService
     ) {}
 
     public function listAction(string $filter = ''): ResponseInterface
@@ -67,8 +69,8 @@ class BackendController extends ActionController implements LoggerAwareInterface
         }
         $viewVariables = [
             'enable' => (bool) $this->configurationService->get('boostMode'),
-            'open' => \count($queueRepository->findOpen(99999999)),
-            'old' => \count($queueRepository->findOldUids()),
+            'open' => \count(iterator_to_array($queueRepository->findOpen(99999999))),
+            'old' => \count(iterator_to_array($queueRepository->findOldUids())),
         ];
 
         return $this->createModuleTemplate()
@@ -171,8 +173,30 @@ class BackendController extends ActionController implements LoggerAwareInterface
 
     protected function createModuleTemplate(): ModuleTemplate
     {
-        return $this->moduleTemplateFactory->create($this->request)
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request)
             ->setFlashMessageQueue($this->getFlashMessageQueue())
-            ->setModuleClass('tx-staticfilecache');
+            ->setModuleClass('tx-staticfilecache')
+            ->setTitle('StaticFileCache');
+
+        $menuItems = [
+            'list' => 'List (Overview)',
+            'boost' => 'Boostmode',
+            'support' => 'Configuration, Support, Documentation...',
+        ];
+
+        $menu = new Menu();
+        $menu->setIdentifier('func');
+        foreach ($menuItems as $action => $label) {
+            $menuItem = $menu->makeMenuItem()
+                ->setTitle($label)
+                ->setHref($this->uriBuilder->uriFor($action))
+                ->setActive($this->request->getControllerActionName() === $action);
+
+            $menu->addMenuItem($menuItem);
+        }
+
+        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+
+        return $moduleTemplate;
     }
 }
