@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service\HttpPush;
 
-use SFC\Staticfilecache\Event\HttpPushHeaderEvent;
-use SFC\Staticfilecache\Service\ObjectFactoryService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 class FontHttpPush extends AbstractHttpPush
 {
     /**

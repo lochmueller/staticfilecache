@@ -2,15 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache\Cache\Rule;
+namespace SFC\Staticfilecache\Cache\Listener;
 
 use Psr\Http\Message\ServerRequestInterface;
+use SFC\Staticfilecache\Event\CacheRuleEvent;
 use TYPO3\CMS\Core\Context\Context;
 
-/**
- * No workspace preview.
- */
-class NoWorkspacePreview extends AbstractRule
+class NoWorkspacePreviewListener
 {
     public function __construct(
         private readonly Context $context,
@@ -19,10 +17,10 @@ class NoWorkspacePreview extends AbstractRule
     /**
      * Check if it is no workspace preview.
      */
-    public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
+    public function __invoke(CacheRuleEvent $event): void
     {
         if ($this->context->getPropertyFromAspect('workspace', 'isOffline', false)) {
-            $explanation[__CLASS__] = 'The page is in workspace preview mode';
+            $event->addExplanation(__CLASS__, 'The page is in workspace preview mode');
         }
     }
 }

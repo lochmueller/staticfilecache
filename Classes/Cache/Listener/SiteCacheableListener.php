@@ -2,28 +2,26 @@
 
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache\Cache\Rule;
+namespace SFC\Staticfilecache\Cache\Listener;
 
 use Psr\Http\Message\ServerRequestInterface;
+use SFC\Staticfilecache\Event\CacheRuleEvent;
 use TYPO3\CMS\Core\Site\Entity\Site;
 
-/**
- * Check if the current site is static cacheable.
- */
-class SiteCacheable extends AbstractRule
+class SiteCacheableListener
 {
     /**
      * Check if the current site is static cacheable.
      */
-    public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
+    public function __invoke(CacheRuleEvent $event): void
     {
-        $site = $request->getAttribute('site');
+        $site = $event->getRequest()->getAttribute('site');
         if (!($site instanceof Site)) {
             return;
         }
         $config = $site->getConfiguration();
         if (isset($config['disableStaticFileCache']) && $config['disableStaticFileCache']) {
-            $explanation[__CLASS__] = 'static cache disabled on site configuration: ' . $site->getIdentifier();
+            $event->addExplanation(__CLASS__, 'static cache disabled on site configuration: ' . $site->getIdentifier());
         }
     }
 }

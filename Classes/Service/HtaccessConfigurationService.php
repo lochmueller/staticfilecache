@@ -28,8 +28,6 @@ class HtaccessConfigurationService
 
     /**
      * Get all relevant htaccess paths.
-     *
-     * @todo check if we add another path, if typo3-secure-web is installed?!
      */
     public function getHtaccessPaths(): array
     {

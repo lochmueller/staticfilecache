@@ -12,8 +12,6 @@ class DateTimeService
     /**
      * Get current time
      * Same time for the complete request.
-     *
-     * @todo remove and replace with context API
      */
     public function getCurrentTime(): int
     {

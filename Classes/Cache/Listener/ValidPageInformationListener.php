@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache\Cache\Rule;
+namespace SFC\Staticfilecache\Cache\Listener;
 
 use Psr\Http\Message\ServerRequestInterface;
+use SFC\Staticfilecache\Event\CacheRuleEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -12,17 +13,17 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * @see https://github.com/lochmueller/staticfilecache/issues/150
  */
-class ValidPageInformation extends AbstractRule
+class ValidPageInformationListener
 {
     /**
      * ValidPageInformation.
      */
-    public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
+    public function __invoke(CacheRuleEvent $event): void
     {
         $tsfe = $GLOBALS['TSFE'] ?? null;
         if (!$tsfe instanceof TypoScriptFrontendController || !\is_array($tsfe->page) || !$tsfe->page['uid']) {
-            $skipProcessing = true;
-            $explanation[__CLASS__] = 'There is no valid page in the TSFE';
+            $event->setSkipProcessing(true);
+            $event->addExplanation(__CLASS__, 'There is no valid page in the TSFE');
         }
     }
 }

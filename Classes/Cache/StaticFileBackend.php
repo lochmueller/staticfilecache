@@ -33,13 +33,21 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class StaticFileBackend extends StaticDatabaseBackend implements TransientBackendInterface
 {
+    protected GeneratorService $generatorService;
+
+    public function __construct($context, array $options = [])
+    {
+        $this->generatorService = GeneralUtility::makeInstance(GeneratorService::class);
+        parent::__construct($context, $options);
+    }
+
     /**
      * Saves data in the cache.
      *
-     * @param string            $entryIdentifier An identifier for this specific cache entry
-     * @param ResponseInterface $data            The data to be stored
-     * @param array             $tags            Tags to associate with this cache entry
-     * @param int               $lifetime        Lifetime of this cache entry in seconds
+     * @param string $entryIdentifier An identifier for this specific cache entry
+     * @param ResponseInterface $data The data to be stored
+     * @param array $tags Tags to associate with this cache entry
+     * @param int $lifetime Lifetime of this cache entry in seconds
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception                      if no cache frontend has been set
      * @throws InvalidDataException if the data is not a string
@@ -88,7 +96,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
             $this->removeStaticFiles($entryIdentifier);
 
-            GeneralUtility::makeInstance(GeneratorService::class)->generate($entryIdentifier, $fileName, $data, $realLifetime);
+            $this->generatorService->generate($entryIdentifier, $fileName, $data, $realLifetime);
         } catch (\Exception $exception) {
             $this->logger->error('Error in cache create process', ['exception' => $exception]);
         }
@@ -145,8 +153,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
         if ($this->isBoostMode()) {
             $this->getQueue()
-                ->addIdentifier($entryIdentifier)
-            ;
+                ->addIdentifier($entryIdentifier);
 
             return true;
         }
@@ -331,7 +338,9 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     protected function findIdentifiersByTagsIncludingExpired(array $tags): array
     {
-        $base = (new DateTimeService())->getCurrentTime();
+
+        // @todo check
+        // $base = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp')
 
         // Use EXEC_TIME because the core still use EXEC_TIME for checking the time
         $base = $GLOBALS['EXEC_TIME'];
@@ -383,7 +392,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     protected function removeStaticFiles(string $entryIdentifier): bool
     {
         $fileName = $this->getFilepath($entryIdentifier);
-        GeneralUtility::makeInstance(GeneratorService::class)->remove($entryIdentifier, $fileName);
+        $this->generatorService->remove($entryIdentifier, $fileName);
 
         return true;
     }

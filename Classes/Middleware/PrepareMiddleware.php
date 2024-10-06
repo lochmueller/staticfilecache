@@ -10,18 +10,19 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use SFC\Staticfilecache\Cache\Rule\AbstractRule;
 use SFC\Staticfilecache\Event\CacheRuleEvent;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\HttpPushService;
 use SFC\Staticfilecache\Service\InlineAssetsService;
-use SFC\Staticfilecache\Service\ObjectFactoryService;
 use SFC\Staticfilecache\Service\TypoScriptFrontendService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class PrepareMiddleware implements MiddlewareInterface
 {
-    public function __construct(protected EventDispatcherInterface $eventDispatcher) {}
+    public function __construct(
+        protected EventDispatcherInterface $eventDispatcher,
+        protected HttpPushService          $httpPushService
+    ) {}
 
     /**
      * Process an incoming server request.
@@ -36,10 +37,6 @@ class PrepareMiddleware implements MiddlewareInterface
 
         $explanation = [];
         $skipProcessing = false;
-        foreach (GeneralUtility::makeInstance(ObjectFactoryService::class)->get('CacheRule') as $rule) {
-            // @var $rule AbstractRule
-            $rule->checkRule($request, $explanation, $skipProcessing);
-        }
 
         $event = new CacheRuleEvent($request, $explanation, $skipProcessing);
         $this->eventDispatcher->dispatch($event);
@@ -71,7 +68,7 @@ class PrepareMiddleware implements MiddlewareInterface
         $responseBody->write($processedHtml);
         $response = $response->withBody($responseBody);
 
-        $pushHeaders = (array) GeneralUtility::makeInstance(HttpPushService::class)->getHttpPushHeaders((string) $response->getBody());
+        $pushHeaders = (array) $this->httpPushService->getHttpPushHeaders((string) $response->getBody());
         foreach ($pushHeaders as $pushHeader) {
             $response = $response->withAddedHeader('Link', '<' . $pushHeader['path'] . '>; rel=preload; as=' . $pushHeader['type']);
         }

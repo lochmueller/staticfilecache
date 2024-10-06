@@ -36,10 +36,9 @@ class BoostQueueCommand extends AbstractCommand
         $stopProcessingAfter = (int) $input->getOption('stop-processing-after');
         $limit = (int) $input->getOption('limit-items');
         $limit = $limit > 0 ? $limit : 5000;
-        $rows = $this->queueRepository->findOpen($limit);
 
-        $io->progressStart(\count($rows));
-        foreach ($rows as $runEntry) {
+        $count = 0;
+        foreach ($this->queueRepository->findOpen($limit) as $runEntry) {
             if ($stopProcessingAfter > 0 && time() >= $startTime + $stopProcessingAfter) {
                 $io->note('Skip after "stopProcessingAfter" time.');
 
@@ -47,11 +46,10 @@ class BoostQueueCommand extends AbstractCommand
             }
 
             $this->queueService->runSingleRequest($runEntry);
-            $io->progressAdvance();
+            $count++;
         }
-        $io->progressFinish();
 
-        $io->success(\count($rows) . ' items are done (perhaps not all are processed).');
+        $io->success($count . ' items are done (perhaps not all are processed).');
 
         if (!(bool) $input->getOption('avoid-cleanup')) {
             $this->cleanupQueue($io);
@@ -63,14 +61,11 @@ class BoostQueueCommand extends AbstractCommand
 
     protected function cleanupQueue(SymfonyStyle $io): void
     {
-        $uids = $this->queueRepository->findOldUids();
-        $io->progressStart(\count($uids));
-        foreach ($uids as $uid) {
-            $this->queueRepository->delete(['uid' => $uid]);
-            $io->progressAdvance();
+        $count = 0;
+        foreach ($this->queueRepository->findOldUids() as $row) {
+            $this->queueRepository->delete(['uid' => $row['uid']]);
+            $count++;
         }
-        $io->progressFinish();
-
-        $io->success(\count($uids) . ' items are removed.');
+        $io->success($count . ' items are removed.');
     }
 }

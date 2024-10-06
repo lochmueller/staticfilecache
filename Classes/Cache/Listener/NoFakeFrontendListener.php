@@ -2,19 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache\Cache\Rule;
+namespace SFC\Staticfilecache\Cache\Listener;
 
-use Psr\Http\Message\ServerRequestInterface;
+use SFC\Staticfilecache\Event\CacheRuleEvent;
 
-/**
- * No fake frontend.
- */
-class NoFakeFrontend extends AbstractRule
+class NoFakeFrontendListener
 {
-    /**
-     * No fake frontend.
-     */
-    public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
+    public function __invoke(CacheRuleEvent $event): void
     {
         $ignorePaths = [
             // Solr extension
@@ -24,17 +18,16 @@ class NoFakeFrontend extends AbstractRule
         foreach ($ignorePaths as $ignorePath) {
             foreach ($this->getCallPaths() as $path) {
                 if (str_ends_with($path, $ignorePath)) {
-                    $skipProcessing = true;
-                    $explanation[__CLASS__] = 'Fake frontend';
-
+                    $event->setSkipProcessing(true);
+                    $event->addExplanation(__CLASS__, 'Fake frontend');
                     return;
                 }
             }
         }
 
-        if ($request->hasHeader('x-yoast-page-request')) {
-            $skipProcessing = true;
-            $explanation[__CLASS__] = 'Yoast SEO page request';
+        if ($event->getRequest()->hasHeader('x-yoast-page-request')) {
+            $event->setSkipProcessing(true);
+            $event->addExplanation(__CLASS__, 'Yoast SEO page request');
         }
     }
 

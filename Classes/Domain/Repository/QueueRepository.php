@@ -8,27 +8,24 @@ class QueueRepository extends AbstractRepository
 {
     /**
      * Find the entries for the worker.
-     *
-     * @todo move methods to iterator?
+     * @return iterable<array>
      */
-    public function findOpen($limit = 999): array
+    public function findOpen($limit = 999): iterable
     {
         $queryBuilder = $this->createQuery();
 
-        return (array) $queryBuilder->select('*')
+        yield from $queryBuilder->select('*')
             ->from($this->getTableName())
             ->where($queryBuilder->expr()->eq('call_date', 0))
             ->setMaxResults($limit)
             ->orderBy('cache_priority', 'desc')
             ->executeQuery()
-            ->fetchAllAssociative()
+            ->iterateAssociative()
         ;
     }
 
     /**
      * Find open by identifier.
-     *
-     * @todo move methods to iterator?
      */
     public function countOpenByIdentifier($identifier): int
     {
@@ -48,19 +45,17 @@ class QueueRepository extends AbstractRepository
 
     /**
      * Find old entries.
-     * @return list<int>
-     *
-     * @todo move methods to iterator?
+     * @return iterable<int>
      */
-    public function findOldUids(): array
+    public function findOldUids(): iterable
     {
         $queryBuilder = $this->createQuery();
 
-        return $queryBuilder->select('uid')
+        yield from $queryBuilder->select('uid')
             ->from($this->getTableName())
             ->where($queryBuilder->expr()->gt('call_date', 0))
             ->executeQuery()
-            ->fetchFirstColumn()
+            ->iterateAssociative()
         ;
     }
 

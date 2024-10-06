@@ -2,25 +2,22 @@
 
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache\Cache\Rule;
+namespace SFC\Staticfilecache\Cache\Listener;
 
-use Psr\Http\Message\ServerRequestInterface;
+use SFC\Staticfilecache\Event\CacheRuleEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * No _INT scripts.
  */
-class NoIntScripts extends AbstractRule
+class NoIntScriptsListener
 {
-    /**
-     * Check if there are no _INT scripts.
-     */
-    public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
+    public function __invoke(CacheRuleEvent $event): void
     {
         $tsfe = $GLOBALS['TSFE'] ?? null;
         if ($tsfe instanceof TypoScriptFrontendController && $tsfe->isINTincScript()) {
             foreach ((array) $tsfe->config['INTincScript'] as $key => $configuration) {
-                $explanation[__CLASS__ . ':' . $key] = 'The page has a INTincScript: ' . implode(', ', $this->getInformation($configuration));
+                $event->addExplanation(__CLASS__ . ':' . $key, 'The page has a INTincScript: ' . implode(', ', $this->getInformation($configuration)));
             }
         }
     }

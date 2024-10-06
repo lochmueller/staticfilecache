@@ -7,6 +7,9 @@ services:
   SFC\Staticfilecache\:
     resource: '../Classes/*'
 
+  SFC\Staticfilecache\Service\GeneratorService:
+    public: true
+
   SFC\Staticfilecache\Command\BoostQueueCommand:
     tags:
       - name: 'console.command'
@@ -22,157 +25,217 @@ services:
   SFC\Staticfilecache\EventListener\AfterPackageDeactivationListener:
     tags:
       - name: event.listener
-        identifier: 'SfcAfterPackageDeactivationListener'
+        identifier: 'AfterPackageDeactivationListener'
         event: TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent
-        before: 'SfcCacheRuleForceStaticCacheListener'
+        before: 'ForceStaticCacheListener'
 
   SFC\Staticfilecache\Cache\Listener\PageCacheableListener:
     tags:
       - name: event.listener
-        identifier: 'SfcCacheRulePageCacheableListener'
+        identifier: 'PageCacheableListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
-        before: 'SfcCacheRuleForceStaticCacheListener'
+        before: 'ForceStaticCacheListener'
 
   SFC\Staticfilecache\Cache\Listener\ValidUriListener:
     tags:
       - name: event.listener
-        identifier: 'SfcCacheRuleValidUriListener'
+        identifier: 'ValidUriListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
-        before: 'SfcCacheRuleForceStaticCacheListener'
+        before: 'ForceStaticCacheListener'
       - name: event.listener
-        identifier: 'SfcCacheRuleValidUriListenerFallback'
+        identifier: 'ValidUriListenerFallback'
         event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
 
   SFC\Staticfilecache\Cache\Listener\SolrIndexingProcessListener:
     tags:
       - name: event.listener
-        identifier: 'SfcSolrIndexingProcessListenerFallback'
+        identifier: 'SolrIndexingProcessListenerFallback'
         event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
 
   SFC\Staticfilecache\Cache\Listener\ValidRequestMethodListener:
     tags:
       - name: event.listener
-        identifier: 'SfcCacheRuleValidRequestMethodListener'
+        identifier: 'ValidRequestMethodListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
-        before: 'SfcCacheRuleForceStaticCacheListener'
+        before: 'ForceStaticCacheListener'
       - name: event.listener
-        identifier: 'SfcCacheRuleValidRequestMethodListenerFallback'
+        identifier: 'ValidRequestMethodListenerFallback'
         event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
 
   SFC\Staticfilecache\Cache\Listener\NoBackendUserCookieListener:
     tags:
       - name: event.listener
-        identifier: 'SfcCacheRuleNoBackendUserCookieListenerFallback'
+        identifier: 'NoBackendUserCookieListenerFallback'
         event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
 
   SFC\Staticfilecache\Cache\Listener\NoAuthorizationListener:
     tags:
       - name: event.listener
-        identifier: 'SfcCacheRuleNoAuthorizationListener'
+        identifier: 'NoAuthorizationListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
-        before: 'SfcCacheRuleForceStaticCacheListener'
+        before: 'ForceStaticCacheListener'
       - name: event.listener
-        identifier: 'SfcCacheRuleNoAuthorizationListenerFallback'
+        identifier: 'NoAuthorizationListenerFallback'
         event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
 
   SFC\Staticfilecache\Cache\Listener\ForceStaticCacheListener:
     tags:
       - name: event.listener
-        identifier: 'SfcCacheRuleForceStaticCacheListener'
+        identifier: 'ForceStaticCacheListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
 
   SFC\Staticfilecache\Cache\Listener\StaticCacheableListener:
     tags:
       - name: event.listener
-        identifier: 'SfcCacheRuleStaticCacheableListener'
+        identifier: 'StaticCacheableListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
 
   SFC\Staticfilecache\Cache\Listener\NoBackendUserListener:
     tags:
       - name: event.listener
-        identifier: 'SfcCacheRuleNoBackendUserListener'
+        identifier: 'NoBackendUserListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+
+  SFC\Staticfilecache\Cache\Listener\EnableListener:
+    tags:
+      - name: event.listener
+        identifier: 'EnableListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+
+  SFC\Staticfilecache\Cache\Listener\NoFakeFrontendListener:
+    tags:
+      - name: event.listener
+        identifier: 'NoFakeFrontendListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+
+  SFC\Staticfilecache\Cache\Listener\NoLongPathSegmentListener:
+    tags:
+      - name: event.listener
+        identifier: 'NoLongPathSegmentListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+
+  SFC\Staticfilecache\Cache\Listener\NoIntScriptsListener:
+    tags:
+      - name: event.listener
+        identifier: 'NoIntScriptsListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+
+  SFC\Staticfilecache\Cache\Listener\NoNoCacheListener:
+    tags:
+      - name: event.listener
+        identifier: 'NoNoCacheListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+
+  SFC\Staticfilecache\Cache\Listener\NoUserOrGroupSetListener:
+    tags:
+      - name: event.listener
+        identifier: 'NoUserOrGroupSetListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+
+  SFC\Staticfilecache\Cache\Listener\NoWorkspacePreviewListener:
+    tags:
+      - name: event.listener
+        identifier: 'NoWorkspacePreviewListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+
+  SFC\Staticfilecache\Cache\Listener\SiteCacheableListener:
+    tags:
+      - name: event.listener
+        identifier: 'SiteCacheableListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+
+  SFC\Staticfilecache\Cache\Listener\ValidDoktypeListener:
+    tags:
+      - name: event.listener
+        identifier: 'ValidDoktypeListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+
+  SFC\Staticfilecache\Cache\Listener\ValidPageInformationListener:
+    tags:
+      - name: event.listener
+        identifier: 'ValidPageInformationListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
 
   SFC\Staticfilecache\Service\HttpPush\StyleHttpPush:
     tags:
       - name: event.listener
-        identifier: 'SfcStyleHttpPush'
+        identifier: 'StyleHttpPush'
         event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
 
   SFC\Staticfilecache\Service\HttpPush\ScriptHttpPush:
     tags:
       - name: event.listener
-        identifier: 'SfcStyleHttpPush'
+        identifier: 'StyleHttpPush'
         event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
 
   SFC\Staticfilecache\Service\HttpPush\ImageHttpPush:
     tags:
       - name: event.listener
-        identifier: 'SfcStyleHttpPush'
+        identifier: 'StyleHttpPush'
         event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
 
   SFC\Staticfilecache\Service\HttpPush\FontHttpPush:
     tags:
       - name: event.listener
-        identifier: 'SfcStyleHttpPush'
+        identifier: 'StyleHttpPush'
         event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
 
   SFC\Staticfilecache\Service\HttpPush\SvgHttpPush:
     tags:
       - name: event.listener
-        identifier: 'SfcStyleHttpPush'
+        identifier: 'StyleHttpPush'
         event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
 
   SFC\Staticfilecache\Generator\ConfigGenerator:
     tags:
       - name: event.listener
         method: generate
-        identifier: 'SfcConfigGeneratorCreate'
+        identifier: 'ConfigGeneratorCreate'
       - name: event.listener
         method: remove
-        identifier: 'SfcConfigGeneratorRemove'
+        identifier: 'ConfigGeneratorRemove'
 
   SFC\Staticfilecache\Generator\HtaccessGenerator:
     tags:
       - name: event.listener
         method: generate
-        identifier: 'SfcHtaccessGeneratorCreate'
+        identifier: 'HtaccessGeneratorCreate'
       - name: event.listener
         method: remove
-        identifier: 'SfcHtaccessGeneratorRemove'
+        identifier: 'HtaccessGeneratorRemove'
 
   SFC\Staticfilecache\Generator\PhpGenerator:
     tags:
       - name: event.listener
         method: generate
-        identifier: 'SfcPhpGeneratorCreate'
+        identifier: 'PhpGeneratorCreate'
       - name: event.listener
         method: remove
-        identifier: 'SfcPhpGeneratorRemove'
+        identifier: 'PhpGeneratorRemove'
 
   SFC\Staticfilecache\Generator\PlainGenerator:
     tags:
       - name: event.listener
         method: generate
-        identifier: 'SfcPlainGeneratorCreate'
+        identifier: 'PlainGeneratorCreate'
       - name: event.listener
         method: remove
-        identifier: 'SfcPlainGeneratorRemove'
+        identifier: 'PlainGeneratorRemove'
 
   SFC\Staticfilecache\Generator\GzipGenerator:
     tags:
       - name: event.listener
         method: generate
-        identifier: 'SfcGzipGeneratorCreate'
+        identifier: 'GzipGeneratorCreate'
       - name: event.listener
         method: remove
-        identifier: 'SfcGzipGeneratorRemove'
+        identifier: 'GzipGeneratorRemove'
 
   SFC\Staticfilecache\Generator\BrotliGenerator:
     tags:
       - name: event.listener
         method: generate
-        identifier: 'SfcBrotliGeneratorCreate'
+        identifier: 'BrotliGeneratorCreate'
       - name: event.listener
         method: remove
-        identifier: 'SfcBrotliGeneratorRemove'
+        identifier: 'BrotliGeneratorRemove'

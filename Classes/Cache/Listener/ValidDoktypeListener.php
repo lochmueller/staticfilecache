@@ -2,25 +2,23 @@
 
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache\Cache\Rule;
+namespace SFC\Staticfilecache\Cache\Listener;
 
 use Psr\Http\Message\ServerRequestInterface;
+use SFC\Staticfilecache\Event\CacheRuleEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
-/**
- * Check if the doktype is valid.
- */
-class ValidDoktype extends AbstractRule
+class ValidDoktypeListener
 {
     /**
-     * Check if the URI is valid.
+     * Check if the doktype is valid.
      */
-    public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
+    public function __invoke(CacheRuleEvent $event): void
     {
         $tsfe = $GLOBALS['TSFE'] ?? null;
         if (!($tsfe instanceof TypoScriptFrontendController) || !isset($GLOBALS['TSFE']->page)) {
-            $explanation[__CLASS__] = 'There is no valid page in the frontendController object';
-            $skipProcessing = true;
+            $event->addExplanation(__CLASS__, 'There is no valid page in the frontendController object');
+            $event->setSkipProcessing(true);
 
             return;
         }
@@ -33,11 +31,12 @@ class ValidDoktype extends AbstractRule
 
         $currentType = (int) ($GLOBALS['TSFE']->page['doktype'] ?? 1);
         if (\in_array($currentType, $ignoreTypes, true)) {
-            $explanation[__CLASS__] = 'The Page doktype ' . $currentType . ' is one of the following not allowed numbers: ' . implode(
+
+            $event->addExplanation(__CLASS__, 'The Page doktype ' . $currentType . ' is one of the following not allowed numbers: ' . implode(
                 ', ',
                 $ignoreTypes
-            );
-            $skipProcessing = true;
+            ));
+            $event->setSkipProcessing(true);
         }
     }
 }

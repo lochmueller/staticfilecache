@@ -91,9 +91,6 @@ class GenerateMiddleware implements MiddlewareInterface
             return 0;
         }
 
-        // @todo migrate for v13 to Events
-        // Check ModifyCacheLifetimeForPageEvent & AfterCachedPageIsPersistedEvent
-
         if ($this->typo3Version->getMajorVersion() >= 13) {
             /* @phpstan-ignore-next-line */
             $timeOutTime = $tsfe->get_cache_timeout($this->request);

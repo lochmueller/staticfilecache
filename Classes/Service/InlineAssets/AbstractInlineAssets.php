@@ -58,7 +58,7 @@ abstract class AbstractInlineAssets
         }
 
         switch ($match['ext']) {
-            case 'svg':// TODO ; https://github.com/peteboere/css-crush/commit/7cd5d73f67212dfc7ec0f85e4a84932a32ce95d8
+            case 'svg':
                 $type = 'image/svg+xml;utf8';
                 $file = str_replace('"', '\'', $file); // change quotes
                 $file = preg_replace('/#(?=[a-f0-9]{3,6})/', '%23', $file); // adapt hex-color

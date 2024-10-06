@@ -2,26 +2,24 @@
 
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache\Cache\Rule;
+namespace SFC\Staticfilecache\Cache\Listener;
 
 use Psr\Http\Message\ServerRequestInterface;
+use SFC\Staticfilecache\Event\CacheRuleEvent;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
-/**
- * NoUserOrGroupSet.
- */
-class NoUserOrGroupSet extends AbstractRule
+class NoUserOrGroupSetListener
 {
     /**
      * Check if no user or group is set.
      */
-    public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
+    public function __invoke(CacheRuleEvent $event): void
     {
         if ($this->isUserOrGroupSet()) {
-            $explanation[__CLASS__] = 'User or group are set';
+            $event->addExplanation(__CLASS__, 'User or group are set');
         }
     }
 

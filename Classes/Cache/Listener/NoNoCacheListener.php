@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace SFC\Staticfilecache\Cache\Rule;
+namespace SFC\Staticfilecache\Cache\Listener;
 
-use Psr\Http\Message\ServerRequestInterface;
+use SFC\Staticfilecache\Event\CacheRuleEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * No no_cache.
  */
-class NoNoCache extends AbstractRule
+class NoNoCacheListener
 {
     /**
      * No no_cache.
      */
-    public function checkRule(ServerRequestInterface $request, array &$explanation, bool &$skipProcessing): void
+    public function __invoke(CacheRuleEvent $event): void
     {
         $tsfe = $GLOBALS['TSFE'] ?? null;
         /* @phpstan-ignore-next-line */
         if ($tsfe instanceof TypoScriptFrontendController && $tsfe->no_cache) {
-            $explanation[__CLASS__] = 'config.no_cache is true';
+            $event->addExplanation(__CLASS__, 'config.no_cache is true');
         }
     }
 }

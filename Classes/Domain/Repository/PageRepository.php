@@ -11,9 +11,9 @@ class PageRepository extends AbstractRepository
      *
      * @param int    $pageId
      * @param string $displayMode
-     * @todo move methods to iterator?
+     * @return iterable<array>
      */
-    public function findForBackend($pageId, $displayMode): array
+    public function findForBackend($pageId, $displayMode): iterable
     {
         $queryBuilder = $this->createQuery();
 
@@ -38,11 +38,11 @@ class PageRepository extends AbstractRepository
                 break;
         }
 
-        return (array) $queryBuilder->select('*')
+        yield from $queryBuilder->select('*')
             ->from('pages')
             ->orWhere(...$where)
             ->executeQuery()
-            ->fetchAllAssociative()
+            ->iterateAssociative()
         ;
     }
 
