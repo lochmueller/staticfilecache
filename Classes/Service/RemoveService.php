@@ -67,6 +67,7 @@ class RemoveService
     public function directory(string $absoluteDirName): self
     {
         if (is_dir($absoluteDirName)) {
+            // @todo only rename, if there is no microtime at the end
             $tempAbsoluteDir = rtrim($absoluteDirName, '/') . '_' . round(microtime(true) * 1000) . '/';
             rename($absoluteDirName, $tempAbsoluteDir);
             $this->removeDirs[] = $tempAbsoluteDir;

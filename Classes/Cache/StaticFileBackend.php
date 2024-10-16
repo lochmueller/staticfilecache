@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use SFC\Staticfilecache\Event\GeneratorCreate;
+use SFC\Staticfilecache\Event\GeneratorRemove;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
-use TYPO3\CMS\Core\Context\Context;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Domain\Repository\CacheRepository;
@@ -14,7 +15,6 @@ use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ClientService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
-use SFC\Staticfilecache\Service\GeneratorService;
 use SFC\Staticfilecache\Service\QueueService;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
@@ -33,11 +33,11 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class StaticFileBackend extends StaticDatabaseBackend implements TransientBackendInterface
 {
-    protected GeneratorService $generatorService;
+    protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct($context, array $options = [])
     {
-        $this->generatorService = GeneralUtility::makeInstance(GeneratorService::class);
+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         parent::__construct($context, $options);
     }
 
@@ -96,7 +96,8 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
             $this->removeStaticFiles($entryIdentifier);
 
-            $this->generatorService->generate($entryIdentifier, $fileName, $data, $realLifetime);
+
+            $this->eventDispatcher->dispatch(new GeneratorCreate($entryIdentifier, $fileName, $data, $realLifetime));
         } catch (\Exception $exception) {
             $this->logger->error('Error in cache create process', ['exception' => $exception]);
         }
@@ -392,7 +393,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     protected function removeStaticFiles(string $entryIdentifier): bool
     {
         $fileName = $this->getFilepath($entryIdentifier);
-        $this->generatorService->remove($entryIdentifier, $fileName);
+        $this->eventDispatcher->dispatch(new GeneratorRemove($entryIdentifier, $fileName));
 
         return true;
     }
