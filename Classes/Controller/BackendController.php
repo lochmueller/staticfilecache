@@ -86,7 +86,6 @@ class BackendController extends ActionController implements LoggerAwareInterface
             'foundHtaccess' => $htaccessConfigurationService->foundConfigurationInHtaccess(),
             'htaccessPaths' => $htaccessConfigurationService->getHtaccessPaths(),
             'missingModules' => $htaccessConfigurationService->getMissingApacheModules(),
-            'useCrawler' => ExtensionManagementUtility::isLoaded('crawler'),
             'envInfoLink' => $environmentService->getLink(),
             'envInfoMarkdown' => $environmentService->getMarkdown(),
         ];
