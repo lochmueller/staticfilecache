@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Generator;
 
 use Psr\Http\Message\ResponseInterface;
+use SFC\Staticfilecache\Event\GeneratorConfigManipulationEvent;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
 use SFC\Staticfilecache\Service\ConfigurationService;
@@ -20,7 +21,10 @@ class ConfigGenerator extends AbstractGenerator
             'headers' => GeneralUtility::makeInstance(ConfigurationService::class)
                 ->getValidHeaders($generatorCreateEvent->getResponse()->getHeaders(), 'validFallbackHeaders'),
         ];
-        $this->writeFile($generatorCreateEvent->getFileName() . '.config.json', json_encode($config, JSON_PRETTY_PRINT));
+        /** @var GeneratorConfigManipulationEvent  $configManipulationEvent */
+        $configManipulationEvent = $this->eventDispatcher->dispatch(new GeneratorConfigManipulationEvent($config));
+
+        $this->writeFile($generatorCreateEvent->getFileName() . '.config.json', json_encode($configManipulationEvent->getConfig(), JSON_PRETTY_PRINT));
     }
 
     public function remove(GeneratorRemove $generatorRemoveEvent): void

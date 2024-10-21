@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Generator;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
@@ -14,6 +15,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 abstract class AbstractGenerator
 {
+    public function __construct(protected EventDispatcherInterface $eventDispatcher) {}
+
     abstract public function generate(GeneratorCreate $generatorCreateEvent): void;
 
     abstract public function remove(GeneratorRemove $generatorRemoveEvent): void;

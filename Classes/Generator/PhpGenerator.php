@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Generator;
 
 use Psr\Http\Message\ResponseInterface;
+use SFC\Staticfilecache\Event\GeneratorContentManipulationEvent;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
 use SFC\Staticfilecache\Service\ConfigurationService;
@@ -35,12 +36,15 @@ class PhpGenerator extends HtaccessGenerator
         $headers = array_map(fn($item) => str_replace("'", "\'", $item), $headers);
         $requestUri = GeneralUtility::getIndpEnv('REQUEST_URI');
 
+        /** @var GeneratorContentManipulationEvent  $contentManipulationEvent */
+        $contentManipulationEvent = $this->eventDispatcher->dispatch(new GeneratorContentManipulationEvent((string) $generatorCreateEvent->getResponse()->getBody()));
+
         $variables = [
             'expires' => (new DateTimeService())->getCurrentTime() + $lifetime,
             'sendCacheControlHeaderRedirectAfterCacheTimeout' => $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout'),
             'headers' => $headers,
             'requestUri' => $requestUri,
-            'body' => (string) $generatorCreateEvent->getResponse()->getBody(),
+            'body' => $contentManipulationEvent->getContent(),
         ];
 
         $this->renderTemplateToFile($this->getTemplateName(), $variables, $generatorCreateEvent->getFileName() . '.php');

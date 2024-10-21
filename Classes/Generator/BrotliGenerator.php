@@ -7,6 +7,7 @@ namespace SFC\Staticfilecache\Generator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use SFC\Staticfilecache\Event\GeneratorContentManipulationEvent;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
 use SFC\Staticfilecache\Service\RemoveService;
@@ -21,7 +22,9 @@ class BrotliGenerator extends AbstractGenerator implements LoggerAwareInterface
         if (!$this->checkAvailable()) {
             return;
         }
-        $contentCompress = brotli_compress((string) $generatorCreateEvent->getResponse()->getBody());
+        /** @var GeneratorContentManipulationEvent  $contentManipulationEvent */
+        $contentManipulationEvent = $this->eventDispatcher->dispatch(new GeneratorContentManipulationEvent((string) $generatorCreateEvent->getResponse()->getBody()));
+        $contentCompress = brotli_compress($contentManipulationEvent->getContent());
         if ($contentCompress) {
             $this->writeFile($generatorCreateEvent->getFileName() . '.br', $contentCompress);
         }
