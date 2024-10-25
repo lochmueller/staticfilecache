@@ -7,9 +7,6 @@ namespace SFC\Staticfilecache\Cache\Listener;
 use SFC\Staticfilecache\Event\CacheRuleEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
-/**
- * No _INT scripts.
- */
 class NoIntScriptsListener
 {
     public function __invoke(CacheRuleEvent $event): void
@@ -34,6 +31,7 @@ class NoIntScriptsListener
             $info[] = 'type: ' . $configuration['type'];
         }
         $check = [
+            'target', // @todo check for nonce
             'userFunc',
             'includeLibs',
             'extensionName',
