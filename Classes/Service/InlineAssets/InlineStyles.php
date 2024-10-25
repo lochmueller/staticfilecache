@@ -14,12 +14,12 @@ class InlineStyles extends AbstractInlineAssets
     /**
      * Image extensions.
      */
-    private $imageExtensions = ['ico', 'png', 'jpg', 'jpeg'];
+    private array $imageExtensions = ['ico', 'png', 'jpg', 'jpeg'];
 
     /**
      * Font extensions.
      */
-    private $fontExtensions = ['woff', 'woff2'];
+    private array $fontExtensions = ['woff', 'woff2'];
 
     /**
      * Check if the class can handle the file extension.

@@ -6,6 +6,7 @@ namespace SFC\Staticfilecache\Controller;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use SFC\Staticfilecache\Cache\UriFrontend;
 use TYPO3\CMS\Backend\Template\Components\Menu\Menu;
 use TYPO3\CMS\Backend\Template\Components\Menu\MenuItem;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -33,7 +34,8 @@ class BackendController extends ActionController implements LoggerAwareInterface
     public function __construct(
         readonly protected QueueService          $queueService,
         readonly protected ModuleTemplateFactory $moduleTemplateFactory,
-        readonly protected ConfigurationService  $configurationService
+        readonly protected ConfigurationService  $configurationService,
+        readonly protected CacheService          $cacheService,
     ) {}
 
     public function listAction(string $filter = ''): ResponseInterface
@@ -124,7 +126,8 @@ class BackendController extends ActionController implements LoggerAwareInterface
         $rows = [];
 
         try {
-            $cache = GeneralUtility::makeInstance(CacheService::class)->get();
+            /** @var UriFrontend $cache */
+            $cache = $this->cacheService->get();
         } catch (\Exception $exception) {
             $this->logger->error('Problems by fetching the cache: ' . $exception->getMessage() . ' / ' . $exception->getFile() . ':' . $exception->getLine());
 

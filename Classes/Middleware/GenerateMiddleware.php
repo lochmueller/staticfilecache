@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Middleware;
 
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -24,13 +25,14 @@ use TYPO3\CMS\Frontend\Event\ModifyCacheLifetimeForPageEvent;
 
 class GenerateMiddleware implements MiddlewareInterface
 {
-    protected ?UriFrontend $cache = null;
+    protected ?FrontendInterface $cache = null;
     protected ServerRequestInterface $request;
 
     public function __construct(
         readonly protected EventDispatcherInterface $eventDispatcher,
         readonly protected CookieService $cookieService,
-        readonly protected Typo3Version $typo3Version
+        readonly protected Typo3Version $typo3Version,
+        readonly protected CacheService $cacheService
     ) {}
 
     /**
@@ -54,7 +56,7 @@ class GenerateMiddleware implements MiddlewareInterface
         }
 
         try {
-            $this->cache = GeneralUtility::makeInstance(CacheService::class)->get();
+            $this->cache = $this->cacheService->get();
         } catch (\Exception $exception) {
             return $this->removeSfcHeaders($response);
         }

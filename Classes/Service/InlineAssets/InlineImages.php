@@ -14,7 +14,7 @@ class InlineImages extends AbstractInlineAssets
     /**
      * Image extensions.
      */
-    private $imageExtensions = ['png', 'jpg', 'jpeg'];
+    private array $imageExtensions = ['png', 'jpg', 'jpeg'];
 
     /**
      * Check if the class can handle the file extension.

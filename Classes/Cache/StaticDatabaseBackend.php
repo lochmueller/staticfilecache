@@ -74,10 +74,8 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend implements Log
 
     /**
      * Get the real life time.
-     *
-     * @param int $lifetime
      */
-    protected function getRealLifetime($lifetime): int
+    protected function getRealLifetime(?int $lifetime): int
     {
         if (null === $lifetime) {
             $lifetime = $this->defaultLifetime;

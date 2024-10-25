@@ -13,12 +13,12 @@ email, or any other method with the owners of this repository before making a ch
 ## Making Changes
 
 * Create a topic branch from where you want to base your work.
-  * This is usually the master branch.
+  * This is usually the main branch.
   * Only target release branches if you are certain your fix must be on that
     branch.
-  * To quickly create a topic branch based on master; `git checkout -b
-    fix/master/my_contribution master`. Please avoid working directly on the
-    `master` branch.
+  * To quickly create a topic branch based on main; `git checkout -b
+    fix/main/my_contribution main`. Please avoid working directly on the
+    `main` branch.
 * Make commits of logical units.
 * Make sure your commit messages are in the proper format. Use either `[TASK]`, `[FEATURE]`, `[BUGFIX]` or `[DOC]`
 
@@ -41,5 +41,5 @@ For changes of a trivial nature, it is not always necessary to create a new issu
 
 ## Additional resources
 
-* [Documentation](https://github.com/lochmueller/staticfilecache/tree/master/Documentation)
+* [Documentation](https://github.com/lochmueller/staticfilecache/tree/main/Documentation)
 * [How to Write a Git Commit Message](http://chris.beams.io/posts/git-commit/)

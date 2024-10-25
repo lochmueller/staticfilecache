@@ -14,7 +14,7 @@ class InlineFavIcon extends AbstractInlineAssets
     /**
      * FavIcon extensions.
      */
-    private $favIconExtensions = ['svg', 'ico', 'png'];
+    private array $favIconExtensions = ['svg', 'ico', 'png'];
 
     /**
      * Check if the class can handle the file extension.

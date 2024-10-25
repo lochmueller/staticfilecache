@@ -76,7 +76,7 @@ class ClientService implements LoggerAwareInterface
         $httpOptions['verify'] = filter_var($httpOptions['verify'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? $httpOptions['verify'];
         if (isset($httpOptions['handler']) && \is_array($httpOptions['handler'])) {
             $stack = HandlerStack::create();
-            foreach ($httpOptions['handler'] ?? [] as $handler) {
+            foreach ($httpOptions['handler'] as $handler) {
                 $stack->push($handler);
             }
             $httpOptions['handler'] = $stack;

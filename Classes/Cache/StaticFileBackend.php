@@ -45,7 +45,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      * Saves data in the cache.
      *
      * @param string $entryIdentifier An identifier for this specific cache entry
-     * @param ResponseInterface $data The data to be stored
+     * @param string $data The data to be stored
      * @param array $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds
      *
@@ -54,6 +54,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
     {
+        /** @var ResponseInterface $data */
         $realLifetime = $this->getRealLifetime($lifetime);
         $time = (new DateTimeService())->getCurrentTime();
         $databaseData = [

@@ -45,7 +45,7 @@ class QueueRepository extends AbstractRepository
 
     /**
      * Find old entries.
-     * @return iterable<int>
+     * @return iterable<array{uid: int}>
      */
     public function findOldUids(): iterable
     {
