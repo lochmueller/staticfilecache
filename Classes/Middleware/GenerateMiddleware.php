@@ -6,6 +6,7 @@ namespace SFC\Staticfilecache\Middleware;
 
 use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\CacheDataCollector;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -18,6 +19,7 @@ use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\CookieService;
 use SFC\Staticfilecache\Service\DateTimeService;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -87,10 +89,11 @@ class GenerateMiddleware implements MiddlewareInterface
      */
     protected function calculateLifetime(RequestInterface $request, ResponseInterface $response, TypoScriptFrontendController $tsfe): int
     {
-        /** @var $request \TYPO3\CMS\Core\Http\ServerRequest */
 
         if ($this->typo3Version->getMajorVersion() >= 13) {
-            /** @var \TYPO3\CMS\Core\Cache\CacheDataCollector $frontendCacheCollector */
+            /** @var ServerRequest $request */
+            /** @var CacheDataCollector $frontendCacheCollector */
+            /* @phpstan-ignore-next-line */
             $frontendCacheCollector = $request->getAttribute('frontend.cache.collector');
             return $frontendCacheCollector->resolveLifetime();
         }
