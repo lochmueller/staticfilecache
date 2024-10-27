@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Service;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 class RemoveService
 {
@@ -67,10 +68,14 @@ class RemoveService
     public function directory(string $absoluteDirName): self
     {
         if (is_dir($absoluteDirName)) {
-            // @todo only rename, if there is no microtime at the end
-            $tempAbsoluteDir = rtrim($absoluteDirName, '/') . '_' . round(microtime(true) * 1000) . '/';
-            rename($absoluteDirName, $tempAbsoluteDir);
-            $this->removeDirs[] = $tempAbsoluteDir;
+            $alreadyRenamed = (bool) \preg_match('/.*([0-9]{11,14})$/', rtrim($absoluteDirName, '/'));
+            if ($alreadyRenamed) {
+                $this->removeDirs[] = $absoluteDirName;
+            } else {
+                $tempAbsoluteDir = rtrim($absoluteDirName, '/') . '_' . round(microtime(true) * 1000) . '/';
+                rename($absoluteDirName, $tempAbsoluteDir);
+                $this->removeDirs[] = $tempAbsoluteDir;
+            }
         }
 
         return $this;
