@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Service;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 class RemoveService
 {

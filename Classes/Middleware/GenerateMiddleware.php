@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Middleware;
 
+use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
@@ -19,7 +20,6 @@ use SFC\Staticfilecache\Service\CookieService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class GenerateMiddleware implements MiddlewareInterface
@@ -70,7 +70,7 @@ class GenerateMiddleware implements MiddlewareInterface
 
                 return $this->removeSfcHeaders($response);
             }
-            $lifetime = $this->calculateLifetime($GLOBALS['TSFE']);
+            $lifetime = $this->calculateLifetime($request, $response, $GLOBALS['TSFE']);
             $response = $response->withHeader('X-SFC-State', 'TYPO3 - add to cache');
         } else {
             $lifetime = 0;
@@ -85,29 +85,23 @@ class GenerateMiddleware implements MiddlewareInterface
     /**
      * Calculate timeout.
      */
-    protected function calculateLifetime(TypoScriptFrontendController $tsfe): int
+    protected function calculateLifetime(RequestInterface $request, ResponseInterface $response, TypoScriptFrontendController $tsfe): int
     {
+        /** @var $request \TYPO3\CMS\Core\Http\ServerRequest */
+
+        if ($this->typo3Version->getMajorVersion() >= 13) {
+            /** @var \TYPO3\CMS\Core\Cache\CacheDataCollector $frontendCacheCollector */
+            $frontendCacheCollector = $request->getAttribute('frontend.cache.collector');
+            return $frontendCacheCollector->resolveLifetime();
+        }
+
         if (!\is_array($tsfe->page)) {
             // $this->logger->warning('TSFE to not contains a valid page record?! Please check: https://github.com/lochmueller/staticfilecache/issues/150');
             return 0;
         }
 
-        if ($this->typo3Version->getMajorVersion() >= 13) {
-            /** @var \TYPO3\CMS\Core\Routing\PageArguments $routing */
-            $routing = $this->request->getAttribute('routing');
-            $timeOutTime = GeneralUtility::makeInstance(CacheLifetimeCalculator::class)
-                ->calculateLifetimeForPage(
-                    $routing->getPageId(),
-                    BackendUtility::getRecord('pages', $routing->getPageId()),
-                    [],
-                    0,
-                    GeneralUtility::makeInstance(Context::class)
-                );
-        } else {
-            /* @phpstan-ignore-next-line */
-            $timeOutTime = $tsfe->get_cache_timeout();
-        }
-
+        /* @phpstan-ignore-next-line */
+        $timeOutTime = $tsfe->get_cache_timeout();
 
         // If page has a endtime before the current timeOutTime, use it instead:
         if ($tsfe->page['endtime'] > 0 && ($tsfe->page['endtime'] - $GLOBALS['EXEC_TIME']) < $timeOutTime) {
