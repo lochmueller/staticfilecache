@@ -14,7 +14,6 @@ abstract class AbstractHttpPush
         foreach ($event->getExtensions() as $extension) {
             if ($this->canHandleExtension($extension)) {
                 $event->setHeaders(array_merge($event->getHeaders(), $this->getHeaders($event->getContent())));
-                ;
             }
         }
     }

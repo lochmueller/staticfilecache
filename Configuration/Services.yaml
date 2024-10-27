@@ -165,25 +165,25 @@ services:
   SFC\Staticfilecache\Service\HttpPush\ScriptHttpPush:
     tags:
       - name: event.listener
-        identifier: 'StyleHttpPush'
+        identifier: 'ScriptHttpPush'
         event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
 
   SFC\Staticfilecache\Service\HttpPush\ImageHttpPush:
     tags:
       - name: event.listener
-        identifier: 'StyleHttpPush'
+        identifier: 'ImageHttpPush'
         event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
 
   SFC\Staticfilecache\Service\HttpPush\FontHttpPush:
     tags:
       - name: event.listener
-        identifier: 'StyleHttpPush'
+        identifier: 'FontHttpPush'
         event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
 
   SFC\Staticfilecache\Service\HttpPush\SvgHttpPush:
     tags:
       - name: event.listener
-        identifier: 'StyleHttpPush'
+        identifier: 'SvgHttpPush'
         event: SFC\Staticfilecache\Event\HttpPushHeaderEvent
 
   SFC\Staticfilecache\Generator\ConfigGenerator:
