@@ -27,17 +27,24 @@ class NoIntScriptsListener
     protected function getInformation($configuration): array
     {
         $info = [];
-        if (isset($configuration['type'])) {
-            $info[] = 'type: ' . $configuration['type'];
+
+        // Root properties
+        foreach ([
+            'target',
+            'type',
+        ] as $value) {
+            if (isset($configuration[$value])) {
+                $info[] = $value . ': ' . $configuration[$value];
+            }
         }
-        $check = [
-            'target', // @todo check for nonce
+
+        // Conf properties
+        foreach ([
             'userFunc',
             'includeLibs',
             'extensionName',
             'pluginName',
-        ];
-        foreach ($check as $value) {
+        ] as $value) {
             if (isset($configuration['conf'][$value])) {
                 $info[] = $value . ': ' . $configuration['conf'][$value];
             }

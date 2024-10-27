@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Middleware;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -11,7 +12,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use SFC\Staticfilecache\Cache\UriFrontend;
 use SFC\Staticfilecache\Event\PreGenerateEvent;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
@@ -19,9 +19,8 @@ use SFC\Staticfilecache\Service\CookieService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
-use TYPO3\CMS\Frontend\Event\ModifyCacheLifetimeForPageEvent;
 
 class GenerateMiddleware implements MiddlewareInterface
 {
@@ -30,9 +29,9 @@ class GenerateMiddleware implements MiddlewareInterface
 
     public function __construct(
         readonly protected EventDispatcherInterface $eventDispatcher,
-        readonly protected CookieService $cookieService,
-        readonly protected Typo3Version $typo3Version,
-        readonly protected CacheService $cacheService
+        readonly protected CookieService            $cookieService,
+        readonly protected Typo3Version             $typo3Version,
+        readonly protected CacheService             $cacheService
     ) {}
 
     /**
@@ -94,8 +93,16 @@ class GenerateMiddleware implements MiddlewareInterface
         }
 
         if ($this->typo3Version->getMajorVersion() >= 13) {
-            /* @phpstan-ignore-next-line */
-            $timeOutTime = $tsfe->get_cache_timeout($this->request);
+            /** @var \TYPO3\CMS\Core\Routing\PageArguments $routing */
+            $routing = $this->request->getAttribute('routing');
+            $timeOutTime = GeneralUtility::makeInstance(CacheLifetimeCalculator::class)
+                ->calculateLifetimeForPage(
+                    $routing->getPageId(),
+                    BackendUtility::getRecord('pages', $routing->getPageId()),
+                    [],
+                    0,
+                    GeneralUtility::makeInstance(Context::class)
+                );
         } else {
             /* @phpstan-ignore-next-line */
             $timeOutTime = $tsfe->get_cache_timeout();

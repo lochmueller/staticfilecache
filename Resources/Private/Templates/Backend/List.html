@@ -13,8 +13,8 @@
 	</p>
 
 	<p>Filter:</p>
-	<f:form action="list" class="form-inline input-group">
-		<f:form.select name="filter" options="{all: 'All', cached: 'Cached', notCached: 'Not cached'}" class="form-control" value="{filter}" />
+	<f:form action="list">
+		<f:form.select name="filter" options="{all: 'All', cached: 'Cached', notCached: 'Not cached'}" class="form-control form-select form-select-sm" value="{filter}" style="width: 200px;" /> <br />
 		<f:form.submit value="Set!" class="btn btn-primary" />
 	</f:form>
 

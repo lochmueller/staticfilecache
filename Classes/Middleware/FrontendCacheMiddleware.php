@@ -23,8 +23,8 @@ class FrontendCacheMiddleware implements MiddlewareInterface
                 new CacheInstruction(),
             );
 
-            // Disable the cache and give a reason
-            $cacheInstruction->disableCache('EXT:staticfilecache: Cache is disabled');
+            // Disable the cache and give a reason. @todo Why?
+            // $cacheInstruction->disableCache('EXT:staticfilecache: Cache is disabled');
 
             // Write back the cache instruction to the attribute
             $request = $request->withAttribute('frontend.cache.instruction', $cacheInstruction);
