@@ -95,6 +95,7 @@ class GenerateMiddleware implements MiddlewareInterface
             /** @var CacheDataCollector $frontendCacheCollector */
             /* @phpstan-ignore-next-line */
             $frontendCacheCollector = $request->getAttribute('frontend.cache.collector');
+            /* @phpstan-ignore-next-line */
             return $frontendCacheCollector->resolveLifetime();
         }
 
