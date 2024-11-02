@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /** @var string $_EXTKEY */
 $EM_CONF[$_EXTKEY] = [
     'title' => 'StaticFileCache',
