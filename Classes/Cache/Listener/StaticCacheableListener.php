@@ -23,6 +23,8 @@ class StaticCacheableListener
      */
     public function __invoke(CacheRuleEvent $event): void
     {
+        // @todo migrate this event to check
+        // $request->getAttribute('frontend.cache.instruction')->isCachingAllowed()
         if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
             if ($this->typo3Version->getMajorVersion() >= 13) {
                 /* @phpstan-ignore-next-line */
