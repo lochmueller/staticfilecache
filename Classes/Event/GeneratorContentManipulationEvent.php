@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Event;
 
-use Psr\Http\Message\ResponseInterface;
-
 final class GeneratorContentManipulationEvent
 {
     public function __construct(

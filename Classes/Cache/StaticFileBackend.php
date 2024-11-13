@@ -97,7 +97,6 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
             $this->removeStaticFiles($entryIdentifier);
 
-
             $this->eventDispatcher->dispatch(new GeneratorCreate($entryIdentifier, $fileName, $data, $realLifetime));
         } catch (\Exception $exception) {
             $this->logger->error('Error in cache create process', ['exception' => $exception]);

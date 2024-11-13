@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Generator;
 
-use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Event\GeneratorConfigManipulationEvent;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
 use SFC\Staticfilecache\Service\ConfigurationService;
-use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigGenerator extends AbstractGenerator

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache\Listener;
 
-use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Event\CacheRuleEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 

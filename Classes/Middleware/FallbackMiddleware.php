@@ -58,6 +58,7 @@ class FallbackMiddleware implements MiddlewareInterface
             throw new Exception('StaticFileCache Cookie is set', 12738912);
         }
 
+        // @todo ID Buulder with DI
         $possibleStaticFile = GeneralUtility::makeInstance(IdentifierBuilder::class)->getFilepath((string) $uri);
 
         $headers = $this->getHeaders($event->getRequest(), $possibleStaticFile);

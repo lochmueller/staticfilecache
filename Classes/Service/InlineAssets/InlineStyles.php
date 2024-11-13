@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Service\InlineAssets;
 
 /**
- * Class InlineStyles.
- *
  * @author Marcus Förster ; https://github.com/xerc
  */
 class InlineStyles extends AbstractInlineAssets

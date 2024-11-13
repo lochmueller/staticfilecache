@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
 
-use SFC\Staticfilecache\Cache\UriFrontend;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

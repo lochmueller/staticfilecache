@@ -19,9 +19,6 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend implements Log
 {
     use LoggerAwareTrait;
 
-    /**
-     * Configuration.
-     */
     protected ConfigurationService $configuration;
 
     /**

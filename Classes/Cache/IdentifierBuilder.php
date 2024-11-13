@@ -37,6 +37,8 @@ class IdentifierBuilder
             $parts['path'] = rawurldecode($parts['path']);
         }
 
+        // @todo add Event
+
         $absoluteBasePath = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory();
         $resultPath = GeneralUtility::resolveBackPath($absoluteBasePath . implode('/', $parts));
 

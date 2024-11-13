@@ -11,8 +11,6 @@ use SFC\Staticfilecache\Command\BoostQueueCommand;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 
 /**
- * Queue service.
- *
  * @see BoostQueueCommand
  */
 class QueueService implements LoggerAwareInterface

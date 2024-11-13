@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Service\InlineAssets;
 
 /**
- * Class InlineScripts.
- *
  * @author Marcus Förster ; https://github.com/xerc
  */
 class InlineScripts extends AbstractInlineAssets

@@ -42,17 +42,13 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
 
     /**
      * Is freezed?
-     *
-     * @var bool
      */
-    protected $freeze = false;
+    protected bool $freeze = false;
 
     /**
      * Hash length.
-     *
-     * @var int
      */
-    protected $hashLength = 3;
+    protected int $hashLength = 3;
 
     /**
      * Set hash length.

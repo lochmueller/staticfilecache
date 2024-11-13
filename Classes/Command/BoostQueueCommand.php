@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Command;
 
-use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use SFC\Staticfilecache\Domain\Repository\QueueRepository;
 use SFC\Staticfilecache\Service\QueueService;
 use Symfony\Component\Console\Input\InputInterface;

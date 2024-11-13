@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Generator;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Http\Message\ResponseInterface;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
 use SFC\Staticfilecache\Service\ConfigurationService;
@@ -43,7 +42,7 @@ abstract class AbstractGenerator
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
         $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateName));
         $renderer->assignMultiple($variables);
-        $content = trim((string) $renderer->render());
+        $content = trim($renderer->render());
         // Note: Create even empty htaccess files (do not check!!!), so the delete is in sync
         $this->writeFile($htaccessFile, $content);
     }

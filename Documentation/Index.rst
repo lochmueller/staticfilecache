@@ -132,6 +132,7 @@ ones with this one if possible.
    Introduction/Index
    Installation/Index
    Configuration/Index
+   Extended/Index
    Monitoring/Index
    StaticDynamic/Index
    Faq/Index

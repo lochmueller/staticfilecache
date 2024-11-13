@@ -7,8 +7,6 @@ namespace SFC\Staticfilecache\Service;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class InlineAssetsService.
- *
  * @author Marcus Förster ; https://github.com/xerc
  */
 class InlineAssetsService

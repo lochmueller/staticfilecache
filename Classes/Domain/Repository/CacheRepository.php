@@ -9,9 +9,6 @@ use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * CacheRepository.
- */
 class CacheRepository extends AbstractRepository
 {
     /**

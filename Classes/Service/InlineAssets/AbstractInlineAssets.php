@@ -9,8 +9,6 @@ use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class AbstractInlineFiles.
- *
  * @author Marcus Förster ; https://github.com/xerc
  */
 abstract class AbstractInlineAssets
