@@ -9,8 +9,8 @@
 		<testsuite name="staticfilecache tests">
 			<directory>Unit/</directory>
 			<exclude>Unit/AbstractTest.php</exclude>
-			<exclude>Unit/Cache/Rule/AbstractRuleTest.php</exclude>
 			<exclude>Unit/Service/HttpPush/AbstractHttpPushTest.php</exclude>
+			<exclude>Unit/Cache/Listener/AbstractListenerTest.php</exclude>
 		</testsuite>
 	</testsuites>
 	<source>
