@@ -20,8 +20,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PrepareMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        protected EventDispatcherInterface $eventDispatcher,
-        protected HttpPushService          $httpPushService
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly HttpPushService          $httpPushService,
+        protected readonly ConfigurationService          $configurationService,
+        protected readonly TypoScriptFrontendService          $typoScriptFrontendService,
+        protected readonly InlineAssetsService $inlineAssetsService
     ) {}
 
     /**
@@ -42,9 +45,8 @@ class PrepareMiddleware implements MiddlewareInterface
         $this->eventDispatcher->dispatch($event);
 
         if (!$event->isSkipProcessing()) {
-            $cacheTags = GeneralUtility::makeInstance(TypoScriptFrontendService::class)->getTags();
-            $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-            if (false === (bool) $configuration->get('clearCacheForAllDomains')) {
+            $cacheTags = $this->typoScriptFrontendService->getTags();
+            if (false === $this->configurationService->isBool('clearCacheForAllDomains')) {
                 $cacheTags[] = 'sfc_domain_' . str_replace('.', '_', $event->getRequest()->getUri()->getHost());
             }
 
@@ -63,7 +65,7 @@ class PrepareMiddleware implements MiddlewareInterface
             }
         }
 
-        $processedHtml = (string) GeneralUtility::makeInstance(InlineAssetsService::class)->replaceInlineContent((string) $response->getBody());
+        $processedHtml = (string) $this->inlineAssetsService->replaceInlineContent((string) $response->getBody());
         $responseBody = new Stream('php://temp', 'rw');
         $responseBody->write($processedHtml);
         $response = $response->withBody($responseBody);

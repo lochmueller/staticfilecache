@@ -15,6 +15,7 @@ class CachingAllowedListener
     public function __invoke(CacheRuleEvent $event): void
     {
         if ($this->typo3Version->getMajorVersion() >= 13) {
+            /* @phpstan-ignore-next-line */
             if (!$event->getRequest()->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {
                 $event->addExplanation(__CLASS__, 'No caching via frontend.cache.instruction attribute');
             }

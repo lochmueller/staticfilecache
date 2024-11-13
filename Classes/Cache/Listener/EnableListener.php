@@ -6,15 +6,13 @@ namespace SFC\Staticfilecache\Cache\Listener;
 
 use SFC\Staticfilecache\Event\CacheRuleEvent;
 use SFC\Staticfilecache\Service\ConfigurationService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class EnableListener
 {
+    public function __construct(protected readonly ConfigurationService $configurationService) {}
     public function __invoke(CacheRuleEvent $event): void
     {
-        /** @var ConfigurationService $configuration */
-        $configuration = GeneralUtility::makeInstance(ConfigurationService::class);
-        if ($configuration->isBool('disableCache')) {
+        if ($this->configurationService->isBool('disableCache')) {
             $event->addExplanation(__CLASS__, 'static cache disabled by TypoScript');
         }
     }

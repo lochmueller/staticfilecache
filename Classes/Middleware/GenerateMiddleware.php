@@ -31,7 +31,8 @@ class GenerateMiddleware implements MiddlewareInterface
         readonly protected EventDispatcherInterface $eventDispatcher,
         readonly protected CookieService            $cookieService,
         readonly protected Typo3Version             $typo3Version,
-        readonly protected CacheService             $cacheService
+        readonly protected CacheService             $cacheService,
+        readonly protected ConfigurationService             $configurationService
     ) {}
 
     /**
@@ -137,7 +138,7 @@ class GenerateMiddleware implements MiddlewareInterface
      */
     protected function removeSfcHeaders(ResponseInterface $response): ResponseInterface
     {
-        $debug = GeneralUtility::makeInstance(ConfigurationService::class)->isBool('debugHeaders');
+        $debug = $this->configurationService->isBool('debugHeaders');
         if (!$debug) {
             $response = $response->withoutHeader('X-SFC-Cachable');
             $response = $response->withoutHeader('X-SFC-State');

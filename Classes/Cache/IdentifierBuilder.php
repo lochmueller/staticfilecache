@@ -16,7 +16,7 @@ class IdentifierBuilder
     public function __construct(protected ?EventDispatcherInterface $eventDispatcher = null)
     {
         if ($this->eventDispatcher === null) {
-            $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
+            $this->eventDispatcher = GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
         }
     }
 

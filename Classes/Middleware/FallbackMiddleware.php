@@ -24,6 +24,7 @@ class FallbackMiddleware implements MiddlewareInterface
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly ConfigurationService $configurationService,
         protected readonly IdentifierBuilder $identifierBuilder,
+        protected readonly CacheService $cacheService,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -67,7 +68,7 @@ class FallbackMiddleware implements MiddlewareInterface
             throw new Exception('StaticFileCache file not found', 126371823);
         }
 
-        $cacheDirectory = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory();
+        $cacheDirectory = $this->cacheService->getAbsoluteBaseDirectory();
         if (!str_starts_with($possibleStaticFile, $cacheDirectory)) {
             throw new Exception('The path is not in the cache directory', 348923472);
         }

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Tests\Unit\Cache;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use SFC\Staticfilecache\Cache\IdentifierBuilder;
 use SFC\Staticfilecache\Tests\Unit\AbstractTest;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 
 /**
  * IdentifierBuilderTest.
@@ -27,8 +29,7 @@ final class IdentifierBuilderTest extends AbstractTest
         ];
 
         foreach ($validUris as $uri) {
-            $identBuilder = new IdentifierBuilder();
-            static::assertTrue($identBuilder->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be valid!');
+            static::assertTrue($this->getIdentifierBuilder()->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be valid!');
         }
     }
 
@@ -42,8 +43,11 @@ final class IdentifierBuilderTest extends AbstractTest
         ];
 
         foreach ($invalidUris as $uri) {
-            $identBuilder = new IdentifierBuilder();
-            static::assertFalse($identBuilder->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be invalid!');
+            static::assertFalse($this->getIdentifierBuilder()->isValidEntryIdentifier($uri), 'The URI "' . $uri . '" should be invalid!');
         }
+    }
+
+    protected function getIdentifierBuilder(): IdentifierBuilder {
+        return new IdentifierBuilder(new NoopEventDispatcher());
     }
 }

@@ -21,10 +21,6 @@ class TypoScriptFrontendService
         return array_unique((array) $tsfe->getPageCacheTags());
     }
 
-    /**
-     * Get the TSFE.
-     *
-     */
     protected function getTsfe(): ?TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
