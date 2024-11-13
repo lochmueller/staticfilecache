@@ -84,12 +84,6 @@ services:
         identifier: 'ForceStaticCacheListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
 
-  SFC\Staticfilecache\Cache\Listener\StaticCacheableListener:
-    tags:
-      - name: event.listener
-        identifier: 'StaticCacheableListener'
-        event: SFC\Staticfilecache\Event\CacheRuleEvent
-
   SFC\Staticfilecache\Cache\Listener\NoBackendUserListener:
     tags:
       - name: event.listener
@@ -120,10 +114,10 @@ services:
         identifier: 'NoIntScriptsListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
 
-  SFC\Staticfilecache\Cache\Listener\NoNoCacheListener:
+  SFC\Staticfilecache\Cache\Listener\CachingAllowedListener:
     tags:
       - name: event.listener
-        identifier: 'NoNoCacheListener'
+        identifier: 'CachingAllowedListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
 
   SFC\Staticfilecache\Cache\Listener\NoUserOrGroupSetListener:

@@ -5,21 +5,24 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Cache\Listener;
 
 use SFC\Staticfilecache\Event\CacheRuleEvent;
+use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Frontend\Cache\NonceValueSubstitution;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class NoIntScriptsListener
 {
+    public function __construct(protected readonly ConfigurationService $configurationService) {}
+
     public function __invoke(CacheRuleEvent $event): void
     {
         $tsfe = $GLOBALS['TSFE'] ?? null;
         if ($tsfe instanceof TypoScriptFrontendController && $tsfe->isINTincScript()) {
             foreach ((array) $tsfe->config['INTincScript'] as $key => $configuration) {
 
-                // Check CSP Handling
-                // if (isset($configuration['target']) && $configuration['target'] === NonceValueSubstitution::class . '->substituteNonce') {
-                //     continue;
-                // }
+                $cspGenerationOverride = (bool) $this->configurationService->get('cspGenerationOverride');
+                if ($cspGenerationOverride && isset($configuration['target']) && $configuration['target'] === NonceValueSubstitution::class . '->substituteNonce') {
+                    continue;
+                }
 
                 $event->addExplanation(__CLASS__ . ':' . $key, 'The page has a INTincScript: ' . implode(', ', $this->getInformation($configuration)));
             }
