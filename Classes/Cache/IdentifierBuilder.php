@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use SFC\Staticfilecache\Event\BuildIdentifierEvent;
 use SFC\Staticfilecache\Exception;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
@@ -11,6 +13,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class IdentifierBuilder
 {
+    public function __construct(protected ?EventDispatcherInterface $eventDispatcher = null)
+    {
+        if ($this->eventDispatcher === null) {
+            $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
+        }
+    }
+
     /**
      * Get the cache name for the given URI.
      *
@@ -37,10 +46,11 @@ class IdentifierBuilder
             $parts['path'] = rawurldecode($parts['path']);
         }
 
-        // @todo add Event
+        /** @var BuildIdentifierEvent $buildIdentifier */
+        $buildIdentifier = $this->eventDispatcher->dispatch(new BuildIdentifierEvent($requestUri, $parts));
 
         $absoluteBasePath = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory();
-        $resultPath = GeneralUtility::resolveBackPath($absoluteBasePath . implode('/', $parts));
+        $resultPath = GeneralUtility::resolveBackPath($absoluteBasePath . implode('/', $buildIdentifier->getParts()));
 
         if (!str_starts_with($resultPath, $absoluteBasePath)) {
             throw new Exception('The generated filename "' . $resultPath . '" should start with the cache directory "' . $absoluteBasePath . '"', 123781);

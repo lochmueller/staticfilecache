@@ -21,8 +21,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FallbackMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        protected EventDispatcherInterface $eventDispatcher,
-        protected ConfigurationService $configurationService
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly ConfigurationService $configurationService,
+        protected readonly IdentifierBuilder $identifierBuilder,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -58,8 +59,7 @@ class FallbackMiddleware implements MiddlewareInterface
             throw new Exception('StaticFileCache Cookie is set', 12738912);
         }
 
-        // @todo ID Buulder with DI
-        $possibleStaticFile = GeneralUtility::makeInstance(IdentifierBuilder::class)->getFilepath((string) $uri);
+        $possibleStaticFile = $this->identifierBuilder->getFilepath((string) $uri);
 
         $headers = $this->getHeaders($event->getRequest(), $possibleStaticFile);
 

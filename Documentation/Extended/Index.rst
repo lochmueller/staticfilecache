@@ -11,6 +11,7 @@ Events
 There are several Events to extend the functionality of EXT:staticfilecache. The following list contains all events and a short description of the execution.
 
 - `SFC\Staticfilecache\Event\BuildClientEvent` Executed in the client build process to modify options of the HTTP client for the boost mode queue.
+- `SFC\Staticfilecache\Event\BuildIdentifierEvent` Executed in the identifier build process to control the target path of the cache entry.
 - `SFC\Staticfilecache\Event\CacheRuleEvent` Executed in the PrepareMiddleware to check if the current page is static cacheable.
 - `SFC\Staticfilecache\Event\CacheRuleFallbackEvent` Executed in the FallbackMiddleware to check if the current page is delivered via FallbackMiddleware.
 - `SFC\Staticfilecache\Event\ForceStaticFileCacheEvent` Executed in the ForceStaticCacheListener to force the generation of static file cache files.
