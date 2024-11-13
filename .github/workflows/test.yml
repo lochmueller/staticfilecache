@@ -20,7 +20,7 @@ jobs:
           extensions: imagick
       - name: Composer install
         run: composer require typo3/minimal="^${{ matrix.typo3 }}" --dev --optimize-autoloader --prefer-dist
-      - name: Composer phpstan
-        run: composer phpstan
-      - name: Composer test
-        run: composer test
+      - name: Composer code-check
+        run: composer code-check
+      - name: Composer code-test
+        run: composer code-test
