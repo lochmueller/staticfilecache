@@ -47,7 +47,8 @@ final class IdentifierBuilderTest extends AbstractTest
         }
     }
 
-    protected function getIdentifierBuilder(): IdentifierBuilder {
+    protected function getIdentifierBuilder(): IdentifierBuilder
+    {
         return new IdentifierBuilder(new NoopEventDispatcher());
     }
 }

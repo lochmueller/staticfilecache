@@ -12,6 +12,7 @@ require $baseDir . '/.Build/vendor/autoload.php';
 $finder = Finder::create()
     ->in($baseDir.'/Classes')
     ->in($baseDir.'/Configuration')
+    ->in($baseDir.'/Tests/Unit')
 ;
 
 return (new Config())

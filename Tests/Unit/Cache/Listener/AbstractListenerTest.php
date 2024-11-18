@@ -10,7 +10,6 @@ use SFC\Staticfilecache\Tests\Unit\AbstractTest;
 
 abstract class AbstractListenerTest extends AbstractTest
 {
-
     protected function emptyCacheRuleEvent(): CacheRuleEvent
     {
         return new CacheRuleEvent(

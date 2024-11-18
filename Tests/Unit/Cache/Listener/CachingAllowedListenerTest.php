@@ -11,7 +11,6 @@ use TYPO3\CMS\Core\Information\Typo3Version;
 
 class CachingAllowedListenerTest extends AbstractListenerTest
 {
-
     public function testNoExplanation(): void
     {
         $version = $this->getMockBuilder(Typo3Version::class)->disableOriginalConstructor()->getMock();

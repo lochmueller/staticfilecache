@@ -9,7 +9,6 @@ use SFC\Staticfilecache\Service\ConfigurationService;
 
 class EnableListenerTest extends AbstractListenerTest
 {
-
     public function testNoExplanation(): void
     {
         $configurationService = $this->getMockBuilder(ConfigurationService::class)->disableOriginalConstructor()->getMock();
