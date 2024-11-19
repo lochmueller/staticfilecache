@@ -46,7 +46,7 @@ class BrotliGenerator extends AbstractGenerator implements LoggerAwareInterface
 
         $available = \function_exists('brotli_compress');
         if (!$available) {
-            $this->logger->error('Your server do not support Botli compression, but you enable Brotli in EXT:staticfilecache configuration');
+            $this->logger->error('Your server does not support Brotli compression, but you enabled Brotli in EXT:staticfilecache configuration');
         }
 
         return $available;
