@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<guides xmlns="https://www.phpdoc.org/guides"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:schemaLocation="https://www.phpdoc.org/guides ../vendor/phpdocumentor/guides-cli/resources/schema/guides.xsd"
+				links-are-relative="true">
+	<extension class="\T3Docs\Typo3DocsTheme\DependencyInjection\Typo3DocsThemeExtension"
+						 project-home="https://extensions.typo3.org/extension/staticfilecache"
+						 project-contact="https://typo3.slack.com/archives/C9LRD4LSJ"
+						 project-repository="https://github.com/lochmueller/staticfilecache"
+						 project-issues="https://github.com/lochmueller/staticfilecache/issues"
+						 edit-on-github-branch="master"
+						 edit-on-github="lochmueller/staticfilecache"
+						 typo3-core-preferred="13.4"/>
+	<project title="Static File Cache"
+					 release="main (development)"
+					 version="main (development)"
+					 copyright="since 2016 by Tim Lochmüller &amp; Contributors"/>
+	<inventory id="ext_form" url="https://docs.typo3.org/c/typo3/cms-form/13.4/en-us/"/>
+</guides>
