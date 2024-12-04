@@ -15,6 +15,10 @@ ForceType {contentType}
 	<f:comment>
 		Explicitly prevent direct access here. This is needed because the .htaccess
 		access check in the root dir is overwritten by the RewriteRules defined here.
+
+		Important: The Timezone of the TIME variable is based on your server timezone and
+		the timezone of the ViewHelper is based on the typo3 configured timezone. Please keep
+		in mind that this is in sync!
 	</f:comment>
 	RewriteCond %{ENV:REDIRECT_STATUS} ^$
 	RewriteRule .* - [F,L]

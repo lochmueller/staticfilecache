@@ -31,6 +31,11 @@ variables (SFC_ROOT, SFC_GZIP) and read the comments carefully.
    RewriteCond %{HTTP:X-Tx-Solr-Iq} .+
    RewriteRule .* - [E=SFC_HOST:invalid-host]
 
+   # Important Note for scheme and port. TYPO3 handle Reverse proxies by respect
+   # X-Forwarded-For headers. The Apache do not know this configuration. If there
+   # is a reverse proxy that e.g. terminate SSL and all requests are "http", please
+   # Adapt the following lines to force "http".
+
    # Get scheme
    RewriteRule .* - [E=SFC_PROTOCOL:http]
    RewriteCond %{SERVER_PORT} ^443$ [OR]
