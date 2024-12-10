@@ -61,7 +61,7 @@ class FallbackMiddleware implements MiddlewareInterface
         }
 
         $possibleStaticFile = $this->identifierBuilder->getFilepath((string) $uri);
-        
+
         $config = $this->getCacheConfiguration($possibleStaticFile);
 
         if (isset($config['invalidAtTimestamp']) && $config['invalidAtTimestamp'] < time()) {
