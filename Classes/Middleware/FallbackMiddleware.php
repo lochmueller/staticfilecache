@@ -54,13 +54,19 @@ class FallbackMiddleware implements MiddlewareInterface
             throw new Exception('Could not use fallback, because: ' . implode(', ', $event->getExplanation()), 1236781);
         }
 
-        $uri = $request->getUri();
+        $uri = $request->getUri()->withQuery('');
 
         if (isset($_COOKIE[CookieService::FE_COOKIE_NAME]) && 'typo_user_logged_in' === $_COOKIE[CookieService::FE_COOKIE_NAME]) {
             throw new Exception('StaticFileCache Cookie is set', 12738912);
         }
 
         $possibleStaticFile = $this->identifierBuilder->getFilepath((string) $uri);
+        
+        $config = $this->getCacheConfiguration($possibleStaticFile);
+
+        if (isset($config['invalidAtTimestamp']) && $config['invalidAtTimestamp'] < time()) {
+            throw new Exception('Cache entry is old', 16237867241);
+        }
 
         $headers = $this->getHeaders($event->getRequest(), $possibleStaticFile);
 

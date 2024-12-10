@@ -8,14 +8,19 @@ use SFC\Staticfilecache\Event\GeneratorConfigManipulationEvent;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
 use SFC\Staticfilecache\Service\ConfigurationService;
+use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigGenerator extends AbstractGenerator
 {
     public function generate(GeneratorCreate $generatorCreateEvent): void
     {
+        $time = (new DateTimeService())->getCurrentTime();
         $config = [
-            'generated' => date('r'),
+            'generated' => date('r', $time),
+            'generatedTimestamp' => $time,
+            'invalidAt' => date('r', $time + $generatorCreateEvent->getLifetime()),
+            'invalidAtTimestamp' => $time + $generatorCreateEvent->getLifetime(),
             'headers' => GeneralUtility::makeInstance(ConfigurationService::class)
                 ->getValidHeaders($generatorCreateEvent->getResponse()->getHeaders(), 'validFallbackHeaders'),
         ];
