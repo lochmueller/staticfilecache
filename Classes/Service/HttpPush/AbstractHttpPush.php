@@ -56,11 +56,9 @@ abstract class AbstractHttpPush
      */
     protected function mapPathsWithType(array $paths, string $type): array
     {
-        return array_values(array_map(function ($item) use ($type) {
-            return [
-                'path' => $item,
-                'type' => $type,
-            ];
-        }, array_unique($paths)));
+        return array_values(array_map(fn($item) => [
+            'path' => $item,
+            'type' => $type,
+        ], array_unique($paths)));
     }
 }
