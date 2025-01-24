@@ -70,6 +70,11 @@ By the following configuration:
            return 405;
        }
 
+       # Disable cache for EXT:crawler indexing requests
+       if ($http_x_t3crawler) {
+           return 405;
+       }
+
        charset utf-8;
        default_type text/html;
        try_files /typo3temp/assets/tx_staticfilecache/${scheme}_${host}_${server_port}${uri}/index
