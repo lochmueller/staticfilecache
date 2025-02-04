@@ -51,7 +51,7 @@ class HtaccessGenerator extends AbstractGenerator
     {
         $configurationService = $this->getConfigurationService();
         $maxHeaderSize = (int)($configurationService->get('maxHeaderSize') ?? 8192);
-        $headerSizeBuffer = (int)($configurationService->get('headerSizeBuffer') ?? 0);
+        $headerSizeBuffer = (float)($configurationService->get('headerSizeBuffer') ?? 0);
 
         if($headerSizeBuffer > 0){
             $maxHeaderSize = (int)($maxHeaderSize / $headerSizeBuffer);
