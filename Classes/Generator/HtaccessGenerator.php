@@ -49,9 +49,16 @@ class HtaccessGenerator extends AbstractGenerator
 
     protected function cleanupHeaderValues(array $headers): array
     {
+        $configurationService = $this->getConfigurationService();
+        $maxHeaderSize = (int)($configurationService->get('maxHeaderSize') ?? 8192);
+        $headerSizeBuffer = (float)($configurationService->get('headerSizeBuffer') ?? 0);
+
+        if($headerSizeBuffer > 0){
+            $maxHeaderSize = (int)($maxHeaderSize / $headerSizeBuffer);
+        }
         // respect max length
         foreach ($headers as $key => $value) {
-            $headers[$key] = substr((string) $value, 0, 1024 * 8); // 8K Max header for Apache
+            $headers[$key] = substr((string) $value, 0, $maxHeaderSize); // 8K Max header for Apache
         }
 
         // illegal chars
