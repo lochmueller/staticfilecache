@@ -20,5 +20,7 @@ CREATE TABLE tx_staticfilecache_queue (
 	call_date int(11) DEFAULT '0' NOT NULL,
 	call_result varchar(255) NOT NULL,
 	PRIMARY KEY (uid),
-	INDEX call_date (call_date, cache_url(100))
+	INDEX call_date (call_date, cache_url(100)),
+	INDEX cache_url (cache_url(255)),
+	INDEX cache_priority (cache_priority)
 );
