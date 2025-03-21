@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Domain\Repository;
 
+use Doctrine\DBAL\Exception;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Database\Connection;
@@ -13,12 +14,14 @@ class CacheRepository extends AbstractRepository
 {
     /**
      * Get the expired cache identifiers.
-     * @todo move methods to iterator?
+     *
+     * @throws Exception
      */
     public function findExpiredIdentifiers(): array
     {
         $queryBuilder = $this->createQuery();
-        $cacheIdentifiers = $queryBuilder->select('identifier')
+
+        return $queryBuilder->select('identifier')
             ->from($this->getTableName())
             ->where($queryBuilder->expr()->lt(
                 'expires',
@@ -26,27 +29,42 @@ class CacheRepository extends AbstractRepository
             ))
             ->groupBy('identifier')
             ->executeQuery()
-            ->fetchFirstColumn()
-        ;
-        return $cacheIdentifiers;
+            ->fetchFirstColumn();
     }
 
     /**
-     * Get all the cache identifiers.
-     * @todo move methods to iterator?
+     * Count all identifiers in cache table
+     *
+     * @return int Total count of unique identifiers
+     * @throws Exception
      */
-    public function findAllIdentifiers(): array
+    public function countAllIdentifiers(): int
     {
         $queryBuilder = $this->createQuery();
-        $cacheIdentifiers = $queryBuilder->select('identifier')
+
+        return (int) $queryBuilder->count('identifier')
             ->from($this->getTableName())
             ->groupBy('identifier')
             ->executeQuery()
-            ->fetchFirstColumn()
-        ;
-        return $cacheIdentifiers;
+            ->rowCount();
     }
 
+    /**
+     * @return \Generator Yields identifiers one by one
+     * @throws Exception
+     */
+    public function yieldAllIdentifiers(): \Generator
+    {
+        $queryBuilder = $this->createQuery();
+        $result = $queryBuilder->select('identifier')
+            ->from($this->getTableName())
+            ->groupBy('identifier')
+            ->executeQuery();
+
+        while ($row = $result->fetchAssociative()) {
+            yield $row['identifier'];
+        }
+    }
 
     protected function getTableName(): string
     {

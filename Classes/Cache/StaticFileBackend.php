@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache;
 
+use Doctrine\DBAL\Exception;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
@@ -170,21 +171,19 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      * Removes all cache entries of this cache.
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception
+     * @throws Exception
      */
     public function flush(): void
     {
         if (false === (bool) $this->configuration->get('clearCacheForAllDomains')) {
             $this->flushByTag('sfc_domain_' . str_replace('.', '_', GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY')));
-
             return;
         }
 
         $this->logger->debug('SFC Flush');
 
         if ($this->isBoostMode()) {
-            $identifiers = GeneralUtility::makeInstance(CacheRepository::class)->findAllIdentifiers();
-            $this->getQueue()->addIdentifiers($identifiers);
-
+            $this->flushBoostModeQueue();
             return;
         }
 
@@ -193,6 +192,39 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
         $removeService->subdirectories($absoluteCacheDir);
         parent::flush();
         $removeService->removeQueueDirectories();
+    }
+
+    protected function flushBoostModeQueue(): void
+    {
+        $cacheRepository = GeneralUtility::makeInstance(CacheRepository::class);
+        $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
+        $queueRepository->truncate();
+        $this->processQueueRefill($cacheRepository, $queueRepository);
+    }
+
+    protected function processQueueRefill(CacheRepository $cacheRepository, QueueRepository $queueRepository): void
+    {
+        $time = time();
+        $recordGenerator = static function () use ($cacheRepository, $time) {
+            foreach ($cacheRepository->yieldAllIdentifiers() as $identifier) {
+                yield [
+                    'cache_url' => $identifier,
+                    'page_uid' => 0,
+                    'invalid_date' => $time,
+                    'call_result' => '',
+                    'cache_priority' => QueueService::PRIORITY_LOW,
+                ];
+            }
+        };
+
+        try {
+            $queueRepository->streamedBulkInsert($recordGenerator());
+        } catch (\Throwable $e) {
+            $this->logger->error('Error during queue refill', [
+                'error' => $e->getMessage(),
+                'memory_peak' => round(memory_get_peak_usage(true) / 1024 / 1024, 2) . ' MB',
+            ]);
+        }
     }
 
     /**
@@ -305,6 +337,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     /**
      * Get the cache folder for the given entry.
      *
+     * @throws \Exception
      */
     protected function getFilepath(string $entryIdentifier): string
     {
@@ -359,6 +392,8 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      *
      * @param array $tags The tags to search for
      * @return array An array with identifiers of all matching entries. An empty array if no entries matched
+     * @throws \TYPO3\CMS\Core\Cache\Exception
+     * @throws Exception
      */
     public function findIdentifiersByTags(array $tags)
     {
@@ -389,6 +424,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      * Remove the static files of the given identifier.
      *
      * @return bool success if the files are deleted
+     * @throws \Exception
      */
     protected function removeStaticFiles(string $entryIdentifier): bool
     {

@@ -8,6 +8,8 @@ use SFC\Staticfilecache\Service\CacheService;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class FlushCacheCommand extends AbstractCommand
@@ -18,6 +20,10 @@ class FlushCacheCommand extends AbstractCommand
         $this->addOption('force-boost-mode-flush', null, InputOption::VALUE_NONE, 'Force a boost mode flush');
     }
 
+    /**
+     * @throws NoSuchCacheException
+     * @throws NoSuchCacheGroupException
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $cacheService = GeneralUtility::makeInstance(CacheService::class);
