@@ -71,7 +71,7 @@ enableGeneratorGzip = 1
 enableGeneratorBrotli = 0
 
 # cat=Headers; type=boolean; label=Send Cache-Control header redirect after cache timeout: Add a mod_rewrite statement to the generated .htaccess files, that redirect the user to the index.php, if the cache is invalid.
-sendCacheControlHeaderRedirectAfterCacheTimeout = 0
+sendCacheControlHeaderRedirectAfterCacheTimeout = 1
 
 # cat=Headers; type=boolean; label=Enable Cache Tags: Output the TSFE cache tags for the current site in the rendering and for the cache entry
 cacheTagsEnable = 0
