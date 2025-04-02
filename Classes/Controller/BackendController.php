@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Controller;
 
+use Doctrine\DBAL\Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use SFC\Staticfilecache\Cache\UriFrontend;
@@ -50,26 +51,42 @@ class BackendController extends ActionController implements LoggerAwareInterface
             ->renderResponse('Backend/List');
     }
 
+    /**
+     * @throws Exception
+     */
     public function boostAction(bool $run = false): ResponseInterface
     {
         $queueRepository = GeneralUtility::makeInstance(QueueRepository::class);
         if ($run) {
             $items = $queueRepository->findOpen(10);
+            $processedCount = 0;
 
             try {
                 foreach ($items as $item) {
                     $this->queueService->runSingleRequest($item);
+                    $processedCount++;
                 }
-            } catch (\Exception $exception) {
+            } catch (\Throwable $exception) {
                 $this->addFlashMessage('Error in run: ' . $exception->getMessage(), 'Runner', ContextualFeedbackSeverity::ERROR, true);
             }
 
-            $this->addFlashMessage('Run ' . \count($items) . ' entries', 'Runner', ContextualFeedbackSeverity::OK, true);
+            $this->addFlashMessage('Run ' . $processedCount . ' entries', 'Runner', ContextualFeedbackSeverity::OK, true);
         }
+
+        $openCount = 0;
+        foreach ($queueRepository->findOpen(99999999) as $ignored) {
+            $openCount++;
+        }
+
+        $oldCount = 0;
+        foreach ($queueRepository->findOldUids() as $ignored1) {
+            $oldCount++;
+        }
+
         $viewVariables = [
             'enable' => (bool) $this->configurationService->get('boostMode'),
-            'open' => \count(iterator_to_array($queueRepository->findOpen(99999999))),
-            'old' => \count(iterator_to_array($queueRepository->findOldUids())),
+            'open' => $openCount,
+            'old' => $oldCount,
         ];
 
         return $this->createModuleTemplate()
