@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Service;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Handle extension and TS configuration.
  */
-class ConfigurationService
+class ConfigurationService implements SingletonInterface
 {
     /**
      * Current configuration.
