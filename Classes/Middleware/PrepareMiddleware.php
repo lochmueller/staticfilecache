@@ -73,7 +73,15 @@ class PrepareMiddleware implements MiddlewareInterface
         $pushHeaders = (array) $this->httpPushService->getHttpPushHeaders((string) $response->getBody());
         foreach ($pushHeaders as $pushHeader) {
             if (mb_detect_encoding($pushHeader['path'], 'ASCII', true)) {
-                $response = $response->withAddedHeader('Link', '<' . $pushHeader['path'] . '>; rel=preload; as=' . $pushHeader['type']);
+                $value = '<' . $pushHeader['path'] . '>; rel=preload; as=' . $pushHeader['type'];
+
+                // Font assets have to be preloaded using anonymous-mode CORS:
+                // https://github.com/lochmueller/staticfilecache/issues/443
+                if ($pushHeader['type'] === 'font') {
+                    $value .= '; crossorigin';
+                }
+
+                $response = $response->withAddedHeader('Link', $value);
             }
         }
 
