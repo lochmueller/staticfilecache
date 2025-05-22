@@ -31,9 +31,9 @@ variables (SFC_ROOT, SFC_GZIP) and read the comments carefully.
    RewriteCond %{HTTP:X-Tx-Solr-Iq} .+
    RewriteRule .* - [E=SFC_HOST:invalid-host]
 
-	# Disable cache for EXT:crawler indexing requests
-	RewriteCond %{HTTP:X-T3Crawler} .+
-	RewriteRule .* - [E=SFC_HOST:invalid-host]
+   # Disable cache for EXT:crawler indexing requests
+   RewriteCond %{HTTP:X-T3Crawler} .+
+   RewriteRule .* - [E=SFC_HOST:invalid-host]
 
    # Important Note for scheme and port. TYPO3 handle Reverse proxies by respect
    # X-Forwarded-For headers. The Apache do not know this configuration. If there
@@ -172,12 +172,12 @@ variables (SFC_ROOT, SFC_GZIP) and read the comments carefully.
       # AddType "text/html" .gz
    </FilesMatch>
    <FilesMatch "\.js\.gz$">
-	   ForceType text/javascript
-	   # AddType "text/javascript" .gz
+      ForceType text/javascript
+      # AddType "text/javascript" .gz
    </FilesMatch>
    <FilesMatch "\.css\.gz$">
-	   ForceType text/css
-	   # AddType "text/css" .gz
+      ForceType text/css
+      # AddType "text/css" .gz
    </FilesMatch>
    <FilesMatch "\.xml\.gz$">
       ForceType text/xml
