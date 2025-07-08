@@ -34,7 +34,7 @@ renameTablesToOtherPrefix = 0
 # cat=basic; type=boolean; label=Large identifier in cache table: Increase the identifier field in the Cache table (used for the URI) from 500 to 10.000
 largeIdentifierInCacheTable = 0
 
-# cat=basic; type=boolean; label=CSP Generation Override: Generate the StaticFileCache even there is one _INT scripts that are related to the nonce replacement. This is possible, because the file is completely static and the hader is also stored. If there are other _INT scripts, the page is still no chached.
+# cat=basic; type=boolean; label=CSP Generation Override: Generate the StaticFileCache even there is one _INT scripts that are related to the nonce replacement. This is possible, because the file is completely static and the header is also stored. If there are other _INT scripts, the page is still not cached.
 cspGenerationOverride = 0
 
 # cat=basic; type=boolean; label=Use reverse URI length in priority: Add "1000-URILENGTH" to the priority so the home page is much more important than deeplinks
