@@ -88,14 +88,23 @@ class GenerateMiddleware implements MiddlewareInterface
      */
     protected function calculateLifetime(RequestInterface $request, ResponseInterface $response, TypoScriptFrontendController $tsfe): int
     {
-
         if ($this->typo3Version->getMajorVersion() >= 13) {
             /** @var ServerRequest $request */
             /** @var CacheDataCollector $frontendCacheCollector */
             /* @phpstan-ignore-next-line */
             $frontendCacheCollector = $request->getAttribute('frontend.cache.collector');
             /* @phpstan-ignore-next-line */
-            return $frontendCacheCollector->resolveLifetime();
+            $resolvedLifetime = $frontendCacheCollector->resolveLifetime();
+
+            $legacyTimeout = $this->getLegacyCacheTimeoutFromTsfe();
+
+            if ($legacyTimeout > 0) {
+                $timeOutTime = $legacyTimeout;
+            } else {
+                $timeOutTime = $resolvedLifetime;
+            }
+
+            return (int) $timeOutTime;
         }
 
         if (!\is_array($tsfe->page)) {
@@ -115,6 +124,26 @@ class GenerateMiddleware implements MiddlewareInterface
         }
 
         return (int) $timeOutTime;
+    }
+
+
+    protected function getLegacyCacheTimeoutFromTsfe(): int
+    {
+        if (!isset($GLOBALS['TSFE']) || !is_object($GLOBALS['TSFE'])) {
+            return 0;
+        }
+
+        $tsfe = $GLOBALS['TSFE'];
+
+        if (is_array($tsfe->page) && isset($tsfe->page['cache_timeout']) && (int)$tsfe->page['cache_timeout'] > 0) {
+            return (int)$tsfe->page['cache_timeout'];
+        }
+
+        if (is_array($tsfe->config) && isset($tsfe->config['config']['cache_period']) && (int)$tsfe->config['config']['cache_period'] > 0) {
+            return (int)$tsfe->config['config']['cache_period'];
+        }
+
+        return 0;
     }
 
     /**
