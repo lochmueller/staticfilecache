@@ -7,7 +7,6 @@ namespace SFC\Staticfilecache\Cache;
 use SFC\Staticfilecache\Exception;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
-use TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
@@ -18,7 +17,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * RemoteFileBackend.
  */
-class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterface, FreezableBackendInterface, TransientBackendInterface
+class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterface, TransientBackendInterface
 {
     /**
      * Relative folder name.
@@ -39,11 +38,6 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      * File extension for lifetime files.
      */
     public const FILE_EXTENSION_IDENTIFIER = '.cache.ident';
-
-    /**
-     * Is freezed?
-     */
-    protected bool $freeze = false;
 
     /**
      * Hash length.
@@ -74,9 +68,6 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      */
     public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
     {
-        if ($this->freeze) {
-            throw new Exception('Backend is frozen!', 123789);
-        }
         $this->remove($entryIdentifier);
         $fileName = $this->getFileName($entryIdentifier);
 
@@ -139,9 +130,6 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         if (!is_file($folder . $fileName)) {
             return false;
         }
-        if ($this->freeze) {
-            return true;
-        }
         $validUntil = (int) file_get_contents($folder . $fileName . self::FILE_EXTENSION_LIFETIME);
 
         return $validUntil > time();
@@ -162,9 +150,6 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      */
     public function remove($entryIdentifier)
     {
-        if ($this->freeze) {
-            throw new Exception('Backend is frozen!', 123789);
-        }
         $folder = GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER);
         $fileName = $this->getFileName($entryIdentifier);
         if (!is_file($folder . $fileName)) {
@@ -190,7 +175,6 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     {
         $removeService = GeneralUtility::makeInstance(RemoveService::class);
         $removeService->directory(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER));
-        $this->freeze = false;
     }
 
     /**
@@ -202,10 +186,6 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      */
     public function collectGarbage(): void
     {
-        if ($this->freeze) {
-            throw new \Exception('Backend is frozen!', 123789);
-        }
-
         $lifetimeFiles = glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*/*/*' . self::FILE_EXTENSION_LIFETIME);
 
         $identifiers = [];
@@ -232,9 +212,6 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      */
     public function flushByTag($tag): void
     {
-        if ($this->freeze) {
-            throw new \Exception('Backend is frozen!', 123789);
-        }
         $identifiers = $this->findIdentifiersByTag($tag);
         foreach ($identifiers as $identifier) {
             $this->remove($identifier);
@@ -262,31 +239,6 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         }
 
         return $identifiers;
-    }
-
-    /**
-     * Freezes this cache backend.
-     *
-     * All data in a frozen backend remains unchanged and methods which try to add
-     * or modify data result in an exception thrown. Possible expiry times of
-     * individual cache entries are ignored.
-     *
-     * On the positive side, a frozen cache backend is much faster on read access.
-     * A frozen backend can only be thawn by calling the flush() method.
-     */
-    public function freeze(): void
-    {
-        $this->freeze = true;
-    }
-
-    /**
-     * Tells if this backend is frozen.
-     *
-     * @return bool
-     */
-    public function isFrozen()
-    {
-        return $this->freeze;
     }
 
     /**
