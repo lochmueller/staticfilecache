@@ -5,7 +5,7 @@ ChangeLog
 
 .. hint::
    For newer log entries (since August 2016) take a look at the
-   `git history <https://github.com/lochmueller/staticfilecache/commits/master>`__.
+   `git history <https://github.com/lochmueller/staticfilecache/commits/main>`__.
 
 2015-12-28 Tim Lochmüller <tim@fruit-lab.de>
 
