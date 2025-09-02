@@ -7,12 +7,12 @@ namespace SFC\Staticfilecache\Cache\Listener;
 use SFC\Staticfilecache\Event\CacheRuleEvent;
 
 /**
- * Check if there is no path segment that is to long.
+ * Check if there is no path segment that is too long.
  */
 class NoLongPathSegmentListener
 {
     /**
-     * Check if there is no path segment that is to long.
+     * Check if there is no path segment that is too long.
      */
     public function __invoke(CacheRuleEvent $event): void
     {
@@ -22,7 +22,7 @@ class NoLongPathSegmentListener
 
         foreach ($segments as $segment) {
             if (\strlen($segment) > 255) {
-                $event->addExplanation(__CLASS__, 'The URI seegment of the URI is to long to create a folder based on tthis segment: ' . $segment);
+                $event->addExplanation(__CLASS__, 'The URI segment of the URI is too long to create a folder based on this segment: ' . $segment);
                 $event->setSkipProcessing(true);
 
                 return;
