@@ -22,7 +22,7 @@ class NoLongPathSegmentListener
 
         foreach ($segments as $segment) {
             if (\strlen($segment) > 255) {
-                $event->addExplanation(__CLASS__, 'The URI seegment of the URI is to long to create a folder based on tthis segment: ' . $segment);
+                $event->addExplanation(__CLASS__, 'The URI segment of the URI is too long to create a folder based on this segment: ' . $segment);
                 $event->setSkipProcessing(true);
 
                 return;
