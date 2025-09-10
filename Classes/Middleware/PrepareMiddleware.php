@@ -41,7 +41,7 @@ class PrepareMiddleware implements MiddlewareInterface
         $explanation = [];
         $skipProcessing = false;
 
-        $event = new CacheRuleEvent($request, $explanation, $skipProcessing);
+        $event = new CacheRuleEvent($request, $explanation, $skipProcessing, $response);
         $this->eventDispatcher->dispatch($event);
 
         if (!$event->isSkipProcessing()) {

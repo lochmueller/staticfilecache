@@ -46,6 +46,13 @@ services:
         identifier: 'ValidUriListenerFallback'
         event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
 
+  SFC\Staticfilecache\Cache\Listener\ValidResponseCodeListener:
+    tags:
+      - name: event.listener
+        identifier: 'ValidResponseCodeListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
+        before: 'ForceStaticCacheListener'
+
   SFC\Staticfilecache\Cache\Listener\SolrIndexingProcessListener:
     tags:
       - name: event.listener
