@@ -103,17 +103,15 @@ class FallbackMiddleware implements MiddlewareInterface
                 if (is_file($possibleStaticFile . '.br') && is_readable($possibleStaticFile . '.br')) {
                     $headers['Content-Encoding'] = 'br';
                     $possibleStaticFile .= '.br';
+                    break;
                 }
-
-                break;
             }
             if (str_contains($acceptEncoding, 'gzip')) {
                 if (is_file($possibleStaticFile . '.gz') && is_readable($possibleStaticFile . '.gz')) {
                     $headers['Content-Encoding'] = 'gzip';
                     $possibleStaticFile .= '.gz';
+                    break;
                 }
-
-                break;
             }
         }
 
