@@ -28,11 +28,11 @@ class GenerateMiddleware implements MiddlewareInterface
     protected ServerRequestInterface $request;
 
     public function __construct(
-        readonly protected EventDispatcherInterface $eventDispatcher,
-        readonly protected CookieService            $cookieService,
-        readonly protected Typo3Version             $typo3Version,
-        readonly protected CacheService             $cacheService,
-        readonly protected ConfigurationService             $configurationService
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly CookieService            $cookieService,
+        protected readonly Typo3Version             $typo3Version,
+        protected readonly CacheService             $cacheService,
+        protected readonly ConfigurationService             $configurationService
     ) {}
 
     /**
@@ -71,7 +71,7 @@ class GenerateMiddleware implements MiddlewareInterface
 
                 return $this->removeSfcHeaders($response);
             }
-            $lifetime = $this->calculateLifetime($request, $response, $GLOBALS['TSFE']);
+            $lifetime = $this->calculateLifetime($request, $response);
             $response = $response->withHeader('X-SFC-State', 'TYPO3 - add to cache');
         } else {
             $lifetime = 0;
@@ -86,35 +86,14 @@ class GenerateMiddleware implements MiddlewareInterface
     /**
      * Calculate timeout.
      */
-    protected function calculateLifetime(RequestInterface $request, ResponseInterface $response, TypoScriptFrontendController $tsfe): int
+    protected function calculateLifetime(RequestInterface $request, ResponseInterface $response): int
     {
-
-        if ($this->typo3Version->getMajorVersion() >= 13) {
-            /** @var ServerRequest $request */
-            /** @var CacheDataCollector $frontendCacheCollector */
-            /* @phpstan-ignore-next-line */
-            $frontendCacheCollector = $request->getAttribute('frontend.cache.collector');
-            /* @phpstan-ignore-next-line */
-            return $frontendCacheCollector->resolveLifetime();
-        }
-
-        if (!\is_array($tsfe->page)) {
-            // $this->logger->warning('TSFE to not contains a valid page record?! Please check: https://github.com/lochmueller/staticfilecache/issues/150');
-            return 0;
-        }
-
+        /** @var ServerRequest $request */
+        /** @var CacheDataCollector $frontendCacheCollector */
         /* @phpstan-ignore-next-line */
-        $timeOutTime = $tsfe->get_cache_timeout();
-
-        // If page has a endtime before the current timeOutTime, use it instead:
-        if ($tsfe->page['endtime'] > 0 && ($tsfe->page['endtime'] - $GLOBALS['EXEC_TIME']) < $timeOutTime) {
-            $endtimeLifetime = $tsfe->page['endtime'] - $GLOBALS['EXEC_TIME'];
-            if ($endtimeLifetime > 0) {
-                $timeOutTime = $endtimeLifetime;
-            }
-        }
-
-        return (int) $timeOutTime;
+        $frontendCacheCollector = $request->getAttribute('frontend.cache.collector');
+        /* @phpstan-ignore-next-line */
+        return $frontendCacheCollector->resolveLifetime();
     }
 
     /**

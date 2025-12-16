@@ -10,7 +10,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class HttpPushService
 {
-    public function __construct(readonly protected EventDispatcherInterface $eventDispatcher) {}
+    public function __construct(protected readonly EventDispatcherInterface $eventDispatcher) {}
 
     /**
      * Get http push headers.

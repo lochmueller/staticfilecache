@@ -11,7 +11,7 @@ final class PreGenerateEvent
 {
     public function __construct(
         private string $uri,
-        readonly private ServerRequestInterface $request,
+        private readonly ServerRequestInterface $request,
         private ResponseInterface $response
     ) {}
 

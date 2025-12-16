@@ -9,7 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 final class CacheRuleFallbackEvent implements CacheRuleEventInterface
 {
     public function __construct(
-        readonly private ServerRequestInterface $request,
+        private readonly ServerRequestInterface $request,
         private array $explanation,
         private bool $skipProcessing
     ) {}

@@ -10,10 +10,10 @@ use Psr\Http\Message\ServerRequestInterface;
 final class CacheRuleEvent implements CacheRuleEventInterface
 {
     public function __construct(
-        readonly private ServerRequestInterface $request,
+        private readonly ServerRequestInterface $request,
         private array $explanation,
         private bool $skipProcessing,
-        readonly private ResponseInterface $response,
+        private readonly ResponseInterface $response,
     ) {}
 
     public function getRequest(): ServerRequestInterface

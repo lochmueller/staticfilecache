@@ -9,10 +9,10 @@ use Psr\Http\Message\ResponseInterface;
 final class GeneratorCreate
 {
     public function __construct(
-        readonly protected string            $entryIdentifier,
-        readonly protected string            $fileName,
-        readonly protected ResponseInterface $response,
-        readonly protected int               $lifetime
+        protected readonly string            $entryIdentifier,
+        protected readonly string            $fileName,
+        protected readonly ResponseInterface $response,
+        protected readonly int               $lifetime
     ) {}
 
     public function getEntryIdentifier(): string

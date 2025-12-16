@@ -7,8 +7,8 @@ namespace SFC\Staticfilecache\Event;
 final class GeneratorRemove
 {
     public function __construct(
-        readonly protected string            $entryIdentifier,
-        readonly protected string            $fileName,
+        protected readonly string            $entryIdentifier,
+        protected readonly string            $fileName,
     ) {}
 
     public function getEntryIdentifier(): string

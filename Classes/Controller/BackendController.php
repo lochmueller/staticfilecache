@@ -30,10 +30,10 @@ class BackendController extends ActionController implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        readonly protected QueueService          $queueService,
-        readonly protected ModuleTemplateFactory $moduleTemplateFactory,
-        readonly protected ConfigurationService  $configurationService,
-        readonly protected CacheService          $cacheService,
+        protected readonly QueueService          $queueService,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly ConfigurationService  $configurationService,
+        protected readonly CacheService          $cacheService,
     ) {}
 
     public function listAction(string $filter = ''): ResponseInterface

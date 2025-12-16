@@ -11,8 +11,8 @@ use TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent;
 class AfterPackageDeactivationListener
 {
     public function __construct(
-        readonly private ConfigurationService $configurationService,
-        readonly private CacheService         $cacheService,
+        private readonly ConfigurationService $configurationService,
+        private readonly CacheService         $cacheService,
     ) {}
 
     public function __invoke(AfterPackageDeactivationEvent $event): void
