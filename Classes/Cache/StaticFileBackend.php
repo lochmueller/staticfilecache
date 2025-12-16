@@ -111,7 +111,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      *
      * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
      */
-    public function get($entryIdentifier)
+    public function get(string $entryIdentifier): mixed
     {
         if (!$this->has($entryIdentifier)) {
             return false;
@@ -131,7 +131,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      *
      * @return bool TRUE if such an entry exists, FALSE if not
      */
-    public function has($entryIdentifier)
+    public function has(string $entryIdentifier): bool
     {
         return is_file($this->getFilepath($entryIdentifier)) || parent::has($entryIdentifier);
     }
@@ -145,7 +145,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      *
      * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
      */
-    public function remove($entryIdentifier)
+    public function remove(string $entryIdentifier): bool
     {
         if (!$this->has($entryIdentifier)) {
             return false;

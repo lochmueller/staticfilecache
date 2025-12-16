@@ -16,12 +16,8 @@ class UriFrontend extends VariableFrontend
 {
     /**
      * Check if the identifier is a valid URI incl. host and path.
-     *
-     * @param string $identifier
-     *
-     * @return bool
      */
-    public function isValidEntryIdentifier($identifier)
+    public function isValidEntryIdentifier(string $identifier): bool
     {
         try {
             $identifierBuilder = GeneralUtility::makeInstance(IdentifierBuilder::class);

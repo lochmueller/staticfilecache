@@ -48,11 +48,9 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend implements Log
     }
 
     /**
-     * Change the template to allow longer idenitifiers.
-     *
-     * @return string
+     * Change the template to allow longer identifiers.
      */
-    public function getTableDefinitions()
+    public function getTableDefinitions(): string
     {
         $large = $this->configuration->isBool('largeIdentifierInCacheTable') ? 'Large' : '';
 

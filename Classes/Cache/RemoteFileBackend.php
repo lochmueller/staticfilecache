@@ -105,7 +105,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      *
      * @api
      */
-    public function get($entryIdentifier)
+    public function get(string $entryIdentifier): mixed
     {
         if (!$this->has($entryIdentifier)) {
             return false;
@@ -117,13 +117,9 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     /**
      * Checks if a cache entry with the specified identifier exists.
      *
-     * @param string $entryIdentifier An identifier specifying the cache entry
-     *
-     * @return bool TRUE if such an entry exists, FALSE if not
-     *
      * @api
      */
-    public function has($entryIdentifier)
+    public function has(string $entryIdentifier): bool
     {
         $folder = GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER);
         $fileName = $this->getFileName($entryIdentifier);
@@ -148,7 +144,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      *
      * @api
      */
-    public function remove($entryIdentifier)
+    public function remove(string $entryIdentifier): bool
     {
         $folder = GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER);
         $fileName = $this->getFileName($entryIdentifier);
@@ -228,7 +224,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      *
      * @api
      */
-    public function findIdentifiersByTag($tag)
+    public function findIdentifiersByTag(string $tag): array
     {
         $tagsFiles = glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*/*/*' . self::FILE_EXTENSION_TAG);
         $identifiers = [];
@@ -275,5 +271,10 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         $remoteStructure = implode('/', str_split($hash));
 
         return $remoteStructure . '/' . $baseName;
+    }
+
+    public function flushByTags(array $tags): void
+    {
+        // @todo check
     }
 }

@@ -4,3 +4,6 @@ includes:
 parameters:
 	level: 5
 	reportUnmatchedIgnoredErrors: false
+	paths:
+		- Classes
+		- Tests
