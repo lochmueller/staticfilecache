@@ -6,6 +6,7 @@ namespace SFC\Staticfilecache\Cache\Listener;
 
 use SFC\Staticfilecache\Event\CacheRuleEvent;
 use SFC\Staticfilecache\Service\ConfigurationService;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Frontend\Cache\NonceValueSubstitution;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -15,16 +16,19 @@ class NoIntScriptsListener
 
     public function __invoke(CacheRuleEvent $event): void
     {
-        $tsfe = $GLOBALS['TSFE'] ?? null;
-        if ($tsfe instanceof TypoScriptFrontendController && $tsfe->isINTincScript()) {
-            foreach ((array) $tsfe->config['INTincScript'] as $key => $configuration) {
+        $frontendTypoScript = $event->getRequest()->getAttribute('frontend.typoscript');
+        if ($frontendTypoScript instanceof FrontendTypoScript) {
+            $configArray = $frontendTypoScript->getConfigArray();
+            if (isset($configArray['INTincScript']) && is_array($configArray['INTincScript'])) {
+                foreach ($configArray['INTincScript'] as $key => $configuration) {
 
-                $cspGenerationOverride = (bool) $this->configurationService->get('cspGenerationOverride');
-                if ($cspGenerationOverride && isset($configuration['target']) && $configuration['target'] === NonceValueSubstitution::class . '->substituteNonce') {
-                    continue;
+                    $cspGenerationOverride = (bool) $this->configurationService->get('cspGenerationOverride');
+                    if ($cspGenerationOverride && isset($configuration['target']) && $configuration['target'] === NonceValueSubstitution::class . '->substituteNonce') {
+                        continue;
+                    }
+
+                    $event->addExplanation(__CLASS__ . ':' . $key, 'The page has a INTincScript: ' . implode(', ', $this->getInformation($configuration)));
                 }
-
-                $event->addExplanation(__CLASS__ . ':' . $key, 'The page has a INTincScript: ' . implode(', ', $this->getInformation($configuration)));
             }
         }
     }

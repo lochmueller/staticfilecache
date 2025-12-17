@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Middleware;
 
+use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Http\Stream;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -14,8 +15,6 @@ use SFC\Staticfilecache\Event\CacheRuleEvent;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\HttpPushService;
 use SFC\Staticfilecache\Service\InlineAssetsService;
-use SFC\Staticfilecache\Service\TypoScriptFrontendService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class PrepareMiddleware implements MiddlewareInterface
 {
@@ -23,7 +22,6 @@ class PrepareMiddleware implements MiddlewareInterface
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly HttpPushService          $httpPushService,
         protected readonly ConfigurationService          $configurationService,
-        protected readonly TypoScriptFrontendService          $typoScriptFrontendService,
         protected readonly InlineAssetsService $inlineAssetsService
     ) {}
 
@@ -45,7 +43,11 @@ class PrepareMiddleware implements MiddlewareInterface
         $this->eventDispatcher->dispatch($event);
 
         if (!$event->isSkipProcessing()) {
-            $cacheTags = $this->typoScriptFrontendService->getTags();
+
+            $cacheDataCollector = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.cache.collector');
+            $cacheTags = array_map(fn(CacheTag $cacheTag) => $cacheTag->name, $cacheDataCollector->getCacheTags());
+
+
             if (false === $this->configurationService->isBool('clearCacheForAllDomains')) {
                 $cacheTags[] = 'sfc_domain_' . str_replace('.', '_', $event->getRequest()->getUri()->getHost());
             }

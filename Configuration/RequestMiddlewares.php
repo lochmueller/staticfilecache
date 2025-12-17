@@ -41,15 +41,6 @@ return [
                 'staticfilecache/generate',
             ],
         ],
-        'staticfilecache/frontend-cache' => [
-            'target' => FrontendCacheMiddleware::class,
-            'after' => [
-                'typo3/cms-frontend/authentication',
-            ],
-            'before' => [
-                'staticfilecache/generate',
-            ],
-        ],
         'staticfilecache/cookie-check' => [
             'target' => CookieCheckMiddleware::class,
             'before' => [

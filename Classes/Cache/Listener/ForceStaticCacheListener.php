@@ -8,7 +8,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Event\CacheRuleEvent;
 use SFC\Staticfilecache\Event\ForceStaticFileCacheEvent;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 
 /**
  * Force the cache for special pages.
@@ -19,18 +20,22 @@ class ForceStaticCacheListener
 
     public function __invoke(CacheRuleEvent $event): void
     {
-        if ($event->isSkipProcessing() && $this->isForceCacheUri($GLOBALS['TSFE'] ?? null, $event->getRequest())) {
+        if ($event->isSkipProcessing() && $this->isForceCacheUri($event->getRequest())) {
             $event->setSkipProcessing(false);
             $event->truncateExplanations();
 
-            if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-                if (!\is_array($GLOBALS['TSFE']->config['INTincScript'])) {
+            $frontendTypoScript = $event->getRequest()->getAttribute('frontend.typoscript');
+            if ($frontendTypoScript instanceof FrontendTypoScript) {
+                $configArray = $frontendTypoScript->getConfigArray();
+                if (!\is_array($configArray['INTincScript'])) {
                     // Avoid exceptions in recursivelyReplaceIntPlaceholdersInContent
-                    $GLOBALS['TSFE']->config['INTincScript'] = [];
+                    $configArray['INTincScript'] = [];
+                    $frontendTypoScript->setConfigArray($configArray);
                 }
 
+                // @todo
                 // render the plugins in the output
-                $GLOBALS['TSFE']->INTincScript($event->getRequest());
+                // v14??? $GLOBALS['TSFE']->INTincScript($event->getRequest());
             }
         }
     }
@@ -38,14 +43,15 @@ class ForceStaticCacheListener
     /**
      * Is force cache URI?
      */
-    protected function isForceCacheUri(?TypoScriptFrontendController $frontendController, ServerRequestInterface $request): bool
+    protected function isForceCacheUri(ServerRequestInterface $request): bool
     {
-        if (!\is_object($frontendController)) {
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        if (!$pageInformation instanceof PageInformation) {
             return false;
         }
 
-        $forceStatic = (bool) ($frontendController->page['tx_staticfilecache_cache_force'] ?? false);
-        $event = new ForceStaticFileCacheEvent($forceStatic, $frontendController, $request);
+        $forceStatic = (bool) ($pageInformation->getPageRecord()['tx_staticfilecache_cache_force'] ?? false);
+        $event = new ForceStaticFileCacheEvent($forceStatic, $request);
         $this->eventDispatcher->dispatch($event);
 
         return $event->isForceStatic();

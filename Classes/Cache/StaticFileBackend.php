@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 
 /**
  * Cache backend for StaticFileCache.
@@ -327,8 +328,10 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
             $priority += (QueueService::PRIORITY_MEDIUM - \strlen($uri));
         }
 
-        if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
-            $priority += (int) $GLOBALS['TSFE']->page['tx_staticfilecache_cache_priority'];
+        // @todo
+        $pageInformation = $GLOBALS['TYPO3_REQUEST']?->getAttribute('frontend.page.information');
+        if ($pageInformation instanceof PageInformation) {
+            $priority += (int) ($pageInformation->getPageRecord()['tx_staticfilecache_cache_priority'] ?? 0);
         }
 
         return $priority;

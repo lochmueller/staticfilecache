@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Cache\Listener;
 
 use SFC\Staticfilecache\Event\CacheRuleEvent;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 
 /**
  * ValidPageInformation.
@@ -19,10 +19,10 @@ class ValidPageInformationListener
      */
     public function __invoke(CacheRuleEvent $event): void
     {
-        $tsfe = $GLOBALS['TSFE'] ?? null;
-        if (!$tsfe instanceof TypoScriptFrontendController || !\is_array($tsfe->page) || !$tsfe->page['uid']) {
+        $pageInformation = $event->getRequest()->getAttribute('frontend.page.information');
+        if (!$pageInformation instanceof PageInformation) {
             $event->setSkipProcessing(true);
-            $event->addExplanation(__CLASS__, 'There is no valid page in the TSFE');
+            $event->addExplanation(__CLASS__, 'There is no valid page information in the frontend.page.information');
         }
     }
 }

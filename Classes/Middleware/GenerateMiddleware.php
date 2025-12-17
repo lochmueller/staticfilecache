@@ -19,8 +19,6 @@ use SFC\Staticfilecache\Service\CookieService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class GenerateMiddleware implements MiddlewareInterface
 {

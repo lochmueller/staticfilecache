@@ -275,6 +275,8 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
 
     public function flushByTags(array $tags): void
     {
-        // @todo check
+        foreach ($tags as $tag) {
+            $this->flushByTag($tag);
+        }
     }
 }

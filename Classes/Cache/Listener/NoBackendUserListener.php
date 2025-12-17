@@ -17,7 +17,7 @@ class NoBackendUserListener
     public function __invoke(CacheRuleEvent $event): void
     {
         if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
-            $event->addExplanation(__CLASS__, 'Active BE Login (TSFE:beUserLogin)');
+            $event->addExplanation(__CLASS__, 'Active BE Login via context -> aspect');
             $event->setSkipProcessing(true);
         }
     }

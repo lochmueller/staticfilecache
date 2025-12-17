@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Cache\Listener;
 
 use SFC\Staticfilecache\Event\CacheRuleEvent;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 
 class ValidDoktypeListener
 {
@@ -14,9 +14,10 @@ class ValidDoktypeListener
      */
     public function __invoke(CacheRuleEvent $event): void
     {
-        $tsfe = $GLOBALS['TSFE'] ?? null;
-        if (!($tsfe instanceof TypoScriptFrontendController) || !isset($GLOBALS['TSFE']->page)) {
-            $event->addExplanation(__CLASS__, 'There is no valid page in the frontendController object');
+
+        $pageInformation = $event->getRequest()->getAttribute('frontend.page.information');
+        if (!$pageInformation instanceof PageInformation) {
+            $event->addExplanation(__CLASS__, 'There is no valid page in the frontend.page.information');
             $event->setSkipProcessing(true);
 
             return;
@@ -28,7 +29,7 @@ class ValidDoktypeListener
             255, // DOKTYPE_RECYCLER,
         ];
 
-        $currentType = (int) ($GLOBALS['TSFE']->page['doktype'] ?? 1);
+        $currentType = (int) ($pageInformation->getPageRecord()['doktype'] ?? 1);
         if (\in_array($currentType, $ignoreTypes, true)) {
 
             $event->addExplanation(__CLASS__, 'The Page doktype ' . $currentType . ' is one of the following not allowed numbers: ' . implode(
