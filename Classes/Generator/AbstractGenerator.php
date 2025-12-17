@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Generator;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\RemoveService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3\CMS\Core\View\ViewFactoryData;
 
 abstract class AbstractGenerator
 {
-    public function __construct(protected EventDispatcherInterface $eventDispatcher) {}
+    public function __construct(
+        protected EventDispatcherInterface $eventDispatcher,
+        protected ViewFactoryInterface $viewFactory,
+    ) {}
 
     abstract public function generate(GeneratorCreate $generatorCreateEvent): void;
 
@@ -38,11 +43,12 @@ abstract class AbstractGenerator
 
     protected function renderTemplateToFile(string $templateName, array $variables, string $htaccessFile): void
     {
-        /** @var StandaloneView $renderer */
-        $renderer = GeneralUtility::makeInstance(StandaloneView::class);
-        $renderer->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateName));
-        $renderer->assignMultiple($variables);
-        $content = trim($renderer->render());
+        $view = $this->viewFactory->create(new ViewFactoryData(
+            templatePathAndFilename: GeneralUtility::getFileAbsFileName($templateName),
+        ));
+        $view->assignMultiple($variables);
+        $content = trim($view->render());
+
         // Note: Create even empty htaccess files (do not check!!!), so the delete is in sync
         $this->writeFile($htaccessFile, $content);
     }

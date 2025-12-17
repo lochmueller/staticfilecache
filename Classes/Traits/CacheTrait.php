@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * $result = $this->cacheRemoteUri('https://www.google.de/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png');
  */
+// @phpstan-ignore-next-line
 trait CacheTrait
 {
     /**

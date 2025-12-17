@@ -9,6 +9,8 @@ use Psr\Log\LoggerAwareTrait;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -24,12 +26,18 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend implements Log
     /**
      * Constructs this backend.
      *
-     * @param string $context application context
+     * @param mixed $context application context
      * @param array  $options Configuration options - depends on the actual backend
      */
     public function __construct($context, array $options = [])
     {
-        parent::__construct($context, $options);
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 14) {
+            // @phpstan-ignore-next-line
+            parent::__construct($context, $options);
+        } else {
+            // Note. In v14 there is only the options array. So the first Param are the options.
+            parent::__construct($context);
+        }
         $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
     }
 
