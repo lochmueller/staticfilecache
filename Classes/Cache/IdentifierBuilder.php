@@ -32,8 +32,8 @@ class IdentifierBuilder
         }
         $urlParts = parse_url($requestUri);
         $pageIdentifier = [
-            'scheme' => $urlParts['scheme'] ?? 'https',
-            'host' => $urlParts['host'] ?? 'invalid',
+            'scheme' => strtolower($urlParts['scheme'] ?? 'https'),
+            'host' => strtolower($urlParts['host'] ?? 'invalid'),
             'port' => $urlParts['port'] ?? ('https' === $urlParts['scheme'] ? 443 : 80),
         ];
         $parts = [
