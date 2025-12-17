@@ -58,13 +58,13 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend implements Log
             ExtensionManagementUtility::extPath('staticfilecache') .
             'Resources/Private/Sql/Cache/Backend/' . $large . 'Typo3DatabaseBackendCache.sql'
         );
-        $requiredTableStructures = str_replace('###CACHE_TABLE###', $this->cacheTable, $cacheTableSql) . LF . LF;
+        $requiredTableStructures = str_replace('###CACHE_TABLE###', $this->cacheTable, $cacheTableSql) . chr(10) . chr(10);
         $tagsTableSql = file_get_contents(
             ExtensionManagementUtility::extPath('staticfilecache') .
             'Resources/Private/Sql/Cache/Backend/' . $large . 'Typo3DatabaseBackendTags.sql'
         );
 
-        return $requiredTableStructures . str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql) . LF;
+        return $requiredTableStructures . str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql) . chr(10);
     }
 
     /**

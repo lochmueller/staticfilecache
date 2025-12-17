@@ -10,6 +10,7 @@ use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
 use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -56,7 +57,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      * Saves data in the cache.
      *
      * @param string $entryIdentifier An identifier for this specific cache entry
-     * @param string $data            The data to be stored
+     * @param string|mixed $data            The data to be stored
      * @param array  $tags            Tags to associate with this cache entry. If the backend does not support tags, this option can be ignored.
      * @param int    $lifetime        Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      *
@@ -259,7 +260,14 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         }
 
         try {
-            $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+            if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 14) {
+                /** @var ResourceFactory $resourceFactory */
+                $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+            } else {
+                /** @var StorageRepository $resourceFactory */
+                $resourceFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
+            }
+
             $storage = $resourceFactory->getDefaultStorage();
             $baseName = (string) $storage->sanitizeFileName($baseName);
         } catch (\Exception $exception) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Tests\Unit\Cache\Listener;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Cache\Listener\NoBackendUserListener;
 use SFC\Staticfilecache\Cache\Listener\ValidRequestMethodListener;
@@ -26,7 +27,8 @@ class ValidRequestMethodListenerTest extends AbstractListenerTest
         $event = new CacheRuleEvent(
             $request,
             [],
-            false
+            false,
+            $this->getMockBuilder(ResponseInterface::class)->getMock(),
         );
         $listener($event);
 
@@ -44,7 +46,8 @@ class ValidRequestMethodListenerTest extends AbstractListenerTest
         $event = new CacheRuleEvent(
             $request,
             [],
-            false
+            false,
+            $this->getMockBuilder(ResponseInterface::class)->getMock()
         );
         $listener($event);
 

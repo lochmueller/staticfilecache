@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Tests\Unit\Cache\Listener;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Cache\Listener\ForceStaticCacheListener;
 use SFC\Staticfilecache\Event\CacheRuleEvent;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\Http\ServerRequest;
 
 class ForceStaticCacheListenerTest extends AbstractListenerTest
 {
@@ -16,9 +18,10 @@ class ForceStaticCacheListenerTest extends AbstractListenerTest
         $listener = new ForceStaticCacheListener(new NoopEventDispatcher());
 
         $cacheRuleEvent = new CacheRuleEvent(
-            $this->getMockBuilder(ServerRequestInterface::class)->getMock(),
+            new ServerRequest(),
             ['dummy'],
-            false
+            false,
+            $this->getMockBuilder(ResponseInterface::class)->getMock()
         );
 
         $listener($cacheRuleEvent);
