@@ -44,7 +44,7 @@ class UriFrontend extends VariableFrontend
         if (!$this->isValidTag($tag)) {
             throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233058312);
         }
-        assert($this->backend instanceof TaggableBackendInterface);
+        $this->backend instanceof TaggableBackendInterface or throw new \InvalidArgumentException('Backend is not taggable', 12389123);
         $entries = [];
         $identifiers = $this->backend->findIdentifiersByTag($tag);
         foreach ($identifiers as $identifier) {

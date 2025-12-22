@@ -15,6 +15,7 @@ use SFC\Staticfilecache\Event\CacheRuleEvent;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\HttpPushService;
 use SFC\Staticfilecache\Service\InlineAssetsService;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 class PrepareMiddleware implements MiddlewareInterface
 {

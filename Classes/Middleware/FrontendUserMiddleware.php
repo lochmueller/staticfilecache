@@ -19,7 +19,7 @@ class FrontendUserMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $feUser = $request->getAttribute('frontend.user');
-        assert($feUser instanceof FrontendUserAuthentication);
+        $feUser instanceof FrontendUserAuthentication or throw new \InvalidArgumentException('no frontend user attribite in the current request', 127389123);
 
         $response = $handler->handle($request);
 

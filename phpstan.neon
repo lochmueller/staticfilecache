@@ -4,6 +4,3 @@ parameters:
 	paths:
 		- Classes
 		- Tests
-	excludePaths:
-		- Classes/Cache/StaticFileBackend.php
-		- Classes/Cache/StaticFileBackend13.php

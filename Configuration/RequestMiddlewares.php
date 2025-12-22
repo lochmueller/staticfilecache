@@ -14,10 +14,12 @@ return [
         'staticfilecache/prepare' => [
             'target' => PrepareMiddleware::class,
             'before' => [
-                'typo3/cms-frontend/base-redirect-resolver',
+                'typo3/cms-core/cache-timeout',
             ],
             'after' => [
                 'typo3/cms-frontend/site',
+                'typo3/cms-frontend/page-resolver',
+                'typo3/cms-frontend/prepare-tsfe-rendering', // We need frontend.page.information
             ],
         ],
         'staticfilecache/generate' => [
