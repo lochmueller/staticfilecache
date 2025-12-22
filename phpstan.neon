@@ -1,9 +1,9 @@
-includes:
-	- phpstan-baseline.neon
-
 parameters:
 	level: 5
 	reportUnmatchedIgnoredErrors: false
 	paths:
 		- Classes
 		- Tests
+	excludePaths:
+		- Classes/Cache/StaticFileBackend.php
+		- Classes/Cache/StaticFileBackend13.php

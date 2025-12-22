@@ -33,7 +33,7 @@ use TYPO3\CMS\Frontend\Page\PageInformation;
  * - CacheFileName
  * - CacheFileName.gz
  */
-class StaticFileBackend extends StaticDatabaseBackend implements TransientBackendInterface
+class StaticFileBackend13 extends StaticDatabaseBackend implements TransientBackendInterface
 {
     protected EventDispatcherInterface $eventDispatcher;
 
@@ -112,7 +112,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      *
      * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
      */
-    public function get(string $entryIdentifier): mixed
+    public function get($entryIdentifier)
     {
         if (!$this->has($entryIdentifier)) {
             return false;
