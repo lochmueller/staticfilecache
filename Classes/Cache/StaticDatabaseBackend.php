@@ -26,18 +26,11 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend implements Log
     /**
      * Constructs this backend.
      *
-     * @param mixed $context application context
      * @param array  $options Configuration options - depends on the actual backend
      */
-    public function __construct($context, array $options = [])
+    public function __construct(array $options = [])
     {
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 14) {
-            // @phpstan-ignore-next-line
-            parent::__construct($context, $options);
-        } else {
-            // Note. In v14 there is only the options array. So the first Param are the options.
-            parent::__construct($context);
-        }
+        parent::__construct($options);
         $this->configuration = GeneralUtility::makeInstance(ConfigurationService::class);
     }
 

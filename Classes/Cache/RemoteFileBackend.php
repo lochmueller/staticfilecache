@@ -263,15 +263,9 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         }
 
         try {
-            if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 14) {
-                /** @var ResourceFactory $resourceFactory */
-                // @phpstan-ignore-next-line
-                $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-            } else {
-                /** @var StorageRepository $resourceFactory */
-                // @phpstan-ignore-next-line
-                $resourceFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
-            }
+            /** @var StorageRepository $resourceFactory */
+            // @phpstan-ignore-next-line
+            $resourceFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
 
             // @phpstan-ignore-next-line
             $storage = $resourceFactory->getDefaultStorage();

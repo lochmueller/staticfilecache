@@ -37,10 +37,10 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 {
     protected EventDispatcherInterface $eventDispatcher;
 
-    public function __construct($context, array $options = [])
+    public function __construct(array $options = [])
     {
         $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
-        parent::__construct($context, $options);
+        parent::__construct($options);
     }
 
     /**

@@ -8,8 +8,8 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'fe',
     'constraints' => [
         'depends' => [
-            'typo3' => '134.0-14.4.99',
-            'backend' => '13.4.0-14.4.99',
+            'typo3' => '14.0-14.4.99',
+            'backend' => '14.0-14.4.99',
             'php' => '8.3.0-8.99.99',
         ],
     ],
