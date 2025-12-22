@@ -20,6 +20,9 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterface, TransientBackendInterface
 {
+    public const DATETIME_EXPIRYTIME_UNLIMITED_INTERNAL = '9999-12-31T23:59:59+0000';
+    public const UNLIMITED_LIFETIME_INTERNAL = 0;
+
     /**
      * Relative folder name.
      */
@@ -93,7 +96,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         }
 
         GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_TAG, '|' . implode('|', $tags) . '|');
-        GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_LIFETIME, (string) $this->calculateExpiryTime($lifetime)->getTimestamp());
+        GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_LIFETIME, (string) $this->calculateExpiryTimeInternal($lifetime)->getTimestamp());
         GeneralUtility::writeFile($absoluteCacheDir . $fileName . self::FILE_EXTENSION_IDENTIFIER, $entryIdentifier);
     }
 
@@ -262,12 +265,15 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         try {
             if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 14) {
                 /** @var ResourceFactory $resourceFactory */
+                // @phpstan-ignore-next-line
                 $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
             } else {
                 /** @var StorageRepository $resourceFactory */
+                // @phpstan-ignore-next-line
                 $resourceFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
             }
 
+            // @phpstan-ignore-next-line
             $storage = $resourceFactory->getDefaultStorage();
             $baseName = (string) $storage->sanitizeFileName($baseName);
         } catch (\Exception $exception) {
@@ -286,5 +292,21 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         foreach ($tags as $tag) {
             $this->flushByTag($tag);
         }
+    }
+
+    /**
+     * @see https://github.com/TYPO3/typo3/blob/13.4/typo3/sysext/core/Classes/Cache/Backend/AbstractBackend.php#L138 (method do not exists in v14 anymore)
+     */
+    protected function calculateExpiryTimeInternal($lifetime = null)
+    {
+        if ($lifetime === self::UNLIMITED_LIFETIME_INTERNAL || $lifetime === null && $this->defaultLifetime === self::UNLIMITED_LIFETIME_INTERNAL) {
+            $expiryTime = new \DateTime(self::DATETIME_EXPIRYTIME_UNLIMITED_INTERNAL, new \DateTimeZone('UTC'));
+        } else {
+            if ($lifetime === null) {
+                $lifetime = $this->defaultLifetime;
+            }
+            $expiryTime = new \DateTime('now +' . $lifetime . ' seconds', new \DateTimeZone('UTC'));
+        }
+        return $expiryTime;
     }
 }

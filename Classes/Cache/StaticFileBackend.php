@@ -237,8 +237,6 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     public function flushByTags(array $tags): void
     {
-        $this->throwExceptionIfFrontendDoesNotExist();
-
         if (empty($tags)) {
             return;
         }
@@ -275,8 +273,6 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     public function flushByTag($tag): void
     {
-        $this->throwExceptionIfFrontendDoesNotExist();
-
         $this->logger->debug('SFC flushByTags', [$tag]);
         $identifiers = $this->findIdentifiersByTagIncludingExpired($tag);
 
@@ -400,7 +396,6 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      */
     public function findIdentifiersByTags(array $tags)
     {
-        $this->throwExceptionIfFrontendDoesNotExist();
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tagsTable);
         $result = $queryBuilder->select($this->cacheTable . '.identifier')
