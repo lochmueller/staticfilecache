@@ -112,6 +112,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      *
      * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
      */
+    #[\ReturnTypeWillChange]
     public function get(string $entryIdentifier): mixed
     {
         if (!$this->has($entryIdentifier)) {
