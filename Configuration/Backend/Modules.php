@@ -8,7 +8,7 @@ return [
     'web_staticfilecache' => [
         'parent' => 'web',
         'position' => [],
-        'access' => 'user,group',
+        'access' => 'user',
         'workspaces' => '*',
         'path' => '/module/system/staticfilecache',
         'iconIdentifier' => 'module-staticfilecache',
