@@ -6,7 +6,7 @@ use SFC\Staticfilecache\Controller\BackendController;
 
 return [
     'web_staticfilecache' => [
-        'parent' => 'web',
+        'parent' => 'content',
         'position' => [],
         'access' => 'user',
         'workspaces' => '*',
