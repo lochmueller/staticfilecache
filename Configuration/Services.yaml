@@ -58,6 +58,9 @@ services:
       - name: event.listener
         identifier: 'SolrIndexingProcessListenerFallback'
         event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
+      - name: event.listener
+        identifier: 'SolrIndexingProcessListener'
+        event: SFC\Staticfilecache\Event\CacheRuleEvent
 
   SFC\Staticfilecache\Cache\Listener\T3CrawlerIndexingProcessListener:
     tags:
