@@ -4,20 +4,16 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Cache\Listener;
 
-use SFC\Staticfilecache\Event\CacheRuleFallbackEvent;
+use SFC\Staticfilecache\Event\CacheRuleEventInterface;
 
 /**
  * Solr Indexing process.
  */
 class SolrIndexingProcessListener
 {
-    public function __invoke(CacheRuleFallbackEvent $event): void
+    public function __invoke(CacheRuleEventInterface $event): void
     {
-        // Note!! This is handled by old EXT:solr versions!!!
-        // The new version set the 'frontend.cache.instruction' in the
-        // right way and is cached via CachingAllowedListener.
-
-        if ($event->getRequest()->hasHeader('X-Tx-Solr-Iq')) {
+        if ($event->getRequest()->getAttribute('solr.indexingInstructions', null) !== null) {
             $event->addExplanation(__CLASS__, 'Solr Indexing request');
             $event->setSkipProcessing(true);
         }
