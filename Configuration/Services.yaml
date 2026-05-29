@@ -132,6 +132,9 @@ services:
       - name: event.listener
         identifier: 'CachingAllowedListener'
         event: SFC\Staticfilecache\Event\CacheRuleEvent
+      - name: event.listener
+        identifier: 'CachingAllowedListenerFallback'
+        event: SFC\Staticfilecache\Event\CacheRuleFallbackEvent
 
   SFC\Staticfilecache\Cache\Listener\NoUserOrGroupSetListener:
     tags:
