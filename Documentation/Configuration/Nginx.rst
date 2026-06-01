@@ -127,5 +127,25 @@ for the statically cached files. You should therefore activate the PHP generator
 so that the static content is written to a PHP file via which the correct HTML
 headers are set.
 
+*PHP OPcache blacklist*
+
+If the PHP generator is used together with PHP OPcache and the recommended
+production setting `opcache.validate_timestamps = 0`_, OPcache will not pick up
+regenerated static PHP files and outdated content may be delivered. In this case
+the directory of the static PHP files must be added to the
+`opcache.blacklist_filename`_:
+
+.. code-block:: ini
+
+   opcache.blacklist_filename = /path/to/blacklist.txt
+
+blacklist.txt:
+
+.. code-block:: text
+
+   /absolute/path/to/typo3/web/typo3temp/assets/tx_staticfilecache/*
+
 .. _location: http://nginx.org/en/docs/http/ngx_http_core_module.html#location
 .. _try_files: http://nginx.org/en/docs/http/ngx_http_core_module.html#try_files
+.. _opcache.validate_timestamps = 0: https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.validate-timestamps
+.. _opcache.blacklist_filename: https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.blacklist-filename
