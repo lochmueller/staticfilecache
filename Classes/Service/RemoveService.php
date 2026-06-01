@@ -41,9 +41,9 @@ class RemoveService
 
         if (!@unlink($absoulteFileName)) {
             if (!@is_writable($absoulteFileName)) {
-                throw new \RuntimeException('Could not remove file: '.$absoulteFileName, 123678123)
+                throw new \RuntimeException('Could not remove file: ' . $absoulteFileName, 123678123);
             }
-            // Return true if the file no longer exists (don't care _what_ removed 
+            // Return true if the file no longer exists (don't care _what_ removed
             // the file, as long as it's gone).
             // But return false if the file still exists but couldn't be removed
             // by unlink() (for reasons other than write permissions).
