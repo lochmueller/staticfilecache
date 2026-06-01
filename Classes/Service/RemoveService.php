@@ -49,7 +49,7 @@ class RemoveService
             // by unlink() (for reasons other than write permissions).
             // Alternatively, throw an exception if file_exists($file) informing that
             // the file couldn't be removed and this is an error causing stale caches.
-            return !file_exists($file);
+            return !file_exists($absoulteFileName);
         }
         return true;
     }
