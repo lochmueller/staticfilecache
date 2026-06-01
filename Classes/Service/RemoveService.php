@@ -38,7 +38,20 @@ class RemoveService
             return true;
         }
 
-        return (bool) unlink($absoulteFileName);
+
+        if (!@unlink($absoulteFileName)) {
+            if (!@is_writable($absoulteFileName)) {
+                throw new \RuntimeException('Could not remove file: '.$absoulteFileName, 123678123)
+            }
+            // Return true if the file no longer exists (don't care _what_ removed 
+            // the file, as long as it's gone).
+            // But return false if the file still exists but couldn't be removed
+            // by unlink() (for reasons other than write permissions).
+            // Alternatively, throw an exception if file_exists($file) informing that
+            // the file couldn't be removed and this is an error causing stale caches.
+            return !file_exists($file);
+        }
+        return true;
     }
 
     /**
