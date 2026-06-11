@@ -29,9 +29,6 @@ class BrotliGenerator extends AbstractGenerator implements LoggerAwareInterface
 
     public function remove(GeneratorRemove $generatorRemoveEvent): void
     {
-        if (!$this->checkAvailable()) {
-            return;
-        }
         $this->removeFile($generatorRemoveEvent->getFileName() . '.br');
     }
 

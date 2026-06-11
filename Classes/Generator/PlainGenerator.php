@@ -24,10 +24,6 @@ class PlainGenerator extends AbstractGenerator
 
     public function remove(GeneratorRemove $generatorRemoveEvent): void
     {
-
-        if (!$this->getConfigurationService()->get('enableGeneratorPlain')) {
-            return;
-        }
         $this->removeFile($generatorRemoveEvent->getFileName());
     }
 }

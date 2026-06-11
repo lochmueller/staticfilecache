@@ -46,9 +46,6 @@ class PhpGenerator extends HtaccessGenerator
 
     public function remove(GeneratorRemove $generatorRemoveEvent): void
     {
-        if (!$this->getConfigurationService()->get('enableGeneratorPhp')) {
-            return;
-        }
         $this->removeFile($generatorRemoveEvent->getFileName() . '.php');
     }
 

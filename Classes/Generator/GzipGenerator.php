@@ -32,10 +32,6 @@ class GzipGenerator extends AbstractGenerator
 
     public function remove(GeneratorRemove $generatorRemoveEvent): void
     {
-
-        if (!$this->getConfigurationService()->get('enableGeneratorGzip')) {
-            return;
-        }
         $this->removeFile($generatorRemoveEvent->getFileName() . '.gz');
     }
 
