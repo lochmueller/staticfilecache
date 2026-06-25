@@ -30,28 +30,12 @@ class RemoveService
     }
 
     /**
-     * Remove the given file. If the file do not exists, the function return true.
+     * Remove the given file. If the file do not exists afterwards, the function returns true.
+     * Silently ignores errors, if the file was already gone, this is fine as well.
      */
-    public function file(string $absoulteFileName): bool
+    public function file(string $absoluteFilename): bool
     {
-        if (!is_file($absoulteFileName)) {
-            return true;
-        }
-
-
-        if (!@unlink($absoulteFileName)) {
-            if (!@is_writable($absoulteFileName)) {
-                throw new \RuntimeException('Could not remove file: ' . $absoulteFileName, 123678123);
-            }
-            // Return true if the file no longer exists (don't care _what_ removed
-            // the file, as long as it's gone).
-            // But return false if the file still exists but couldn't be removed
-            // by unlink() (for reasons other than write permissions).
-            // Alternatively, throw an exception if file_exists($file) informing that
-            // the file couldn't be removed and this is an error causing stale caches.
-            return !file_exists($absoulteFileName);
-        }
-        return true;
+        return @unlink($absoluteFilename) || !file_exists($absoluteFilename);
     }
 
     /**
