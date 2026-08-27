@@ -126,7 +126,7 @@ class FallbackMiddleware implements MiddlewareInterface
     protected function getCacheConfiguration(string $possibleStaticFile): array
     {
         $configFile = $possibleStaticFile . '.config.json';
-        if (is_file($configFile) || !is_readable($configFile)) {
+        if (is_file($configFile) && is_readable($configFile)) {
             return (array) json_decode((string) GeneralUtility::getUrl($configFile), true);
         }
 
