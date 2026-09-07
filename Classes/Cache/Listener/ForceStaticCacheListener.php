@@ -27,7 +27,7 @@ class ForceStaticCacheListener
             $frontendTypoScript = $event->getRequest()->getAttribute('frontend.typoscript');
             if ($frontendTypoScript instanceof FrontendTypoScript) {
                 $configArray = $frontendTypoScript->getConfigArray();
-                if (!\is_array($configArray['INTincScript'])) {
+                if (!\is_array($configArray['INTincScript'] ?? null)) {
                     // Avoid exceptions in recursivelyReplaceIntPlaceholdersInContent
                     $configArray['INTincScript'] = [];
                     $frontendTypoScript->setConfigArray($configArray);
