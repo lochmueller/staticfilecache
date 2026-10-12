@@ -31,7 +31,8 @@ class HtaccessGenerator extends AbstractGenerator
             $contentType = $matches[0];
         }
 
-        $sendCacheControlHeader = isset($GLOBALS['TSFE']->config['config']['sendCacheHeaders']) ? (bool) $GLOBALS['TSFE']->config['config']['sendCacheHeaders'] : false;
+        $frontendTypoScript = ($GLOBALS['TYPO3_REQUEST'] ?? null)?->getAttribute('frontend.typoscript');
+        $sendCacheControlHeader = $frontendTypoScript instanceof FrontendTypoScript && (bool) ($frontendTypoScript->getConfigArray()['sendCacheHeaders'] ?? false);
 
         $variables = [
             'contentType' => $contentType,
