@@ -58,6 +58,18 @@ final class QueueRepositoryTest extends AbstractTest
         self::assertSame(['https://example.com/b', 'https://example.com/c'], array_column($rows, 'cache_url'));
     }
 
+    public function testFindOpenBatchOrdersEqualPriorityByUid(): void
+    {
+        $this->addEntry('https://example.com/first', 5);
+        $this->addEntry('https://example.com/second', 5);
+        $this->addEntry('https://example.com/high', 10);
+        $this->addEntry('https://example.com/third', 5);
+
+        $rows = (new QueueRepository())->findOpenBatch(10);
+
+        self::assertSame(['https://example.com/high', 'https://example.com/first', 'https://example.com/second', 'https://example.com/third'], array_column($rows, 'cache_url'));
+    }
+
     public function testCountOpen(): void
     {
         $this->addEntry('https://example.com/a');

@@ -72,7 +72,6 @@ class BoostQueueCommand extends AbstractCommand
         $processedCount = 0;
         $successCount = 0;
         $failedCount = 0;
-        $offset = 0;
 
         while ($processedCount < $totalLimit) {
             if ($stopProcessingAfter > 0 && time() >= $startTime + $stopProcessingAfter) {
@@ -80,7 +79,8 @@ class BoostQueueCommand extends AbstractCommand
                 break;
             }
 
-            $entriesBatch = $this->queueRepository->findOpenBatch($batchSize, $offset);
+            // Always fetch from the start: processed entries get a call_date and are not "open" anymore
+            $entriesBatch = $this->queueRepository->findOpenBatch($batchSize);
 
             if (empty($entriesBatch)) {
                 $io->note('No more items in queue.');
@@ -106,8 +106,6 @@ class BoostQueueCommand extends AbstractCommand
             if (count($entriesBatch) < $batchSize) {
                 break;
             }
-
-            $offset += $batchSize;
         }
 
         $duration = time() - $startTime;

@@ -54,7 +54,7 @@ final class BoostQueueCommandTest extends AbstractTest
     public function testEmptyQueue(): void
     {
         $this->queueRepository->method('countOpen')->willReturn(0);
-        $this->queueRepository->expects(self::once())->method('findOpenBatch')->with(50, 0)->willReturn([]);
+        $this->queueRepository->expects(self::once())->method('findOpenBatch')->with(50)->willReturn([]);
         $this->queueService->expects(self::never())->method('runBatchRequests');
         $this->queueRepository->expects(self::never())->method('findOldBatch');
 
@@ -72,10 +72,8 @@ final class BoostQueueCommandTest extends AbstractTest
         $this->queueRepository->method('countOpen')->willReturn(3);
         $this->queueRepository->expects(self::exactly(2))
             ->method('findOpenBatch')
-            ->willReturnMap([
-                [2, 0, [$this->entry(1), $this->entry(2)]],
-                [2, 2, [$this->entry(3)]],
-            ]);
+            ->with(2)
+            ->willReturnOnConsecutiveCalls([$this->entry(1), $this->entry(2)], [$this->entry(3)]);
 
         $this->queueService->expects(self::exactly(2))
             ->method('runBatchRequests')
@@ -97,7 +95,7 @@ final class BoostQueueCommandTest extends AbstractTest
         // Batch size is reduced to the total limit
         $this->queueRepository->expects(self::once())
             ->method('findOpenBatch')
-            ->with(2, 0)
+            ->with(2)
             ->willReturn([$this->entry(1), $this->entry(2)]);
         $this->queueService->method('runBatchRequests')->willReturn([200, 200]);
 
@@ -110,7 +108,7 @@ final class BoostQueueCommandTest extends AbstractTest
     public function testInvalidOptionsFallbackToDefaults(): void
     {
         $this->queueRepository->method('countOpen')->willReturn(0);
-        $this->queueRepository->expects(self::once())->method('findOpenBatch')->with(50, 0)->willReturn([$this->entry(1)]);
+        $this->queueRepository->expects(self::once())->method('findOpenBatch')->with(50)->willReturn([$this->entry(1)]);
         $this->queueService->expects(self::once())->method('runBatchRequests')->with(self::isArray(), 10)->willReturn([200]);
 
         $tester = $this->execute([
@@ -157,6 +155,42 @@ final class BoostQueueCommandTest extends AbstractTest
         $tester = $this->execute();
 
         self::assertStringContainsString('0 items removed in', $tester->getDisplay());
+    }
+
+    public function testProcessAllEntriesOfTheQueue(): void
+    {
+        $connection = $this->createDatabase(
+            'CREATE TABLE tx_staticfilecache_queue (
+                uid INTEGER PRIMARY KEY,
+                cache_url TEXT NOT NULL,
+                cache_priority INTEGER DEFAULT 0 NOT NULL,
+                page_uid INTEGER DEFAULT 0 NOT NULL,
+                invalid_date INTEGER DEFAULT 0 NOT NULL,
+                call_date INTEGER DEFAULT 0 NOT NULL,
+                call_result TEXT NOT NULL
+            )'
+        );
+        for ($i = 1; $i <= 7; $i++) {
+            $connection->insert('tx_staticfilecache_queue', ['cache_url' => 'https://example.com/' . $i, 'cache_priority' => $i, 'call_result' => '']);
+        }
+
+        $repository = new QueueRepository();
+        $calledUrls = [];
+        $this->queueService->method('runBatchRequests')->willReturnCallback(static function (array $entries) use (&$calledUrls, $repository): array {
+            $calledUrls = [...$calledUrls, ...array_column($entries, 'cache_url')];
+            // Mark the entries as processed (like the real QueueService)
+            $repository->bulkUpdate(array_map(static fn(array $entry): array => ['uid' => $entry['uid'], 'call_date' => time(), 'call_result' => 200], $entries));
+
+            return array_fill(0, \count($entries), 200);
+        });
+
+        $tester = new CommandTester(new BoostQueueCommand($repository, $this->queueService));
+        $tester->execute(['--batch-size' => '2', '--avoid-cleanup' => true]);
+
+        self::assertSame(Command::SUCCESS, $tester->getStatusCode());
+        self::assertSame(['https://example.com/7', 'https://example.com/6', 'https://example.com/5', 'https://example.com/4', 'https://example.com/3', 'https://example.com/2', 'https://example.com/1'], $calledUrls);
+        self::assertSame(0, $repository->countOpen());
+        self::assertStringContainsString('Success: 7, Failed: 0', $tester->getDisplay());
     }
 
     protected function entry(int $uid): array

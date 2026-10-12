@@ -40,6 +40,7 @@ class QueueRepository extends AbstractRepository
             ->setMaxResults($limit)
             ->setFirstResult($offset)
             ->orderBy('cache_priority', 'desc')
+            ->addOrderBy('uid', 'asc')
             ->executeQuery()
             ->fetchAllAssociative();
     }
