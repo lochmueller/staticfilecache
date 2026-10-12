@@ -10,8 +10,8 @@ use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use SFC\Staticfilecache\Event\BuildClientEvent;
@@ -53,33 +53,23 @@ class ClientService implements LoggerAwareInterface
 
         try {
             $cookies = $this->prepareSessionCookies($domains);
-
-            $clients = array_map(fn($domain) => $this->getCallableClient($domain), $domains);
-
-            $requests = static function ($urls) use ($clients, $cookies) {
-                foreach ($urls as $url) {
-                    if (isset($clients[$url])) {
-                        yield new Request('GET', $url, [
-                            'cookies' => $cookies[parse_url((string) ($clients[$url]->getConfig('base_uri') ?? ''), PHP_URL_HOST)] ?? null,
-                            'User-Agent' => GeneralUtility::makeInstance(ConfigurationService::class)
-                                ->get('overrideClientUserAgent') ?? self::DEFAULT_USER_AGENT,
-                        ]);
-                    } else {
-                        yield new Request('GET', $url, [
-                            'User-Agent' => GeneralUtility::makeInstance(ConfigurationService::class)
-                                ->get('overrideClientUserAgent') ?? self::DEFAULT_USER_AGENT,
-                        ]);
-                    }
-                }
-            };
+            $userAgent = GeneralUtility::makeInstance(ConfigurationService::class)->get('overrideClientUserAgent') ?? self::DEFAULT_USER_AGENT;
 
             $statusCodes = array_fill(0, count($urls), 900);
 
             $poolClient = $this->getParallelClient();
 
+            // Cookies are request options (not headers), so the requests are sent via callables
+            $requests = static function ($urls) use ($poolClient, $domains, $cookies, $userAgent) {
+                foreach ($urls as $url) {
+                    $options = isset($domains[$url]) ? ['cookies' => $cookies[$domains[$url]]] : [];
+                    yield static fn() => $poolClient->sendAsync(new Request('GET', $url, ['User-Agent' => $userAgent]), $options);
+                }
+            };
+
             $pool = new Pool($poolClient, $requests($urls), [
                 'concurrency' => $concurrency,
-                'fulfilled' => static function (Response $response, $index) use (&$statusCodes): void {
+                'fulfilled' => static function (ResponseInterface $response, $index) use (&$statusCodes): void {
                     $statusCodes[$index] = (int) $response->getStatusCode();
                 },
                 'rejected' => function ($reason, $index) use (&$statusCodes): void {
@@ -138,9 +128,7 @@ class ClientService implements LoggerAwareInterface
         $jar->setCookie($cookie);
         $options = [
             'cookies' => $jar,
-            'allow_redirects' => [
-                'max' => false,
-            ],
+            'allow_redirects' => false,
             'headers' => [
                 'User-Agent' => GeneralUtility::makeInstance(ConfigurationService::class)->get('overrideClientUserAgent') ?? self::DEFAULT_USER_AGENT,
             ],
@@ -174,9 +162,7 @@ class ClientService implements LoggerAwareInterface
         $options = [
             'timeout' => 30,
             'connect_timeout' => 10,
-            'allow_redirects' => [
-                'max' => false,
-            ],
+            'allow_redirects' => false,
         ];
 
         $httpOptions = (array) $GLOBALS['TYPO3_CONF_VARS']['HTTP'];

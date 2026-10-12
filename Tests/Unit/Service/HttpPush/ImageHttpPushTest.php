@@ -21,7 +21,7 @@ final class ImageHttpPushTest extends AbstractHttpPushTest
     {
         $service = new ImageHttpPush();
         $service->canHandleExtension('jpg');
-        $headers = $service->getHeaders($this->getExampleContent());
+        $headers = $service->getHeaders($this->getExampleContent(), $this->getRequest());
 
         $exepected = [
             [

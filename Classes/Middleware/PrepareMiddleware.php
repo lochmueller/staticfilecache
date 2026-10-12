@@ -73,7 +73,7 @@ class PrepareMiddleware implements MiddlewareInterface
         $responseBody->write($processedHtml);
         $response = $response->withBody($responseBody);
 
-        $pushHeaders = (array) $this->httpPushService->getHttpPushHeaders((string) $response->getBody());
+        $pushHeaders = (array) $this->httpPushService->getHttpPushHeaders($request, (string) $response->getBody());
         foreach ($pushHeaders as $pushHeader) {
             if (mb_detect_encoding($pushHeader['path'], 'ASCII', true)) {
                 $value = '<' . $pushHeader['path'] . '>; rel=preload; as=' . $pushHeader['type'];

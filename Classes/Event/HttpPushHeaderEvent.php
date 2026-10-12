@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 final class HttpPushHeaderEvent
 {
     public function __construct(
         private array  $headers,
         private string $content,
-        private array  $extensions
+        private array  $extensions,
+        private readonly ServerRequestInterface $request
     ) {}
 
     public function getHeaders(): array
@@ -30,6 +33,11 @@ final class HttpPushHeaderEvent
     public function getContent(): string
     {
         return $this->content;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 
 

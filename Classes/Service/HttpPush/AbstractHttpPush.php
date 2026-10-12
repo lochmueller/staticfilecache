@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service\HttpPush;
 
+use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Event\HttpPushHeaderEvent;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractHttpPush
@@ -13,7 +15,7 @@ abstract class AbstractHttpPush
     {
         foreach ($event->getExtensions() as $extension) {
             if ($this->canHandleExtension($extension)) {
-                $event->setHeaders(array_merge($event->getHeaders(), $this->getHeaders($event->getContent())));
+                $event->setHeaders(array_merge($event->getHeaders(), $this->getHeaders($event->getContent(), $event->getRequest())));
             }
         }
     }
@@ -30,24 +32,31 @@ abstract class AbstractHttpPush
      * - path
      * - type
      */
-    abstract public function getHeaders(string $content): array;
+    abstract public function getHeaders(string $content, ServerRequestInterface $request): array;
 
     /**
      * Streamline file paths.
      */
-    protected function streamlineFilePaths(array $paths): array
+    protected function streamlineFilePaths(array $paths, ServerRequestInterface $request): array
     {
-        $paths = array_map(function ($url) {
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        if (!$normalizedParams instanceof NormalizedParams) {
+            return [];
+        }
+
+        $paths = array_map(function ($url) use ($request) {
             if (!GeneralUtility::isValidUrl($url) && ':' !== $url[0]) {
-                $url = GeneralUtility::locationHeaderUrl($url);
+                $url = GeneralUtility::locationHeaderUrl($url, $request);
             }
 
             return $url;
         }, $paths);
 
-        $paths = array_filter($paths, fn($path) => GeneralUtility::isOnCurrentHost($path) && ':' !== $path[0]);
+        $paths = array_filter($paths, fn($path) => GeneralUtility::isOnCurrentHost($path, $request) && ':' !== $path[0]);
 
-        return array_map(fn($url) => '/' . ltrim(str_replace(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), '', $url), '/'), $paths);
+        $requestHost = $normalizedParams->getRequestHost();
+
+        return array_map(fn($url) => '/' . ltrim(str_replace($requestHost, '', $url), '/'), $paths);
     }
 
     /**

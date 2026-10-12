@@ -20,7 +20,7 @@ final class StyleHttpPushTest extends AbstractHttpPushTest
     public function testGetValidHeaders(): void
     {
         $service = new StyleHttpPush();
-        $headers = $service->getHeaders($this->getExampleContent());
+        $headers = $service->getHeaders($this->getExampleContent(), $this->getRequest());
 
         $exepected = [
             [
@@ -35,5 +35,18 @@ final class StyleHttpPushTest extends AbstractHttpPushTest
 
         static::assertSame($exepected, $headers, 'Wrong header result from service');
         static::assertCount(2, $headers);
+    }
+
+    public function testCanHandleExtension(): void
+    {
+        $service = new StyleHttpPush();
+
+        static::assertTrue($service->canHandleExtension('css'));
+        static::assertFalse($service->canHandleExtension('js'));
+    }
+
+    public function testGetNoHeadersWithoutMatches(): void
+    {
+        static::assertSame([], (new StyleHttpPush())->getHeaders('<html></html>', $this->getRequest()));
     }
 }

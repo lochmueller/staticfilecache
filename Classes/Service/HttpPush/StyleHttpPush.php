@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service\HttpPush;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 class StyleHttpPush extends AbstractHttpPush
 {
     /**
@@ -17,13 +19,13 @@ class StyleHttpPush extends AbstractHttpPush
     /**
      * Get headers for the current file extension.
      */
-    public function getHeaders(string $content): array
+    public function getHeaders(string $content, ServerRequestInterface $request): array
     {
         if (!preg_match_all('/(?<=href=")(?<src>[^"]+?\.css(\.gzi?p?)?(\?\d+)?)(?=")(?!\smedia="print")/', $content, $cssFiles)) {
             return [];
         }
 
-        $paths = $this->streamlineFilePaths((array) $cssFiles['src']);
+        $paths = $this->streamlineFilePaths((array) $cssFiles['src'], $request);
 
         return $this->mapPathsWithType($paths, 'style');
     }

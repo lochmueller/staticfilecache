@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service\HttpPush;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 class FontHttpPush extends AbstractHttpPush
 {
     /**
      * Last checked extension.
      */
-    protected ?string $lastExtension;
+    protected ?string $lastExtension = null;
 
     /**
      * Fonts extensions.
@@ -33,7 +35,7 @@ class FontHttpPush extends AbstractHttpPush
     /**
      * Get headers for the current file extension.
      */
-    public function getHeaders(string $content): array
+    public function getHeaders(string $content, ServerRequestInterface $request): array
     {
         if (null === $this->lastExtension) {
             return [];
@@ -43,7 +45,7 @@ class FontHttpPush extends AbstractHttpPush
             return [];
         }
 
-        $paths = $this->streamlineFilePaths((array) $fontFiles['src']);
+        $paths = $this->streamlineFilePaths((array) $fontFiles['src'], $request);
 
         return $this->mapPathsWithType($paths, 'font');
     }

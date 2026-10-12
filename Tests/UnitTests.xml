@@ -11,6 +11,8 @@
 			<exclude>Unit/AbstractTest.php</exclude>
 			<exclude>Unit/Service/HttpPush/AbstractHttpPushTest.php</exclude>
 			<exclude>Unit/Cache/Listener/AbstractListenerTest.php</exclude>
+			<exclude>Unit/Generator/AbstractGeneratorTest.php</exclude>
+			<exclude>Unit/Service/InlineAssets/AbstractInlineAssetsTest.php</exclude>
 		</testsuite>
 	</testsuites>
 	<source>

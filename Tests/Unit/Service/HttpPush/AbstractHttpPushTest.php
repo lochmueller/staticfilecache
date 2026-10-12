@@ -4,13 +4,29 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Tests\Unit\Service\HttpPush;
 
+use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Tests\Unit\AbstractTest;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 
 /**
  * AbstractHttpPushTest.
  */
 abstract class AbstractHttpPushTest extends AbstractTest
 {
+    protected function getRequest(): ServerRequestInterface
+    {
+        $serverParams = [
+            'HTTP_HOST' => 'www.example.com',
+            'HTTPS' => 'on',
+            'SCRIPT_NAME' => '/index.php',
+            'SCRIPT_FILENAME' => '/var/www/html/index.php',
+        ];
+
+        return (new ServerRequest('https://www.example.com/', 'GET', null, [], $serverParams))
+            ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams($serverParams));
+    }
+
     protected function getExampleContent(): string
     {
         return '<!doctype html>

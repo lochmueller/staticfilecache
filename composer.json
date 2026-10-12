@@ -80,6 +80,7 @@
 		"code-test": [
 			"phpunit -c Tests/UnitTests.xml"
 		],
+		"code-test-coverage": "XDEBUG_MODE=coverage phpunit -c Tests/UnitTests.xml --coverage-html .Build/coverage/",
 		"rector": [
 			"rector"
 		]

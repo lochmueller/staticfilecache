@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service\HttpPush;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 class ImageHttpPush extends AbstractHttpPush
 {
     /**
      * Last checked extension.
      */
-    protected ?string $lastExtension;
+    protected ?string $lastExtension = null;
 
     /**
      * Image extensions.
@@ -32,7 +34,7 @@ class ImageHttpPush extends AbstractHttpPush
     /**
      * Get headers for the current file extension.
      */
-    public function getHeaders(string $content): array
+    public function getHeaders(string $content, ServerRequestInterface $request): array
     {
         if (null === $this->lastExtension) {
             return [];
@@ -42,7 +44,7 @@ class ImageHttpPush extends AbstractHttpPush
             return [];
         }
 
-        $paths = $this->streamlineFilePaths((array) $imageFiles['src']);
+        $paths = $this->streamlineFilePaths((array) $imageFiles['src'], $request);
 
         return $this->mapPathsWithType($paths, 'image');
     }

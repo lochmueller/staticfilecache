@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service\HttpPush;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 class ScriptHttpPush extends AbstractHttpPush
 {
     /**
@@ -17,13 +19,13 @@ class ScriptHttpPush extends AbstractHttpPush
     /**
      * Get headers for the current file extension.
      */
-    public function getHeaders(string $content): array
+    public function getHeaders(string $content, ServerRequestInterface $request): array
     {
         if (!preg_match_all('/(?<=src=")(?<src>[^"]+?\.js(\.gzi?p?)?(\?\d+)?)(?=")/', $content, $jsFiles)) {
             return [];
         }
 
-        $paths = $this->streamlineFilePaths($jsFiles['src']);
+        $paths = $this->streamlineFilePaths($jsFiles['src'], $request);
 
         return $this->mapPathsWithType($paths, 'script');
     }

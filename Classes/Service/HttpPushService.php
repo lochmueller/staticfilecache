@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Service;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Event\HttpPushHeaderEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -15,7 +16,7 @@ class HttpPushService
     /**
      * Get http push headers.
      */
-    public function getHttpPushHeaders(string $content): array
+    public function getHttpPushHeaders(ServerRequestInterface $request, string $content): array
     {
         $headers = [];
 
@@ -31,7 +32,7 @@ class HttpPushService
                 $content = (string) $limitToAreaMatch[0];
             }
 
-            $event = new HttpPushHeaderEvent($headers, $content, $extensions);
+            $event = new HttpPushHeaderEvent($headers, $content, $extensions, $request);
             $this->eventDispatcher->dispatch($event);
 
             $headers = \array_slice($event->getHeaders(), 0, $limit);
