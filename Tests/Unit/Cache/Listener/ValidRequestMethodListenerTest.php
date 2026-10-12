@@ -21,14 +21,14 @@ class ValidRequestMethodListenerTest extends AbstractListenerTest
 
         $listener = new ValidRequestMethodListener();
 
-        $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $request = $this->createStub(ServerRequestInterface::class);
         $request->method('getMethod')->willReturn('GET');
 
         $event = new CacheRuleEvent(
             $request,
             [],
             false,
-            $this->getMockBuilder(ResponseInterface::class)->getMock(),
+            $this->createStub(ResponseInterface::class),
         );
         $listener($event);
 
@@ -40,14 +40,14 @@ class ValidRequestMethodListenerTest extends AbstractListenerTest
     {
         $listener = new ValidRequestMethodListener();
 
-        $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $request = $this->createStub(ServerRequestInterface::class);
         $request->method('getMethod')->willReturn('POST');
 
         $event = new CacheRuleEvent(
             $request,
             [],
             false,
-            $this->getMockBuilder(ResponseInterface::class)->getMock()
+            $this->createStub(ResponseInterface::class)
         );
         $listener($event);
 

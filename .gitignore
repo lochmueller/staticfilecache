@@ -7,3 +7,4 @@
 /Documentation-GENERATED-temp/
 /composer.lock
 /Tests/.phpunit.cache/
+/.php-cs-fixer.cache

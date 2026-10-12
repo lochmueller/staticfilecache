@@ -50,7 +50,7 @@ class IdentifierBuilder
         $buildIdentifier = $this->eventDispatcher->dispatch(new BuildIdentifierEvent($requestUri, $parts));
 
         $absoluteBasePath = GeneralUtility::makeInstance(CacheService::class)->getAbsoluteBaseDirectory();
-        $resultPath = GeneralUtility::resolveBackPath($absoluteBasePath . implode('/', $buildIdentifier->getParts()));
+        $resultPath = $absoluteBasePath . implode('/', $buildIdentifier->getParts());
 
         if (!str_starts_with($resultPath, $absoluteBasePath)) {
             throw new Exception('The generated filename "' . $resultPath . '" should start with the cache directory "' . $absoluteBasePath . '"', 123781);

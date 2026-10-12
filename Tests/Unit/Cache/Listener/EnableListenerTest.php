@@ -11,7 +11,7 @@ class EnableListenerTest extends AbstractListenerTest
 {
     public function testNoExplanation(): void
     {
-        $configurationService = $this->getMockBuilder(ConfigurationService::class)->disableOriginalConstructor()->getMock();
+        $configurationService = $this->createStub(ConfigurationService::class);
         $configurationService->method('isBool')->willReturn(false);
 
         $listener = new EnableListener($configurationService);
@@ -27,7 +27,7 @@ class EnableListenerTest extends AbstractListenerTest
 
     public function testAddExplanation(): void
     {
-        $configurationService = $this->getMockBuilder(ConfigurationService::class)->disableOriginalConstructor()->getMock();
+        $configurationService = $this->createStub(ConfigurationService::class);
         $configurationService->method('isBool')->willReturn(true);
 
         $listener = new EnableListener($configurationService);

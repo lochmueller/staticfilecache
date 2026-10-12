@@ -13,6 +13,7 @@
 			<exclude>Unit/Cache/Listener/AbstractListenerTest.php</exclude>
 			<exclude>Unit/Generator/AbstractGeneratorTest.php</exclude>
 			<exclude>Unit/Service/InlineAssets/AbstractInlineAssetsTest.php</exclude>
+			<exclude>Unit/Middleware/AbstractMiddlewareTest.php</exclude>
 		</testsuite>
 	</testsuites>
 	<source>

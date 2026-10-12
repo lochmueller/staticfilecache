@@ -186,7 +186,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      */
     public function collectGarbage(): void
     {
-        $lifetimeFiles = glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*/*/*' . self::FILE_EXTENSION_LIFETIME);
+        $lifetimeFiles = glob($this->getStorageFilePattern(self::FILE_EXTENSION_LIFETIME));
 
         $identifiers = [];
 
@@ -230,7 +230,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      */
     public function findIdentifiersByTag(string $tag): array
     {
-        $tagsFiles = glob(GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . '*/*/*' . self::FILE_EXTENSION_TAG);
+        $tagsFiles = glob($this->getStorageFilePattern(self::FILE_EXTENSION_TAG));
         $identifiers = [];
         foreach ($tagsFiles as $tagsFile) {
             if (false !== mb_strpos(file_get_contents($tagsFile), '|' . $tag . '|')) {
@@ -239,6 +239,14 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
         }
 
         return $identifiers;
+    }
+
+    /**
+     * Get the glob pattern for all files with the given extension (respects the hash folder structure).
+     */
+    protected function getStorageFilePattern(string $fileExtension): string
+    {
+        return GeneralUtility::getFileAbsFileName(self::RELATIVE_STORAGE_FOLDER) . str_repeat('*/', $this->hashLength) . '*' . $fileExtension;
     }
 
     /**

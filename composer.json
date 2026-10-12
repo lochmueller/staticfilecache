@@ -34,8 +34,7 @@
 		"ext-pdo": "*",
 		"ext-zlib": "*",
 		"typo3/cms-core": "^14.0",
-		"typo3/cms-backend": "^14.0",
-		"typo3/cms-extensionmanager": "^14.0"
+		"typo3/cms-backend": "^14.0"
 	},
 	"license": "GPL-2.0-or-later",
 	"homepage": "https://extensions.typo3.org/extension/staticfilecache",

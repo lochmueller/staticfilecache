@@ -18,8 +18,21 @@ abstract class AbstractListenerTest extends AbstractTest
             new ServerRequest(),
             [],
             false,
-            $this->getMockBuilder(ResponseInterface::class)->getMock(),
+            $this->createStub(ResponseInterface::class),
         );
     }
 
+    protected function cacheRuleEvent(
+        ServerRequestInterface $request,
+        ?ResponseInterface $response = null,
+        array $explanation = [],
+        bool $skipProcessing = false,
+    ): CacheRuleEvent {
+        return new CacheRuleEvent(
+            $request,
+            $explanation,
+            $skipProcessing,
+            $response ?? $this->createStub(ResponseInterface::class),
+        );
+    }
 }

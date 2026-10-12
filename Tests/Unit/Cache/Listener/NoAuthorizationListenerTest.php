@@ -27,14 +27,14 @@ class NoAuthorizationListenerTest extends AbstractListenerTest
     {
         $listener = new NoAuthorizationListener();
 
-        $request = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $request = $this->createStub(ServerRequestInterface::class);
         $request->method('getHeaderLine')->willReturn('Content');
 
         $event = new CacheRuleEvent(
             $request,
             [],
             false,
-            $this->getMockBuilder(ResponseInterface::class)->getMock(),
+            $this->createStub(ResponseInterface::class),
         );
         $listener($event);
 
