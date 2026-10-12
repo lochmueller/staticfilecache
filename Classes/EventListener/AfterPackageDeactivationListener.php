@@ -17,6 +17,10 @@ class AfterPackageDeactivationListener
 
     public function __invoke(AfterPackageDeactivationEvent $event): void
     {
+        if ('staticfilecache' !== $event->getPackageKey()) {
+            return;
+        }
+
         $this->configurationService->override('boostMode', '0');
         $this->cacheService->get()->flush();
     }

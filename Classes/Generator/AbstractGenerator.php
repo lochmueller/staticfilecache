@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Generator;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use SFC\Staticfilecache\Event\GeneratorContentManipulationEvent;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
 use SFC\Staticfilecache\Service\ConfigurationService;
@@ -28,6 +28,22 @@ abstract class AbstractGenerator
     protected function getConfigurationService(): ConfigurationService
     {
         return GeneralUtility::makeInstance(ConfigurationService::class);
+    }
+
+    /**
+     * Get the manipulated content. The GeneratorContentManipulationEvent is dispatched only once per GeneratorCreate event.
+     */
+    protected function getContent(GeneratorCreate $generatorCreateEvent): string
+    {
+        $content = $generatorCreateEvent->getManipulatedContent();
+        if (null === $content) {
+            /** @var GeneratorContentManipulationEvent $contentManipulationEvent */
+            $contentManipulationEvent = $this->eventDispatcher->dispatch(new GeneratorContentManipulationEvent((string) $generatorCreateEvent->getResponse()->getBody()));
+            $content = $contentManipulationEvent->getContent();
+            $generatorCreateEvent->setManipulatedContent($content);
+        }
+
+        return $content;
     }
 
     protected function writeFile(string $fileName, string $content): void

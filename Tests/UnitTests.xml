@@ -1,24 +1,20 @@
 <?xml version="1.0"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="true"
-				 bootstrap="../.Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php" colors="true"
-				 processIsolation="false" stopOnError="false" stopOnFailure="false" stopOnIncomplete="false"
-				 stopOnSkipped="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd"
-				 cacheDirectory=".phpunit.cache" backupStaticProperties="false" requireCoverageMetadata="false">
-	<coverage/>
-	<testsuites>
-		<testsuite name="staticfilecache tests">
-			<directory>Unit/</directory>
-			<exclude>Unit/AbstractTest.php</exclude>
-			<exclude>Unit/Service/HttpPush/AbstractHttpPushTest.php</exclude>
-			<exclude>Unit/Cache/Listener/AbstractListenerTest.php</exclude>
-			<exclude>Unit/Generator/AbstractGeneratorTest.php</exclude>
-			<exclude>Unit/Service/InlineAssets/AbstractInlineAssetsTest.php</exclude>
-			<exclude>Unit/Middleware/AbstractMiddlewareTest.php</exclude>
-		</testsuite>
-	</testsuites>
-	<source>
-		<include>
-			<directory suffix=".php">../Classes/</directory>
-		</include>
-	</source>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="true" bootstrap="../.Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php" colors="true" processIsolation="false" stopOnError="false" stopOnFailure="false" stopOnIncomplete="false" stopOnSkipped="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/13.4/phpunit.xsd" cacheDirectory=".phpunit.cache" backupStaticProperties="false" requireCoverageMetadata="false">
+  <coverage/>
+  <testsuites>
+    <testsuite name="staticfilecache tests">
+      <directory>Unit/</directory>
+      <exclude>Unit/AbstractTest.php</exclude>
+      <exclude>Unit/Service/HttpPush/AbstractHttpPushTest.php</exclude>
+      <exclude>Unit/Cache/Listener/AbstractListenerTest.php</exclude>
+      <exclude>Unit/Generator/AbstractGeneratorTest.php</exclude>
+      <exclude>Unit/Service/InlineAssets/AbstractInlineAssetsTest.php</exclude>
+      <exclude>Unit/Middleware/AbstractMiddlewareTest.php</exclude>
+    </testsuite>
+  </testsuites>
+  <source>
+    <include>
+      <directory suffix=".php">../Classes/</directory>
+    </include>
+  </source>
 </phpunit>

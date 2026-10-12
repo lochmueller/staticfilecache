@@ -67,6 +67,19 @@ final class QueueRepositoryTest extends AbstractTest
         self::assertSame(2, (new QueueRepository())->countOpen());
     }
 
+    public function testCountOpenByIdentifier(): void
+    {
+        $this->addEntry('https://example.com/a', 1);
+        $this->addEntry('https://example.com/a', 2);
+        $this->addEntry('https://example.com/a', 3, 12345);
+        $this->addEntry('https://example.com/b', 1);
+
+        $repository = new QueueRepository();
+        self::assertSame(2, $repository->countOpenByIdentifier('https://example.com/a'));
+        self::assertSame(1, $repository->countOpenByIdentifier('https://example.com/b'));
+        self::assertSame(0, $repository->countOpenByIdentifier('https://example.com/c'));
+    }
+
     public function testFindOldUidsAndOldBatch(): void
     {
         $this->addEntry('https://example.com/open');

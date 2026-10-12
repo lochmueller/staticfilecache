@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Generator;
 
-use SFC\Staticfilecache\Event\GeneratorContentManipulationEvent;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
 
@@ -16,10 +15,8 @@ class PlainGenerator extends AbstractGenerator
         if (!$this->getConfigurationService()->get('enableGeneratorPlain')) {
             return;
         }
-        /** @var GeneratorContentManipulationEvent  $contentManipulationEvent */
-        $contentManipulationEvent = $this->eventDispatcher->dispatch(new GeneratorContentManipulationEvent((string) $generatorCreateEvent->getResponse()->getBody()));
 
-        $this->writeFile($generatorCreateEvent->getFileName(), $contentManipulationEvent->getContent());
+        $this->writeFile($generatorCreateEvent->getFileName(), $this->getContent($generatorCreateEvent));
     }
 
     public function remove(GeneratorRemove $generatorRemoveEvent): void

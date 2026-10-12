@@ -52,10 +52,19 @@ final class CacheRepositoryTest extends AbstractTest
 
     public function testCountAllIdentifiersOnEmptyTable(): void
     {
-        // Note: rowCount() of SELECT statements is not supported by SQLite, so only the empty table is checked
         $this->setExtensionConfiguration();
 
         self::assertSame(0, (new CacheRepository())->countAllIdentifiers());
+    }
+
+    public function testCountAllIdentifiersCountsUniqueIdentifiers(): void
+    {
+        $this->setExtensionConfiguration();
+        $this->connection->insert('cache_staticfilecache', ['identifier' => 'https://example.com/a', 'expires' => 1]);
+        $this->connection->insert('cache_staticfilecache', ['identifier' => 'https://example.com/a', 'expires' => 2]);
+        $this->connection->insert('cache_staticfilecache', ['identifier' => 'https://example.com/b', 'expires' => 3]);
+
+        self::assertSame(2, (new CacheRepository())->countAllIdentifiers());
     }
 
     public function testUseOtherTablePrefix(): void

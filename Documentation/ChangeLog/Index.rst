@@ -66,7 +66,6 @@ ChangeLog
 - Fix #56519 Add notice about AddType in the .htaccess
 - Fix #66779 (partly) wrong empty Space in .htaccess template
 - Add lines of #58315 to the cookie hook, to check if a FE cookie already exists (disabled)
-- Remove the double .htaccess files, because realurl and simulateStaticDocuments use the same structure
 - Add one separate explanation for every single INT script in the page
 - Split up the Slot handling and the rule checking in the rules
 
@@ -146,7 +145,6 @@ ChangeLog
 2015-04-17 Tim Lochmüller <tim@fruit-lab.de>
 
 - Fix #6648 The explanation database table field should be emptied while an update
-- Fix #42734 recreateURI() should keep realurl encoded parameter
 - Migration first documentation blocks
 - Use the caching framework for creating the cache files
 - Fix the backend module for the new Configuration class

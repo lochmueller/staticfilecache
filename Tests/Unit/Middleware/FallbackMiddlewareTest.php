@@ -107,6 +107,11 @@ final class FallbackMiddlewareTest extends AbstractMiddlewareTest
             'gzip' => ['gzip, deflate', ['br', 'gz'], 'gzip', 'gzip'],
             'gzip fallback without brotli file' => ['gzip, br', ['gz'], 'gzip', 'gzip'],
             'no compressed file' => ['gzip, br', [], '', 'plain'],
+            'brotli with q=0' => ['gzip, br;q=0', ['br', 'gz'], 'gzip', 'gzip'],
+            'all with q=0' => ['br; q=0, gzip;q=0.0', ['br', 'gz'], '', 'plain'],
+            'wildcard' => ['*', ['br', 'gz'], 'br', 'brotli'],
+            'wildcard without brotli' => ['br;q=0, *', ['br', 'gz'], 'gzip', 'gzip'],
+            'no accept encoding' => ['', ['br', 'gz'], '', 'plain'],
         ];
     }
 
@@ -123,6 +128,7 @@ final class FallbackMiddlewareTest extends AbstractMiddlewareTest
 
         self::assertSame($expectedEncoding, $response->getHeaderLine('Content-Encoding'));
         self::assertSame($expectedContent, (string) $response->getBody());
+        self::assertSame('Accept-Encoding', $response->getHeaderLine('Vary'));
     }
 
     public function testSkipProcessingViaEvent(): void

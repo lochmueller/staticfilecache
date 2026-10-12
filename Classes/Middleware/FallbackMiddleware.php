@@ -98,24 +98,58 @@ class FallbackMiddleware implements MiddlewareInterface
             $headers['X-SFC-State'] = 'StaticFileCache - via Fallback Middleware';
         }
 
-        foreach ($request->getHeader('accept-encoding') as $acceptEncoding) {
-            if (str_contains($acceptEncoding, 'br')) {
-                if (is_file($possibleStaticFile . '.br') && is_readable($possibleStaticFile . '.br')) {
-                    $headers['Content-Encoding'] = 'br';
-                    $possibleStaticFile .= '.br';
-                    break;
-                }
-            }
-            if (str_contains($acceptEncoding, 'gzip')) {
-                if (is_file($possibleStaticFile . '.gz') && is_readable($possibleStaticFile . '.gz')) {
-                    $headers['Content-Encoding'] = 'gzip';
-                    $possibleStaticFile .= '.gz';
-                    break;
-                }
+        // The delivered content depends on the Accept-Encoding header
+        $vary = array_filter(array_map('trim', explode(',', (string) ($headers['Vary'] ?? ''))));
+        if (!\in_array('accept-encoding', array_map('strtolower', $vary), true)) {
+            $vary[] = 'Accept-Encoding';
+        }
+        $headers['Vary'] = implode(', ', $vary);
+
+        $acceptedEncodings = $this->getAcceptedEncodings($request);
+        foreach (['br' => '.br', 'gzip' => '.gz'] as $encoding => $extension) {
+            if (\in_array($encoding, $acceptedEncodings, true) && is_file($possibleStaticFile . $extension) && is_readable($possibleStaticFile . $extension)) {
+                $headers['Content-Encoding'] = $encoding;
+                $possibleStaticFile .= $extension;
+                break;
             }
         }
 
         return $headers;
+    }
+
+    /**
+     * Get the accepted content encodings of the request (encodings with "q=0" are not accepted).
+     *
+     * @return string[]
+     */
+    protected function getAcceptedEncodings(ServerRequestInterface $request): array
+    {
+        $qualities = [];
+        foreach (explode(',', $request->getHeaderLine('accept-encoding')) as $item) {
+            $parameters = explode(';', $item);
+            $encoding = strtolower(trim(array_shift($parameters)));
+            if ('' === $encoding) {
+                continue;
+            }
+            $quality = 1.0;
+            foreach ($parameters as $parameter) {
+                $parameter = strtolower(str_replace(' ', '', $parameter));
+                if (str_starts_with($parameter, 'q=')) {
+                    $quality = (float) substr($parameter, 2);
+                }
+            }
+            $qualities[$encoding] = $quality;
+        }
+
+        $accepted = [];
+        foreach (['br', 'gzip'] as $encoding) {
+            $quality = $qualities[$encoding] ?? $qualities['*'] ?? 0.0;
+            if ($quality > 0) {
+                $accepted[] = $encoding;
+            }
+        }
+
+        return $accepted;
     }
 
     /**

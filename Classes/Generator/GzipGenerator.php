@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Generator;
 
-use SFC\Staticfilecache\Event\GeneratorContentManipulationEvent;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -22,9 +21,7 @@ class GzipGenerator extends AbstractGenerator
         if (!$this->getConfigurationService()->get('enableGeneratorGzip')) {
             return;
         }
-        /** @var GeneratorContentManipulationEvent  $contentManipulationEvent */
-        $contentManipulationEvent = $this->eventDispatcher->dispatch(new GeneratorContentManipulationEvent((string) $generatorCreateEvent->getResponse()->getBody()));
-        $contentGzip = gzencode($contentManipulationEvent->getContent(), $this->getCompressionLevel());
+        $contentGzip = gzencode($this->getContent($generatorCreateEvent), $this->getCompressionLevel());
         if ($contentGzip) {
             $this->writeFile($generatorCreateEvent->getFileName() . '.gz', $contentGzip);
         }

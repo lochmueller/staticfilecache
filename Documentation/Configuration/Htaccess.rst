@@ -106,12 +106,6 @@ variables (SFC_ROOT, SFC_GZIP) and read the comments carefully.
    RewriteCond %{ENV:REDIRECT_STATUS} ^$
    RewriteRule .* - [F,L]
 
-   # Handle application cache
-   RewriteCond %{REQUEST_FILENAME} !-f
-   RewriteCond %{REQUEST_FILENAME} !-d
-   RewriteCond %{REQUEST_FILENAME} !-l
-   RewriteRule ^.*\.sfc$ %{ENV:CWD}index.php?eID=sfc_manifest [QSA,L]
-
    ### Begin: StaticFileCache (options) ####
 
    # Set proper content type and encoding for gzipped html.

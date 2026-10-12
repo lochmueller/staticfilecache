@@ -14,6 +14,6 @@ types or other :ref:`conditions <t3tsref:conditions>`, for example:
 
 .. code-block:: typoscript
 
-   [getTSFE().type == <type>]
+   [request.getPageArguments().getPageType() == <type>]
    config.tx_staticfilecache.disableCache = 1
    [global]

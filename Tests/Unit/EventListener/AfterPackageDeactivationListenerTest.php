@@ -32,4 +32,17 @@ final class AfterPackageDeactivationListenerTest extends AbstractTest
 
         self::assertSame('0', $configurationService->get('boostMode'));
     }
+
+    public function testIgnoreOtherPackages(): void
+    {
+        $configurationService = $this->setExtensionConfiguration(['boostMode' => '1']);
+
+        $cacheService = $this->createMock(CacheService::class);
+        $cacheService->expects(self::never())->method('get');
+
+        $listener = new AfterPackageDeactivationListener($configurationService, $cacheService);
+        $listener(new AfterPackageDeactivationEvent('news', 'typo3-cms-extension'));
+
+        self::assertSame('1', $configurationService->get('boostMode'));
+    }
 }

@@ -8,6 +8,11 @@ use Psr\Http\Message\ResponseInterface;
 
 final class GeneratorCreate
 {
+    /**
+     * Content after the GeneratorContentManipulationEvent (shared by all generators).
+     */
+    protected ?string $manipulatedContent = null;
+
     public function __construct(
         protected readonly string            $entryIdentifier,
         protected readonly string            $fileName,
@@ -33,6 +38,16 @@ final class GeneratorCreate
     public function getLifetime(): int
     {
         return $this->lifetime;
+    }
+
+    public function getManipulatedContent(): ?string
+    {
+        return $this->manipulatedContent;
+    }
+
+    public function setManipulatedContent(string $manipulatedContent): void
+    {
+        $this->manipulatedContent = $manipulatedContent;
     }
 
 

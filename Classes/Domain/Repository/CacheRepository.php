@@ -42,11 +42,10 @@ class CacheRepository extends AbstractRepository
     {
         $queryBuilder = $this->createQuery();
 
-        return (int) $queryBuilder->count('identifier')
+        return (int) $queryBuilder->selectLiteral('COUNT(DISTINCT ' . $queryBuilder->quoteIdentifier('identifier') . ')')
             ->from($this->getTableName())
-            ->groupBy('identifier')
             ->executeQuery()
-            ->rowCount();
+            ->fetchOne();
     }
 
     /**

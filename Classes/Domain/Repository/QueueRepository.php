@@ -55,11 +55,11 @@ class QueueRepository extends AbstractRepository
             $queryBuilder->expr()->eq('call_date', 0)
         );
 
-        return (int) $queryBuilder->select('uid')
+        return (int) $queryBuilder->count('uid')
             ->from($this->getTableName())
             ->where($where)
             ->executeQuery()
-            ->rowCount()
+            ->fetchOne()
         ;
     }
 

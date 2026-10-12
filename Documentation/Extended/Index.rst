@@ -29,7 +29,6 @@ The EXT:staticfilecache uses middlewares to implement the logic of the cache int
 
 - `SFC\Staticfilecache\Middleware\CookieCheckMiddleware` Check if there is a frontend cookie and invalid user session. Then remove the cookie.
 - `SFC\Staticfilecache\Middleware\FallbackMiddleware` Handle the fallback, if there is a static file but no redirect via nginx/htaccess.
-- `SFC\Staticfilecache\Middleware\FrontendCacheMiddleware` Preparation for new caching mechanisms of TYPO3 v13 (currently disabled).
 - `SFC\Staticfilecache\Middleware\FrontendUserMiddleware` Handle the user session in the right way.
 - `SFC\Staticfilecache\Middleware\GenerateMiddleware` Write the content into the StaticFileCache structure.
 - `SFC\Staticfilecache\Middleware\PrepareMiddleware` Check if the content is cacheable in the StaticFileCache structure.

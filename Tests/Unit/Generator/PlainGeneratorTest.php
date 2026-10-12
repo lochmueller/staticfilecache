@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Tests\Unit\Generator;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use SFC\Staticfilecache\Event\GeneratorContentManipulationEvent;
+use SFC\Staticfilecache\Generator\GzipGenerator;
 use SFC\Staticfilecache\Generator\PlainGenerator;
 
 /**
@@ -34,6 +37,31 @@ final class PlainGeneratorTest extends AbstractGeneratorTest
         $generator->generate($this->getCreateEvent($fileName, $this->getResponse('<html>Plain</html>')));
 
         self::assertStringEqualsFile($fileName, 'manipulated:<html>Plain</html>');
+    }
+
+    public function testContentManipulationEventIsDispatchedOncePerCreateEvent(): void
+    {
+        $this->setExtensionConfiguration(['enableGeneratorPlain' => '1', 'enableGeneratorGzip' => '1']);
+        $fileName = $this->createTemporaryDirectory() . 'index.html';
+
+        $dispatchCount = 0;
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $eventDispatcher->method('dispatch')->willReturnCallback(static function (object $event) use (&$dispatchCount): object {
+            if ($event instanceof GeneratorContentManipulationEvent) {
+                $dispatchCount++;
+                $event->setContent('manipulated:' . $event->getContent());
+            }
+
+            return $event;
+        });
+
+        $createEvent = $this->getCreateEvent($fileName, $this->getResponse('<html>Plain</html>'));
+        (new PlainGenerator($eventDispatcher, $this->getViewFactory()))->generate($createEvent);
+        (new GzipGenerator($eventDispatcher, $this->getViewFactory()))->generate($createEvent);
+
+        self::assertSame(1, $dispatchCount);
+        self::assertStringEqualsFile($fileName, 'manipulated:<html>Plain</html>');
+        self::assertSame('manipulated:<html>Plain</html>', gzdecode((string) file_get_contents($fileName . '.gz')));
     }
 
     public function testRemoveFile(): void
