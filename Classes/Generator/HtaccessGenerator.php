@@ -49,6 +49,10 @@ class HtaccessGenerator extends AbstractGenerator
         $this->renderTemplateToFile($this->getTemplateName(), $variables, $htaccessFile);
     }
 
+    /**
+     * @param array<string, string> $headers
+     * @return array<string, string>
+     */
     protected function cleanupHeaderValues(array $headers): array
     {
         $configurationService = $this->getConfigurationService();

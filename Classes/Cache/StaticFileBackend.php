@@ -37,6 +37,9 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 {
     protected EventDispatcherInterface $eventDispatcher;
 
+    /**
+     * @param array<string, mixed> $options Configuration options
+     */
     public function __construct(array $options = [])
     {
         $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
@@ -48,7 +51,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      *
      * @param string $entryIdentifier An identifier for this specific cache entry
      * @param string $data The data to be stored
-     * @param array $tags Tags to associate with this cache entry
+     * @param string[] $tags Tags to associate with this cache entry
      * @param int $lifetime Lifetime of this cache entry in seconds
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception                      if no cache frontend has been set
@@ -360,6 +363,7 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      * Call findIdentifiersByTag but ignore the expires check.
      *
      * @param string $tag
+     * @return string[]
      */
     protected function findIdentifiersByTagIncludingExpired($tag): array
     {
@@ -368,6 +372,9 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
 
     /**
      * Call findIdentifiersByTags but ignore the expires check.
+     *
+     * @param string[] $tags
+     * @return string[]
      */
     protected function findIdentifiersByTagsIncludingExpired(array $tags): array
     {
@@ -389,8 +396,8 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
      * Base on TYPO3 Database Backend findIdentifiersByTag
      * Finds and returns all cache entries which are tagged by the specified tag.
      *
-     * @param array $tags The tags to search for
-     * @return array An array with identifiers of all matching entries. An empty array if no entries matched
+     * @param string[] $tags The tags to search for
+     * @return string[] An array with identifiers of all matching entries. An empty array if no entries matched
      * @throws \TYPO3\CMS\Core\Cache\Exception
      * @throws Exception
      */

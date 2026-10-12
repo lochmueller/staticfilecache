@@ -25,6 +25,9 @@ final class PageRepositoryTest extends AbstractTest
         $connection->insert('pages', ['uid' => 4, 'pid' => 2, 'title' => 'Sub child']);
     }
 
+    /**
+     * @return iterable<string, array{string, list<int>}>
+     */
     public static function displayModeProvider(): iterable
     {
         yield 'current' => ['current', [1]];
@@ -33,6 +36,9 @@ final class PageRepositoryTest extends AbstractTest
         yield 'fallback' => ['invalid', [1, 2, 3]];
     }
 
+    /**
+     * @param list<int> $expectedUids
+     */
     #[\PHPUnit\Framework\Attributes\DataProvider('displayModeProvider')]
     public function testFindForBackend(string $displayMode, array $expectedUids): void
     {

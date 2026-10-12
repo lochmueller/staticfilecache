@@ -135,6 +135,9 @@ class BackendController extends ActionController implements LoggerAwareInterface
         return $GLOBALS['BE_USER'];
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     protected function getCachePagesEntries(string $filter): array
     {
         $rows = [];

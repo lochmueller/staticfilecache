@@ -29,6 +29,9 @@ final class CookieServiceTest extends AbstractTest
         self::assertTrue($cookieService->hasCookie());
     }
 
+    /**
+     * @return array<string, array{string, string, string, string}>
+     */
     public static function cookieDomainDataProvider(): array
     {
         return [

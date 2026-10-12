@@ -28,6 +28,8 @@ class HtaccessConfigurationService
 
     /**
      * Get all relevant htaccess paths.
+     *
+     * @return string[]
      */
     public function getHtaccessPaths(): array
     {
@@ -38,6 +40,8 @@ class HtaccessConfigurationService
 
     /**
      * get if the apache support the needed modules.
+     *
+     * @return string[]
      */
     public function getMissingApacheModules(): array
     {

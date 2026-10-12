@@ -92,6 +92,9 @@ final class ConfigurationServiceTest extends AbstractTest
         ], $result);
     }
 
+    /**
+     * @return array<string, array{string|null, string}>
+     */
     public static function backendDisplayModeDataProvider(): array
     {
         return [

@@ -45,6 +45,9 @@ class SiteCacheableListenerTest extends AbstractListenerTest
         self::assertEquals(false, $event->isSkipProcessing());
     }
 
+    /**
+     * @param array<string, mixed> $configuration
+     */
     protected function createRequest(array $configuration): ServerRequest
     {
         $site = new Site('main', 1, $configuration + ['base' => 'https://example.com/']);

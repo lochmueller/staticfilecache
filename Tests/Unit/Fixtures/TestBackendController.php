@@ -34,6 +34,9 @@ class TestBackendController extends BackendController
         return $this->getCurrentUid();
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function callGetCachePagesEntries(string $filter): array
     {
         return $this->getCachePagesEntries($filter);

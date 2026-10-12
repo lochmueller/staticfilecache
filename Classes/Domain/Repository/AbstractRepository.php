@@ -11,6 +11,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractRepository
 {
+    /**
+     * @param array<string, mixed> $identifiers
+     */
     public function delete(array $identifiers): void
     {
         $this->getConnection()->delete($this->getTableName(), $identifiers);
@@ -21,11 +24,18 @@ abstract class AbstractRepository
         $this->getConnection()->truncate($this->getTableName());
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function insert(array $data): void
     {
         $this->getConnection()->insert($this->getTableName(), $data);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @param array<string, mixed> $identifiers
+     */
     public function update(array $data, array $identifiers): void
     {
         $this->getConnection()->update(

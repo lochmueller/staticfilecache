@@ -31,11 +31,16 @@ abstract class AbstractHttpPush
      * Array of items with:
      * - path
      * - type
+     *
+     * @return list<array{path: string, type: string}>
      */
     abstract public function getHeaders(string $content, ServerRequestInterface $request): array;
 
     /**
      * Streamline file paths.
+     *
+     * @param string[] $paths
+     * @return string[]
      */
     protected function streamlineFilePaths(array $paths, ServerRequestInterface $request): array
     {
@@ -62,6 +67,9 @@ abstract class AbstractHttpPush
     /**
      * Map the path with the right types.
      * Take care that paths are not used twice.
+     *
+     * @param string[] $paths
+     * @return list<array{path: string, type: string}>
      */
     protected function mapPathsWithType(array $paths, string $type): array
     {

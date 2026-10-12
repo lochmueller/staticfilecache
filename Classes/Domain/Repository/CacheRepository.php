@@ -15,6 +15,7 @@ class CacheRepository extends AbstractRepository
     /**
      * Get the expired cache identifiers.
      *
+     * @return string[]
      * @throws Exception
      */
     public function findExpiredIdentifiers(): array

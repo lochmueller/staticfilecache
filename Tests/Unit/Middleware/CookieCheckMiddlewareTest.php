@@ -21,6 +21,9 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 final class CookieCheckMiddlewareTest extends AbstractMiddlewareTest
 {
+    /**
+     * @return array<string, array{bool, bool, bool, bool}>
+     */
     public static function cookieDataProvider(): array
     {
         return [

@@ -52,6 +52,9 @@ class PageCacheableListenerTest extends AbstractListenerTest
         self::assertEquals(false, $event->isSkipProcessing());
     }
 
+    /**
+     * @param array<string, mixed> $pageRecord
+     */
     protected function createRequest(array $pageRecord): ServerRequest
     {
         $pageInformation = new PageInformation();

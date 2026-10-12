@@ -27,6 +27,9 @@ final class BackendControllerTest extends AbstractTest
 {
     private string $backendDisplayMode = 'current';
 
+    /**
+     * @var array<string, string>
+     */
     private array $queryParams = [];
 
     public function testSetFilterUseSessionDataAsFallback(): void
@@ -80,6 +83,9 @@ final class BackendControllerTest extends AbstractTest
         self::assertSame([], $controller->callGetCachePagesEntries('all'));
     }
 
+    /**
+     * @return iterable<string, array{string, list<string>}>
+     */
     public static function filterProvider(): iterable
     {
         yield 'all' => ['all', ['https://example.com/cached', 'https://example.com/not-cached']];
@@ -87,6 +93,9 @@ final class BackendControllerTest extends AbstractTest
         yield 'not cached' => ['notCached', ['https://example.com/not-cached']];
     }
 
+    /**
+     * @param list<string> $expectedIdentifiers
+     */
     #[\PHPUnit\Framework\Attributes\DataProvider('filterProvider')]
     public function testGetCachePagesEntriesFilterEntries(string $filter, array $expectedIdentifiers): void
     {

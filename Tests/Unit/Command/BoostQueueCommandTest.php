@@ -193,11 +193,17 @@ final class BoostQueueCommandTest extends AbstractTest
         self::assertStringContainsString('Success: 7, Failed: 0', $tester->getDisplay());
     }
 
+    /**
+     * @return array{uid: int, cache_url: string, page_uid: int}
+     */
     protected function entry(int $uid): array
     {
         return ['uid' => $uid, 'cache_url' => 'https://example.com/' . $uid, 'page_uid' => $uid];
     }
 
+    /**
+     * @param array<string, mixed> $input
+     */
     protected function execute(array $input = []): CommandTester
     {
         $tester = new CommandTester($this->getCommand());

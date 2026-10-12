@@ -36,6 +36,7 @@ abstract class AbstractInlineAssetsTest extends AbstractTest
      * @template T of AbstractInlineAssets
      *
      * @param class-string<T> $className
+     * @param array<string, mixed> $configuration
      *
      * @return T
      */

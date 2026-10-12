@@ -30,6 +30,8 @@ abstract class AbstractTest extends UnitTestCase
 
     /**
      * Register a real ConfigurationService (singleton) based on the given extension configuration.
+     *
+     * @param array<string, mixed> $configuration
      */
     protected function setExtensionConfiguration(array $configuration = []): ConfigurationService
     {
@@ -76,6 +78,8 @@ abstract class AbstractTest extends UnitTestCase
 
     /**
      * Register a DI container with the given services (service id => instance) for GeneralUtility::makeInstance().
+     *
+     * @param array<string, object> $services
      */
     protected function registerContainerServices(array $services): void
     {

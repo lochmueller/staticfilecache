@@ -82,6 +82,9 @@ class FallbackMiddleware implements MiddlewareInterface
         return new HtmlResponse(GeneralUtility::getUrl($possibleStaticFile), 200, $headers);
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getHeaders(ServerRequestInterface $request, string &$possibleStaticFile): array
     {
         $headers = [
@@ -154,6 +157,8 @@ class FallbackMiddleware implements MiddlewareInterface
 
     /**
      * Get cache configuration.
+     *
+     * @return array<mixed>
      */
     protected function getCacheConfiguration(string $possibleStaticFile): array
     {

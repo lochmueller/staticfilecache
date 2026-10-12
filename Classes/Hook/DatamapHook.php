@@ -16,8 +16,10 @@ class DatamapHook
     /**
      * Check if the page is removed out of the SFC.
      * We drop the cache in this case.
+     *
+     * @param array<string, mixed> $fieldArray
      */
-    public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, DataHandler $dataHandler): void
+    public function processDatamap_afterDatabaseOperations(string $status, string $table, int|string $id, array $fieldArray, DataHandler $dataHandler): void
     {
         if ('pages' !== $table) {
             return;

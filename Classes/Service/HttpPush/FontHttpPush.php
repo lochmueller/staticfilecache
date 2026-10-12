@@ -15,8 +15,10 @@ class FontHttpPush extends AbstractHttpPush
 
     /**
      * Fonts extensions.
+     *
+     * @var string[]
      */
-    private $fontsExtensions = ['woff', 'woff2'];
+    private array $fontsExtensions = ['woff', 'woff2'];
 
 
     /**
@@ -34,6 +36,8 @@ class FontHttpPush extends AbstractHttpPush
 
     /**
      * Get headers for the current file extension.
+     *
+     * @return list<array{path: string, type: string}>
      */
     public function getHeaders(string $content, ServerRequestInterface $request): array
     {

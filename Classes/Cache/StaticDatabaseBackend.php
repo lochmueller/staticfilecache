@@ -26,7 +26,7 @@ abstract class StaticDatabaseBackend extends Typo3DatabaseBackend implements Log
     /**
      * Constructs this backend.
      *
-     * @param array  $options Configuration options - depends on the actual backend
+     * @param array<string, mixed> $options Configuration options - depends on the actual backend
      */
     public function __construct(array $options = [])
     {

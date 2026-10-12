@@ -13,6 +13,8 @@ class EnvironmentService
 {
     /**
      * Get information.
+     *
+     * @return array<string, mixed>
      */
     public function get(): array
     {

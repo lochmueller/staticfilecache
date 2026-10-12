@@ -32,7 +32,7 @@ trait CacheTrait
     /**
      * Cache run time.
      */
-    protected function cacheRunTime(string $entryIdentifier, callable $callback)
+    protected function cacheRunTime(string $entryIdentifier, callable $callback): mixed
     {
         return $this->cacheViaTrait($entryIdentifier, $callback, 'runtime');
     }
@@ -41,8 +41,9 @@ trait CacheTrait
      * Cache long time.
      *
      * @param int $lifetime Default 60 Minutes (3.600 seconds)
+     * @param string[] $tags
      */
-    protected function cacheLongTime(string $entryIdentifier, callable $callback, int $lifetime = 3600, array $tags = [])
+    protected function cacheLongTime(string $entryIdentifier, callable $callback, int $lifetime = 3600, array $tags = []): mixed
     {
         return $this->cacheViaTrait('sfc_' . $entryIdentifier, $callback, 'pagesection', $lifetime, $tags);
     }
@@ -51,8 +52,9 @@ trait CacheTrait
      * Cache remote file time.
      *
      * @param int $lifetime Default 60 Minutes (3.600 seconds)
+     * @param string[] $tags
      */
-    protected function cacheRemoteUri(string $entryIdentifier, int $lifetime = 3600, array $tags = [])
+    protected function cacheRemoteUri(string $entryIdentifier, int $lifetime = 3600, array $tags = []): mixed
     {
         $result = $this->cacheViaTrait($entryIdentifier, function (): void {}, 'remote_file', $lifetime, $tags);
         if (null === $result) {
@@ -66,8 +68,10 @@ trait CacheTrait
 
     /**
      * Cache via Trait logic.
+     *
+     * @param string[] $tags
      */
-    protected function cacheViaTrait(string $entryIdentifier, callable $callback, string $cacheIdentifier, int $lifetime = 0, array $tags = [])
+    protected function cacheViaTrait(string $entryIdentifier, callable $callback, string $cacheIdentifier, int $lifetime = 0, array $tags = []): mixed
     {
         try {
             /** @var AbstractFrontend $cache */

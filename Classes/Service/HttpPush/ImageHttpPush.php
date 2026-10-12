@@ -15,6 +15,8 @@ class ImageHttpPush extends AbstractHttpPush
 
     /**
      * Image extensions.
+     *
+     * @var string[]
      */
     protected array $imageExtensions = ['ico', 'png', 'jpg', 'jpeg'];
 
@@ -33,6 +35,8 @@ class ImageHttpPush extends AbstractHttpPush
 
     /**
      * Get headers for the current file extension.
+     *
+     * @return list<array{path: string, type: string}>
      */
     public function getHeaders(string $content, ServerRequestInterface $request): array
     {

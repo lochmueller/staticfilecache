@@ -11,11 +11,15 @@ class InlineStyles extends AbstractInlineAssets
 {
     /**
      * Image extensions.
+     *
+     * @var string[]
      */
     private array $imageExtensions = ['ico', 'png', 'jpg', 'jpeg'];
 
     /**
      * Font extensions.
+     *
+     * @var string[]
      */
     private array $fontExtensions = ['woff', 'woff2'];
 

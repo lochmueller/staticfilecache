@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Service;
 
+use SFC\Staticfilecache\Service\InlineAssets\AbstractInlineAssets;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -18,7 +19,11 @@ class InlineAssetsService
 
         foreach ($configurationService->getAll() as $index => $value) {
             if ('inlineService' === substr($index, 0, 13) && (bool) $value) {
-                $content = GeneralUtility::makeInstance('SFC\Staticfilecache\Service\InlineAssets\Inline' . substr($index, 13))->replaceInline($content);
+                $className = 'SFC\\Staticfilecache\\Service\\InlineAssets\\Inline' . substr($index, 13);
+                if (!is_a($className, AbstractInlineAssets::class, true)) {
+                    continue;
+                }
+                $content = GeneralUtility::makeInstance($className)->replaceInline($content);
             }
         }
 

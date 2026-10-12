@@ -125,6 +125,9 @@ final class GenerateMiddlewareTest extends AbstractMiddlewareTest
         self::assertSame('TYPO3 - already in cache', $response->getHeaderLine('X-SFC-State'));
     }
 
+    /**
+     * @return array<string, array{array{explanation: list<string>, expires: int}, bool}>
+     */
     public static function invalidCacheEntryDataProvider(): array
     {
         return [
@@ -134,6 +137,9 @@ final class GenerateMiddlewareTest extends AbstractMiddlewareTest
         ];
     }
 
+    /**
+     * @param array{explanation: list<string>, expires: int} $entry
+     */
     #[\PHPUnit\Framework\Attributes\DataProvider('invalidCacheEntryDataProvider')]
     public function testInvalidCacheEntryIsRegenerated(array $entry, bool $hasCookie): void
     {

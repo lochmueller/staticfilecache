@@ -10,6 +10,8 @@ class RemoveService
 {
     /**
      * Dirs that are created with "softRemoveDir" and dropped with "runRemoveDir".
+     *
+     * @var string[]
      */
     protected array $removeDirs = [];
 

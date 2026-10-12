@@ -57,6 +57,9 @@ abstract class AbstractGenerator
         $removeService->file($fileName);
     }
 
+    /**
+     * @param array<string, mixed> $variables
+     */
     protected function renderTemplateToFile(string $templateName, array $variables, string $htaccessFile): void
     {
         $view = $this->viewFactory->create(new ViewFactoryData(

@@ -11,6 +11,8 @@ class InlineImages extends AbstractInlineAssets
 {
     /**
      * Image extensions.
+     *
+     * @var string[]
      */
     private array $imageExtensions = ['png', 'jpg', 'jpeg'];
 

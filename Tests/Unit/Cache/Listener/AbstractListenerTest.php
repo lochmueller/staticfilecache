@@ -22,6 +22,9 @@ abstract class AbstractListenerTest extends AbstractTest
         );
     }
 
+    /**
+     * @param array<string, string> $explanation
+     */
     protected function cacheRuleEvent(
         ServerRequestInterface $request,
         ?ResponseInterface $response = null,

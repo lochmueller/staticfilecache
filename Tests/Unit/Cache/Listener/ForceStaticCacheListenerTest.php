@@ -19,11 +19,11 @@ class ForceStaticCacheListenerTest extends AbstractListenerTest
     {
         $listener = new ForceStaticCacheListener(new NoopEventDispatcher());
 
-        $cacheRuleEvent = $this->cacheRuleEvent(new ServerRequest(), null, ['dummy']);
+        $cacheRuleEvent = $this->cacheRuleEvent(new ServerRequest(), null, ['dummy' => 'dummy']);
 
         $listener($cacheRuleEvent);
 
-        self::assertEquals(['dummy'], $cacheRuleEvent->getExplanation());
+        self::assertEquals(['dummy' => 'dummy'], $cacheRuleEvent->getExplanation());
         self::assertEquals(false, $cacheRuleEvent->isSkipProcessing());
     }
 
@@ -31,10 +31,10 @@ class ForceStaticCacheListenerTest extends AbstractListenerTest
     {
         $listener = new ForceStaticCacheListener(new NoopEventDispatcher());
 
-        $cacheRuleEvent = $this->cacheRuleEvent(new ServerRequest(), null, ['dummy'], true);
+        $cacheRuleEvent = $this->cacheRuleEvent(new ServerRequest(), null, ['dummy' => 'dummy'], true);
         $listener($cacheRuleEvent);
 
-        self::assertEquals(['dummy'], $cacheRuleEvent->getExplanation());
+        self::assertEquals(['dummy' => 'dummy'], $cacheRuleEvent->getExplanation());
         self::assertEquals(true, $cacheRuleEvent->isSkipProcessing());
     }
 
@@ -42,10 +42,10 @@ class ForceStaticCacheListenerTest extends AbstractListenerTest
     {
         $listener = new ForceStaticCacheListener(new NoopEventDispatcher());
 
-        $cacheRuleEvent = $this->cacheRuleEvent($this->createRequest(['tx_staticfilecache_cache_force' => 0]), null, ['dummy'], true);
+        $cacheRuleEvent = $this->cacheRuleEvent($this->createRequest(['tx_staticfilecache_cache_force' => 0]), null, ['dummy' => 'dummy'], true);
         $listener($cacheRuleEvent);
 
-        self::assertEquals(['dummy'], $cacheRuleEvent->getExplanation());
+        self::assertEquals(['dummy' => 'dummy'], $cacheRuleEvent->getExplanation());
         self::assertEquals(true, $cacheRuleEvent->isSkipProcessing());
     }
 
@@ -59,7 +59,7 @@ class ForceStaticCacheListenerTest extends AbstractListenerTest
 
         $listener = new ForceStaticCacheListener(new NoopEventDispatcher());
 
-        $cacheRuleEvent = $this->cacheRuleEvent($request, null, ['dummy'], true);
+        $cacheRuleEvent = $this->cacheRuleEvent($request, null, ['dummy' => 'dummy'], true);
         $listener($cacheRuleEvent);
 
         self::assertEquals([], $cacheRuleEvent->getExplanation());
@@ -80,13 +80,16 @@ class ForceStaticCacheListenerTest extends AbstractListenerTest
 
         $listener = new ForceStaticCacheListener($eventDispatcher);
 
-        $cacheRuleEvent = $this->cacheRuleEvent($this->createRequest([]), null, ['dummy'], true);
+        $cacheRuleEvent = $this->cacheRuleEvent($this->createRequest([]), null, ['dummy' => 'dummy'], true);
         $listener($cacheRuleEvent);
 
         self::assertEquals([], $cacheRuleEvent->getExplanation());
         self::assertEquals(false, $cacheRuleEvent->isSkipProcessing());
     }
 
+    /**
+     * @param array<string, mixed> $pageRecord
+     */
     protected function createRequest(array $pageRecord): ServerRequest
     {
         $pageInformation = new PageInformation();

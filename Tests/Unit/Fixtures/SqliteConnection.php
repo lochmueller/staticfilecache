@@ -20,5 +20,9 @@ class SqliteConnection extends Connection
         return new QueryBuilder($this, new EmptyRestrictionContainer());
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @param array<int|string, mixed> $types
+     */
     protected function ensureDatabaseValueTypes(string $tableName, array &$data, array &$types): void {}
 }

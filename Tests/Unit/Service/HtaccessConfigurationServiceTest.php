@@ -47,6 +47,9 @@ final class HtaccessConfigurationServiceTest extends AbstractTest
         self::assertSame([], (new HtaccessConfigurationService())->getMissingApacheModules());
     }
 
+    /**
+     * @param list<string> $paths
+     */
     protected function getService(array $paths): HtaccessConfigurationService
     {
         $service = $this->getMockBuilder(HtaccessConfigurationService::class)->onlyMethods(['getHtaccessPaths'])->getMock();

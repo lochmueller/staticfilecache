@@ -29,6 +29,9 @@ class QueueService implements LoggerAwareInterface
         protected CacheService $cacheService
     ) {}
 
+    /**
+     * @param string[] $identifiers
+     */
     public function addIdentifiers(array $identifiers, int $overridePriority = self::PRIORITY_LOW): void
     {
         if (empty($identifiers)) {
@@ -104,6 +107,8 @@ class QueueService implements LoggerAwareInterface
     }
 
     /**
+     * @param array<int, array<string, mixed>> $runEntries
+     * @return int[]
      * @throws NoSuchCacheException
      * @throws \Exception
      * @throws \Throwable
@@ -160,6 +165,7 @@ class QueueService implements LoggerAwareInterface
     /**
      * Run a single request with guzzle.
      *
+     * @param array<string, mixed> $runEntry
      * @throws NoSuchCacheException
      */
     public function runSingleRequest(array $runEntry): void

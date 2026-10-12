@@ -15,6 +15,8 @@ class HttpPushService
 
     /**
      * Get http push headers.
+     *
+     * @return list<array{path: string, type: string}>
      */
     public function getHttpPushHeaders(ServerRequestInterface $request, string $content): array
     {

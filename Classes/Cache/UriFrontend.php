@@ -35,7 +35,7 @@ class UriFrontend extends VariableFrontend
      *
      * @throws \InvalidArgumentException if the tag is not valid
      *
-     * @return array An array with the content of all matching entries. An empty array if no entries matched
+     * @return array<string, mixed> An array with the content of all matching entries. An empty array if no entries matched
      *
      * @api
      */

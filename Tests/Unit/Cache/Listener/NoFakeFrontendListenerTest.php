@@ -34,6 +34,9 @@ class NoFakeFrontendListenerTest extends AbstractListenerTest
     public function testExplanationAndSkipForSolrCallPath(): void
     {
         $listener = new class extends NoFakeFrontendListener {
+            /**
+             * @return list<string>
+             */
             protected function getCallPaths(): array
             {
                 return ['/var/www/vendor/apache-solr-for-typo3/solr/Classes/Util.php'];

@@ -100,6 +100,9 @@ final class FallbackMiddlewareTest extends AbstractMiddlewareTest
         self::assertSame('StaticFileCache - via Fallback Middleware', $response->getHeaderLine('X-SFC-State'));
     }
 
+    /**
+     * @return array<string, array{string, list<string>, string, string}>
+     */
     public static function compressionDataProvider(): array
     {
         return [
@@ -115,6 +118,9 @@ final class FallbackMiddlewareTest extends AbstractMiddlewareTest
         ];
     }
 
+    /**
+     * @param list<string> $existingFiles
+     */
     #[\PHPUnit\Framework\Attributes\DataProvider('compressionDataProvider')]
     public function testDeliverCompressedFile(string $acceptEncoding, array $existingFiles, string $expectedEncoding, string $expectedContent): void
     {
@@ -199,6 +205,9 @@ final class FallbackMiddlewareTest extends AbstractMiddlewareTest
 
 final class TestableFallbackMiddleware extends FallbackMiddleware
 {
+    /**
+     * @return array<mixed>
+     */
     public function getCacheConfigurationForTest(string $possibleStaticFile): array
     {
         return parent::getCacheConfiguration($possibleStaticFile);

@@ -20,6 +20,8 @@ abstract class AbstractMiddlewareTest extends AbstractTest
 {
     /**
      * Request handler that returns the given response and remembers the handled request.
+     *
+     * @return RequestHandlerInterface&object{handledRequest: ServerRequestInterface|null}
      */
     protected function getHandler(ResponseInterface $response): RequestHandlerInterface
     {

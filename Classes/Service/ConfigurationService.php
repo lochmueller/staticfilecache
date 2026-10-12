@@ -15,11 +15,15 @@ class ConfigurationService implements SingletonInterface
 {
     /**
      * Current configuration.
+     *
+     * @var array<string, mixed>
      */
     protected array $configuration = [];
 
     /**
      * Overrides.
+     *
+     * @var array<string, string>
      */
     protected array $overrides = [];
 
@@ -81,6 +85,8 @@ class ConfigurationService implements SingletonInterface
 
     /**
      * Get the configuration.
+     *
+     * @return array<string, mixed>
      */
     public function getAll(): array
     {
@@ -90,6 +96,8 @@ class ConfigurationService implements SingletonInterface
     /**
      * Get the valid headers.
      *
+     * @param array<string, string[]> $headers
+     * @return array<string, string>
      */
     public function getValidHeaders(array $headers, string $configKey): array
     {

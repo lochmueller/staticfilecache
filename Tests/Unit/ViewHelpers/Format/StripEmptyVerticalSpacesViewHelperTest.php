@@ -15,6 +15,9 @@ use SFC\Staticfilecache\ViewHelpers\Format\StripEmptyVerticalSpacesViewHelper;
  */
 final class StripEmptyVerticalSpacesViewHelperTest extends AbstractTest
 {
+    /**
+     * @return array<string, array{string, string}>
+     */
     public static function contentDataProvider(): array
     {
         return [

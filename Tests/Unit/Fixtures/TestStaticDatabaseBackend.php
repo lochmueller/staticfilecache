@@ -13,6 +13,9 @@ use SFC\Staticfilecache\Cache\StaticDatabaseBackend;
  */
 class TestStaticDatabaseBackend extends StaticDatabaseBackend
 {
+    /**
+     * @return array{string, string}
+     */
     public function getTableNames(): array
     {
         return [$this->cacheTable, $this->tagsTable];

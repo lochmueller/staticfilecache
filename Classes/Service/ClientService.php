@@ -29,9 +29,9 @@ class ClientService implements LoggerAwareInterface
     /**
      * Run multiple requests in parallel and return status codes.
      *
-     * @param array $urls List of URLs to process
+     * @param string[] $urls List of URLs to process
      * @param int $concurrency Number of concurrent requests
-     * @return array Status codes indexed same as input URLs
+     * @return int[] Status codes indexed same as input URLs
      */
     public function runMultipleRequests(array $urls, int $concurrency = 5): array
     {
@@ -187,8 +187,8 @@ class ClientService implements LoggerAwareInterface
     /**
      * Prepare session cookies for multiple domains
      *
-     * @param array $domains Domain names indexed by URL
-     * @return array Cookie jars indexed by domain
+     * @param array<string, string> $domains Domain names indexed by URL
+     * @return array<string, CookieJar> Cookie jars indexed by domain
      */
     protected function prepareSessionCookies(array $domains): array
     {

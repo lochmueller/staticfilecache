@@ -103,6 +103,9 @@ final class CacheTraitTest extends AbstractTest
                 return $this->cacheRunTime($entryIdentifier, $callback);
             }
 
+            /**
+             * @param string[] $tags
+             */
             public function longTime(string $entryIdentifier, callable $callback, int $lifetime, array $tags): mixed
             {
                 return $this->cacheLongTime($entryIdentifier, $callback, $lifetime, $tags);

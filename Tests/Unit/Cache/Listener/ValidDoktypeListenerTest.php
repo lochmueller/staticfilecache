@@ -22,6 +22,9 @@ class ValidDoktypeListenerTest extends AbstractListenerTest
         self::assertEquals(true, $event->isSkipProcessing());
     }
 
+    /**
+     * @param array<string, int> $pageRecord
+     */
     #[DataProvider('validDoktypeProvider')]
     public function testNoExplanation(array $pageRecord): void
     {
@@ -34,6 +37,9 @@ class ValidDoktypeListenerTest extends AbstractListenerTest
         self::assertEquals(false, $event->isSkipProcessing());
     }
 
+    /**
+     * @return \Generator<string, array{array<string, int>}>
+     */
     public static function validDoktypeProvider(): \Generator
     {
         yield 'no doktype' => [[]];
@@ -53,6 +59,9 @@ class ValidDoktypeListenerTest extends AbstractListenerTest
         self::assertEquals(true, $event->isSkipProcessing());
     }
 
+    /**
+     * @return \Generator<string, array{int}>
+     */
     public static function invalidDoktypeProvider(): \Generator
     {
         yield 'link' => [3];
@@ -60,6 +69,9 @@ class ValidDoktypeListenerTest extends AbstractListenerTest
         yield 'recycler' => [255];
     }
 
+    /**
+     * @param array<string, mixed> $pageRecord
+     */
     protected function createRequest(array $pageRecord): ServerRequest
     {
         $pageInformation = new PageInformation();

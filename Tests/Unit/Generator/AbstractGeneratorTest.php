@@ -22,6 +22,8 @@ abstract class AbstractGeneratorTest extends AbstractTest
 {
     /**
      * Variables assigned to the view of the last rendering.
+     *
+     * @var array<string, mixed>|null
      */
     protected ?array $assignedVariables = null;
 
@@ -70,6 +72,9 @@ abstract class AbstractGeneratorTest extends AbstractTest
         return $viewFactory;
     }
 
+    /**
+     * @param array<string, string|string[]> $headers
+     */
     protected function getResponse(string $body = '<html>Test</html>', array $headers = []): ResponseInterface
     {
         return new HtmlResponse($body, 200, $headers);

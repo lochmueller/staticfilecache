@@ -11,7 +11,7 @@ class PageRepository extends AbstractRepository
      *
      * @param int    $pageId
      * @param string $displayMode
-     * @return iterable<array>
+     * @return iterable<array<string, mixed>>
      */
     public function findForBackend($pageId, $displayMode): iterable
     {

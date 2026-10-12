@@ -63,6 +63,9 @@ final class AbstractRepositoryTest extends AbstractTest
         self::assertSame([], $this->fetchAll());
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private function fetchAll(): array
     {
         return $this->connection->executeQuery('SELECT uid, title FROM tx_test ORDER BY uid')->fetchAllAssociative();

@@ -61,7 +61,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      *
      * @param string $entryIdentifier An identifier for this specific cache entry
      * @param string|mixed $data            The data to be stored
-     * @param array  $tags            Tags to associate with this cache entry. If the backend does not support tags, this option can be ignored.
+     * @param string[] $tags          Tags to associate with this cache entry. If the backend does not support tags, this option can be ignored.
      * @param int    $lifetime        Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set
@@ -224,7 +224,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
      *
      * @param string $tag The tag to search for
      *
-     * @return array An array with identifiers of all matching entries. An empty array if no entries matched
+     * @return string[] An array with identifiers of all matching entries. An empty array if no entries matched
      *
      * @api
      */
@@ -299,7 +299,7 @@ class RemoteFileBackend extends AbstractBackend implements TaggableBackendInterf
     /**
      * @see https://github.com/TYPO3/typo3/blob/13.4/typo3/sysext/core/Classes/Cache/Backend/AbstractBackend.php#L138 (method do not exists in v14 anymore)
      */
-    protected function calculateExpiryTimeInternal($lifetime = null)
+    protected function calculateExpiryTimeInternal(?int $lifetime = null): \DateTime
     {
         if ($lifetime === self::UNLIMITED_LIFETIME_INTERNAL || $lifetime === null && $this->defaultLifetime === self::UNLIMITED_LIFETIME_INTERNAL) {
             $expiryTime = new \DateTime(self::DATETIME_EXPIRYTIME_UNLIMITED_INTERNAL, new \DateTimeZone('UTC'));

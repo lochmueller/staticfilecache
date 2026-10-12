@@ -11,9 +11,9 @@ class QueueRepository extends AbstractRepository
 {
     /**
      * Find the entries for the worker.
-     * @return iterable<array>
+     * @return iterable<array<string, mixed>>
      */
-    public function findOpen($limit = 999): iterable
+    public function findOpen(int $limit = 999): iterable
     {
         $queryBuilder = $this->createQuery();
 
@@ -28,6 +28,7 @@ class QueueRepository extends AbstractRepository
     }
 
     /**
+     * @return array<int, array<string, mixed>>
      * @throws Exception
      */
     public function findOpenBatch(int $limit = 100, int $offset = 0): array
@@ -48,7 +49,7 @@ class QueueRepository extends AbstractRepository
     /**
      * Find open by identifier.
      */
-    public function countOpenByIdentifier($identifier): int
+    public function countOpenByIdentifier(string $identifier): int
     {
         $queryBuilder = $this->createQuery();
         $where = $queryBuilder->expr()->and(
@@ -83,6 +84,7 @@ class QueueRepository extends AbstractRepository
     }
 
     /**
+     * @return array<int, array<string, mixed>>
      * @throws Exception
      */
     public function findOldBatch(int $limit = 1000): array
@@ -100,6 +102,8 @@ class QueueRepository extends AbstractRepository
     /**
      * Find existing identifiers (already in queue)
      *
+     * @param string[] $identifiers
+     * @return string[]
      * @throws Exception
      */
     public function findExistingIdentifiers(array $identifiers): array
@@ -128,7 +132,7 @@ class QueueRepository extends AbstractRepository
 
     /**
      * Delete entries in batch
-     * @param array $uids List of UIDs to delete
+     * @param int[] $uids List of UIDs to delete
      * @return int Number of deleted records
      */
     public function bulkDelete(array $uids): int
@@ -150,7 +154,7 @@ class QueueRepository extends AbstractRepository
 
     /**
      * Insert multiple records at once with optimized transaction handling
-     * @param array $records Array of record data to insert
+     * @param array<int, array<int|string, mixed>> $records Array of record data to insert (named or positional values)
      * @return int Number of inserted records
      * @throws Exception
      */
@@ -216,6 +220,7 @@ class QueueRepository extends AbstractRepository
     }
 
     /**
+     * @param array<int, array<string, mixed>> $records
      * @throws Exception
      * @throws \Throwable
      */

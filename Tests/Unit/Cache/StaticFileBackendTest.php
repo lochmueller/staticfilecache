@@ -277,6 +277,9 @@ final class StaticFileBackendTest extends AbstractTest
         self::assertSame(self::URI, $removeEvents[0]->getEntryIdentifier());
     }
 
+    /**
+     * @param array<string, mixed> $configuration
+     */
     private function configure(array $configuration = []): void
     {
         $this->setExtensionConfiguration(array_merge(['overrideCacheDirectory' => $this->relativeCacheDirectory], $configuration));

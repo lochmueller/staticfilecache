@@ -39,6 +39,9 @@ abstract class AbstractInlineAssets
         return preg_replace_callback($regex, fn(array $match): string => $this->parseAsset($match), $content);
     }
 
+    /**
+     * @param array<int|string, string> $match
+     */
     protected function parseAsset(array $match): string
     {
         $path = $this->sitePath . $match['src'];

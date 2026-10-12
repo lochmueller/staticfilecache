@@ -19,6 +19,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class DatamapHookTest extends AbstractTest
 {
+    /**
+     * @return array<string, array{string, int|string}>
+     */
     public static function ignoredRecordsDataProvider(): array
     {
         return [

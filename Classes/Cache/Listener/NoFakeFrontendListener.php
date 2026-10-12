@@ -33,6 +33,8 @@ class NoFakeFrontendListener
 
     /**
      * Get all call paths.
+     *
+     * @return string[]
      */
     protected function getCallPaths(): array
     {

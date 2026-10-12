@@ -37,6 +37,9 @@ final class GzipGeneratorTest extends AbstractGeneratorTest
         self::assertSame('manipulated:<html>Gzip</html>', gzdecode((string) file_get_contents($fileName . '.gz')));
     }
 
+    /**
+     * @return array<string, array{int|null, int}>
+     */
     public static function compressionLevelDataProvider(): array
     {
         return [

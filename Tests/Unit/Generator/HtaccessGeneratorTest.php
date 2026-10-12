@@ -88,6 +88,9 @@ final class HtaccessGeneratorTest extends AbstractGeneratorTest
         self::assertSame('application/json', $this->assignedVariables['contentType']);
     }
 
+    /**
+     * @return array<string, array{array<string, string>, bool}>
+     */
     public static function sendCacheHeadersDataProvider(): array
     {
         return [
@@ -97,6 +100,9 @@ final class HtaccessGeneratorTest extends AbstractGeneratorTest
         ];
     }
 
+    /**
+     * @param array<string, string> $configArray
+     */
     #[\PHPUnit\Framework\Attributes\DataProvider('sendCacheHeadersDataProvider')]
     public function testGenerateReadSendCacheHeadersFromFrontendTypoScript(array $configArray, bool $expected): void
     {
