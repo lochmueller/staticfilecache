@@ -33,8 +33,13 @@ class HtaccessGenerator extends AbstractGenerator
             $contentType = $matches[0];
         }
 
+        $cacheHeaderService = GeneralUtility::makeInstance(CacheHeaderService::class);
         $request = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface ? $GLOBALS['TYPO3_REQUEST'] : null;
-        $typoScriptConfiguration = GeneralUtility::makeInstance(CacheHeaderService::class)->getTypoScriptConfiguration($request);
+        $typoScriptConfiguration = $cacheHeaderService->getTypoScriptConfiguration($request);
+        // Apache cannot tell whether a later request comes through a trusted
+        // reverse proxy, so for "auto" the request generating the entry decides.
+        $sendCacheControlHeaderForSharedCaches = null !== $request
+            && $cacheHeaderService->isForSharedCaches($typoScriptConfiguration['sendCacheHeadersForSharedCaches'], $request);
 
         $variables = [
             'contentType' => $contentType,
@@ -43,6 +48,7 @@ class HtaccessGenerator extends AbstractGenerator
             'TIME' => '{TIME}',
             'expires' => (new DateTimeService())->getCurrentTime() + $lifetime,
             'sendCacheControlHeader' => $typoScriptConfiguration['sendCacheHeaders'],
+            'sendCacheControlHeaderForSharedCaches' => $sendCacheControlHeaderForSharedCaches,
             'sendCacheControlHeaderRedirectAfterCacheTimeout' => $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout'),
             'headers' => $this->cleanupHeaderValues($headers),
         ];
