@@ -12,6 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use SFC\Staticfilecache\Cache\IdentifierBuilder;
 use SFC\Staticfilecache\Event\CacheRuleFallbackEvent;
 use SFC\Staticfilecache\Exception;
+use SFC\Staticfilecache\Service\CacheHeaderService;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\CookieService;
@@ -94,6 +95,20 @@ class FallbackMiddleware implements MiddlewareInterface
 
         foreach ($config['headers'] ?? [] as $header => $value) {
             $headers[$header] = $value;
+        }
+
+        // Stored headers are frozen when the entry is written; the cache headers
+        // count down the remaining lifetime, like TYPO3's from its page cache.
+        if (isset($config['invalidAtTimestamp'])) {
+            $cacheHeaderService = GeneralUtility::makeInstance(CacheHeaderService::class);
+            $cacheHeaders = $cacheHeaderService->getHeaders(
+                (bool) ($config['sendCacheHeaders'] ?? false),
+                $cacheHeaderService->isForSharedCaches((string) ($config['sendCacheHeadersForSharedCaches'] ?? ''), $request),
+                (int) $config['invalidAtTimestamp'],
+            );
+            foreach ($cacheHeaders as $header => $value) {
+                $headers[$header] = $value;
+            }
         }
 
         $debug = $this->configurationService->isBool('debugHeaders');

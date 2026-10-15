@@ -51,4 +51,23 @@ class CacheHeaderService
 
         return $normalizedParams->isBehindReverseProxy();
     }
+
+    /**
+     * Expires and Cache-Control for an entry valid until $expires, counting down
+     * the remaining lifetime as TYPO3 does when it serves from its page cache.
+     *
+     * @return array<string, string>
+     */
+    public function getHeaders(bool $sendCacheHeaders, bool $forSharedCaches, int $expires): array
+    {
+        if (!$forSharedCaches && !$sendCacheHeaders) {
+            return [];
+        }
+        $lifetime = max(0, $expires - (new DateTimeService())->getCurrentTime());
+
+        return [
+            'Expires' => gmdate('D, d M Y H:i:s T', $expires),
+            'Cache-Control' => $forSharedCaches ? 'max-age=0, s-maxage=' . $lifetime : 'max-age=' . $lifetime,
+        ];
+    }
 }

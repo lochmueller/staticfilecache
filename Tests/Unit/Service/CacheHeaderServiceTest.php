@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Tests\Unit\Service;
 
 use SFC\Staticfilecache\Service\CacheHeaderService;
+use SFC\Staticfilecache\Service\DateTimeService;
 use SFC\Staticfilecache\Tests\Unit\AbstractTest;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -80,6 +81,41 @@ final class CacheHeaderServiceTest extends AbstractTest
         } finally {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = $previous;
         }
+    }
+
+    public function testNoHeadersWithoutSendCacheHeaders(): void
+    {
+        self::assertSame([], (new CacheHeaderService())->getHeaders(false, false, $this->getNow() + 300));
+    }
+
+    public function testHeadersForClients(): void
+    {
+        $expires = $this->getNow() + 300;
+
+        self::assertSame([
+            'Expires' => gmdate('D, d M Y H:i:s T', $expires),
+            'Cache-Control' => 'max-age=300',
+        ], (new CacheHeaderService())->getHeaders(true, false, $expires));
+    }
+
+    public function testHeadersForSharedCachesWithoutSendCacheHeaders(): void
+    {
+        $expires = $this->getNow() + 300;
+
+        self::assertSame([
+            'Expires' => gmdate('D, d M Y H:i:s T', $expires),
+            'Cache-Control' => 'max-age=0, s-maxage=300',
+        ], (new CacheHeaderService())->getHeaders(false, true, $expires));
+    }
+
+    public function testHeadersOfAnExpiredEntryNeverGoNegative(): void
+    {
+        self::assertSame('max-age=0, s-maxage=0', (new CacheHeaderService())->getHeaders(true, true, $this->getNow() - 10)['Cache-Control']);
+    }
+
+    protected function getNow(): int
+    {
+        return (new DateTimeService())->getCurrentTime();
     }
 
     protected function getRequest(bool $behindReverseProxy): ServerRequest

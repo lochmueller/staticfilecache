@@ -10,7 +10,9 @@ use SFC\Staticfilecache\Event\CacheRuleFallbackEvent;
 use SFC\Staticfilecache\Middleware\FallbackMiddleware;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\CookieService;
+use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 
 /**
@@ -88,6 +90,56 @@ final class FallbackMiddlewareTest extends AbstractMiddlewareTest
         self::assertSame('text/html; charset=utf-8', $response->getHeaderLine('Content-Type'));
         self::assertFalse($response->hasHeader('X-SFC-State'));
         self::assertFalse($response->hasHeader('Content-Encoding'));
+    }
+
+    public function testNoCacheHeadersWithoutCacheHeaderConfiguration(): void
+    {
+        file_put_contents($this->staticFile, 'cached');
+        file_put_contents($this->staticFile . '.config.json', json_encode(['invalidAtTimestamp' => time() + 3600]));
+
+        $response = $this->getMiddleware()->process($this->getRequest(), $this->getHandler(new HtmlResponse('typo3')));
+
+        self::assertFalse($response->hasHeader('Cache-Control'));
+        self::assertFalse($response->hasHeader('Expires'));
+    }
+
+    /**
+     * @return array<string, array{bool, string, bool, string}>
+     */
+    public static function cacheHeadersDataProvider(): array
+    {
+        return [
+            'sendCacheHeaders' => [true, '', false, 'max-age=%d'],
+            'shared caches forced' => [false, 'force', false, 'max-age=0, s-maxage=%d'],
+            'shared caches forced with sendCacheHeaders' => [true, 'force', false, 'max-age=0, s-maxage=%d'],
+            'shared caches auto behind a trusted reverse proxy' => [true, 'auto', true, 'max-age=0, s-maxage=%d'],
+            'shared caches auto without a trusted reverse proxy' => [true, 'auto', false, 'max-age=%d'],
+        ];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('cacheHeadersDataProvider')]
+    public function testCacheHeadersCountDownTheRemainingLifetime(bool $sendCacheHeaders, string $sendCacheHeadersForSharedCaches, bool $behindReverseProxy, string $expectedCacheControl): void
+    {
+        $invalidAt = time() + 3600;
+        file_put_contents($this->staticFile, 'cached');
+        file_put_contents($this->staticFile . '.config.json', json_encode([
+            'invalidAtTimestamp' => $invalidAt,
+            // A stored Cache-Control is frozen at generation time and must not win.
+            'headers' => ['Cache-Control' => 'max-age=0, s-maxage=86400'],
+            'sendCacheHeaders' => $sendCacheHeaders,
+            'sendCacheHeadersForSharedCaches' => $sendCacheHeadersForSharedCaches,
+        ]));
+        $normalizedParams = NormalizedParams::createFromServerParams(
+            ['REMOTE_ADDR' => '10.0.0.1', 'HTTP_HOST' => 'example.com'],
+            ['reverseProxyIP' => $behindReverseProxy ? '10.0.0.1' : '']
+        );
+        $request = $this->getRequest()->withAttribute('normalizedParams', $normalizedParams);
+
+        $response = $this->getMiddleware()->process($request, $this->getHandler(new HtmlResponse('typo3')));
+
+        $remaining = $invalidAt - (new DateTimeService())->getCurrentTime();
+        self::assertSame(\sprintf($expectedCacheControl, $remaining), $response->getHeaderLine('Cache-Control'));
+        self::assertSame(gmdate('D, d M Y H:i:s T', $invalidAt), $response->getHeaderLine('Expires'));
     }
 
     public function testDebugHeader(): void
