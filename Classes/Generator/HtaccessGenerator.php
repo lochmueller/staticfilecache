@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace SFC\Staticfilecache\Generator;
 
+use Psr\Http\Message\ServerRequestInterface;
 use SFC\Staticfilecache\Event\GeneratorCreate;
 use SFC\Staticfilecache\Event\GeneratorRemove;
+use SFC\Staticfilecache\Service\CacheHeaderService;
 use SFC\Staticfilecache\Service\ConfigurationService;
 use SFC\Staticfilecache\Service\DateTimeService;
-use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -32,8 +33,8 @@ class HtaccessGenerator extends AbstractGenerator
             $contentType = $matches[0];
         }
 
-        $frontendTypoScript = ($GLOBALS['TYPO3_REQUEST'] ?? null)?->getAttribute('frontend.typoscript');
-        $sendCacheControlHeader = $frontendTypoScript instanceof FrontendTypoScript && (bool) ($frontendTypoScript->getConfigArray()['sendCacheHeaders'] ?? false);
+        $request = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface ? $GLOBALS['TYPO3_REQUEST'] : null;
+        $typoScriptConfiguration = GeneralUtility::makeInstance(CacheHeaderService::class)->getTypoScriptConfiguration($request);
 
         $variables = [
             'contentType' => $contentType,
@@ -41,7 +42,7 @@ class HtaccessGenerator extends AbstractGenerator
             'lifetime' => $lifetime,
             'TIME' => '{TIME}',
             'expires' => (new DateTimeService())->getCurrentTime() + $lifetime,
-            'sendCacheControlHeader' => $sendCacheControlHeader,
+            'sendCacheControlHeader' => $typoScriptConfiguration['sendCacheHeaders'],
             'sendCacheControlHeaderRedirectAfterCacheTimeout' => $configuration->isBool('sendCacheControlHeaderRedirectAfterCacheTimeout'),
             'headers' => $this->cleanupHeaderValues($headers),
         ];
