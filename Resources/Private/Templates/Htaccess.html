@@ -2,10 +2,21 @@
 {namespace sfc=SFC\Staticfilecache\ViewHelpers}
 ForceType {contentType}
 <sfc:format.stripEmptyVerticalSpaces>
-<f:if condition="{sendCacheControlHeader}">
+<f:if condition="{sendCacheControlHeader} || {sendCacheControlHeaderForSharedCaches}">
 <IfModule mod_expires.c>
 	ExpiresActive on
 	ExpiresByType {contentType} {mode}{lifetime}
+</IfModule>
+</f:if>
+<f:if condition="{sendCacheControlHeaderForSharedCaches}">
+<f:comment><!--
+	Like TYPO3 with config.sendCacheHeadersForSharedCaches: browsers get
+	max-age=0, shared caches the lifetime as s-maxage. With mode M
+	(htaccessTimeout = 0) mod_expires sends the remaining lifetime of the entry,
+	so a shared cache keeps its copy no longer than the entry exists.
+--></f:comment>
+<IfModule mod_headers.c>
+	Header edit Cache-Control "^max-age=(\d+)$" "max-age=0, s-maxage=$1"
 </IfModule>
 </f:if>
 

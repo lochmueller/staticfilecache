@@ -6,6 +6,7 @@ namespace SFC\Staticfilecache\Tests\Unit\Generator;
 
 use SFC\Staticfilecache\Generator\HtaccessGenerator;
 use SFC\Staticfilecache\Service\DateTimeService;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
@@ -48,6 +49,7 @@ final class HtaccessGeneratorTest extends AbstractGeneratorTest
             'TIME' => '{TIME}',
             'expires' => (new DateTimeService())->getCurrentTime() + 300,
             'sendCacheControlHeader' => false,
+            'sendCacheControlHeaderForSharedCaches' => false,
             'sendCacheControlHeaderRedirectAfterCacheTimeout' => true,
             'headers' => [
                 'X-Custom' => 'value with \"quotes\"',
@@ -115,6 +117,40 @@ final class HtaccessGeneratorTest extends AbstractGeneratorTest
         $generator->generate($this->getCreateEvent($this->createTemporaryDirectory() . 'index.html'));
 
         self::assertSame($expected, $this->assignedVariables['sendCacheControlHeader']);
+    }
+
+    /**
+     * @return array<string, array{string, bool, bool}>
+     */
+    public static function sendCacheHeadersForSharedCachesDataProvider(): array
+    {
+        return [
+            'force' => ['force', false, true],
+            'auto behind a trusted reverse proxy' => ['auto', true, true],
+            'auto without a trusted reverse proxy' => ['auto', false, false],
+            'not set' => ['', true, false],
+        ];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('sendCacheHeadersForSharedCachesDataProvider')]
+    public function testGenerateReadSendCacheHeadersForSharedCachesFromFrontendTypoScript(string $sendCacheHeadersForSharedCaches, bool $behindReverseProxy, bool $expected): void
+    {
+        $this->setExtensionConfiguration();
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setConfigArray(['sendCacheHeadersForSharedCaches' => $sendCacheHeadersForSharedCaches]);
+        $normalizedParams = NormalizedParams::createFromServerParams(
+            ['REMOTE_ADDR' => '10.0.0.1', 'HTTP_HOST' => 'example.com'],
+            ['reverseProxyIP' => $behindReverseProxy ? '10.0.0.1' : '']
+        );
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://example.com/'))
+            ->withAttribute('frontend.typoscript', $frontendTypoScript)
+            ->withAttribute('normalizedParams', $normalizedParams);
+
+        $generator = new HtaccessGenerator($this->getEventDispatcher(), $this->getViewFactory());
+        $generator->generate($this->getCreateEvent($this->createTemporaryDirectory() . 'index.html'));
+
+        self::assertSame($expected, $this->assignedVariables['sendCacheControlHeaderForSharedCaches']);
+        self::assertFalse($this->assignedVariables['sendCacheControlHeader']);
     }
 
     public function testCleanupHeaderValuesRespectMaxHeaderSize(): void

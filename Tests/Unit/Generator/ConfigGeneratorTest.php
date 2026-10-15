@@ -8,6 +8,9 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use SFC\Staticfilecache\Event\GeneratorConfigManipulationEvent;
 use SFC\Staticfilecache\Generator\ConfigGenerator;
 use SFC\Staticfilecache\Service\DateTimeService;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 
 /**
  * ConfigGeneratorTest.
@@ -38,6 +41,36 @@ final class ConfigGeneratorTest extends AbstractGeneratorTest
             'X-Custom' => 'yes',
             'Content-Type' => 'text/html; charset=utf-8',
         ], $config['headers']);
+    }
+
+    public function testGenerateStoreCacheHeaderConfigurationOfThePage(): void
+    {
+        $this->setExtensionConfiguration();
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setConfigArray(['sendCacheHeaders' => '1', 'sendCacheHeadersForSharedCaches' => 'auto']);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://example.com/'))->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $fileName = $this->createTemporaryDirectory() . 'index.html';
+
+        $generator = new ConfigGenerator($this->getEventDispatcher(), $this->getViewFactory());
+        $generator->generate($this->getCreateEvent($fileName));
+
+        $config = json_decode((string) file_get_contents($fileName . '.config.json'), true);
+        self::assertTrue($config['sendCacheHeaders']);
+        self::assertSame('auto', $config['sendCacheHeadersForSharedCaches']);
+    }
+
+    public function testGenerateStoreNoCacheHeaderConfigurationWithoutRequest(): void
+    {
+        $this->setExtensionConfiguration();
+        unset($GLOBALS['TYPO3_REQUEST']);
+        $fileName = $this->createTemporaryDirectory() . 'index.html';
+
+        $generator = new ConfigGenerator($this->getEventDispatcher(), $this->getViewFactory());
+        $generator->generate($this->getCreateEvent($fileName));
+
+        $config = json_decode((string) file_get_contents($fileName . '.config.json'), true);
+        self::assertFalse($config['sendCacheHeaders']);
+        self::assertSame('', $config['sendCacheHeadersForSharedCaches']);
     }
 
     public function testGenerateUseManipulatedConfig(): void
