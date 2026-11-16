@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SFC\Staticfilecache\Tests\Unit\Middleware;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use SFC\Staticfilecache\Cache\StaticFileBackend;
 use SFC\Staticfilecache\Event\PreGenerateEvent;
 use SFC\Staticfilecache\Middleware\GenerateMiddleware;
 use SFC\Staticfilecache\Service\CacheService;
@@ -125,6 +126,32 @@ final class GenerateMiddlewareTest extends AbstractMiddlewareTest
         self::assertSame('TYPO3 - already in cache', $response->getHeaderLine('X-SFC-State'));
     }
 
+    public function testValidCacheEntryWithStaticFileIsNotStoredAgain(): void
+    {
+        $this->setExtensionConfiguration(['debugHeaders' => '1']);
+        $this->cache->method('get')->willReturn(['explanation' => [], 'expires' => PHP_INT_MAX]);
+        $this->cache->method('getBackend')->willReturn($this->getStaticFileBackend(true));
+        $this->cache->expects(self::never())->method('set');
+        $this->cookieService->method('hasCookie')->willReturn(false);
+
+        $response = $this->getMiddleware()->process($this->getRequest(), $this->getHandler($this->getCachableResponse()));
+
+        self::assertSame('TYPO3 - already in cache', $response->getHeaderLine('X-SFC-State'));
+    }
+
+    public function testValidCacheEntryWithoutStaticFileIsStoredAgain(): void
+    {
+        $this->setExtensionConfiguration(['debugHeaders' => '1']);
+        $this->cache->method('get')->willReturn(['explanation' => [], 'expires' => PHP_INT_MAX]);
+        $this->cache->method('getBackend')->willReturn($this->getStaticFileBackend(false));
+        $this->cache->expects(self::once())->method('set');
+        $this->cookieService->method('hasCookie')->willReturn(false);
+
+        $response = $this->getMiddleware()->process($this->getRequest(), $this->getHandler($this->getCachableResponse()));
+
+        self::assertSame('TYPO3 - add to cache', $response->getHeaderLine('X-SFC-State'));
+    }
+
     /**
      * @return array<string, array{array{explanation: list<string>, expires: int}, bool}>
      */
@@ -168,6 +195,14 @@ final class GenerateMiddlewareTest extends AbstractMiddlewareTest
         $response = $middleware->process($this->getRequest(), $this->getHandler($this->getCachableResponse()));
 
         self::assertSame('yes', $response->getHeaderLine('X-Changed'));
+    }
+
+    protected function getStaticFileBackend(bool $hasStaticFile): StaticFileBackend&MockObject
+    {
+        $backend = $this->createMock(StaticFileBackend::class);
+        $backend->expects(self::once())->method('hasStaticFile')->with('https://example.com/page/')->willReturn($hasStaticFile);
+
+        return $backend;
     }
 
     protected function getCachableResponse(int $status = 200): HtmlResponse

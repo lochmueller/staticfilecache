@@ -12,6 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use SFC\Staticfilecache\Cache\StaticFileBackend;
 use SFC\Staticfilecache\Event\PreGenerateEvent;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
@@ -98,6 +99,12 @@ class GenerateMiddleware implements MiddlewareInterface
     /**
      * Determines whether the given $uri has a valid cache entry.
      *
+     * The entry (database) is only valid together with the generated file. An
+     * entry without a file (e.g. the cache directory was emptied while the
+     * database table was not) would otherwise be reported as "already in cache"
+     * until it expires, and every request would be handled by PHP in the
+     * meantime, because nobody writes the file again.
+     *
      * @param string $uri
      *
      * @return bool is available and valid
@@ -108,7 +115,21 @@ class GenerateMiddleware implements MiddlewareInterface
 
         return false !== $entry
             && empty($entry['explanation'])
-            && $entry['expires'] >= (new DateTimeService())->getCurrentTime();
+            && $entry['expires'] >= (new DateTimeService())->getCurrentTime()
+            && $this->hasStaticFile((string) $uri);
+    }
+
+    /**
+     * Determines whether the static file of the given $uri exists.
+     *
+     * Other backends than the StaticFileBackend know nothing about files, so
+     * the entry alone decides there.
+     */
+    protected function hasStaticFile(string $uri): bool
+    {
+        $backend = $this->cache->getBackend();
+
+        return !$backend instanceof StaticFileBackend || $backend->hasStaticFile($uri);
     }
 
     /**
