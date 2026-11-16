@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use SFC\Staticfilecache\Cache\IdentifierBuilder;
+use SFC\Staticfilecache\Cache\StaticFileBackend;
 use SFC\Staticfilecache\Event\PreGenerateEvent;
 use SFC\Staticfilecache\Service\CacheService;
 use SFC\Staticfilecache\Service\ConfigurationService;
@@ -20,7 +20,6 @@ use SFC\Staticfilecache\Service\CookieService;
 use SFC\Staticfilecache\Service\DateTimeService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 class GenerateMiddleware implements MiddlewareInterface
@@ -121,36 +120,16 @@ class GenerateMiddleware implements MiddlewareInterface
     }
 
     /**
-     * Determines whether at least one generated file exists for the given $uri.
+     * Determines whether the static file of the given $uri exists.
      *
-     * Which file is written depends on the enabled generators (plain, gzip,
-     * brotli, php), so every variant counts.
+     * Other backends than the StaticFileBackend know nothing about files, so
+     * the entry alone decides there.
      */
     protected function hasStaticFile(string $uri): bool
     {
-        try {
-            $fileName = $this->getStaticFileName($uri);
-        } catch (\Throwable) {
-            return false;
-        }
+        $backend = $this->cache->getBackend();
 
-        foreach (['', '.gz', '.br', '.php'] as $suffix) {
-            if (is_file($fileName . $suffix)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Absolute path of the (plain) cache file for the given $uri.
-     *
-     * @throws \Exception
-     */
-    protected function getStaticFileName(string $uri): string
-    {
-        return GeneralUtility::makeInstance(IdentifierBuilder::class)->getFilepath($uri);
+        return !$backend instanceof StaticFileBackend || $backend->hasStaticFile($uri);
     }
 
     /**

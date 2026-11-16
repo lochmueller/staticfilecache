@@ -94,6 +94,49 @@ final class StaticFileBackendTest extends AbstractTest
         self::assertSame([self::URI], array_values($backend->findIdentifiersByTag('pageId_1')));
     }
 
+    public function testHasStaticFileIsFalseForEntryWithoutFile(): void
+    {
+        $this->configure();
+        $backend = $this->getBackend();
+        $this->frontend->set(self::URI, new Response(), ['pageId_1'], 3600);
+
+        // The entry alone makes has() true, but there is nothing Apache could deliver.
+        self::assertTrue($backend->has(self::URI));
+        self::assertFalse($backend->hasStaticFile(self::URI));
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function generatedFileProvider(): array
+    {
+        return [
+            'plain' => ['index'],
+            'gzip' => ['index.gz'],
+            'brotli' => ['index.br'],
+            'php' => ['index.php'],
+        ];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('generatedFileProvider')]
+    public function testHasStaticFileIsTrueForAnyGeneratedFile(string $file): void
+    {
+        $this->configure();
+        $backend = $this->getBackend();
+        $this->frontend->set(self::URI, new Response(), ['pageId_1'], 3600);
+        touch($this->cacheDirectory . 'https_www.example.com_443/page/' . $file);
+
+        self::assertTrue($backend->hasStaticFile(self::URI));
+    }
+
+    public function testHasStaticFileIsFalseForUnknownIdentifier(): void
+    {
+        $this->configure();
+
+        self::assertFalse($this->getBackend()->hasStaticFile('https://www.example.com/unknown/'));
+        self::assertFalse($this->getBackend()->hasStaticFile('invalid'));
+    }
+
     public function testSetExplanationOnlyStoresDetails(): void
     {
         $this->configure();

@@ -141,6 +141,36 @@ class StaticFileBackend extends StaticDatabaseBackend implements TransientBacken
     }
 
     /**
+     * Checks whether a generated file exists for the given entry identifier.
+     *
+     * In contrast to has(), the database entry does not count: has() is also
+     * true for an entry without file (e.g. after the cache directory was
+     * emptied), but only the file makes Apache deliver the page statically.
+     * Which file is written depends on the enabled generators (plain, gzip,
+     * brotli, php), so every variant counts.
+     */
+    public function hasStaticFile(string $entryIdentifier): bool
+    {
+        try {
+            $fileName = $this->getFilepath($entryIdentifier);
+        } catch (\Throwable) {
+            return false;
+        }
+
+        if ('' === $fileName) {
+            return false;
+        }
+
+        foreach (['', '.gz', '.br', '.php'] as $suffix) {
+            if (is_file($fileName . $suffix)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Removes all cache entries matching the specified identifier.
      * Usually this only affects one entry but if - for what reason ever -
      * old entries for the identifier still exist, they are removed as well.
