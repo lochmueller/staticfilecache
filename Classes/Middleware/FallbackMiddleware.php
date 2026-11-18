@@ -80,7 +80,13 @@ class FallbackMiddleware implements MiddlewareInterface
             throw new Exception('The path is not in the cache directory', 348923472);
         }
 
-        return new HtmlResponse(GeneralUtility::getUrl($possibleStaticFile), 200, $headers);
+        // The file might be removed (e.g. by a cache flush) after the checks above
+        $content = GeneralUtility::getUrl($possibleStaticFile);
+        if (false === $content) {
+            throw new Exception('StaticFileCache file could not be read', 1795530268);
+        }
+
+        return new HtmlResponse($content, 200, $headers);
     }
 
     /**

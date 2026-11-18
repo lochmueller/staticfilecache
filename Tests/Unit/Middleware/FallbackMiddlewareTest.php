@@ -222,6 +222,22 @@ final class FallbackMiddlewareTest extends AbstractMiddlewareTest
         $this->assertHandledByTypo3($this->getMiddleware());
     }
 
+    public function testStaticFileRemovedWhileReadingSkipsFallback(): void
+    {
+        file_put_contents($this->staticFile, 'cached');
+
+        // The cache directory is requested after the file checks and before the file is read:
+        // remove the file at this point, like a concurrent cache flush would do.
+        $this->cacheService = $this->createStub(CacheService::class);
+        $this->cacheService->method('getAbsoluteBaseDirectory')->willReturnCallback(function (): string {
+            unlink($this->staticFile);
+
+            return $this->cacheDirectory;
+        });
+
+        $this->assertHandledByTypo3($this->getMiddleware());
+    }
+
     public function testFileOutsideOfCacheDirectorySkipsFallback(): void
     {
         file_put_contents($this->staticFile, 'cached');
