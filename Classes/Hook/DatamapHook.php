@@ -28,8 +28,9 @@ class DatamapHook
             return;
         }
 
-        $row = BackendUtility::getRecord($table, (int) $id);
-        $allowSfc = (bool) $row['tx_staticfilecache_cache'];
+        // A deleted page has no record anymore and must not stay in the cache either
+        $row = $this->getPageRecord((int) $id);
+        $allowSfc = (bool) ($row['tx_staticfilecache_cache'] ?? false);
         if (!$allowSfc) {
             try {
                 // Delete right now!! do not wait until queue is deleting this
@@ -43,5 +44,13 @@ class DatamapHook
                 return;
             }
         }
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    protected function getPageRecord(int $id): ?array
+    {
+        return BackendUtility::getRecord('pages', $id);
     }
 }
