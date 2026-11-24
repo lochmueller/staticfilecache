@@ -74,6 +74,7 @@ class PrepareMiddleware implements MiddlewareInterface
         $response = $response->withBody($responseBody);
 
         $pushHeaders = (array) $this->httpPushService->getHttpPushHeaders($request, (string) $response->getBody());
+        $noPush = $this->configurationService->isBool('sendHttp2PushNoPush');
         foreach ($pushHeaders as $pushHeader) {
             if (mb_detect_encoding($pushHeader['path'], 'ASCII', true)) {
                 $value = '<' . $pushHeader['path'] . '>; rel=preload; as=' . $pushHeader['type'];
@@ -82,6 +83,12 @@ class PrepareMiddleware implements MiddlewareInterface
                 // https://github.com/lochmueller/staticfilecache/issues/443
                 if ($pushHeader['type'] === 'font') {
                     $value .= '; crossorigin';
+                }
+
+                // Preload the asset without triggering a server push:
+                // https://github.com/lochmueller/staticfilecache/issues/434
+                if ($noPush) {
+                    $value .= '; nopush';
                 }
 
                 $response = $response->withAddedHeader('Link', $value);

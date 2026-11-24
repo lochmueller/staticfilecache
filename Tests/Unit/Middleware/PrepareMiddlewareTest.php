@@ -127,6 +127,23 @@ final class PrepareMiddlewareTest extends AbstractMiddlewareTest
         ], $response->getHeader('Link'));
     }
 
+    public function testHttpPushHeadersWithNoPush(): void
+    {
+        $httpPushService = $this->createMock(HttpPushService::class);
+        $httpPushService->method('getHttpPushHeaders')->willReturn([
+            ['path' => '/style.css', 'type' => 'style'],
+            ['path' => '/font.woff2', 'type' => 'font'],
+        ]);
+
+        $middleware = new PrepareMiddleware($this->getEventDispatcher(), $httpPushService, $this->setExtensionConfiguration(['sendHttp2PushNoPush' => '1']), $this->inlineAssetsService);
+        $response = $middleware->process($this->request, $this->getHandler(new HtmlResponse('content')));
+
+        self::assertSame([
+            '</style.css>; rel=preload; as=style; nopush',
+            '</font.woff2>; rel=preload; as=font; crossorigin; nopush',
+        ], $response->getHeader('Link'));
+    }
+
     protected function getMiddleware(?\Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher = null): PrepareMiddleware
     {
         return new PrepareMiddleware(

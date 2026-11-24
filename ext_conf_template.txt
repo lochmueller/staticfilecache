@@ -85,6 +85,9 @@ sendHttp2PushFileLimit = 10
 # cat=HttpPush; type=options[No Limit=,<head> tag=head,<body> tag=body]; label=Limit the pushes to specific areas: You can select from either '<head>' or '<body>', which pushes only the assets from the named area. Otherwise, and as default, the whole '<html>' tag is taken.
 sendHttp2PushLimitToArea =
 
+# cat=HttpPush; type=boolean; label=Preload without push: Append "nopush" to the generated Link headers, so browsers still preload the assets, but servers (e.g. Apache mod_http2) do not trigger an HTTP/2 PUSH. Recommended, because HTTP/2 push was removed from the major browsers
+sendHttp2PushNoPush = 1
+
 # cat=InlineAssets; type=int+; label=Maximum Asset-File-Size to include [byte]
 inlineAssetsFileSize = 50000
 
