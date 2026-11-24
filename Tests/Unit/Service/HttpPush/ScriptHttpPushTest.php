@@ -20,7 +20,7 @@ final class ScriptHttpPushTest extends AbstractHttpPushTest
      */
     public function testGetValidHeaders(): void
     {
-        $service = new ScriptHttpPush();
+        $service = $this->getService();
         $headers = $service->getHeaders($this->getExampleContent(), $this->getRequest());
 
         $exepected = [
@@ -48,7 +48,7 @@ final class ScriptHttpPushTest extends AbstractHttpPushTest
 
     public function testCanHandleExtension(): void
     {
-        $service = new ScriptHttpPush();
+        $service = $this->getService();
 
         static::assertTrue($service->canHandleExtension('js'));
         static::assertFalse($service->canHandleExtension('css'));
@@ -56,18 +56,67 @@ final class ScriptHttpPushTest extends AbstractHttpPushTest
 
     public function testGetNoHeadersWithoutMatches(): void
     {
-        static::assertSame([], (new ScriptHttpPush())->getHeaders('<html></html>', $this->getRequest()));
+        static::assertSame([], $this->getService()->getHeaders('<html></html>', $this->getRequest()));
     }
 
     public function testGetHeadersKeepAbsoluteUrlsOnCurrentHost(): void
     {
-        $headers = (new ScriptHttpPush())->getHeaders('<script src="https://www.example.com/local.js"></script><script src="https://cdn.example.org/external.js"></script>', $this->getRequest());
+        $headers = $this->getService()->getHeaders('<script src="https://www.example.com/local.js"></script><script src="https://cdn.example.org/external.js"></script>', $this->getRequest());
 
         self::assertSame([['path' => '/local.js', 'type' => 'script']], $headers);
     }
 
+    public function testSkipScriptsWithConfiguredAttributes(): void
+    {
+        $content = <<<'HTML'
+            <script src="/normal.js"></script>
+            <script async src="/async.js"></script>
+            <script src="/async-value.js" async="async"></script>
+            <script defer="" src="/defer.js"></script>
+            <script src="/defer-end.js" defer></script>
+            <script type="module" src="/module.js"></script>
+            <script src="/defer-data.js" data-defer="1"></script>
+            <script src="/asynchronous.js" data-type="asynchronous"></script>
+            HTML;
+
+        $headers = $this->getService('async,defer')->getHeaders($content, $this->getRequest());
+
+        self::assertSame([
+            ['path' => '/normal.js', 'type' => 'script'],
+            ['path' => '/module.js', 'type' => 'script'],
+            ['path' => '/defer-data.js', 'type' => 'script'],
+            ['path' => '/asynchronous.js', 'type' => 'script'],
+        ], $headers);
+    }
+
+    public function testSkipScriptsWithAttributeValue(): void
+    {
+        $content = '<script type="module" src="/module.js"></script><script type=module src="/module-unquoted.js"></script><script type="text/javascript" src="/classic.js"></script>';
+
+        $headers = $this->getService('type=module')->getHeaders($content, $this->getRequest());
+
+        self::assertSame([['path' => '/classic.js', 'type' => 'script']], $headers);
+    }
+
+    public function testPushAllScriptsWithoutSkipAttributes(): void
+    {
+        $content = '<script async src="/async.js"></script><script defer src="/defer.js"></script>';
+
+        $headers = $this->getService('')->getHeaders($content, $this->getRequest());
+
+        self::assertSame([
+            ['path' => '/async.js', 'type' => 'script'],
+            ['path' => '/defer.js', 'type' => 'script'],
+        ], $headers);
+    }
+
     public function testGetNoHeadersWithoutNormalizedParams(): void
     {
-        self::assertSame([], (new ScriptHttpPush())->getHeaders('<script src="/local.js"></script>', new ServerRequest()));
+        self::assertSame([], $this->getService()->getHeaders('<script src="/local.js"></script>', new ServerRequest()));
+    }
+
+    protected function getService(string $skipAttributes = ''): ScriptHttpPush
+    {
+        return new ScriptHttpPush($this->setExtensionConfiguration(['sendHttp2PushSkipScriptAttributes' => $skipAttributes]));
     }
 }

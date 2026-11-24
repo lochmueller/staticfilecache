@@ -88,6 +88,9 @@ sendHttp2PushLimitToArea =
 # cat=HttpPush; type=boolean; label=Preload without push: Append "nopush" to the generated Link headers, so browsers still preload the assets, but servers (e.g. Apache mod_http2) do not trigger an HTTP/2 PUSH. Recommended, because HTTP/2 push was removed from the major browsers
 sendHttp2PushNoPush = 1
 
+# cat=HttpPush; type=string; label=Skip scripts with attributes: Comma separated list of script tag attributes that exclude a JS file from HTTP/2 push/preload. Use "name" to match an attribute regardless of its value (e.g. async, defer, nomodule) or "name=value" for a specific value (e.g. type=module). Leave empty to push all scripts
+sendHttp2PushSkipScriptAttributes = async,defer
+
 # cat=InlineAssets; type=int+; label=Maximum Asset-File-Size to include [byte]
 inlineAssetsFileSize = 50000
 
